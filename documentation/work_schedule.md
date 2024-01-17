@@ -1,6 +1,6 @@
 # Project Work Schedule
 
-Customer meetings are held on Mondays at 9:00.
+Customer meetings are held on Mondays 9:00-10:00. This is followed by sprint planning in Luola until 11:00.
 
 Luola is reserved for the following hours:
 * Monday 9-12
