@@ -1,0 +1,16 @@
+.email-template__fields {
+  display: flex;
+}
+
+.email-template__field {
+  flex: 50%;
+}
+
+.email-template__field:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.email-template__replacements {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+    monospace;
+}

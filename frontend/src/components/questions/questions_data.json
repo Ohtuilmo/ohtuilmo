@@ -1,0 +1,29 @@
+{
+  "questions": [
+    {
+      "type": "info",
+      "header": "Ohje",
+      "description": "Ohje: Anna avovastauksiin vapaamuotoiset perustelut arvosanaehdotuksille. Voit käyttääapuna vinkkeinä annettuna esimerkkejä asioista, joihin voi kiinnittää huomiota. Voit myöskertoa vapaasti muista mielestäsi olennaisista asioista. Arvioi jokainen ryhmäläinen. Kirjoitaitseäsi koskevat perustelut erityisen huolellisesti. Huomaa, että saadakseen kurssistaarvosanaksi 5 ei jokaisen osa­alueen tarvitse olla täydellinen. On luontevaa, että ryhmässäkontribuutioden painopisteet jakautuvat eri tavoin ja tämä on täysin ok myös tällä kurssilla."
+    },
+    {
+      "header": "Grade (scale 0-5)  ",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "header": "Your satisfaction to the resulting product compared to your intial expectations:",
+      "description": " Heitä jotain",
+      "type": "text"
+    },
+    {
+      "header": "The quality of the product and fit for the purpose:",
+      "description": "Kuvaile omin sanoin.",
+      "type": "text"
+    },
+    {
+      "header": "What was the technical skill level of the team compared to your expectations?",
+      "description": "Kuvaile omin sanoin.",
+      "type": "text"
+    }
+  ]
+}

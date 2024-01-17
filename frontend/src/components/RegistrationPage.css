@@ -1,0 +1,46 @@
+.expandable-section-headers {
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-content: center;
+  align-items:center;
+  display: flex;
+  padding: 0 24px 0 24px;
+}
+
+.expandable-section-headers-topic {
+  flex: 1;
+  font-weight: bold;
+  padding-right: 32px;
+}
+
+.expandable-section-headers-customer {
+  flex: 1;
+  font-weight: bold;
+}
+
+.section {
+  padding-bottom: 40px;
+}
+
+.dragndrop-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.dragndrop-list {
+  flex: 99
+}
+
+.dragndrop-indexes-container {
+  flex: 1;
+  height: 80px
+}
+
+.dragndrop-index {
+  padding: 30px 20px 30px 20px;
+  max-height: 18px;
+  margin: 2px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  color: #4d4d4d;
+}

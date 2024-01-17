@@ -1,0 +1,8 @@
+.topic-submit-page-container {
+  display: flex;
+  justify-content: center;
+}
+
+.topic-form-container {
+  max-width: 800px;
+}

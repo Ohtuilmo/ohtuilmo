@@ -1,0 +1,58 @@
+{
+  "name": "ohtuilmo-backend",
+  "version": "1.0.0",
+  "description": "Node.js backend",
+  "main": "index.js",
+  "scripts": {
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "test": "npm run lint",
+    "lint": "eslint .",
+    "db:create": "sequelize db:create",
+    "db:drop": "sequelize db:drop",
+    "db:migrate": "sequelize db:migrate",
+    "db:seed:all": "sequelize db:seed:all",
+    "db:nuke": "npx npm-run-all -s db:drop db:create",
+    "db:recreate": "npx npm-run-all -s db:nuke db:migrate db:seed:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "jexniemi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend/issues"
+  },
+  "homepage": "https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "nodemailer": "^6.4.17",
+    "pg": "^7.14.0",
+    "pg-hstore": "^2.3.2",
+    "randomstring": "^1.1.5",
+    "sequelize": "^5.21.2",
+    "sequelize-cli": "^5.4.0",
+    "shuffle-array": "^1.0.1",
+    "unfuck-utf8-headers-middleware": "^1.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "eslint": "^5.14.1",
+    "husky": "^1.2.0",
+    "nodemon": "^1.18.7"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  }
+}

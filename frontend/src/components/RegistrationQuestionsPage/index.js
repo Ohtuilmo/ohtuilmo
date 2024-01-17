@@ -1,0 +1,2 @@
+import RegistrationQuestionsPage from './RegistrationQuestionsPage'
+export default RegistrationQuestionsPage

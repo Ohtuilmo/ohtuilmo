@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "postgres",
+    "database": "dev_postgres",
+    "port": "5432",
+    "host": "db",
+    "dialect": "postgres",
+    "operatorsAliases": false,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 10000,
+      "idle": 300000000
+    }
+  }
+}

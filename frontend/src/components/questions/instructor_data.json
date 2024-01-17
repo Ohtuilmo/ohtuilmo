@@ -1,0 +1,139 @@
+{
+  "questions": [
+    {
+      "type": "info",
+      "header": "Tekninen kontribuutio",
+      "description": ""
+    },
+    {
+      "header": "Vertaisarvion arvosanat ja keskiarvo",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Poimintoja sanallisista vertaisarvioista",
+      "description": "",
+      "type": "text"
+    },  
+    {
+      "header": "Ohjaajan kommentit",
+      "description": "",
+      "type": "text"
+    },        
+    {
+      "header": "Tekninen kontribuutio: arvosana",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "type": "info",
+      "header": "Prosessin noudattaminen",
+      "description": ""
+    },
+    {
+      "header": "Vertaisarvion arvosanat ja keskiarvo",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Poimintoja sanallisista vertaisarvioista",
+      "description": "",
+      "type": "text"
+    },  
+    {
+      "header": "Ohjaajan kommentit",
+      "description": "",
+      "type": "text"
+    },        
+    {
+      "header": "Prosessin noudattaminen: arvosana",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "type": "info",
+      "header": "Prosessin kehittäminen",
+      "description": ""
+    },
+    {
+      "header": "Vertaisarvion arvosanat ja keskiarvo",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Poimintoja sanallisista vertaisarvioista",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Ohjaajan kommentit",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Prosessin kehittäminen: arvosana",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "type": "info",
+      "header": "Ryhmätyöskentely",
+      "description": ""
+    },
+    {
+      "header": "Vertaisarvion arvosanat ja keskiarvo",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Poimintoja sanallisista vertaisarvioista",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Ohjaajan kommentit",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Ryhmätyöskentely: arvosana",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "type": "info",
+      "header": "Asiakastyöskentely",
+      "description": ""
+    },
+    {
+      "header": "Vertaisarvion arvosanat ja keskiarvo",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Poimintoja sanallisista vertaisarvioista",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Ohjaajan kommentit",
+      "description": "",
+      "type": "text"
+    },
+    {
+      "header": "Asiakastyöskentely: arvosana",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "type": "info",
+      "header": "Koko projekti",
+      "description": ""
+    },
+    {
+      "header": "arvosana",
+      "description": "",
+      "type": "number"
+    }
+  ]
+}

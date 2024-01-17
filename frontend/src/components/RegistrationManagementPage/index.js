@@ -1,0 +1,2 @@
+import RegistrationManagementPage from './RegistrationManagementPage'
+export default RegistrationManagementPage

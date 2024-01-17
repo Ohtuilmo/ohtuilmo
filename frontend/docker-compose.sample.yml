@@ -1,0 +1,37 @@
+﻿version: '2'
+services:
+  frontend:
+    # you can put your local image instead of ohtuprojektiilmo/ohtufront if you want
+    image: ohtuprojektiilmo/ohtufront
+    build: './ohtuilmo-frontend'
+    ports:
+      - '7000:3000'
+    depends_on:
+      - backend
+      - db
+
+  backend:
+    image: ohtuprojektiilmo/ohtuback
+    build: './ohtuilmo-backend'
+    restart: always
+    ports:
+      - '7001:3001'
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - SECRET=yoursecrethere
+
+  db:
+    image: postgres:10.6
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      PGDATA: /data/test
+    volumes:
+      - pg-data:/data/test
+
+volumes:
+  pg-data:

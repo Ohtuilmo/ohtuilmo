@@ -1,0 +1,35 @@
+.question-set-item {
+  margin-bottom: 2rem;
+}
+
+.question-set-item__name {
+  font-weight: normal;
+}
+
+.question-set-item__header {
+  padding: 0.75rem 1rem;
+  /* the MUI primary color is injected to the border color via style*/
+  border-left: 2px solid transparent;
+
+  /* CSS gurus hate him!
+     * Hack the header's z-index higher with this simple trick!
+     * (positioned elements are stacked above non-positioned [position:static])
+     */
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.question-set-item__title {
+  margin: 0; /* reset default h3 margins */
+}
+
+.question-set-item__controls {
+  margin-left: auto;
+}
+
+.question-set-item__content {
+  padding: 0 5px;
+}

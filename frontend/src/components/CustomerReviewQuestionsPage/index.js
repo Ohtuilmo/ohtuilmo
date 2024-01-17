@@ -1,0 +1,2 @@
+import CustomerReviewQuestionsPage from './CustomerReviewQuestionsPage'
+export default CustomerReviewQuestionsPage
