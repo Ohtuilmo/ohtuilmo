@@ -8,7 +8,7 @@ Luola is reserved for the following hours:
 * Wednesday 8-16
 * Friday 8-16
 
-Daily Scrums in Luola + Zoom at 9:30 on Tuesdays, Wednesday and 10:30 on Fridays.
+Daily Scrums in Luola + Zoom at 9:30 on Tuesdays, Wednesday and at 10:30 on Fridays.
 Retrospective in Luola + Zoom at 10:00-10:30 on Fridays.
 
 Aim for a total amount of 18 hours per week per person, whether remote or on-site.
