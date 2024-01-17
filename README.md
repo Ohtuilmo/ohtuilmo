@@ -5,7 +5,7 @@
 * [Team practices](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/team_practices.md)
 
 ## Communication links
-* [Slack](ohtuilmo.slack.com)
+* [Slack](https://ohtuilmo.slack.com)
 
 ## Project Progress
 * [Product backlog](https://github.com/orgs/Ohtuilmo/projects/1)
