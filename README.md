@@ -1,5 +1,9 @@
 # ohtuilmo
 
+## Original ohtuilmo-repositories
+* [Front-End GitHub repository](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-frontend/tree/master)
+* [Back-End GitHub repository](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-backend)
+
 ## Documentation
 * [Work schedule](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/work_schedule.md)
 * [Team practices](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/team_practices.md)
