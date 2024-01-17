@@ -1,0 +1,29 @@
+{
+  "names": [
+    {
+      "id": 1,
+      "name": "Miika"
+    },
+    {
+      "id": 2,
+      "name": "Olli"
+    },
+    {
+      "id": 3,
+      "name": "Joona"
+    },
+    {
+      "id": 4,
+      "name": "Aki"
+    },
+    {
+      "id": 5,
+      "name": "Jere"
+    },
+    {
+      "id": 6,
+      "name": "Harri"
+    }
+  ],
+  "defaultOptions": [1, 2, 3, 4, 5]
+}

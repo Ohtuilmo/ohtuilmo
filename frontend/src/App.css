@@ -1,0 +1,14 @@
+#app-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#app-content {
+  padding: 40px 35px;
+}
+
+@media only screen and (max-width: 600px) {
+  #app-content {
+    padding: 20px 15px;
+  }
+}

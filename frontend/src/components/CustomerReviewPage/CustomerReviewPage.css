@@ -1,0 +1,20 @@
+.customer-review-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.customer-review-container__main {
+  padding: 1em 2em 2em 2em;
+}
+
+.customer-review-box {
+  padding: 1em 0 2em 0;
+}
+
+.customer-review-box:not(:last-of-type) {
+  border-bottom: 1px solid #eee;
+}
+
+.customer-review-container__h1 {
+  text-align: center;
+}

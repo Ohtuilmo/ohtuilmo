@@ -1,0 +1,8 @@
+.topic-view-page-container {
+  display: flex;
+  justify-content: center;
+}
+
+.topic-view {
+  max-width: 800px;
+}

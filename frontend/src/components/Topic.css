@@ -1,0 +1,14 @@
+.single-topic-container {
+  min-width: 375px;
+  max-width: 800px;
+}
+
+.block {
+  padding: 10px;
+}
+
+.title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  margin: 0
+}

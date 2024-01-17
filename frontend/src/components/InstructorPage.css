@@ -1,0 +1,26 @@
+.radio-header {
+  width: 100px;
+}
+.radio-infoheader {
+  border: 1px solid black;
+}
+.radio-inforow {
+  margin: auto;
+}
+.radio-button-table {
+  padding: 0;
+}
+
+.peer-row,
+.radio-row {
+  margin: auto;
+}
+
+.peer-header,
+.radio-header,
+.radio-button {
+  border: 1px solid black;
+  margin: auto;
+  padding: 0;
+  text-align: center;
+}

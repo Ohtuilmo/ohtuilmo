@@ -1,0 +1,16 @@
+.customer-reviews-container__group {
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.customer-reviews-h1 {
+  padding: 30px;
+  text-align: center;
+}
+
+.customer-review-download-button {
+  float: right;
+  margin-right: 20px !important;
+}
