@@ -2,8 +2,8 @@
 
 ## Project links
 ### Documentation
-* [Work schedule](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/work_schedule.md)
-* [Team practices](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/team_practices.md)
+* [Work schedule](https://github.com/Ohtuilmo/ohtuilmo/blob/main/backend/documentation/work_schedule.md)
+* [Team practices](https://github.com/Ohtuilmo/ohtuilmo/blob/main/backend/documentation/team_practices.md)
 
 ### Project progress
 * [Product backlog](https://github.com/orgs/Ohtuilmo/projects/1)
@@ -14,11 +14,9 @@
 
 ## Developer Links
 ### Workflow
-* [Developer workflow instructions](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/developer_workflow.md)
+* [Developer workflow instructions](https://github.com/Ohtuilmo/ohtuilmo/blob/main/backend/documentation/developer_workflow.md)
 * [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Original ohtuilmo-repositories
 * [Front-End GitHub repository](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-frontend/tree/master)
 * [Back-End GitHub repository](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-backend)
-
-Test commit
