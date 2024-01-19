@@ -20,5 +20,3 @@
 ### Original ohtuilmo-repositories
 * [Front-End GitHub repository](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-frontend/tree/master)
 * [Back-End GitHub repository](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-backend)
-
-Testing local git connection
