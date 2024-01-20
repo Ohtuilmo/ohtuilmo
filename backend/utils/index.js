@@ -62,9 +62,12 @@ const getRandomId = () => {
   return 'a' + randomstring.generate(16)
 }
 
+const isDevelopmentEnvironment = () => process.env.NODE_ENV === 'development'
+
 module.exports = {
   emailTypeToTemplateName,
   templateNameToEmailType,
   pipe,
-  getRandomId
+  getRandomId,
+  isDevelopmentEnvironment
 }

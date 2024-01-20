@@ -2,24 +2,29 @@ const loginRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const config = require('../config/')
 const db = require('../models/index')
+const { isDevelopmentEnvironment } = require('../utils/index')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page' })
 }
 
 loginRouter.post('/', async (req, res) => {
-
-  if (!req.headers.hypersonstudentid)
+  if (!req.headers.hypersonstudentid && !isDevelopmentEnvironment())
     return res
       .status(401)
       .json({ error: 'Student number missing from headers.' })
       .end()
 
-  const student_number = req.headers.hypersonstudentid // schacpersonaluniquecode.split(':')[6]
+  // TODO: this is a quick fix. Let's discuss later how to deal with the headers in local environment
+  const student_number = isDevelopmentEnvironment()
+    ? '012345688'
+    : req.headers.hypersonstudentid
 
   db.User.findOne({
-    where: { student_number }
+    where: { student_number },
   })
     .then((foundUser) => {
       if (foundUser) {
@@ -30,7 +35,7 @@ loginRouter.post('/', async (req, res) => {
         )
         return res.status(200).json({
           token,
-          user: foundUser
+          user: foundUser,
         })
       } else {
         //user not in database, add user
@@ -40,7 +45,7 @@ loginRouter.post('/', async (req, res) => {
           first_names: req.headers.givenname,
           last_name: req.headers.sn,
           email: req.headers.mail,
-          admin: false
+          admin: false,
         })
           .then((savedUser) => {
             const token = jwt.sign(
@@ -49,7 +54,7 @@ loginRouter.post('/', async (req, res) => {
             )
             return res.status(200).json({
               token,
-              user: savedUser
+              user: savedUser,
             })
           })
           .catch((error) => handleDatabaseError(res, error))
