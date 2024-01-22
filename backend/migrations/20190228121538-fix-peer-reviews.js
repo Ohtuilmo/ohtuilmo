@@ -24,11 +24,11 @@ module.exports = {
         type: Sequelize.JSONB
       },
       // Sequelize timestamps
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false
       }

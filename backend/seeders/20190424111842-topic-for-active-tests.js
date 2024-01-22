@@ -20,8 +20,8 @@ const topics = [
     }),
     secret_id: 'Doh5boozeyish7iV',
     configuration_id: 1,
-    createdAt: new Date(),
-    updatedAt: new Date()
+    created_at: new Date(),
+    updated_at: new Date()
   }
 ]
 

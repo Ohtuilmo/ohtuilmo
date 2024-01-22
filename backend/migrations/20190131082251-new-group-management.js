@@ -56,7 +56,7 @@ const up = async (query, Sequelize) => {
     }
 
     return camelCase
-      ? { createdAt: timestampType, updatedAt: timestampType }
+      ? { created_at: timestampType, updated_at: timestampType }
       : { created_at: timestampType, updated_at: timestampType }
   }
 
@@ -70,20 +70,20 @@ const up = async (query, Sequelize) => {
       primaryKey: true
     },
     name: Sequelize.STRING,
-    ...createTimestampColumns({ camelCase: true }),
-    topicId: Sequelize.INTEGER,
-    configurationId: Sequelize.INTEGER,
-    instructorId: Sequelize.STRING
+    ...createTimestampColumns({ camelCase: false }),
+    topic_id: Sequelize.INTEGER,
+    configuration_id: Sequelize.INTEGER,
+    instructor_id: Sequelize.STRING
   })
 
   // Create "group <-> user" join table
   await query.createTable('group_students', {
-    ...createTimestampColumns({ camelCase: true }),
-    groupId: {
+    ...createTimestampColumns({ camelCase: false }),
+    group_id: {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    userStudentNumber: {
+    user_student_number: {
       type: Sequelize.STRING,
       allowNull: false
     }
@@ -96,7 +96,7 @@ const up = async (query, Sequelize) => {
   // group_students uses composite primary keyi
   await query.addConstraint(
     'group_students',
-    ['groupId', 'userStudentNumber'],
+    ['group_id', 'user_student_number'],
     {
       type: 'primary key',
       name: 'group_students_pkey'
@@ -105,34 +105,34 @@ const up = async (query, Sequelize) => {
 
   // group_student's foreign keys
   await addForeignKey(
-    'group_students_groupId_fkey',
-    ['group_students', 'groupId'],
+    'group_students_group_id_fkey',
+    ['group_students', 'group_id'],
     ['groups', 'id'],
     { onUpdate: 'CASCADE', onDelete: 'CASCADE' }
   )
   await addForeignKey(
-    'group_students_userStudentNumber_fkey',
-    ['group_students', 'userStudentNumber'],
+    'group_students_user_student_number_fkey',
+    ['group_students', 'user_student_number'],
     ['users', 'student_number'],
     { onUpdate: 'CASCADE', onDelete: 'CASCADE' }
   )
 
   // group foreign keys
   await addForeignKey(
-    'groups_configurationId_fkey',
-    ['groups', 'configurationId'],
+    'groups_configuration_id_fkey',
+    ['groups', 'configuration_id'],
     ['configurations', 'id'],
     { onUpdate: 'CASCADE', onDelete: 'SET NULL' }
   )
   await addForeignKey(
-    'groups_instructorId_fkey',
-    ['groups', 'instructorId'],
+    'groups_instructor_id_fkey',
+    ['groups', 'instructor_id'],
     ['users', 'student_number'],
     { onUpdate: 'CASCADE', onDelete: 'SET NULL' }
   )
   await addForeignKey(
-    'groups_topicId_fkey',
-    ['groups', 'topicId'],
+    'groups_topic_id_fkey',
+    ['groups', 'topic_id'],
     ['topics', 'id'],
     { onUpdate: 'CASCADE', onDelete: 'SET NULL' }
   )
@@ -144,14 +144,14 @@ const up = async (query, Sequelize) => {
 const down = async (query, Sequelize) => {
   // remove created fkeys
   const constraints = [
-    { table: 'groups', constraint: 'groups_topicId_fkey' },
-    { table: 'groups', constraint: 'groups_instructorId_fkey' },
-    { table: 'groups', constraint: 'groups_configurationId_fkey' },
+    { table: 'groups', constraint: 'groups_topic_id_fkey' },
+    { table: 'groups', constraint: 'groups_instructor_id_fkey' },
+    { table: 'groups', constraint: 'groups_configuration_id_fkey' },
     {
       table: 'group_students',
-      constraint: 'group_students_userStudentNumber_fkey'
+      constraint: 'group_students_user_student_number_fkey'
     },
-    { table: 'group_students', constraint: 'group_students_groupId_fkey' }
+    { table: 'group_students', constraint: 'group_students_group_id_fkey' }
   ]
 
   const removeConstraintPromises = constraints.map(({ table, constraint }) =>
@@ -166,7 +166,7 @@ const down = async (query, Sequelize) => {
   //   add back group_name
   await query.addColumn('groups', 'group_name', Sequelize.STRING)
   //   remove added colums
-  const addedColumns = ['name', 'topicId', 'configurationId', 'instructorId']
+  const addedColumns = ['name', 'topic_id', 'configuration_id', 'instructor_id']
   const removeColumnPromises = addedColumns.map((column) =>
     query.removeColumn('groups', column)
   )
