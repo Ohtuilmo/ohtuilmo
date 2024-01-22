@@ -29,7 +29,7 @@ Developers, follow these instructions when you begin working:
 
 ## When you finish working
 * Push your changes to the development branch (git push origin <branch-name>).
-* If you want to share your unfinished progress, create a pull request with the DRAFT option to prevent anyone from merging it.
+* If you want to share your unfinished progress, create a DRAFT pull request (submenu next to the green pull request button) to prevent anyone from merging it.
 
 ## When you are approving a pull request
 * Approve the pull request if it is ready to be merged.
