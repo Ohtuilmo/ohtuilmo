@@ -3,7 +3,7 @@ services:
   frontend:
     # you can put your local image instead of ohtuprojektiilmo/ohtufront if you want
     image: ohtuprojektiilmo/ohtufront
-    build: './ohtuilmo-frontend'
+    build: './frontend'
     ports:
       - '7000:3000'
     depends_on:
@@ -12,7 +12,7 @@ services:
 
   backend:
     image: ohtuprojektiilmo/ohtuback
-    build: './ohtuilmo-backend'
+    build: './backend'
     restart: always
     ports:
       - '7001:3001'
