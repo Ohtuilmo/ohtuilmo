@@ -79,7 +79,7 @@ const up = async (query, Sequelize) => {
   // Create "group <-> user" join table
   await query.createTable('group_students', {
     ...createTimestampColumns({ camelCase: false }),
-    groupId: {
+    group_id: {
       type: Sequelize.INTEGER,
       allowNull: false
     },
@@ -96,7 +96,7 @@ const up = async (query, Sequelize) => {
   // group_students uses composite primary keyi
   await query.addConstraint(
     'group_students',
-    ['groupId', 'user_student_number'],
+    ['group_id', 'user_student_number'],
     {
       type: 'primary key',
       name: 'group_students_pkey'
@@ -105,8 +105,8 @@ const up = async (query, Sequelize) => {
 
   // group_student's foreign keys
   await addForeignKey(
-    'group_students_groupId_fkey',
-    ['group_students', 'groupId'],
+    'group_students_group_id_fkey',
+    ['group_students', 'group_id'],
     ['groups', 'id'],
     { onUpdate: 'CASCADE', onDelete: 'CASCADE' }
   )
@@ -151,7 +151,7 @@ const down = async (query, Sequelize) => {
       table: 'group_students',
       constraint: 'group_students_user_student_number_fkey'
     },
-    { table: 'group_students', constraint: 'group_students_groupId_fkey' }
+    { table: 'group_students', constraint: 'group_students_group_id_fkey' }
   ]
 
   const removeConstraintPromises = constraints.map(({ table, constraint }) =>

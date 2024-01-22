@@ -12,6 +12,9 @@
  * Some foreign key associations also use underscores, whereas some use camelCase.
  *
  * Another change should address this change as a migration and model update.
+ *
+ * Edit (2024-01-22): renamed camelCase column names to snake_case (which is used
+ * in the production db).
  */
 
 module.exports = {
