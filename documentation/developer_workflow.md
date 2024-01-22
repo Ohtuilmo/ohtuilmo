@@ -8,6 +8,7 @@ Developers, follow these instructions when you begin working:
     - Check the main branch for any new commits.
     - Check the GitHub repository for any [open pull requests](https://github.com/Ohtuilmo/ohtuilmo/pulls).
     - Review and approve/reject any pull requests you can.
+    - Comment and reject PRs with a low barrier if you don't understand the reasoning behind a change. This way information is spread among more team members.
 * Pull the latest changes to your local repository's main branch and the development branch(es) you are working on.
 
 ## When you start working
@@ -21,16 +22,16 @@ Developers, follow these instructions when you begin working:
 * Create a pull request from the development branch to the main branch.
     - Add a description of the changes you made.
     - Add a link to the task in the description.
+* Send a message to #dev Slack channel to have someone review your PR.
 * Update the task in the [sprint board](https://github.com/orgs/Ohtuilmo/projects/1/views/9):
     - Set the task to "Done".
     - Mark used hours in "Time spent"
 
 ## When you finish working
 * Push your changes to the development branch (git push origin <branch-name>).
-* Record the time you spent working on the [sprint board](https://github.com/orgs/Ohtuilmo/projects/1/views/9) and the [working hours spreadsheet](https://docs.google.com/spreadsheets/d/1tVmQxNYNCB10zE99Bx8tBIaQDhb6cCLTTwZiMds9nYQ/edit#gid=940579879).
+* If you want to share your unfinished progress, create a pull request with the DRAFT option to prevent anyone from merging it.
 
 ## When you are approving a pull request
-* Check that the pull request follows the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format.
 * Approve the pull request if it is ready to be merged.
 * Merge the pull request to the main branch.
 * Delete the feature branch.
