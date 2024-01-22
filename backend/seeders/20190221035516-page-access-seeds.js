@@ -122,7 +122,7 @@ const initialRegistration = [
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    studentStudentNumber: '012345698'
+    student_student_number: '012345698'
   }
 ]
 
@@ -130,8 +130,8 @@ const addTimeStamps = (arr) => {
   return arr.map((item) => {
     return {
       ...item,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      created_at: new Date(),
+      updated_at: new Date()
     }
   })
 }

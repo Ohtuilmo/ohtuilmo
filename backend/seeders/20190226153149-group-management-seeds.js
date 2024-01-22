@@ -15,8 +15,8 @@ const additionalTopic = [
     }),
     secret_id: 'Coh5boozeyish7iS',
     configuration_id: 1,
-    createdAt: new Date(),
-    updatedAt: new Date()
+    created_at: new Date(),
+    updated_at: new Date()
   }
 ]
 

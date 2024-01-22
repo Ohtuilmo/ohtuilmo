@@ -25,7 +25,7 @@ module.exports = {
       }
 
       const fieldNames = camelCase
-        ? ['createdAt', 'updatedAt']
+        ? ['created_at', 'updated_at']
         : ['created_at', 'updated_at']
 
       /*
@@ -73,7 +73,7 @@ module.exports = {
         },
         group_name: Sequelize.STRING,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true })
+        ...createTimestampColumns({ camelCase: false })
       }),
       query.createTable('memberships', {
         id: {
@@ -96,7 +96,7 @@ module.exports = {
         name: Sequelize.STRING,
         questions: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true })
+        ...createTimestampColumns({ camelCase: false })
       }),
       query.createTable('registrations', {
         id: {
@@ -107,10 +107,10 @@ module.exports = {
         preferred_topics: Sequelize.JSONB,
         questions: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true }),
+        ...createTimestampColumns({ camelCase: false }),
         // foreign keys for associations
         configuration_id: Sequelize.INTEGER,
-        studentStudentNumber: Sequelize.STRING(255)
+        student_student_number : Sequelize.STRING(255)
       }),
       query.createTable('review_question_sets', {
         id: {
@@ -121,7 +121,7 @@ module.exports = {
         name: Sequelize.STRING,
         questions: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true })
+        ...createTimestampColumns({ camelCase: false })
       }),
       query.createTable('topic_dates', {
         id: {
@@ -131,7 +131,7 @@ module.exports = {
         },
         dates: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true })
+        ...createTimestampColumns({ camelCase: false })
       }),
       query.createTable('topics', {
         id: {
@@ -147,7 +147,7 @@ module.exports = {
         acronym: Sequelize.STRING,
         secret_id: Sequelize.STRING,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true })
+        ...createTimestampColumns({ camelCase: false })
       }),
       query.createTable('users', {
         student_number: {
@@ -163,7 +163,7 @@ module.exports = {
           defaultValue: false
         },
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: true })
+        ...createTimestampColumns({ camelCase: false })
       })
     ]
 
@@ -240,8 +240,8 @@ module.exports = {
     // completion of all query operations. Here we just return the last awaited
     // promise since all the other awaits have been done before this one.
     return await addForeignKey(
-      'registrations_studentStudentNumber_fkey',
-      ['registrations', 'studentStudentNumber'],
+      'registrations_student_student_number _fkey',
+      ['registrations', 'student_student_number'],
       ['users', 'student_number']
     )
   },
@@ -273,7 +273,7 @@ module.exports = {
       },
       {
         table: 'registrations',
-        constraint: 'registrations_studentStudentNumber_fkey'
+        constraint: 'registrations_student_student_number _fkey'
       }
     ]
     const removeConstraintPromises = constraints.map(({ table, constraint }) =>
