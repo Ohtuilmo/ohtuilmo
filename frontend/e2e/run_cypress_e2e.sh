@@ -74,15 +74,15 @@ function run() {
     if [ "${CI}" == 'true' ]; then
         # Record runs to the Cypress Dashboard if we're in CI
         # Assume CYPRESS_RECORD_KEY has been set in travis
-        CYPRESS_baseUrl=http://localhost:3000/projekti npm run cypress:run -- --record
+        CYPRESS_baseUrl=http://localhost:3000/ npm run cypress:run -- --record
     else
         # probably running locally
-        CYPRESS_baseUrl=http://localhost:3000/projekti npm run cypress:run
+        CYPRESS_baseUrl=http://localhost:3000/ npm run cypress:run
     fi
 }
 
 function open() {
-    CYPRESS_baseUrl=http://localhost:3000/projekti npm run cypress:open
+    CYPRESS_baseUrl=http://localhost:3000/ npm run cypress:open
 }
 
 if [ "$1" == 'run' ]; then
