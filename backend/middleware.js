@@ -86,11 +86,11 @@ const checkAdmin = (req, res, next) => {
 /** @type {RequestHandler} */
 const fakeshibbo = (req, res, next) => {
   req.headers.employeenumber = '9876543'
-  req.headers.mail = 'pekka.m.testaaja@helsinki.fi'
-  req.headers.hypersonstudentid = '011110002'
-  req.headers.uid = 'pemtest'
-  req.headers.givenname = 'Pekka'
-  req.headers.sn = 'Testaaja'
+  req.headers.mail = ''
+  req.headers.hypersonstudentid = '012345688'
+  req.headers.uid = 'testertester2'
+  req.headers.givenname = 'Angela'
+  req.headers.sn = 'Merkel'
   next()
 }
 

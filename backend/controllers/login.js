@@ -2,7 +2,6 @@ const loginRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const config = require('../config/')
 const db = require('../models/index')
-const { isDevelopmentEnvironment } = require('../utils/index')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
@@ -12,16 +11,13 @@ const handleDatabaseError = (res, error) => {
 }
 
 loginRouter.post('/', async (req, res) => {
-  if (!req.headers.hypersonstudentid && !isDevelopmentEnvironment())
+  if (!req.headers.hypersonstudentid)
     return res
       .status(401)
       .json({ error: 'Student number missing from headers.' })
       .end()
 
-  // TODO: this is a quick fix. Let's discuss later how to deal with the headers in local environment
-  const student_number = isDevelopmentEnvironment()
-    ? '012345688'
-    : req.headers.hypersonstudentid
+  const student_number = req.headers.hypersonstudentid
 
   db.User.findOne({
     where: { student_number },

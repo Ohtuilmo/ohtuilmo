@@ -2,7 +2,8 @@ const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const { logger } = require('./middleware')
+const { logger, fakeshibbo } = require('./middleware')
+const { isDevelopmentEnvironment } = require('./utils/index')
 const headersMiddleware = require('unfuck-utf8-headers-middleware')
 const config = require('./config/')
 const app = express()
@@ -25,13 +26,15 @@ const shibbolethHeaders = [
   'givenname', // First name
   'mail', // Email
   'hypersonstudentid', // Contains student number
-  'sn' // Last name
+  'sn', // Last name
 ]
 
 // Middleware
 app.use(cors())
 app.use(bodyParser.json())
-app.use(headersMiddleware(shibbolethHeaders))
+!isDevelopmentEnvironment()
+  ? app.use(headersMiddleware(shibbolethHeaders))
+  : app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
 
 // Routers
@@ -93,5 +96,5 @@ server.on('close', () => {
 
 module.exports = {
   app,
-  server
+  server,
 }
