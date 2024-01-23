@@ -34,7 +34,9 @@ nvm use $1
 npm install
 
 docker-compose up -d db
-npm run db:recreate
+npm run db:create
+npm run db:migration
+nmp run db:seed:all
 
 npm run watch
 
