@@ -44,13 +44,12 @@ jobs:
       - name: Preserve build as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: build-${{ matrix.node-version }}
           if-no-files-found: error
           path: ./frontend/build
           retention-days: 1
   cypress-run:
     runs-on: ubuntu-latest
-    needs: install
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -68,7 +67,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           working-directory: ./backend
-          name: build
+          name: build-${{ matrix.node-version }}
           path: ./frontend/build
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
