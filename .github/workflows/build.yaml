@@ -56,7 +56,7 @@ jobs:
       matrix:
         node-version: ['10.x']
         browser-options: ['chrome', 'firefox', 'edge']
-    needs: install
+    needs: lint
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
