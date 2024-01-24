@@ -1,5 +1,8 @@
 # ohtuilmo
 
+[![Release pipeline](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/build.yaml/badge.svg)](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/build.yaml)
+[![Ohtuilmo](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/2e43ni&style=plastic&logo=cypress)](https://cloud.cypress.io/projects/2e43ni/runs)
+
 ## Project links
 ### Documentation
 * [Work schedule](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/work_schedule.md)
