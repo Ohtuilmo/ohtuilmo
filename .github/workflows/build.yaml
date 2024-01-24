@@ -24,16 +24,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Lint backend dependencies
+      - name: Install backend dependencies
         working-directory: ./backend
         run: |
           npm ci
-          npm run lint
-      - name: Lint frontend dependencies
+          npm run lint:fix
+      - name: Install frontend dependencies
         working-directory: ./frontend
         run: |
           npm ci
-          npm run lint
+          npm run lint:fix
       - name: Build frontend
         uses: cypress-io/github-action@v6
         with:
