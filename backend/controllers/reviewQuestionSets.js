@@ -1,6 +1,6 @@
 const reviewQuestionSetsRouter = require('express').Router()
 const db = require('../models/index')
-const { checkAdmin, checkLogin } = require('../middleware')
+const { checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log('--')
