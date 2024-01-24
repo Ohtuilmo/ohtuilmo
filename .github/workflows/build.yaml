@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: ['16.x', '20.x']
+        node-version: ['10.x', '12.x', '18.x', '20.x']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['16.x', '20.x']
+        node-version: ['10.x', '12.x', '18.x', '20.x']
         browser-options: ['chrome', 'firefox', 'edge']
     steps:
       - name: Checkout code
@@ -67,7 +67,8 @@ jobs:
           name: build
           path: ./frontend/build
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
+        run: |
+          npm run e2e:install
         with:
           working-directory: ./backend
           install-command: npm install
@@ -75,14 +76,13 @@ jobs:
           start: npm start
           wait-on: 'http://localhost:3001'
           wait-on-timeout: 120
-          #record: true # needs CYPRESS_RECORD_KEY, CYPRESS_PROJECT_ID & GITHUB_TOKEN
-          #auto-cancel-after-failures: 2
+          record: true # needs CYPRESS_RECORD_KEY, CYPRESS_PROJECT_ID & GITHUB_TOKEN
+          parallel: true
+          auto-cancel-after-failures: 2
         env:
           CI: true
-          CYPRESS_host: # backend url
-          CYPRESS_port: # backend port
-          #CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          #CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release:
     runs-on: ubuntu-latest
