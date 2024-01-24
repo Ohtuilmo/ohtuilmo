@@ -1,6 +1,9 @@
 name: Release pipeline
 
 on:
+  schedule:
+    # Run every day at 6:00 UTC
+    - cron: '0 3 * * *'
   push:
     branches: [main]
   pull_request:
@@ -67,23 +70,28 @@ jobs:
           name: build
           path: ./frontend/build
       - name: Run Cypress tests
-        run: |
-          npm run e2e:install
+        uses: cypress-io/github-action@v6
         with:
           working-directory: ./backend
           install-command: npm install
           browser: ${{ matrix.browser-options }}
-          start: npm start
-          wait-on: 'http://localhost:3001'
+          start: |
+            npm run e2e:install
+            npm run e2e:setup
+          wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           record: true # needs CYPRESS_RECORD_KEY, CYPRESS_PROJECT_ID & GITHUB_TOKEN
           parallel: true
-          auto-cancel-after-failures: 2
+          auto-cancel-after-failures: 1
+          tag: node-${{ matrix.node-version }}-${{ matrix.browser-options }}
         env:
           CI: true
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: End Cypress run
+        if: always()
+        run: npm run e2e:teardown
   release:
     runs-on: ubuntu-latest
     needs: cypress-run
