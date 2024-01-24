@@ -2,7 +2,7 @@ name: Release pipeline
 
 on:
   schedule:
-    # Run every day at 6:00 UTC
+    # Run every day at 5:00 UTC
     - cron: '0 3 * * *'
   push:
     branches: [main]
@@ -11,12 +11,14 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  lint:
+  checkup:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ['10.x']
+        node-version: ['10.x', '12.x', '20.x']
+        browser-options: ['chrome', 'firefox', 'edge']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,54 +26,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Lint backend
+      - name: Install backend dependencies & run linter
         working-directory: ./backend
         run: |
           npm ci
           npm run lint:fix
-      - name: Lint frontend
+      - name: Install frontend dependencies & run linter
         working-directory: ./frontend
         run: |
           npm ci
           npm run lint:fix
-      #- name: Build frontend
-      #  uses: cypress-io/github-action@v6
-      #  with:
-      #    runTests: false
-      #    working-directory: ./frontend
-      #    build: |
-      #      npm run build
-      #- name: Preserve build as artifact
-      #  uses: actions/upload-artifact@v4
-      #  with:
-      #    name: build
-      #    if-no-files-found: error
-      #    path: ./frontend/build
-      #    retention-days: 1
-  cypress-run:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: ['10.x']
-        browser-options: ['chrome', 'firefox', 'edge']
-    needs: lint
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm run build --if-present
+      - name: Preserve build as artifact
+        uses: actions/upload-artifact@v4
         with:
-          node-version: ${{ matrix.node-version }}
-      #- name: Download build artifact
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: build
-      #    path: ./frontend/build
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+          name: frontend-build-${{ matrix.node-version }}
+          path: ./frontend/build
+          retention-days: 1
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
@@ -95,6 +69,7 @@ jobs:
       - name: End Cypress run
         if: ${{ always() }}
         run: npm run e2e:teardown
+      
   #release:
   #  if: ${{ ! always() }}
   #  runs-on: ubuntu-latest
