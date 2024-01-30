@@ -46,6 +46,7 @@ jobs:
           name: frontend-build-${{ matrix.node-version }}
           path: ./frontend/build
           retention-days: 1
+          overwrite: true
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
