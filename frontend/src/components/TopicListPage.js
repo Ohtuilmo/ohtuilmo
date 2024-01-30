@@ -34,15 +34,15 @@ import './TopicListPage.css'
 const redGreenTheme = createMuiTheme({
   palette: {
     primary: green,
-    secondary: red
-  }
+    secondary: red,
+  },
 })
 
 const orangeTheme = createMuiTheme({
   palette: {
     primary: orange,
-    secondary: orange
-  }
+    secondary: orange,
+  },
 })
 
 const ThemedButton = ({ theme, ...props }) => (
@@ -62,11 +62,19 @@ const OrangeButton = (props) => (
 )
 
 const FinnishFlag = (props) => (
-  <img alt="Flag of Finland" {...props} src={`${process.env.PUBLIC_URL}/img/fi.svg`} />
+  <img
+    alt="Flag of Finland"
+    {...props}
+    src={`${process.env.PUBLIC_URL}/img/fi.svg`}
+  />
 )
 
 const BritishFlag = (props) => (
-  <img alt="Flag of Great Britain" {...props} src={`${process.env.PUBLIC_URL}/img/gb.svg`} />
+  <img
+    alt="Flag of Great Britain"
+    {...props}
+    src={`${process.env.PUBLIC_URL}/img/gb.svg`}
+  />
 )
 
 const AcceptButton = (props) => (
@@ -74,7 +82,7 @@ const AcceptButton = (props) => (
     {...props}
     style={{
       borderTopRightRadius: 0,
-      borderBottomRightRadius: 0
+      borderBottomRightRadius: 0,
     }}
     variant="outlined"
     size="small"
@@ -86,7 +94,7 @@ const RejectButton = (props) => (
     {...props}
     style={{
       borderTopLeftRadius: 0,
-      borderBottomLeftRadius: 0
+      borderBottomLeftRadius: 0,
     }}
     variant="outlined"
     size="small"
@@ -164,7 +172,7 @@ const CustomerReviewEmailButton = ({ text, onSendRequested }) => {
 const AcceptRejectEmailButtons = ({
   acceptText = 'Accept',
   rejectText = 'Reject',
-  onSendRequested
+  onSendRequested,
 }) => {
   const [clickedButtonEl, setClickedButtonEl] = useState(null)
   const isMenuOpen = Boolean(clickedButtonEl)
@@ -237,7 +245,7 @@ const AcceptRejectEmailButtons = ({
 AcceptRejectEmailButtons.propTypes = {
   onSendRequested: PropTypes.func.isRequired,
   acceptText: PropTypes.string,
-  rejectText: PropTypes.string
+  rejectText: PropTypes.string,
 }
 
 const TopicDetailsLink = ({ topicId, ...props }) => (
@@ -257,9 +265,8 @@ const isCustomerReviewMail = (sentMail) =>
 const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
   const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
   const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
-  const hasCustomerReviewMailBeenSent = topic.sentEmails.some(
-    isCustomerReviewMail
-  )
+  const hasCustomerReviewMailBeenSent =
+    topic.sentEmails.some(isCustomerReviewMail)
 
   return (
     <TableRow
@@ -271,7 +278,7 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
           <TopicDetailsLink topicId={topic.id}>
             {topic.content.title}
           </TopicDetailsLink>
-          <Link to={`/topics/${topic.secret_id}`} style={{ 'padding': 10 }} >
+          <Link to={`/topics/${topic.secret_id}`} style={{ padding: 10 }}>
             <Icon />
           </Link>
         </p>
@@ -313,7 +320,7 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
 TopicTableRow.propTypes = {
   topic: PropTypes.object.isRequired,
   onEmailSendRequested: PropTypes.func.isRequired,
-  onActiveToggle: PropTypes.func.isRequired
+  onActiveToggle: PropTypes.func.isRequired,
 }
 
 const TopicTableHead = () => (
@@ -354,7 +361,7 @@ const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
 TopicTable.propTypes = {
   topics: PropTypes.array,
   onEmailSendRequested: PropTypes.func.isRequired,
-  onActiveToggle: PropTypes.func.isRequired
+  onActiveToggle: PropTypes.func.isRequired,
 }
 
 const activeFirstThenByTitle = (topicA, topicB) => {
@@ -416,21 +423,14 @@ class TopicListPage extends React.Component {
     }
   }
 
-  showTopic = (topic) => {
-    const filter = this.props.filter
-    if (filter !== 0) {
-      return topic.configuration_id === filter
-    } else {
-      return true
-    }
-  }
+  showTopic = (topic) => topic.configuration_id === this.props.filter
 
   confirmEmailPreview = async (messageType, messageLanguage, topicId) => {
     try {
       const preview = await emailService.previewCustomerEmail({
         messageType,
         messageLanguage,
-        topicId
+        topicId,
       })
       const confirmMessage = [
         'Send the following email?',
@@ -438,7 +438,7 @@ class TopicListPage extends React.Component {
         `Subject: ${preview.subject}`,
         `To: ${preview.to}`,
         '---',
-        preview.email
+        preview.email,
       ].join('\n')
 
       return window.confirm(confirmMessage)
@@ -459,7 +459,7 @@ class TopicListPage extends React.Component {
   handleEmailSendRequested = async ({
     topic,
     messageType,
-    messageLanguage
+    messageLanguage,
   }) => {
     const userConfirmedPreview = await this.confirmEmailPreview(
       messageType,
@@ -543,7 +543,7 @@ TopicListPage.propTypes = {
   setTopicActive: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
-  setSuccess: PropTypes.func.isRequired
+  setSuccess: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -554,7 +554,7 @@ const mapStateToProps = (state) => {
     // done in quick succession and their "loading" doesn't affect page usage
     isLoading: topicListPage.isTopicsLoading,
     filter: topicListPage.filter,
-    configurations: state.configurationPage.configurations
+    configurations: state.configurationPage.configurations,
   }
 }
 
@@ -565,7 +565,7 @@ const mapDispatchToProps = {
   sendCustomerEmail: topicListPageActions.sendCustomerEmail,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: configurationPageActions.fetchConfigurations
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
 const ConnectedTopicListPage = connect(

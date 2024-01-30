@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-const filter = (state = 0, action) => {
+const filter = (state = 1, action) => {
   switch (action.type) {
   case 'TOPIC_PAGE_UPDATE_FILTER':
     return action.payload
