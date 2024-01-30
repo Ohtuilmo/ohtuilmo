@@ -40,13 +40,13 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run build --if-present
-      - name: Preserve build as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build-${{ matrix.node-version }}
-          path: ./frontend/build
-          retention-days: 1
-          overwrite: true
+      #- name: Preserve build as artifact
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: frontend-build-${{ matrix.node-version }}
+      #    path: ./frontend/build
+      #    retention-days: 1
+      #    overwrite: true
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
