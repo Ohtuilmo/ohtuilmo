@@ -1,16 +1,14 @@
 const regularItems = (history) => {
-  const items = [
+  return [
     {
       text: 'Log In',
       handler: () => history.push('/login')
     }
   ]
-
-  return items
 }
 
 const loggedInItems = (history) => {
-  const items = [
+  return [
     {
       text: 'Home',
       handler: () => history.push('/')
@@ -24,12 +22,31 @@ const loggedInItems = (history) => {
       handler: () => history.push('/peerreview')
     }
   ]
+}
 
-  return items
+const instructorItems = (history) => {
+  return [
+    {
+      text: 'Home',
+      handler: () => history.push('/')
+    },
+    {
+      text: 'Intructor Page',
+      handler: () => history.push('/instructorpage')
+    },
+    {
+      text: 'Instructor Review',
+      handler: () => history.push('/instructorreviewpage')
+    },
+    {
+      text: 'Customer reviews',
+      handler: () => history.push('/adminstration/customer-reviews')
+    }
+  ]
 }
 
 const adminItems = (history) => {
-  const items = [
+  return [
     {
       className: 'create-topic-menu-item',
       text: 'Create Topic',
@@ -81,32 +98,9 @@ const adminItems = (history) => {
     },
     */
   ]
-
-  return items
 }
 
-const instructorItems = (history) => {
-  const items = [
-    {
-      text: 'Home',
-      handler: () => history.push('/')
-    },
-    {
-      text: 'Intructor Page',
-      handler: () => history.push('/instructorpage')
-    },
-    {
-      text: 'Instructor Review',
-      handler: () => history.push('/instructorreviewpage')
-    },
-    {
-      className: 'customer-review-menu-item',
-      text: 'Customer reviews',
-      handler: () => history.push('/adminstration/customer-reviews')
-    }
-  ]
-
-  return items
-}
 
 export { regularItems, loggedInItems, adminItems, instructorItems }
+
+
