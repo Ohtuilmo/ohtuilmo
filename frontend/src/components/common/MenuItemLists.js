@@ -68,11 +68,6 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/registrationmanagement')
     },
     {
-      className: 'customer-review-menu-item',
-      text: 'Customer reviews',
-      handler: () => history.push('/adminstration/customer-reviews')
-    },
-    {
       className: 'group-management-menu-item',
       text: 'Group Management',
       handler: () => history.push('/administration/groups')
@@ -81,14 +76,6 @@ const adminItems = (history) => {
       className: 'email-templates-menu-item',
       text: 'Email Templates',
       handler: () => history.push('/administration/email-templates')
-    },
-    {
-      text: 'Intructor Page',
-      handler: () => history.push('/instructorpage')
-    },
-    {
-      text: 'Instructor Review',
-      handler: () => history.push('/instructorreviewpage')
     },
     /*
     {
