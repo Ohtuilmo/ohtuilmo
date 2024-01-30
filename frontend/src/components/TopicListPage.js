@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -377,63 +377,62 @@ const getApiError = (e) => {
   return isAxiosError(e) && e.response.data && e.response.data.error
 }
 
-class TopicListPage extends React.Component {
-  async componentDidMount() {
-    try {
-      await this.props.fetchTopics()
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('An error occurred while loading data!', 3000)
-    }
-    if (this.props.configurations.length === 0) {
-      await this.props.fetchConfigurations()
-    }
-  }
+const TopicListPage = (props) => {
+  const {
+    fetchTopics,
+    setError,
+    configurations,
+    fetchConfigurations,
+    updateFilter,
+    setTopicActive,
+    setSuccess,
+    sendCustomerEmail,
+    filter,
+    topics,
+    isLoading,
+  } = props
 
-  async componentDidUpdate(prevProps) {
-    if (prevProps.configurations !== this.props.configurations) {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        await this.props.updateFilter(this.props.configurations.reverse()[0].id)
+        await fetchTopics()
       } catch (err) {
         console.error(err)
+        setError('An error occurred while loading data!', 3000)
       }
-    }
-  }
 
-  handleActiveChange = (topic) => async (event) => {
-    event.preventDefault()
+      if (!configurations.length) await fetchConfigurations()
+    }
+
+    fetchData()
+  }, [configurations])
+
+  useEffect(() => {
+    const updateData = async () => {
+      if (configurations.length)
+        await updateFilter([...configurations].reverse()[0].id)
+    }
+
+    updateData()
+  }, [configurations, updateFilter])
+
+  const handleActiveToggle = async (topic) => {
     try {
       const newActiveState = !topic.active
-      await this.props.setTopicActive(topic, newActiveState)
+      await setTopicActive(topic, newActiveState)
 
       const activeDescription = newActiveState ? 'active' : 'inactive'
-      this.props.setSuccess(
+      setSuccess(
         `Topic '${topic.content.title}' has been set ${activeDescription}.`,
         3000
       )
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened', 3000)
+    } catch (err) {
+      console.error('error happened', err.response)
+      setError('Some error happened', 3000)
     }
   }
 
-  handleActiveToggle = async (topic) => {
-    try {
-      const newActiveState = !topic.active
-      await this.props.setTopicActive(topic, newActiveState)
-
-      const activeDescription = newActiveState ? 'active' : 'inactive'
-      this.props.setSuccess(
-        `Topic '${topic.content.title}' has been set ${activeDescription}.`,
-        3000
-      )
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened', 3000)
-    }
-  }
-
-  confirmEmailPreview = async (messageType, messageLanguage, topicId) => {
+  const confirmEmailPreview = async (messageType, messageLanguage, topicId) => {
     try {
       const preview = await emailService.previewCustomerEmail({
         messageType,
@@ -450,13 +449,14 @@ class TopicListPage extends React.Component {
       ].join('\n')
 
       return window.confirm(confirmMessage)
-    } catch (e) {
-      console.error(e)
-      if (isAxiosError(e)) {
-        console.error(e.response.data)
+    } catch (err) {
+      console.error(err)
+      if (isAxiosError(err)) {
+        console.error(err.response.data)
       }
-      const errorMsg = getApiError(e) || 'server error, see console for details'
-      this.props.setError(
+      const errorMsg =
+        getApiError(err) || 'server error, see console for details'
+      setError(
         `Failed to generate preview. See console for details. Error: ${errorMsg}`,
         10000
       )
@@ -464,12 +464,12 @@ class TopicListPage extends React.Component {
     }
   }
 
-  handleEmailSendRequested = async ({
+  const handleEmailSendRequested = async ({
     topic,
     messageType,
     messageLanguage,
   }) => {
-    const userConfirmedPreview = await this.confirmEmailPreview(
+    const userConfirmedPreview = await confirmEmailPreview(
       messageType,
       messageLanguage,
       topic.id
@@ -480,68 +480,62 @@ class TopicListPage extends React.Component {
     }
 
     try {
-      await this.props.sendCustomerEmail(topic.id, messageType, messageLanguage)
-      this.props.setSuccess('Email sent!')
-    } catch (e) {
-      console.error(e)
-      if (isAxiosError(e)) {
-        console.error(e.response.data)
+      await sendCustomerEmail(topic.id, messageType, messageLanguage)
+      setSuccess('Email sent!')
+    } catch (err) {
+      console.error(err)
+      if (isAxiosError(err)) {
+        console.error(err.response.data)
       }
-      const errorMsg = getApiError(e) || 'server error, see console for details'
-      this.props.setError(
+      const errorMsg =
+        getApiError(err) || 'server error, see console for details'
+      setError(
         `Failed to send email. See console for details. Error: '${errorMsg}'`,
         10000
       )
     }
   }
 
-  render() {
-    const { filter, topics, isLoading } = this.props
-
-    const configurationMenuItems = () => {
-      const { configurations } = this.props
-      return []
-        .concat(
-          <MenuItem value={0} key={0}>
-            All configurations
+  const configurationMenuItems = () => {
+    return []
+      .concat(
+        <MenuItem value={0} key={0}>
+          All configurations
+        </MenuItem>
+      )
+      .concat(
+        [...configurations].reverse().map((configuration) => (
+          <MenuItem value={configuration.id} key={configuration.id}>
+            {configuration.name}
           </MenuItem>
-        )
-        .concat(
-          configurations
-            .reverse()
-            .map((configuration) => (
-              <MenuItem value={configuration.id} key={configuration.id}>
-                {configuration.name}
-              </MenuItem>
-            ))
-        )
-    }
-
-    const shownTopics = topics
-      .filter((topic) => topic.configuration_id === this.props.filter)
-      .sort(activeFirstThenByTitle)
-
-    return (
-      <div className="topics-container">
-        {isLoading && (
-          <LoadingCover className="topics-container__loading-cover" />
-        )}
-
-        <Select
-          value={filter}
-          onChange={(event) => this.props.updateFilter(event.target.value)}
-        >
-          {configurationMenuItems()}
-        </Select>
-
-        <TopicTable
-          topics={shownTopics}
-          onEmailSendRequested={this.handleEmailSendRequested}
-          onActiveToggle={this.handleActiveToggle}
-        />
-      </div>
-    )
+        ))
+      )
   }
+
+  const shownTopics = topics
+    .filter((topic) => topic.configuration_id === filter)
+    .sort(activeFirstThenByTitle)
+
+  return (
+    <div className="topics-container">
+      {isLoading && (
+        <LoadingCover className="topics-container__loading-cover" />
+      )}
+
+      <Select
+        value={filter}
+        onChange={(event) => updateFilter(event.target.value)}
+      >
+        {configurationMenuItems()}
+      </Select>
+
+      <TopicTable
+        topics={shownTopics}
+        onEmailSendRequested={handleEmailSendRequested}
+        onActiveToggle={handleActiveToggle}
+      />
+    </div>
+  )
 }
 
 TopicListPage.propTypes = {
