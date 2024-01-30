@@ -390,6 +390,16 @@ class TopicListPage extends React.Component {
     }
   }
 
+  async componentDidUpdate(prevProps) {
+    if (prevProps.configurations !== this.props.configurations) {
+      try {
+        await this.props.updateFilter(this.props.configurations.reverse()[0].id)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  }
+
   handleActiveChange = (topic) => async (event) => {
     event.preventDefault()
     try {
@@ -422,8 +432,6 @@ class TopicListPage extends React.Component {
       this.props.setError('Some error happened', 3000)
     }
   }
-
-  showTopic = (topic) => topic.configuration_id === this.props.filter
 
   confirmEmailPreview = async (messageType, messageLanguage, topicId) => {
     try {
@@ -500,8 +508,7 @@ class TopicListPage extends React.Component {
         )
         .concat(
           configurations
-            .filter(configuration => configuration && configuration.createdAt)
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .reverse()
             .map((configuration) => (
               <MenuItem value={configuration.id} key={configuration.id}>
                 {configuration.name}
@@ -511,7 +518,7 @@ class TopicListPage extends React.Component {
     }
 
     const shownTopics = topics
-      .filter(this.showTopic)
+      .filter((topic) => topic.configuration_id === this.props.filter)
       .sort(activeFirstThenByTitle)
 
     return (
