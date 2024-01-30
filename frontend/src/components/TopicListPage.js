@@ -499,11 +499,14 @@ class TopicListPage extends React.Component {
           </MenuItem>
         )
         .concat(
-          configurations.map((configuration) => (
-            <MenuItem value={configuration.id} key={configuration.id}>
-              {configuration.name}
-            </MenuItem>
-          ))
+          configurations
+            .filter(configuration => configuration && configuration.createdAt)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((configuration) => (
+              <MenuItem value={configuration.id} key={configuration.id}>
+                {configuration.name}
+              </MenuItem>
+            ))
         )
     }
 
