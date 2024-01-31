@@ -1,4 +1,4 @@
-﻿version: '2'
+﻿version: '2.19.1'
 services:
   frontend:
     # you can put your local image instead of ohtuprojektiilmo/ohtufront if you want
@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=3001
       - SECRET=yoursecrethere
 

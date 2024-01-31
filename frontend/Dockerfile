@@ -1,5 +1,5 @@
 # specify base image
-FROM registry.access.redhat.com/ubi8/nodejs-10
+FROM node:16
 
 ENV TZ="Europe/Helsinki"
 
