@@ -33,6 +33,33 @@ class NavigationMenu extends React.Component {
   render() {
     const { open } = this.state
 
+    const menuItemsArray = Array.isArray(this.props.menuItems) ? this.props.menuItems : this.props.menuItems.items
+
+    const renderMenuItems = (items) => {
+      return items.map((item) => {
+        if (item.items) {
+          return (
+            <React.Fragment key={item.title}>
+              <MenuItem disabled>{item.title}</MenuItem>
+              {renderMenuItems(item.items)} {}
+            </React.Fragment>
+          )
+        } else {
+          return (
+            <MenuItem
+              className={item.className}
+              onClick={() => this.handleItemClick(item)}
+              key={item.text}
+            >
+              {item.text}
+            </MenuItem>
+          )
+        }
+      })
+    }
+
+
+
     return (
       <div>
         <div>
@@ -65,17 +92,18 @@ class NavigationMenu extends React.Component {
               >
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList>
-                      {this.props.menuItems.map((item) => (
-                        <MenuItem
-                          className={item.className}
-                          onClick={() => this.handleItemClick(item)}
-                          key={item.text}
-                        >
-                          {item.text}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
+                    {menuItemsArray.map((group, index) =>
+                      group.title ? (
+                        <React.Fragment key={`group-${index}`}>
+                          <MenuList>
+                            <MenuItem disabled>{group.title}</MenuItem>
+                            {renderMenuItems(group.items)}
+                          </MenuList>
+                        </React.Fragment>
+                      ) : (
+                        renderMenuItems(group)
+                      )
+                    )}
                   </ClickAwayListener>
                 </Paper>
               </Grow>
