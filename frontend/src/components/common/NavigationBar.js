@@ -15,21 +15,37 @@ import {
 } from './MenuItemLists'
 import './NavigationBar.css'
 
+
+
+
 class NavigationBar extends React.Component {
   getAppropriateMenuItemList() {
     if (this.props.user === null) {
-      return regularItems(this.props.history)
+      return { items: regularItems(this.props.history) }
     }
     const user = this.props.user.user
 
     if (user.admin) {
-      return adminItems(this.props.history)
+      return {
+        items: [
+          { title: 'Student', items: loggedInItems(this.props.history) },
+          { title: 'Instructor', items: instructorItems(this.props.history) },
+          { title: 'Admin', items: adminItems(this.props.history) }
+        ]
+      }
     }
     if (user.instructor) {
-      return instructorItems(this.props.history)
-    }
-    return loggedInItems(this.props.history)
-  }
+      return {
+        items: [
+          { title: 'Instructor', items: instructorItems(this.props.history) }
+        ]
+      }}
+    return {
+      items: [
+        { title: 'Student', items: loggedInItems(this.props.history) }
+      ]
+    }}
+
 
   render() {
     let loggedIn
