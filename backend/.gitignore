@@ -1,3 +1,5 @@
 node_modules
 .env
 anonymized.sql
+anonymized_v1.sql
+*.sql
