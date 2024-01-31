@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -55,7 +55,10 @@ const Answers = ({ answers, currentConfiguration }) => {
             {projectGroup.round1Answers.length > 0 ? (
               <div>
                 <h2>Peer review answers from the first round.</h2>
-                <GroupAnswers answers={projectGroup.round1Answers} students={projectGroup.group.studentNames} />
+                <GroupAnswers
+                  answers={projectGroup.round1Answers}
+                  students={projectGroup.group.studentNames}
+                />
               </div>
             ) : (
               <h2>
@@ -66,7 +69,10 @@ const Answers = ({ answers, currentConfiguration }) => {
             {projectGroup.round2Answers.length > 0 ? (
               <div>
                 <h2>Peer review answers from the second round.</h2>
-                <GroupAnswers answers={projectGroup.round2Answers} students={projectGroup.group.studentNames}/>
+                <GroupAnswers
+                  answers={projectGroup.round2Answers}
+                  students={projectGroup.group.studentNames}
+                />
               </div>
             ) : (
               <h2>
@@ -88,7 +94,7 @@ const getQuestions = (answers) => {
   return answers[0].answer_sheet.map((question) => {
     return {
       type: question.type,
-      questionHeader: question.questionHeader
+      questionHeader: question.questionHeader,
     }
   })
 }
@@ -113,7 +119,11 @@ const GroupAnswers = ({ answers, students }) => {
         } else if (question.type === 'radio') {
           return (
             <Question key={index} title={question.questionHeader}>
-              <RadioAnswer answers={answers} questionNumber={index} students={students} />
+              <RadioAnswer
+                answers={answers}
+                questionNumber={index}
+                students={students}
+              />
             </Question>
           )
         } else {
@@ -143,7 +153,7 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
   const peers = answers.map((member) => {
     return member.student.first_names + ' ' + member.student.last_name
   })
-  students.forEach(s => {
+  students.forEach((s) => {
     if (!peers.includes(s)) {
       peers.push(s)
     }
@@ -207,7 +217,7 @@ const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
     .map((peersAnswerSheet) => peersAnswerSheet[questionNumber].peers[member])
 
   const missing = []
-  for( let i=0; i<numberOfPeers - answers.length; i++) {
+  for (let i = 0; i < numberOfPeers - answers.length; i++) {
     missing.push(i)
   }
 
@@ -259,7 +269,7 @@ const ConfigurationSelectWrapper = ({ label, children }) => (
 const ConfigurationSelect = ({
   currentConfiguration,
   setCurrentConfiguration,
-  configurations
+  configurations,
 }) => {
   return (
     <Select
@@ -286,70 +296,140 @@ const getUniqueConfigurations = (groups) => {
       ...configurations,
       [group.configurationId]: {
         name: group.configurationName,
-        id: group.configurationId
-      }
+        id: group.configurationId,
+      },
     }
   }, {})
 
   return Object.values(uniqueLookup)
 }
 
-class InstructorPage extends React.Component {
-  async componentDidMount() {
-    try {
-      const peerReviewData = await peerReviewService.getAnswersByInstructor()
-      const uniqueConfigurations = getUniqueConfigurations(
-        peerReviewData.map((data) => data.group)
-      )
+const InstructorPage = (props) => {
+  const {
+    answers,
+    currentConfiguration,
+    configurations,
+    setAnswers,
+    setConfigurations,
+    setCurrentConfiguration,
+    setError,
+  } = props
 
-      this.props.setAnswers(peerReviewData)
-      this.props.setConfigurations(uniqueConfigurations)
-      this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
-    } catch (e) {
-      console.error('error happened', e, e.response)
-      this.props.setError('Something is wrong... try reloading the page')
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const peerReviewData = await peerReviewService.getAnswersByInstructor()
+        const uniqueConfigurations = getUniqueConfigurations(
+          peerReviewData.map((data) => data.group)
+        )
+
+        setAnswers(peerReviewData)
+        setConfigurations(uniqueConfigurations.reverse())
+        setCurrentConfiguration(uniqueConfigurations[0].id)
+      } catch (err) {
+        console.error('error happened', err, err.response)
+        setError('Something is wrong... try reloading the page')
+      }
     }
+
+    fetchData()
+  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError])
+
+  if (!answers || !currentConfiguration) {
+    return <div className="instructor-container">Loading</div>
   }
 
-  render() {
-    const {
-      answers,
-      currentConfiguration,
-      configurations,
-      setCurrentConfiguration
-    } = this.props
-
-    if (!answers || !currentConfiguration) {
-      return <div className="instructor-container">Loading</div>
-    }
-
-    return (
-      <div className="instructor-container">
-        <DownloadButton
-          jsonData={JSON.stringify(answers)}
-          fileName="peerReviews.json"
-        />
-        <ConfigurationSelectWrapper label="Select configuration">
-          <ConfigurationSelect
-            currentConfiguration={currentConfiguration}
-            setCurrentConfiguration={setCurrentConfiguration}
-            configurations={configurations}
-          />
-        </ConfigurationSelectWrapper>
-        <Answers
-          answers={answers}
+  return (
+    <div className="instructor-container">
+      <DownloadButton
+        jsonData={JSON.stringify(answers)}
+        fileName="peerReviews.json"
+      />
+      <ConfigurationSelectWrapper label="Select configuration">
+        <ConfigurationSelect
           currentConfiguration={currentConfiguration}
+          setCurrentConfiguration={setCurrentConfiguration}
+          configurations={configurations}
         />
-      </div>
-    )
-  }
+      </ConfigurationSelectWrapper>
+      <Answers answers={answers} currentConfiguration={currentConfiguration} />
+    </div>
+  )
 }
+
+// class InstructorPage extends React.Component {
+//   async componentDidMount() {
+//     try {
+//       const peerReviewData = await peerReviewService.getAnswersByInstructor()
+//       const uniqueConfigurations = getUniqueConfigurations(
+//         peerReviewData.map((data) => data.group)
+//       )
+
+//       this.props.setAnswers(peerReviewData)
+//       this.props.setConfigurations(uniqueConfigurations)
+//       this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
+//     } catch (e) {
+//       console.error('error happened', e, e.response)
+//       this.props.setError('Something is wrong... try reloading the page')
+//     }
+//   }
+
+// class InstructorPage extends React.Component {
+//   async componentDidMount() {
+//     try {
+//       const peerReviewData = await peerReviewService.getAnswersByInstructor()
+//       const uniqueConfigurations = getUniqueConfigurations(
+//         peerReviewData.map((data) => data.group)
+//       )
+
+//       this.props.setAnswers(peerReviewData)
+//       this.props.setConfigurations(uniqueConfigurations)
+//       this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
+//     } catch (e) {
+//       console.error('error happened', e, e.response)
+//       this.props.setError('Something is wrong... try reloading the page')
+//     }
+//   }
+
+//   render() {
+//     const {
+//       answers,
+//       currentConfiguration,
+//       configurations,
+//       setCurrentConfiguration
+//     } = this.props
+
+//     if (!answers || !currentConfiguration) {
+//       return <div className="instructor-container">Loading</div>
+//     }
+
+//     return (
+//       <div className="instructor-container">
+//         <DownloadButton
+//           jsonData={JSON.stringify(answers)}
+//           fileName="peerReviews.json"
+//         />
+//         <ConfigurationSelectWrapper label="Select configuration">
+//           <ConfigurationSelect
+//             currentConfiguration={currentConfiguration}
+//             setCurrentConfiguration={setCurrentConfiguration}
+//             configurations={configurations}
+//           />
+//         </ConfigurationSelectWrapper>
+//         <Answers
+//           answers={answers}
+//           currentConfiguration={currentConfiguration}
+//         />
+//       </div>
+//     )
+//   }
+// }
 
 const mapStateToProps = (state) => {
   return {
     configurations: state.instructorPage.configurations,
     currentConfiguration: state.instructorPage.currentConfiguration,
-    answers: state.instructorPage.answers
+    answers: state.instructorPage.answers,
   }
 }
 
@@ -357,7 +437,7 @@ const mapDispatchToProps = {
   setConfigurations: instructorPageActions.setConfigurations,
   setCurrentConfiguration: instructorPageActions.setCurrentConfiguration,
   setAnswers: instructorPageActions.setAnswers,
-  setError: notificationActions.setError
+  setError: notificationActions.setError,
 }
 
 const ConnectedInstructorPage = connect(
