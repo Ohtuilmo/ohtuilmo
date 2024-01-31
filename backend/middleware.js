@@ -26,7 +26,7 @@ const authenticateToken = (req) => {
   if (token === null) {
     return {
       error: 'token missing or invalid',
-      status: 401
+      status: 401,
     }
   }
 
@@ -35,23 +35,23 @@ const authenticateToken = (req) => {
     if (!decodedToken || !decodedToken.id) {
       return {
         error: 'token missing or invalid',
-        status: 401
+        status: 401,
       }
     }
 
     return {
-      token: decodedToken
+      token: decodedToken,
     }
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
       return {
         error: error.message,
-        status: 401
+        status: 401,
       }
     } else {
       return {
         error,
-        status: 401
+        status: 401,
       }
     }
   }
@@ -107,5 +107,5 @@ module.exports = {
   checkLogin,
   checkAdmin,
   logger,
-  fakeshibbo
+  fakeshibbo,
 }
