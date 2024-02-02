@@ -18,78 +18,68 @@ import './NavigationBar.css'
 
 
 
-class NavigationBar extends React.Component {
-  getAppropriateMenuItemList() {
-    if (this.props.user === null) {
-      return { items: regularItems(this.props.history) }
+const NavigationBar = ({ user, history, logout }) => {
+  const getAppropriateMenuItemList = () => {
+    if (user === null) {
+      return { items: regularItems(history) }
     }
-    const user = this.props.user.user
 
-    if (user.admin) {
+    if (user.user.admin) {
       return {
         items: [
-          { title: 'Student', items: loggedInItems(this.props.history) },
-          { title: 'Instructor', items: instructorItems(this.props.history) },
-          { title: 'Admin', items: adminItems(this.props.history) }
+          { title: 'Student', items: loggedInItems(history) },
+          { title: 'Instructor', items: instructorItems(history) },
+          { title: 'Admin', items: adminItems(history) }
+        ]
+      }
+    } else if (user.user.instructor) {
+      return {
+        items: [
+          { title: 'Instructor', items: instructorItems(history) }
+        ]
+      }
+    } else {
+      return {
+        items: [
+          { title: 'Student', items: loggedInItems(history) }
         ]
       }
     }
-    if (user.instructor) {
-      return {
-        items: [
-          { title: 'Instructor', items: instructorItems(this.props.history) }
-        ]
-      }}
-    return {
-      items: [
-        { title: 'Student', items: loggedInItems(this.props.history) }
-      ]
-    }}
-
-
-  render() {
-    let loggedIn
-    let username
-    if (this.props.user) {
-      loggedIn = <AccountCircle />
-      username = (
-        <h4 className="navigation-bar-username tracking-in-expand">
-          {this.props.user.user.username}
-        </h4>
-      )
-    } else {
-      loggedIn = ''
-    }
-
-    return (
-      <div className="navigation-bar-container">
-        <AppBar position="static">
-          <Toolbar>
-            <NavigationMenu menuItems={this.getAppropriateMenuItemList()} />
-            <Typography
-              variant="h6"
-              color="inherit"
-              className="grow"
-              style={{ marginLeft: '9px' }}
-            >
-              Software engineering project
-            </Typography>
-            {loggedIn}
-            {username}
-            <Button
-              className="navigation-bar-logout-button"
-              style={{ marginLeft: '10px' }}
-              variant="outlined"
-              onClick={this.props.logout}
-            >
-              Log out
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </div>
-    )
   }
+
+
+  let loggedIn = user && user.user ? <AccountCircle /> : ''
+  let username = user && user.user ? <h4 className="navigation-bar-username tracking-in-expand">{user.user.username}</h4> : ''
+
+  return (
+    <div className="navigation-bar-container">
+      <AppBar position="static">
+        <Toolbar>
+          <NavigationMenu menuItems={getAppropriateMenuItemList()} />
+          <Typography
+            variant="h6"
+            color="inherit"
+            className="grow"
+            style={{ marginLeft: '9px' }}
+          >
+            Software engineering project
+          </Typography>
+          {loggedIn}
+          {username}
+          <Button
+            className="navigation-bar-logout-button"
+            style={{ marginLeft: '10px' }}
+            variant="outlined"
+            onClick={logout}
+          >
+            Log out
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </div>
+  )
 }
+
 
 const mapStateToProps = (state) => {
   return {
