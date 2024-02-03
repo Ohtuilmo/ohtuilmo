@@ -18,6 +18,10 @@ const loggedInItems = (history) => {
       handler: () => history.push('/register')
     },
     {
+      text: 'Registration Details',
+      handler: () => history.push('/registrationdetails')
+    },
+    {
       text: 'Peer Review',
       handler: () => history.push('/peerreview')
     }
@@ -72,10 +76,6 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/registrations')
     },
     {
-      text: 'Registration Details',
-      handler: () => history.push('/administration/registrationdetails')
-    },
-    {
       text: 'Group Management',
       handler: () => history.push('/administration/groups')
     },
@@ -101,7 +101,6 @@ const adminItems = (history) => {
     },
   ]
 }
-
 
 export { regularItems, loggedInItems, adminItems, instructorItems }
 
