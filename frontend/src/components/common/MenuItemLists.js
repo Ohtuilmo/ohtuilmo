@@ -18,6 +18,10 @@ const loggedInItems = (history) => {
       handler: () => history.push('/register')
     },
     {
+      text: 'Registration Details',
+      handler: () => history.push('/registrationdetails')
+    },
+    {
       text: 'Peer Review',
       handler: () => history.push('/peerreview')
     }
@@ -48,45 +52,55 @@ const instructorItems = (history) => {
 const adminItems = (history) => {
   return [
     {
-      className: 'create-topic-menu-item',
       text: 'Create Topic',
       handler: () => history.push('/topics/create')
     },
     {
-      className: 'topics-menu-item',
       text: 'Topics',
       handler: () => history.push('/topics')
     },
     {
-      className: 'configuration-menu-item',
+      text: 'Reviews',
+      handler: () => history.push('/administration/reviews')
+    },
+    {
       text: 'Configuration',
       handler: () => history.push('/administration/configuration')
     },
     {
-      className: 'registration-management-menu-item',
       text: 'Registration Management',
       handler: () => history.push('/administration/registrationmanagement')
     },
     {
-      className: 'group-management-menu-item',
+      text: 'Current regstrations',
+      handler: () => history.push('/administration/registrations')
+    },
+    {
       text: 'Group Management',
       handler: () => history.push('/administration/groups')
     },
     {
-      className: 'email-templates-menu-item',
+      text: 'Participants',
+      handler: () => history.push('/administration/participants')
+    },
+    {
+      text: 'Registration Questions',
+      handler: () => history.push('/administration/registration-questions')
+    },
+    {
+      text: 'Customer Review Questions',
+      handler: () => history.push('/administration/customer-review-questions')
+    },
+    {
+      text: 'Peer Review Questions',
+      handler: () => history.push('/administration/peer-review-questions')
+    },
+    {
       text: 'Email Templates',
       handler: () => history.push('/administration/email-templates')
     },
-    /*
-    {
-      className: 'registration-management-menu-item',
-      text: 'Current regstrations',
-      handler: () => history.push('/administration/registrations')
-    },
-    */
   ]
 }
-
 
 export { regularItems, loggedInItems, adminItems, instructorItems }
 
