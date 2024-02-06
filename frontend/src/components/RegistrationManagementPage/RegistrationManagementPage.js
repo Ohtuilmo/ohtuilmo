@@ -12,19 +12,13 @@ import { MenuItem, Button } from '@material-ui/core'
 // Actions
 import appActions from '../../reducers/actions/appActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
-import configurationPageActions from '../../reducers/actions/configurationPageActions'
 
 // Services
 import registrationManagementService from '../../services/registrationManagement'
 
-class RegistrationManagement extends React.Component {
-  async componentDidMount() {
-    if (this.props.configurations.length === 0) {
-      await this.props.fetchConfigurations()
-    }
-  }
+const RegistrationManagement = (props) => {
 
-  saveConfiguration = async (event) => {
+  const saveConfiguration = async (event) => {
     event.preventDefault()
 
     const {
@@ -41,7 +35,7 @@ class RegistrationManagement extends React.Component {
       updateIsLoading,
       setSuccess,
       setError
-    } = this.props
+    } = props
 
     updateIsLoading(true)
 
@@ -71,55 +65,52 @@ class RegistrationManagement extends React.Component {
     }
   }
 
-  render() {
-    const configurationMenuItems = () => {
-      const { configurations } = this.props
-      return []
-        .concat(
-          <MenuItem value={-1} key={-1} disabled>
-            <em>Pick one</em>
+  const configurationMenuItems = () => {
+    const { configurations } = props
+    return []
+      .concat(
+        <MenuItem value={-1} key={-1} disabled>
+          <em>Pick one</em>
+        </MenuItem>
+      )
+      .concat(
+        configurations.map((configuration) => (
+          <MenuItem value={configuration.id} key={configuration.id}>
+            {configuration.name}
           </MenuItem>
-        )
-        .concat(
-          configurations.map((configuration) => (
-            <MenuItem value={configuration.id} key={configuration.id}>
-              {configuration.name}
-            </MenuItem>
-          ))
-        )
-    }
-
-    return (
-      <div className="registrationManagement-container">
-        <h3>Registration and review management</h3>
-        <form
-          className="registration-management-form"
-          onSubmit={this.saveConfiguration}
-        >
-          <p>Control state of registrations and reviews</p>
-
-          <ProjectRegistrationSettings
-            configurationMenuItems={configurationMenuItems}
-          />
-
-          <TopicRegistrationSettings
-            configurationMenuItems={configurationMenuItems}
-          />
-
-          <PeerReviewSettings configurationMenuItems={configurationMenuItems} />
-
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            data-cy="save-configuration-submit"
-          >
-            Save Configuration
-          </Button>
-        </form>
-      </div>
-    )
+        ))
+      )
   }
+
+  return <div className="registrationManagement-container">
+    <h3>Registration and review management</h3>
+    <form
+      className="registration-management-form"
+      onSubmit={saveConfiguration}
+    >
+      <p>Control state of registrations and reviews</p>
+
+      <ProjectRegistrationSettings
+        configurationMenuItems={configurationMenuItems}
+      />
+
+      <TopicRegistrationSettings
+        configurationMenuItems={configurationMenuItems}
+      />
+
+      <PeerReviewSettings configurationMenuItems={configurationMenuItems} />
+
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        data-cy="save-configuration-submit"
+      >
+        Save Configuration
+      </Button>
+    </form>
+  </div>
+
 }
 
 const mapStateToProps = (state) => {
@@ -142,13 +133,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   updateIsLoading: appActions.updateIsLoading,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: configurationPageActions.fetchConfigurations
+  setSuccess: notificationActions.setSuccess
 }
 
-const ConnectedRegistrationManagement = connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(RegistrationManagement)
-
-export default withRouter(ConnectedRegistrationManagement)
+)(RegistrationManagement))
