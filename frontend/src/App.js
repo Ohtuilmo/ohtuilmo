@@ -30,6 +30,7 @@ import ViewCustomerReviewsPage from './components/ViewCustomerReviewsPage'
 import Registrations from './components/Registrations'
 import InstructorReviews from './components/InstructorReviews'
 import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
+import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -45,7 +46,7 @@ import * as userActions from './reducers/actions/userActions'
 import {
   AdminRoute,
   LoginRoute,
-  InstructorRoute
+  InstructorRoute,
 } from '../src/utils/protectedRoutes'
 
 import loginService from './services/login'
@@ -64,14 +65,14 @@ const NotFound = () => (
 const App = (props) => {
   useEffect(() => {
     props.updateIsLoading(true)
-    if (!window.location.href.includes('customer-review/')){
+    if (!window.location.href.includes('customer-review/')) {
       props.loginUser()
     }
     fetchRegistrationManagement()
     props.updateIsLoading(false)
     setInterval(() => {
       console.log('timeout')
-      if (!window.location.href.includes('customer-review/')){
+      if (!window.location.href.includes('customer-review/')) {
         loginService.login()
       }
     }, 60 * 1000)
@@ -96,133 +97,136 @@ const App = (props) => {
     props.updateIsLoading(false)
   }
 
-  return <Router history={history}>
-    <div id="app-wrapper">
-      <NavigationBar logout={logout} />
-      <Notification />
-      <div id="app-content">
-        {props.isLoading ? <LoadingSpinner /> : null}
-        <Switch>
-          <Route path="/login" render={() => null} />
-          <LoginRoute exact path="/" render={() => <LandingPage />} />
-          <AdminRoute
-            exact
-            path="/topics"
-            render={() => <TopicListPage />}
-          />
-          <Route
-            exact
-            path="/topics/create"
-            render={() => <TopicFormPage />}
-          />
-          <Route
-            exact
-            path="/topics/:id"
-            render={(props) => <ViewTopicPage {...props} />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/configuration"
-            render={() => <ConfigurationPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/participants"
-            render={() => <ParticipantsPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/users"
-            render={() => <ViewUsersPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/customer-review-questions"
-            render={() => <CustomerReviewQuestionsPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/peer-review-questions"
-            render={() => <PeerReviewQuestionsPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/registration-questions"
-            render={() => <RegistrationQuestionsPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/groups"
-            render={() => <GroupManagementPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/email-templates"
-            render={() => <EmailTemplatesPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/registrations"
-            render={() => <Registrations />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/reviews"
-            render={() => <InstructorReviews />}
-          />
-          <Route
-            exact
-            path="/customer-review/:id"
-            render={(props) => <CustomerReviewPage {...props} />}
-          />
-          <LoginRoute
-            exact
-            path="/register"
-            user={props.user}
-            render={() => <RegistrationPage />}
-          />
-          <LoginRoute
-            exact
-            path="/peerreview"
-            user={props.user}
-            render={() => <PeerReviewPage />}
-          />
-          <AdminRoute
-            exact
-            path="/administration/registrationmanagement"
-            render={() => <RegistrationManagementPage />}
-          />
-          <InstructorRoute
-            exact
-            path="/instructorpage"
-            render={() => <InstructorPage />}
-          />
-          <InstructorRoute
-            exact
-            path="/instructorreviewpage"
-            render={() => <InstructorReviewPage />}
-          />
-          <InstructorRoute
-            path="/adminstration/customer-reviews"
-            render={() => <ViewCustomerReviewsPage />}
-          />
+  return (
+    <Router history={history}>
+      <div id="app-wrapper">
+        <NavigationBar logout={logout} />
+        <Notification />
+        <div id="app-content">
+          {props.isLoading ? <LoadingSpinner /> : null}
+          <Switch>
+            <Route path="/login" render={() => null} />
+            <LoginRoute exact path="/" render={() => <LandingPage />} />
+            <AdminRoute exact path="/topics" render={() => <TopicListPage />} />
+            <Route
+              exact
+              path="/topics/create"
+              render={() => <TopicFormPage />}
+            />
+            <Route
+              exact
+              path="/topics/:id"
+              render={(props) => <ViewTopicPage {...props} />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/configuration"
+              render={() => <ConfigurationPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/participants"
+              render={() => <ParticipantsPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/users"
+              render={() => <ViewUsersPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/customer-review-questions"
+              render={() => <CustomerReviewQuestionsPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/peer-review-questions"
+              render={() => <PeerReviewQuestionsPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/registration-questions"
+              render={() => <RegistrationQuestionsPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/groups"
+              render={() => <GroupManagementPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/email-templates"
+              render={() => <EmailTemplatesPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/registrations"
+              render={() => <Registrations />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/reviews"
+              render={() => <InstructorReviews />}
+            />
+            <Route
+              exact
+              path="/customer-review/:id"
+              render={(props) => <CustomerReviewPage {...props} />}
+            />
+            <LoginRoute
+              exact
+              path="/register"
+              user={props.user}
+              render={() => <RegistrationPage />}
+            />
+            <LoginRoute
+              exact
+              path="/peerreview"
+              user={props.user}
+              render={() => <PeerReviewPage />}
+            />
+            <AdminRoute
+              exact
+              path="/administration/registrationmanagement"
+              render={() => <RegistrationManagementPage />}
+            />
+            <InstructorRoute
+              exact
+              path="/instructorpage"
+              render={() => <InstructorPage />}
+            />
+            <InstructorRoute
+              exact
+              path="/instructorreviewpage"
+              render={() => <InstructorReviewPage />}
+            />
+            <InstructorRoute
+              path="/adminstration/customer-reviews"
+              render={() => <ViewCustomerReviewsPage />}
+            />
 
-          <LoginRoute
-            exact
-            path="/registrationdetails"
-            render={() => <RegistrationDetailsPage />}
-          />
-          <Route component={NotFound} />
-        </Switch>
+            <LoginRoute
+              exact
+              path="/registrationdetails"
+              render={() => <RegistrationDetailsPage />}
+            />
+            <LoginRoute
+              exact
+              path="/timelogs"
+              render={() => <TimeLogsPage />}
+            />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
       </div>
-    </div>
-  </Router>
+    </Router>
+  )
 }
 
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.login.user
+    user: state.user,
   }
 }
 
@@ -230,14 +234,13 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
   ...loginPageActions,
   ...appActions,
-  fetchConfigurations:
-    configurationPageActions.fetchConfigurations,
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
   ...peerReviewPageActions,
   logoutUser: userActions.logoutUser,
-  loginUser: userActions.loginUser
+  loginUser: userActions.loginUser,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

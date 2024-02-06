@@ -87,12 +87,20 @@ const checkAdmin = (req, res, next) => {
 const fakeshibbo = (req, res, next) => {
   req.headers.employeenumber = ''
   req.headers.mail = ''
-  req.headers.hypersonstudentid = 'cc813e63a2db036a5e69de6024e8222d40646d7a55937159dda9d231c4d9caeb'
-  req.headers.uid = 'haisleymorgan650'
-  req.headers.givenname = 'Morgan'
-  req.headers.sn = 'Haisley'
+  req.headers.hypersonstudentid = '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3'
+  req.headers.uid = 'yannabram840'
+  req.headers.givenname = 'Abram'
+  req.headers.sn = 'Yann'
   next()
 }
+
+// fakeshibbo headers for admin user.
+//
+// req.headers.hypersonstudentid = 'cc813e63a2db036a5e69de6024e8222d40646d7a55937159dda9d231c4d9caeb'
+// req.headers.uid = 'haisleymorgan650'
+// req.headers.givenname = 'Morgan'
+// req.headers.sn = 'Haisley'
+
 
 /** @type {RequestHandler} */
 const logger = (request, response, next) => {

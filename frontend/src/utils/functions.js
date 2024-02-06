@@ -18,3 +18,13 @@ export const formatDate = (date) => {
   const parsedDate = new Date(date).toLocaleString('fi-FI')
   return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
 }
+
+export const minutesToFormattedHoursAndMinutes = (totalMinutes) => {
+  const hours = Math.floor(totalMinutes / 60).toString().padStart(2, '0')
+  const minutes = (totalMinutes % 60).toString().padStart(2, '0')
+  return { hours, minutes }
+}
+
+export const hoursAndMinutesToMinutes = (hours, minutes) => {
+  return hours * 60 + minutes
+}

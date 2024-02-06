@@ -1,0 +1,23 @@
+.timelogs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 38px;
+}
+
+.timelogs-form {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.timelogs-row {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+}
+
+.timelogs-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

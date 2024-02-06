@@ -24,6 +24,10 @@ const loggedInItems = (history) => {
     {
       text: 'Peer Review',
       handler: () => history.push('/peerreview')
+    },
+    {
+      text: 'Time Logs',
+      handler: () => history.push('/timelogs')
     }
   ]
 }
