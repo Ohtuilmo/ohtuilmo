@@ -8,7 +8,7 @@ db.connect = () => {
 
   let sequelize
   if (process.env.DATABASE_URL) {
-    sequelize = new Sequelize(process.env.DATABASE_URL, { logging: true })
+    sequelize = new Sequelize(process.env.DATABASE_URL, { logging: true, dialect: 'postgres' })
   } else {
     sequelize = new Sequelize(sequelizeConfig)
   }
