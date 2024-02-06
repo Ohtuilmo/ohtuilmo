@@ -80,9 +80,7 @@ const mapDispatchToProps = {
     registrationManagementActions.updateTopicRegistrationMessage
 }
 
-const ConnectedTopicRegistrationSettings = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TopicRegistrationSettings)
-
-export default ConnectedTopicRegistrationSettings
