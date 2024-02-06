@@ -34,6 +34,7 @@ import InstructorReviews from './components/InstructorReviews'
 import appActions from './reducers/actions/appActions'
 import * as notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
+import configurationPageActions from './reducers/actions/configurationPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
@@ -68,6 +69,7 @@ const App = (props) => {
     }
 
     fetchRegistrationManagement()
+    fetchConfigurations()
     props.updateIsLoading(false)
     setInterval(() => {
       console.log('timeout')
@@ -76,6 +78,15 @@ const App = (props) => {
       }
     }, 60 * 1000)
   }, [])
+
+  const fetchConfigurations = async () => {
+    try {
+      await props.fetchConfigurations()
+    } catch (e) {
+      console.log('error happened', e)
+      props.setError('Error fetching configurations', 5000)
+    }
+  }
 
   const fetchRegistrationManagement = async () => {
     try {
@@ -227,6 +238,8 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
   ...loginPageActions,
   ...appActions,
+  fetchConfigurations:
+    configurationPageActions.fetchConfigurations,
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
