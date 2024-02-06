@@ -1,8 +1,8 @@
-﻿version: '2.19.1'
+﻿version: '2'
 services:
   frontend:
     # you can put your local image instead of ohtuprojektiilmo/ohtufront if you want
-    image: ohtuprojektiilmo/ohtufront
+    image: quay.io/ohtuilmo/frontend
     build: './frontend'
     ports:
       - '7000:3000'
@@ -11,7 +11,7 @@ services:
       - db
 
   backend:
-    image: ohtuprojektiilmo/ohtuback
+    image: quay.io/ohtuilmo/ohtuback
     build: './backend'
     restart: always
     ports:
