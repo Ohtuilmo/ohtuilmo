@@ -62,8 +62,7 @@ const NotFound = () => (
 
 const App = (props) => {
   useEffect(() => {
-    //props.updateIsLoading(true)
-    console.log(window.location.href)
+    props.updateIsLoading(true)
     if (!window.location.href.includes('customer-review/')){
       props.loginUser()
     }

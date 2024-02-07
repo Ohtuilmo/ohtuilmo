@@ -127,7 +127,7 @@ const ConfigurationPage = (props) => {
       onChange={handleConfigurationChange}
     >
       {props.configurations.map((item) => (
-        <MenuItem key={item.id} value={item} selected={item === props.selectedConfig}>
+        <MenuItem key={item.id} value={item}>
           {item.name}
         </MenuItem>
       ))}
