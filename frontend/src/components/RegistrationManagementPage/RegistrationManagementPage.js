@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -12,11 +12,15 @@ import { MenuItem, Button } from '@material-ui/core'
 // Actions
 import appActions from '../../reducers/actions/appActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
+import configurationPageActions from '../../reducers/actions/configurationPageActions'
 
 // Services
 import registrationManagementService from '../../services/registrationManagement'
 
 const RegistrationManagement = (props) => {
+  useEffect(() => {
+    props.fetchConfigurations()
+  }, [])
 
   const saveConfiguration = async (event) => {
     event.preventDefault()
@@ -133,7 +137,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   updateIsLoading: appActions.updateIsLoading,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
 export default withRouter(connect(

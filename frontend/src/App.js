@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Router, Route, Switch, Link } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
@@ -66,7 +66,6 @@ const App = (props) => {
     if (!window.location.href.includes('customer-review/')){
       props.loginUser()
     }
-
     fetchRegistrationManagement()
     props.updateIsLoading(false)
     setInterval(() => {
@@ -76,15 +75,6 @@ const App = (props) => {
       }
     }, 60 * 1000)
   }, [])
-
-  const fetchConfigurations = async () => {
-    try {
-      await props.fetchConfigurations()
-    } catch (e) {
-      console.log('error happened', e)
-      props.setError('Error fetching configurations', 5000)
-    }
-  }
 
   const fetchRegistrationManagement = async () => {
     try {
@@ -105,13 +95,6 @@ const App = (props) => {
     props.updateIsLoading(false)
   }
 
-  const ConfigurationLoadingWrapper = ({ children }) => {
-    fetchConfigurations()
-    return <Fragment>
-      {children}
-    </Fragment>
-  }
-
   return <Router history={history}>
     <div id="app-wrapper">
       <NavigationBar logout={logout} />
@@ -124,10 +107,7 @@ const App = (props) => {
           <AdminRoute
             exact
             path="/topics"
-            render={() =>
-              <ConfigurationLoadingWrapper>
-                <TopicListPage />
-              </ConfigurationLoadingWrapper>}
+            render={() => <TopicListPage />}
           />
           <Route
             exact
@@ -142,10 +122,7 @@ const App = (props) => {
           <AdminRoute
             exact
             path="/administration/configuration"
-            render={() =>
-              <ConfigurationLoadingWrapper>
-                <ConfigurationPage />
-              </ConfigurationLoadingWrapper>}
+            render={() => <ConfigurationPage />}
           />
           <AdminRoute
             exact
@@ -170,10 +147,7 @@ const App = (props) => {
           <AdminRoute
             exact
             path="/administration/groups"
-            render={() =>
-              <ConfigurationLoadingWrapper>
-                <GroupManagementPage />
-              </ConfigurationLoadingWrapper>}
+            render={() => <GroupManagementPage />}
           />
           <AdminRoute
             exact
@@ -210,10 +184,7 @@ const App = (props) => {
           <AdminRoute
             exact
             path="/administration/registrationmanagement"
-            render={() =>
-              <ConfigurationLoadingWrapper>
-                <RegistrationManagementPage />
-              </ConfigurationLoadingWrapper>}
+            render={() => <RegistrationManagementPage />}
           />
           <InstructorRoute
             exact

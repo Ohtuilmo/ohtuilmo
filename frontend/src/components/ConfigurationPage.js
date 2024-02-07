@@ -31,6 +31,7 @@ import PeerReviewQuestionsTable from './PeerReviewQuestionsTable'
 const ConfigurationPage = (props) => {
   useEffect(() => {
     setQuestions()
+    props.fetchConfigurations()
   }, [])
 
   const setQuestions = async () => {
@@ -387,7 +388,7 @@ const mapDispatchToProps = {
   ...questionsFormPageActions,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: configurationPageActions.fetchConfigurations
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
 export default withRouter(connect(

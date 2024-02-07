@@ -10,6 +10,7 @@ import userService from '../../services/user'
 import topicListPageActions from '../../reducers/actions/topicListPageActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
+import configurationPageActions from '../../reducers/actions/configurationPageActions'
 
 import GroupManagementForm from './GroupManagementForm'
 import ConfigurationSelect from './ConfigurationSelect'
@@ -23,10 +24,11 @@ const ConfigurationSelectWrapper = ({ label, children }) => (
 )
 
 const GroupManagementPage = (props) => {
-  const { setUsers, setGroups, fetchTopics, setConfigurations, setError } =
+  const { setUsers, setGroups, fetchTopics, setConfigurations, setError, fetchConfigurations } =
     props
 
   useEffect(() => {
+    fetchConfigurations()
     const fetchData = async () => {
       try {
         const fetchedGroups = await groupManagementService.get()
@@ -79,6 +81,7 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchTopics: topicListPageActions.fetchTopics,
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupManagementPage)

@@ -504,7 +504,7 @@ const TopicListPage = (props) => {
         </MenuItem>
       )
       .concat(
-        [...configurations].reverse().map((configuration) => (
+        configurations.map((configuration) => (
           <MenuItem value={configuration.id} key={configuration.id}>
             {configuration.name}
           </MenuItem>
