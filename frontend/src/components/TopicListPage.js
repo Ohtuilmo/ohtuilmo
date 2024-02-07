@@ -572,9 +572,7 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-const ConnectedTopicListPage = connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TopicListPage)
-
-export default withRouter(ConnectedTopicListPage)
+)(TopicListPage))
