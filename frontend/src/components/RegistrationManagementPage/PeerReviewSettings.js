@@ -86,9 +86,7 @@ const mapDispatchToProps = {
   updatePeerReviewRound: registrationManagementActions.updatePeerReviewRound
 }
 
-const ConnectedPeerReviewSettings = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(PeerReviewSettings)
-
-export default ConnectedPeerReviewSettings

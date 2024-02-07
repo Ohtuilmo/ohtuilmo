@@ -504,7 +504,7 @@ const TopicListPage = (props) => {
         </MenuItem>
       )
       .concat(
-        [...configurations].reverse().map((configuration) => (
+        configurations.map((configuration) => (
           <MenuItem value={configuration.id} key={configuration.id}>
             {configuration.name}
           </MenuItem>
@@ -572,9 +572,7 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-const ConnectedTopicListPage = connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TopicListPage)
-
-export default withRouter(ConnectedTopicListPage)
+)(TopicListPage))

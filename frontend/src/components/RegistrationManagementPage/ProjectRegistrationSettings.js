@@ -94,9 +94,7 @@ const mapDispatchToProps = {
   updateProjectInfo: registrationManagementActions.updateProjectRegistrationInfo
 }
 
-const ConnectedProjectRegistrationSettings = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ProjectRegistrationSettings)
-
-export default ConnectedProjectRegistrationSettings

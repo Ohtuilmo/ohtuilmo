@@ -4,14 +4,13 @@ import { connect } from 'react-redux'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import userService from '../../services/user'
 
 import topicListPageActions from '../../reducers/actions/topicListPageActions'
-import configurationPageActions from '../../reducers/actions/configurationPageActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
+import configurationPageActions from '../../reducers/actions/configurationPageActions'
 
 import GroupManagementForm from './GroupManagementForm'
 import ConfigurationSelect from './ConfigurationSelect'
@@ -25,20 +24,19 @@ const ConfigurationSelectWrapper = ({ label, children }) => (
 )
 
 const GroupManagementPage = (props) => {
-  const { setUsers, setGroups, fetchTopics, setConfigurations, setError } =
+  const { setUsers, setGroups, fetchTopics, setConfigurations, setError, fetchConfigurations } =
     props
 
   useEffect(() => {
+    fetchConfigurations()
     const fetchData = async () => {
       try {
-        const fetchedConfiguration = await configurationService.getAll()
         const fetchedGroups = await groupManagementService.get()
         const fetchedUsers = await userService.get()
 
         setUsers(fetchedUsers)
         setGroups(fetchedGroups)
         await fetchTopics()
-        setConfigurations(fetchedConfiguration.configurations.reverse())
       } catch (err) {
         setError('Some error happened')
       }
@@ -78,12 +76,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateTopics: topicListPageActions.updateTopics,
-  setConfigurations: configurationPageActions.setConfigurations,
   setGroups: groupManagementActions.setGroups,
   setUsers: groupManagementActions.setUsers,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchTopics: topicListPageActions.fetchTopics,
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupManagementPage)
