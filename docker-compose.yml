@@ -19,9 +19,11 @@ services:
     depends_on:
       - db
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - PORT=3001
       - SECRET=yoursecrethere
+      - EMAIL_ENABLED=false
+      - DATABASE_URL=postgres://postgres@db:5432/dev_postgres
 
   db:
     image: postgres:10.6
