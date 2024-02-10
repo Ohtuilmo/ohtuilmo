@@ -5,71 +5,23 @@ import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
 import { SprintSelect } from './SprintSelect'
 import Typography from '@material-ui/core/Typography'
+import timeLoggingService from '../../services/timeLogging'
 
 import './TimeLogsPage.css'
 
-// TODO: remove when done.
-const exampleData = [
-  {
-    id: 1,
-    studentNumber: '12345678',
-    date: '2024-04-01',
-    description: 'Reviewed a PR from Pekka.',
-    minutes: 60,
-    sprint: 1,
-    tags: ['frontend', 'backend'],
-    groupId: '23567836',
-  },
-  {
-    id: 2,
-    studentNumber: '12345678',
-    date: '2024-04-02',
-    description: 'Worked on bug fixes.',
-    minutes: 120,
-    sprint: 1,
-    tags: ['backend'],
-    groupId: '23567836',
-  },
-  {
-    id: 3,
-    studentNumber: '12345678',
-    date: '2024-04-03',
-    description: 'Created new feature.',
-    minutes: 180,
-    sprint: 1,
-    tags: ['frontend'],
-    groupId: '23567837',
-  },
-  {
-    id: 4,
-    studentNumber: '12345678',
-    date: '2024-04-04',
-    description: 'Refactored code.',
-    minutes: 90,
-    sprint: 2,
-    tags: ['frontend', 'backend'],
-    groupId: '23567837',
-  },
-  {
-    id: 5,
-    studentNumber: '12345678',
-    date: '2024-04-05',
-    description: 'Wrote unit tests.',
-    minutes: 150,
-    sprint: 3,
-    tags: ['testing'],
-    groupId: '23567838',
-  },
-]
-
 const TimeLogsPage = () => {
-  const [allLogs, setAllLogs] = useState(undefined)
+  const [allLogs, setAllLogs] = useState([])
   const [sprintNumber, setSprintNumber] = useState(1) // TODO: determine current sprint.
 
   useEffect(() => {
-    // TODO: Fetch data here.
-    const fetchedData = [...exampleData]
-    setAllLogs(fetchedData)
+    timeLoggingService.getTimeEntries()
+      .then(fetchedData => {
+        console.log('fetchedData:', fetchedData)
+        setAllLogs(fetchedData)
+      })
+      .catch(error => {
+        console.error('Error fetching time entries:', error)
+      })
   }, [])
 
   const handleSubmit = (event) => {
@@ -116,7 +68,7 @@ const TimeLogsPage = () => {
   )
 }
 
-const mapStateToProps = (state) => {}
+const mapStateToProps = () => {}
 
 const mapDispatchToProps = {}
 
