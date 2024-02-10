@@ -410,7 +410,7 @@ const TopicListPage = (props) => {
   useEffect(() => {
     const updateData = async () => {
       if (configurations.length)
-        await updateFilter([...configurations].reverse()[0].id)
+        await updateFilter(configurations[0].id)
     }
 
     updateData()
