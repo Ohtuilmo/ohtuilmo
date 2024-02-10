@@ -115,4 +115,14 @@ timeLoggingRouter.post('/', checkLogin, (req, res) => {
   res.status(201).json(newEntry)
 })
 
+timeLoggingRouter.delete('/:id', checkLogin, (req, res) => {
+  const id = parseInt(req.params.id)
+  const index = timeEntries.findIndex(entry => entry.id === id)
+  if (index === -1) {
+    return res.status(404).json({ error: 'Entry not found.' })
+  }
+  timeEntries.splice(index, 1)
+  res.status(204).end()
+})
+
 module.exports = timeLoggingRouter

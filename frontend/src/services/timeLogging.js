@@ -23,4 +23,11 @@ const createTimeEntry = async (timeEntry) => {
   return response.data
 }
 
-export default { getTimeEntries, createTimeEntry }
+const deleteTimeEntry = async (id) => {
+  const response = await axios.delete(`${url}/${id}`, {
+    headers: { Authorization: `Bearer ${getUserToken()}` }
+  })
+  return response.data
+}
+
+export default { getTimeEntries, createTimeEntry, deleteTimeEntry }
