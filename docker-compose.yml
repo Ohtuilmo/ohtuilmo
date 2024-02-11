@@ -1,37 +1,47 @@
-﻿version: '2'
+﻿version: '3.8'
 services:
-  frontend:
-    # you can put your local image instead of ohtuprojektiilmo/ohtufront if you want
-    image: ohtuprojektiilmo/ohtufront
-    build: './frontend'
-    ports:
-      - '7000:3000'
-    depends_on:
-      - backend
-      - db
-
-  backend:
-    image: ohtuprojektiilmo/ohtuback
-    build: './backend'
-    restart: always
-    ports:
-      - '7001:3001'
-    depends_on:
-      - db
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - SECRET=yoursecrethere
-
   db:
     image: postgres:10.6
     restart: always
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       PGDATA: /data/test
     volumes:
       - pg-data:/data/test
 
+  backend:
+    image: ohtuback-dev
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: npm run watch
+    restart: always
+    ports:
+      - 3001:3001
+    volumes:
+      - ./backend:/usr/src/app
+      - ohtuback_node_modules:/usr/src/app/node_modules
+    depends_on:
+      - db
+
+  frontend:
+    image: ohtufront-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/src/app
+      - ohtufront_node_modules:/usr/src/app/node_modules
+    depends_on:
+      - backend
+      - db
+
+
 volumes:
   pg-data:
+  ohtuback_node_modules:
+  ohtufront_node_modules:
