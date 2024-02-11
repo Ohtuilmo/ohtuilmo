@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "http://svm-45.cs.helsinki.fi/projekti",
-  "proxy": "http://localhost:3001",
+  "proxy": "http://backend:3001",
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "@material-ui/core": "^3.6.0",
