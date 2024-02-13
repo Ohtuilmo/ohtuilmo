@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import './CustomerReviewPage.css'
@@ -145,34 +145,34 @@ const Questions = ({ questions, answerSheet, onAnswerUpdate }) => {
   )
 }
 
-class CustomerReviewPage extends React.Component {
-  async componentDidMount() {
-    const id = this.props.match.params.id
+const CustomerReviewPage = (props) => {
+  useEffect(async () => {
+    const id = props.match.params.id
     try {
       const group = await customerReviewService.getDataForReview(id)
       if (group) {
-        this.props.setReview(group.hasAnswered)
-        this.props.setGroupName(group.groupName)
-        this.props.setGroupId(group.groupId)
-        this.props.setTopicId(group.topicId)
-        this.props.setConfiguration(group.configuration)
+        props.setReview(group.hasAnswered)
+        props.setGroupName(group.groupName)
+        props.setGroupId(group.groupId)
+        props.setTopicId(group.topicId)
+        props.setConfiguration(group.configuration)
         const reviewQuestionSet = await customerReviewService.getReviewQuestions(
           group.configuration
         )
 
-        this.props.setQuestions(reviewQuestionSet.questions)
+        props.setQuestions(reviewQuestionSet.questions)
 
-        this.fetchCustomerReviewQuestions(this.props.questionObject)
+        fetchCustomerReviewQuestions(props.questionObject)
       } else {
-        this.props.setNoGroup(true)
+        props.setNoGroup(true)
       }
     } catch (e) {
       console.log(e)
-      this.props.setError('Some error happened')
+      props.setError('Some error happened')
     }
-  }
+  }, [])
 
-  async fetchCustomerReviewQuestions(questionObject) {
+  const fetchCustomerReviewQuestions = async (questionObject) => {
     const initializeNumberAnswer = (question, questionId) => {
       return {
         type: 'number',
@@ -220,10 +220,10 @@ class CustomerReviewPage extends React.Component {
       return initializer ? initializer(question, questionID) : question
     })
 
-    this.props.initializeAnswerSheet(tempAnswerSheet)
+    props.initializeAnswerSheet(tempAnswerSheet)
   }
 
-  handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     const answer = window.confirm(
@@ -233,86 +233,84 @@ class CustomerReviewPage extends React.Component {
     try {
       await customerReviewService.create({
         customerReview: {
-          answer_sheet: this.props.answerSheet,
-          group_id: this.props.groupId,
-          topic_id: this.props.topicId,
-          configuration_id: this.props.configuration
+          answer_sheet: props.answerSheet,
+          group_id: props.groupId,
+          topic_id: props.topicId,
+          configuration_id: props.configuration
         }
       })
 
-      this.props.setSuccess('Review saved!')
-      this.props.setReview(true)
+      props.setSuccess('Review saved!')
+      props.setReview(true)
     } catch (e) {
       console.log('error happened', e)
-      this.props.setError(e.response.data.error)
+      props.setError(e.response.data.error)
     }
   }
 
-  render() {
-    const {
-      answerSheet,
-      updateAnswer,
-      isInitializing,
-      hasReviewed,
-      questionObject,
-      groupName,
-      noGroup
-    } = this.props
+  const {
+    answerSheet,
+    updateAnswer,
+    isInitializing,
+    hasReviewed,
+    questionObject,
+    groupName,
+    noGroup
+  } = props
 
-    if (isInitializing) {
-      return (
-        <div className="customer-review-container">
-          <h1 className="customer-review-container__h1">Loading!</h1>
-        </div>
-      )
-    }
-    if (hasReviewed) {
-      return (
-        <div className="customer-review-container">
-          <h1 className="customer-review-container__h1">
-            Thank you for the review
-          </h1>
-        </div>
-      )
-    }
-    if (noGroup) {
-      return (
-        <div className="customer-review-container">
-          <h1 className="customer-review-container__h1">
-            No group assigned for topic!
-          </h1>
-        </div>
-      )
-    } else {
-      return (
-        <div className="customer-review-container">
-          <h1 className="customer-review-container__h1">Customer review</h1>
-          <h1 className="customer-review-container__h1">{groupName}</h1>
+  if (isInitializing) {
+    return (
+      <div className="customer-review-container">
+        <h1 className="customer-review-container__h1">Loading!</h1>
+      </div>
+    )
+  }
+  if (hasReviewed) {
+    return (
+      <div className="customer-review-container">
+        <h1 className="customer-review-container__h1">
+          Thank you for the review
+        </h1>
+      </div>
+    )
+  }
+  if (noGroup) {
+    return (
+      <div className="customer-review-container">
+        <h1 className="customer-review-container__h1">
+          No group assigned for topic!
+        </h1>
+      </div>
+    )
+  } else {
+    return (
+      <div className="customer-review-container">
+        <h1 className="customer-review-container__h1">Customer review</h1>
+        <h1 className="customer-review-container__h1">{groupName}</h1>
 
-          <Paper elevation={1} className="customer-review-container__main">
-            <form onSubmit={this.handleSubmit}>
-              <Questions
-                questions={questionObject}
-                answerSheet={answerSheet}
-                onAnswerUpdate={updateAnswer}
-              />
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Button
-                  margin-right="auto"
-                  margin-left="auto"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  data-cy="submit-customer-review-button"
-                >
-                  Submit
-                </Button>
-              </div>
-            </form>
-          </Paper>
-        </div>
-      )
-    }
+        <Paper elevation={1} className="customer-review-container__main">
+          <form onSubmit={handleSubmit}>
+            <Questions
+              questions={questionObject}
+              answerSheet={answerSheet}
+              onAnswerUpdate={updateAnswer}
+            />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                margin-right="auto"
+                margin-left="auto"
+                variant="contained"
+                color="primary"
+                type="submit"
+                data-cy="submit-customer-review-button"
+              >
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Paper>
+      </div>
+    )
   }
 }
 
@@ -346,8 +344,7 @@ const mapDispatchToProps = {
   setSuccess: notificationActions.setSuccess
 }
 
-const ConnectedCustomerReviewPage = connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomerReviewPage)
-export default withRouter(ConnectedCustomerReviewPage)
+)(CustomerReviewPage))
