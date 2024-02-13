@@ -31,7 +31,14 @@ export const TimeLogForm = ({ handleSubmit }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
-    handleSubmit({ date, time, description })
+    handleSubmit(date, time, description)
+    clearForm()
+  }
+
+  const clearForm = () => {
+    setDate(new Date().toISOString().slice(0, 10))
+    setTime('')
+    setDescription('')
   }
 
   return (

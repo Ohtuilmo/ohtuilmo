@@ -20,11 +20,20 @@ export const formatDate = (date) => {
 }
 
 export const minutesToFormattedHoursAndMinutes = (totalMinutes) => {
-  const hours = Math.floor(totalMinutes / 60).toString().padStart(2, '0')
+  const hours = Math.floor(totalMinutes / 60)
+    .toString()
+    .padStart(2, '0')
   const minutes = (totalMinutes % 60).toString().padStart(2, '0')
   return { hours, minutes }
 }
 
-export const hoursAndMinutesToMinutes = (hours, minutes) => {
+export const hoursAndMinutesToMinutes = ({ hours, minutes }) => {
   return hours * 60 + minutes
+}
+
+export const minutesAndHoursFromString = (string) => {
+  const parts = string.split(':')
+  const hours = parseInt(parts[0], 10)
+  const minutes = parseInt(parts[1], 10)
+  return { hours, minutes }
 }

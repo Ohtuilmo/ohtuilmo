@@ -50,8 +50,6 @@ import {
   InstructorRoute,
 } from '../src/utils/protectedRoutes'
 
-import loginService from './services/login'
-
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
 const NotFound = () => (
@@ -86,6 +84,7 @@ const App = (props) => {
     initializeMyGroup()
     updateIsLoading(false)
 
+    // TODO: what's the purpose of this?
     const loginInterval = setInterval(() => {
       handleLogin()
     }, 60 * 1000)

@@ -13,7 +13,6 @@ const getTimeLogs = async () => {
   return response.data
 }
 
-
 const createTimeLog = async (timeEntry) => {
   const response = await axios.post(url, timeEntry, {
     headers: { Authorization: `Bearer ${getUserToken()}` }

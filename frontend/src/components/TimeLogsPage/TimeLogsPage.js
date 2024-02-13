@@ -6,14 +6,19 @@ import { TimeLogRow } from './TimeLogRow'
 import { SprintSelect } from './SprintSelect'
 import Typography from '@material-ui/core/Typography'
 import timeLogsService from '../../services/timeLogs'
+import {
+  minutesAndHoursFromString,
+  hoursAndMinutesToMinutes,
+} from '../../utils/functions'
 
 import './TimeLogsPage.css'
 
+// TODO: If no group, render placeholder text
 const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
   const [sprintNumber, setSprintNumber] = useState(1) // TODO: determine current sprint.
 
-  const { studentNumber, groupId } = props
+  const { studentNumber, group } = props
 
   useEffect(() => {
     const fetchTimeLogs = async () => {
@@ -33,18 +38,19 @@ const TimeLogsPage = (props) => {
       studentNumber,
       sprint: sprintNumber,
       date,
-      minutes: time,
+      minutes: hoursAndMinutesToMinutes(minutesAndHoursFromString(time)),
       description,
       tags: [],
-      groupId,
+      groupId: group.id,
     }
 
     const updatedLogs = await timeLogsService.createTimeLog(log)
     setAllLogs(updatedLogs)
   }
 
-  const handleDelete = () => {
-    console.log('deleting...')
+  const handleDelete = async (logId) => {
+    const updatedLogs = await timeLogsService.deleteTimeLog(logId)
+    setAllLogs(updatedLogs)
   }
 
   const handleClickNextSprint = () => {
@@ -74,7 +80,11 @@ const TimeLogsPage = (props) => {
       <div className="timelogs-logs">
         {isLogs(logsBySprint) &&
           logsBySprint.map((log) => (
-            <TimeLogRow key={log.id} log={log} handleDelete={handleDelete} />
+            <TimeLogRow
+              key={log.id}
+              log={log}
+              handleDelete={() => handleDelete(log.id)}
+            />
           ))}
         {!isLogs(logsBySprint) && <p>No logs yet :&#40;</p>}
       </div>
@@ -85,7 +95,7 @@ const TimeLogsPage = (props) => {
 const mapStateToProps = (state) => ({
   state: state,
   studentNumber: state.user.user.student_number,
-  // groupId: state.registrationDetails.myGroup.id,
+  group: state.registrationDetails.myGroup,
 })
 
 const mapDispatchToProps = {}
