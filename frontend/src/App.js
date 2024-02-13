@@ -41,6 +41,7 @@ import registrationmanagementActions from './reducers/actions/registrationManage
 import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 import * as userActions from './reducers/actions/userActions'
+import myGroupActions from './reducers/actions/myGroupActions'
 
 // Protected routes
 import {
@@ -63,38 +64,49 @@ const NotFound = () => (
 )
 
 const App = (props) => {
+  const {
+    updateIsLoading,
+    loginUser,
+    fetchRegistrationManagement,
+    setError,
+    initializeMyGroup,
+    logoutUser,
+    clearRegistrations,
+    isLoading,
+    user,
+  } = props
+
   useEffect(() => {
-    props.updateIsLoading(true)
-    if (!window.location.href.includes('customer-review/')) {
-      props.loginUser()
-    }
-    fetchRegistrationManagement()
-    props.updateIsLoading(false)
-    setInterval(() => {
-      console.log('timeout')
-      if (!window.location.href.includes('customer-review/')) {
-        loginService.login()
-      }
+    const handleLogin = () => !window.location.href.includes('customer-review/') && loginUser()
+
+    // TODO: these should prolly use async/await?
+    updateIsLoading(true)
+    handleLogin()
+    fetchRegistrationManagementData()
+    initializeMyGroup()
+    updateIsLoading(false)
+
+    const loginInterval = setInterval(() => {
+      handleLogin()
     }, 60 * 1000)
+
+    return () => clearInterval(loginInterval)
   }, [])
 
-  const fetchRegistrationManagement = async () => {
+  const fetchRegistrationManagementData = async () => {
     try {
-      await props.fetchRegistrationManagement()
+      await fetchRegistrationManagement()
     } catch (e) {
       console.log('error happened', e)
-      props.setError(
-        'Error fetching registration management configuration',
-        5000
-      )
+      setError('Error fetching registration management configuration', 5000)
     }
   }
 
   const logout = () => {
-    props.updateIsLoading(true)
-    props.logoutUser()
-    props.clearRegistrations()
-    props.updateIsLoading(false)
+    updateIsLoading(true)
+    logoutUser()
+    clearRegistrations()
+    updateIsLoading(false)
   }
 
   return (
@@ -103,7 +115,7 @@ const App = (props) => {
         <NavigationBar logout={logout} />
         <Notification />
         <div id="app-content">
-          {props.isLoading ? <LoadingSpinner /> : null}
+          {isLoading ? <LoadingSpinner /> : null}
           <Switch>
             <Route path="/login" render={() => null} />
             <LoginRoute exact path="/" render={() => <LandingPage />} />
@@ -176,13 +188,13 @@ const App = (props) => {
             <LoginRoute
               exact
               path="/register"
-              user={props.user}
+              user={user}
               render={() => <RegistrationPage />}
             />
             <LoginRoute
               exact
               path="/peerreview"
-              user={props.user}
+              user={user}
               render={() => <PeerReviewPage />}
             />
             <AdminRoute
@@ -241,6 +253,7 @@ const mapDispatchToProps = {
   ...peerReviewPageActions,
   logoutUser: userActions.logoutUser,
   loginUser: userActions.loginUser,
+  initializeMyGroup: myGroupActions.initializeMyGroup,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

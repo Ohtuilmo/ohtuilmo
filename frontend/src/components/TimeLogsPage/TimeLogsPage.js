@@ -5,28 +5,42 @@ import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
 import { SprintSelect } from './SprintSelect'
 import Typography from '@material-ui/core/Typography'
-import timeLoggingService from '../../services/timeLogging'
+import timeLogsService from '../../services/timeLogs'
 
 import './TimeLogsPage.css'
 
-const TimeLogsPage = () => {
+const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
   const [sprintNumber, setSprintNumber] = useState(1) // TODO: determine current sprint.
 
+  const { studentNumber, groupId } = props
+
   useEffect(() => {
-    timeLoggingService.getTimeEntries()
-      .then(fetchedData => {
-        console.log('fetchedData:', fetchedData)
+    const fetchTimeLogs = async () => {
+      try {
+        const fetchedData = await timeLogsService.getTimeLogs()
         setAllLogs(fetchedData)
-      })
-      .catch(error => {
-        console.error('Error fetching time entries:', error)
-      })
+      } catch (error) {
+        console.error('Error fetching logs:', error)
+      }
+    }
+
+    fetchTimeLogs()
   }, [])
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log('submitting...')
+  const handleSubmit = async (date, time, description) => {
+    const log = {
+      studentNumber,
+      sprint: sprintNumber,
+      date,
+      minutes: time,
+      description,
+      tags: [],
+      groupId,
+    }
+
+    const updatedLogs = await timeLogsService.createTimeLog(log)
+    setAllLogs(updatedLogs)
   }
 
   const handleDelete = () => {
@@ -68,7 +82,11 @@ const TimeLogsPage = () => {
   )
 }
 
-const mapStateToProps = () => {}
+const mapStateToProps = (state) => ({
+  state: state,
+  studentNumber: state.user.user.student_number,
+  // groupId: state.registrationDetails.myGroup.id,
+})
 
 const mapDispatchToProps = {}
 

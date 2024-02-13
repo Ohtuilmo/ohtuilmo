@@ -13,14 +13,9 @@ import {
 import './TimeLogsPage.css'
 
 export const TimeLogForm = ({ handleSubmit }) => {
-  // const [sprint, setSprint] = useState('')
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
   const [time, setTime] = useState('')
   const [description, setDescription] = useState('')
-
-  // const handleSprintChange = (event) => {
-  //   setSprint(event.target.value)
-  // }
 
   const handleDateChange = (event) => {
     setDate(event.target.value)
@@ -34,8 +29,13 @@ export const TimeLogForm = ({ handleSubmit }) => {
     setDescription(event.target.value)
   }
 
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+    handleSubmit({ date, time, description })
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="timelogs-form">
+    <form onSubmit={handleFormSubmit} className="timelogs-form">
       <Grid container>
         <Grid item xs={2}>
           <FormControl>
