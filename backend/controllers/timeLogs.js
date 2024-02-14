@@ -1,5 +1,9 @@
+
 const timeLogsRouter = require('express').Router()
 const { checkLogin } = require('../middleware')
+const db = require('../models/index')
+const { Sequelize } = require('sequelize')
+
 
 // Mock-data tuntikirjauksille
 const timeLogs = [
@@ -97,9 +101,52 @@ const validateTimeEntry = ({ sprint, date, minutes, description }) => {
 
 timeLogsRouter.get('/', checkLogin, async (req, res) => {
   const user_id = req.user.id
-  const logs = timeLogs.filter((entry) => entry.studentNumber === user_id)
+  //const logs = timeLogs.filter((entry) => entry.studentNumber === user_id)
+  //res.status(200).json(logs)
 
-  res.status(200).json(logs)
+
+  const raw_logs = await db.TimeLog.findAll({
+    where: { student_number: user_id },
+    attributes: [
+      ['id', 'id'],
+      ['date', 'date'],
+      ['minutes', 'minutes'],
+      ['student_number', 'studentNumber'],
+      'description',
+      [Sequelize.literal('sprint.sprint'), 'sprint'],
+      [Sequelize.literal('group_id'), 'groupId'],
+    ],
+    include: [
+      {
+        model: db.Sprint,
+        as: 'sprint',
+        attributes: [],
+      },
+      {
+        model: db.Tag,
+        as: 'tags',
+        attributes: ['title'],
+        through: { attributes: [] }
+      }
+    ],
+    raw: true,
+  })
+
+  const timeLogMap = new Map()
+  raw_logs.forEach(log => {
+    const { id, studentNumber, sprint, date, minutes, description, groupId, ...rest } = log
+    const formattedDate = new Date(date).toISOString().slice(0, 10)
+    const timeLog = timeLogMap.get(id) || { id, studentNumber, sprint, date: formattedDate, minutes, description, groupId, tags: [] }
+    const tag = rest['tags.title']
+    if (tag) {
+      timeLog.tags.push(tag)
+    }
+    timeLogMap.set(id, timeLog)
+  })
+
+  const groupedTimeLogs = Array.from(timeLogMap.values())
+  console.log('groupedTimeLogs:', groupedTimeLogs)
+  res.status(200).json(groupedTimeLogs)
 })
 
 timeLogsRouter.post('/', checkLogin, (req, res) => {
@@ -120,7 +167,7 @@ timeLogsRouter.post('/', checkLogin, (req, res) => {
     return res.status(400).json({ error })
   }
 
-  timeLogs.push(newLog)
+  timeLogs.push(newLog) //mock data pois
 
   res
     .status(201)
@@ -133,7 +180,7 @@ timeLogsRouter.delete('/:id', checkLogin, (req, res) => {
   if (index === -1) {
     return res.status(404).json({ error: 'Entry not found.' })
   }
-  timeLogs.splice(index, 1)
+  timeLogs.splice(index, 1) //mock data pois
   res
     .status(200)
     .json(timeLogs.filter((entry) => entry.studentNumber === req.user.id))

@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       allowNull: true
     },
-    sprint_number: {
+    sprint: {
       type: Sequelize.INTEGER,
       allowNull: false
     },

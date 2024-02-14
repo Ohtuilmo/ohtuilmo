@@ -200,7 +200,7 @@ db.connect = () => {
   })
 
   TimeLog.belongsTo(User, {
-    foreignKey: 'student_id',
+    foreignKey: 'student_number',
     as: 'student',
   })
 

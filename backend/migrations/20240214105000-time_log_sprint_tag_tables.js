@@ -16,13 +16,9 @@ const up = async (query, Sequelize) => {
       type:Sequelize.DATE,
       allowNull: true
     },
-    sprint_number: {
+    sprint: {
       type: Sequelize.INTEGER,
       allowNull: false
-    },
-    open: {
-      type:Sequelize.BOOLEAN,
-      defaultValue: false
     },
     group_id: {
       type: Sequelize.INTEGER,
@@ -50,15 +46,19 @@ const up = async (query, Sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
-    work_date: {
+    date: {
       type: Sequelize.DATE,
       allowNull: false
     },
-    time: {
+    minutes: {
       type:Sequelize.INTEGER,
       allowNull: false
     },
-    student_id: {
+    description: {
+      type: Sequelize.TEXT,
+      allowNull: false,
+    },
+    student_number: {
       type: Sequelize.STRING,
       allowNull: false,
       references: {
@@ -73,18 +73,6 @@ const up = async (query, Sequelize) => {
       allowNull: false,
       references: {
         model: 'sprints',
-        key: 'id'
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
-    },
-    //group_id may not be absolutely necessary: sprint is already linked to
-    //group, so having direct group reference here is bit redundant
-    group_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'groups',
         key: 'id'
       },
       onUpdate: 'CASCADE',
@@ -164,6 +152,7 @@ const down = async ({ context: queryInterface }) => {
   await queryInterface.dropTable('time_log')
   await queryInterface.dropTable('sprints')
   await queryInterface.dropTable('tag')
+  await queryInterface.dropTable('time_log_tag')
 }
 
 module.exports = {

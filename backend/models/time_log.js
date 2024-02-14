@@ -5,12 +5,16 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
-    work_date: {
+    date: {
       type: Sequelize.DATE,
       allowNull: false
     },
     time: {
       type:Sequelize.INTEGER,
+      allowNull: false
+    },
+    description: {
+      type:Sequelize.TEXT,
       allowNull: false
     },
     created_at: {
