@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
+import { NotInGroupPlaceholder, LoadingPlaceholder } from '../common/Placeholders'
 import { SprintSelect } from './SprintSelect'
 import Typography from '@material-ui/core/Typography'
 import timeLogsService from '../../services/timeLogs'
@@ -13,12 +14,11 @@ import {
 
 import './TimeLogsPage.css'
 
-// TODO: If no group, render placeholder text
 const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
   const [sprintNumber, setSprintNumber] = useState(1) // TODO: determine current sprint.
 
-  const { studentNumber, group } = props
+  const { studentNumber, group, isLoading } = props
 
   useEffect(() => {
     const fetchTimeLogs = async () => {
@@ -66,6 +66,9 @@ const TimeLogsPage = (props) => {
   const logsBySprint =
     isLogs(allLogs) && allLogs.filter((log) => log.sprint === sprintNumber)
 
+  if (isLoading) return <LoadingPlaceholder />
+  if (!group) return <NotInGroupPlaceholder />
+
   return (
     <div className="timelogs-container">
       <Typography variant="h4">Time Logs</Typography>
@@ -96,6 +99,7 @@ const mapStateToProps = (state) => ({
   state: state,
   studentNumber: state.user.user.student_number,
   group: state.registrationDetails.myGroup,
+  isLoading: state.app.isLoading,
 })
 
 const mapDispatchToProps = {}
