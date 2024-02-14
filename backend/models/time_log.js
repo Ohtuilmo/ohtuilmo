@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       allowNull: false
     },
-    time: {
+    minutes: {
       type:Sequelize.INTEGER,
       allowNull: false
     },
@@ -27,7 +27,10 @@ module.exports = (sequelize, Sequelize) => {
     }
   },
   {
-    underscored: true
+    underscored: true,
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   })
 
   return TimeLog
