@@ -146,30 +146,33 @@ const Questions = ({ questions, answerSheet, onAnswerUpdate }) => {
 }
 
 const CustomerReviewPage = (props) => {
-  useEffect(async () => {
+  useEffect(() => {
     const id = props.match.params.id
-    try {
-      const group = await customerReviewService.getDataForReview(id)
-      if (group) {
-        props.setReview(group.hasAnswered)
-        props.setGroupName(group.groupName)
-        props.setGroupId(group.groupId)
-        props.setTopicId(group.topicId)
-        props.setConfiguration(group.configuration)
-        const reviewQuestionSet = await customerReviewService.getReviewQuestions(
-          group.configuration
-        )
+    const fetch = async () => {
+      try {
+        const group = await customerReviewService.getDataForReview(id)
+        if (group) {
+          props.setReview(group.hasAnswered)
+          props.setGroupName(group.groupName)
+          props.setGroupId(group.groupId)
+          props.setTopicId(group.topicId)
+          props.setConfiguration(group.configuration)
+          const reviewQuestionSet = await customerReviewService.getReviewQuestions(
+            group.configuration
+          )
 
-        props.setQuestions(reviewQuestionSet.questions)
+          props.setQuestions(reviewQuestionSet.questions)
 
-        fetchCustomerReviewQuestions(props.questionObject)
-      } else {
-        props.setNoGroup(true)
+          fetchCustomerReviewQuestions(props.questionObject)
+        } else {
+          props.setNoGroup(true)
+        }
+      } catch (e) {
+        console.log(e)
+        props.setError('Some error happened')
       }
-    } catch (e) {
-      console.log(e)
-      props.setError('Some error happened')
     }
+    fetch()
   }, [])
 
   const fetchCustomerReviewQuestions = async (questionObject) => {
