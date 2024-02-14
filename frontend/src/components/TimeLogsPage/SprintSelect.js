@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, IconButton, Typography } from '@material-ui/core'
+import { IconButton, Typography } from '@material-ui/core'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
@@ -11,14 +11,22 @@ export const SprintSelect = ({
   handleClickPreviousSprint,
 }) => {
   return (
-    <Grid container alignItems="center">
-      <IconButton onClick={handleClickPreviousSprint}>
+    <div className="timelogs-sprint-select">
+      <IconButton
+        disableRipple
+        onClick={handleClickPreviousSprint}
+        className="button"
+      >
         <ArrowBackIosIcon style={{ fontSize: '16px' }} />
       </IconButton>
       <Typography variant="button">SPRINT {sprintNumber}</Typography>
-      <IconButton onClick={handleClickNextSprint}>
+      <IconButton
+        disableRipple
+        onClick={handleClickNextSprint}
+        className="button"
+      >
         <ArrowForwardIosIcon style={{ fontSize: '16px' }} />
       </IconButton>
-    </Grid>
+    </div>
   )
 }

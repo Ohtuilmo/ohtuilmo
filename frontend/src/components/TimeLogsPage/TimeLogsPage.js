@@ -3,9 +3,12 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
-import { NotInGroupPlaceholder, LoadingPlaceholder } from '../common/Placeholders'
+import {
+  NotInGroupPlaceholder,
+  LoadingPlaceholder,
+} from '../common/Placeholders'
 import { SprintSelect } from './SprintSelect'
-import Typography from '@material-ui/core/Typography'
+import { Typography } from '@material-ui/core'
 import timeLogsService from '../../services/timeLogs'
 import {
   minutesAndHoursFromString,
@@ -70,27 +73,27 @@ const TimeLogsPage = (props) => {
   if (!group) return <NotInGroupPlaceholder />
 
   return (
-    <div className="timelogs-container">
-      <Typography variant="h4">Time Logs</Typography>
-      <div className="timelogs-sprint-select-and-form">
-        <SprintSelect
-          sprintNumber={sprintNumber}
-          handleClickNextSprint={handleClickNextSprint}
-          handleClickPreviousSprint={handleClickPreviousSprint}
-        />
+    <div className="timelogs-container-1">
+      <div className="timelogs-container-2">
+        <div className="timelogs-container-3">
+          <Typography variant="h4">Time Logs</Typography>
+          <SprintSelect
+            sprintNumber={sprintNumber}
+            handleClickNextSprint={handleClickNextSprint}
+            handleClickPreviousSprint={handleClickPreviousSprint}
+          />
+        </div>
         <TimeLogForm handleSubmit={handleSubmit} />
       </div>
-      <div className="timelogs-logs">
-        {isLogs(logsBySprint) &&
-          logsBySprint.map((log) => (
-            <TimeLogRow
-              key={log.id}
-              log={log}
-              handleDelete={() => handleDelete(log.id)}
-            />
-          ))}
-        {!isLogs(logsBySprint) && <p>No logs yet :&#40;</p>}
-      </div>
+      {isLogs(logsBySprint) &&
+        logsBySprint.map((log) => (
+          <TimeLogRow
+            key={log.id}
+            log={log}
+            handleDelete={() => handleDelete(log.id)}
+          />
+        ))}
+      {!isLogs(logsBySprint) && <p>No logs yet :&#40;</p>}
     </div>
   )
 }

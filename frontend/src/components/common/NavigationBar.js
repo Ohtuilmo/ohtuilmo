@@ -11,12 +11,9 @@ import {
   regularItems,
   loggedInItems,
   adminItems,
-  instructorItems
+  instructorItems,
 } from './MenuItemLists'
 import './NavigationBar.css'
-
-
-
 
 const NavigationBar = ({ user, history, logout }) => {
   const getAppropriateMenuItemList = () => {
@@ -29,37 +26,39 @@ const NavigationBar = ({ user, history, logout }) => {
         items: [
           { title: 'Student', items: loggedInItems(history) },
           { title: 'Instructor', items: instructorItems(history) },
-          { title: 'Admin', items: adminItems(history) }
-        ]
+          { title: 'Admin', items: adminItems(history) },
+        ],
       }
     } else if (user.user.instructor) {
       return {
-        items: [
-          { title: 'Instructor', items: instructorItems(history) }
-        ]
+        items: [{ title: 'Instructor', items: instructorItems(history) }],
       }
     } else {
       return {
-        items: [
-          { title: 'Student', items: loggedInItems(history) }
-        ]
+        items: [{ title: 'Student', items: loggedInItems(history) }],
       }
     }
   }
 
-
   let loggedIn = user && user.user ? <AccountCircle /> : ''
-  let username = user && user.user ? <h4 className="navigation-bar-username tracking-in-expand">{user.user.username}</h4> : ''
+  let username =
+    user && user.user ? (
+      <h4 className="navigation-bar-username tracking-in-expand">
+        {user.user.username}
+      </h4>
+    ) : (
+      ''
+    )
 
   return (
     <div className="navigation-bar-container">
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{ zIndex: 1500 }}>
           <NavigationMenu menuItems={getAppropriateMenuItemList()} />
           <Typography
             variant="h6"
             color="inherit"
-            className="grow"
+            className="navigation-bar-title"
             style={{ marginLeft: '9px' }}
           >
             Software engineering project
@@ -80,10 +79,9 @@ const NavigationBar = ({ user, history, logout }) => {
   )
 }
 
-
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user
+    user: state.login.user,
   }
 }
 
