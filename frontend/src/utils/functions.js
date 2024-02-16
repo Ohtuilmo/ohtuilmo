@@ -1,13 +1,13 @@
 import store from '../reducers/store'
 
 export const getUserToken = () => {
-  const { user } = store.getState()
-  return user.token
+  const { login } = store.getState()
+  return login.user.token
 }
 
 export const getUser = () => {
-  const { user } = store.getState()
-  return user.user
+  const { login } = store.getState()
+  return login.user
 }
 
 /**

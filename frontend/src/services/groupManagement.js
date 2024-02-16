@@ -36,20 +36,24 @@ const del = async (groupToDelete) => {
   return response.data
 }
 
-const getByStudent = async () => {
-  const userStudentNumber = getUser().student_number
+const getByStudent = async (override=false, studentNumber=null) => {
+  const studentNumberToUse = override
+    ? studentNumber
+    : getUser().student_number
 
-  const response = await axios.get(`${url}/bystudent/${userStudentNumber}`, {
+  const response = await axios.get(`${url}/bystudent/${studentNumberToUse}`, {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
 
   return response.data
 }
 
-const getByInstructor = async () => {
-  const userStudentNumber = getUser().student_number
+const getByInstructor = async (override=false, studentNumber=null) => {
+  const studentNumberToUse = override
+    ? studentNumber
+    : getUser().student_number
 
-  const response = await axios.get(`${url}/byinstructor/${userStudentNumber}`, {
+  const response = await axios.get(`${url}/byinstructor/${studentNumberToUse}`, {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
 

@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
     topic: state.viewTopicPage.topic,
     isEditable: state.viewTopicPage.isEditable,
     isOnEditMode: state.viewTopicPage.isOnEditMode,
-    user: state.user
+    user: state.login.user
   }
 }
 

@@ -90,8 +90,8 @@ class LoginPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    username: state.loginPage.username,
-    password: state.loginPage.password,
+    username: state.login.username,
+    password: state.login.password,
     isLoading: state.app.isLoading
   }
 }
