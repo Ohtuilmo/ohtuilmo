@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { withRouter, Link } from 'react-router-dom'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -8,7 +9,6 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
-import Link from '@material-ui/core/Link'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 
 import LoadingCover from '../common/LoadingCover'
@@ -25,35 +25,34 @@ const customTheme = createMuiTheme({
   }
 })
 
+const TopicDetailsLink = ({ topicId, ...props }) => (
+  <Link {...props} to={`/topics/${topicId}`} />
+)
+
 const AdminMarker = () => {
   return <MuiThemeProvider theme={customTheme}>
     <Typography variant="overline" >Currently admin</Typography>
   </MuiThemeProvider>
 }
 
-const InstructorCell = (props) => {
-  return <TableCell padding="dense">
-    {props.instructor.map((group, index) => {
-      return <MuiThemeProvider theme={customTheme}>
-        <Link key={'instructor'+index} href="#" underline="hover" >
+const LinkedCell = (props) => {
+  if (props.instructor) {
+    return <TableCell padding="dense">
+      {props.instructor.map((group, index) => {
+        return <TopicDetailsLink key={'instructor'+index} topicId={group.topic} >
           {group.semester}: {group.groupName}
-        </Link>
-      </MuiThemeProvider>
-    })}
-  </TableCell>
-}
-
-const ParticipationCell = (props) => {
-  const { participated } = props
-  return <TableCell padding="dense">
-    {participated.map((group, index) => {
-      return <MuiThemeProvider theme={customTheme}>
-        <Link key={'participated'+index} href="#" underline="hover" >
+        </TopicDetailsLink>
+      })}
+    </TableCell>
+  } else {
+    return <TableCell padding="dense">
+      {props.participated.map((group, index) => {
+        return <TopicDetailsLink key={'participated'+index} topicId={group.topic} >
           {group.semester}: {group.groupName}
-        </Link>
-      </MuiThemeProvider>
-    })}
-  </TableCell>
+        </TopicDetailsLink>
+      })}
+    </TableCell>
+  }
 }
 
 const UserTableBody = (props) => {
@@ -74,10 +73,10 @@ const UserTableBody = (props) => {
         </TableCell>
         <TableCell padding="dense"><Typography variant='body2' >{user.email}</Typography></TableCell>
         {user.participated && user.participated.length > 0
-          ? <ParticipationCell participated={user.participated} />
+          ? <LinkedCell participated={user.participated} />
           : <TableCell padding="dense"><Typography variant='overline' >No course participation</Typography></TableCell>}
         {user.instructor && user.instructor.length > 0
-          ? <InstructorCell instructor={user.instructor} />
+          ? <LinkedCell instructor={user.instructor} />
           : <TableCell padding="dense"><Typography variant='overline' >No instructor activities</Typography></TableCell>}
       </TableRow>
     })}
@@ -127,7 +126,7 @@ const mapDispatchToProps = {
   setTestUsers: userListActions.setTestUsers
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewUsersPage)
+)(ViewUsersPage))
