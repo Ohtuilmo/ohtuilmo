@@ -14,25 +14,25 @@
 
 table {
   width: 100%;
-  border-collapse: collapse; /* Poistaa ylimääräisen välin solujen väliltä */
+  border-collapse: collapse; 
 }
 
 th, td {
-  padding: 8px; /* Lisää paddingia solujen sisällä, jotta teksti ei ole kiinni reunoissa */
-  text-align: left; /* Asettaa tekstin vasemmalle (voit muuttaa tarpeen mukaan) */
-  border-bottom: 1px solid #ddd; /* Lisää ohuen viivan sarakkeiden alle */
+  padding: 8px; 
+  text-align: left; 
+  border-bottom: 1px solid #ddd; 
 }
 
 th {
-  background-color: #f2f2f2; /* Taustaväri otsikkoriville */
+  background-color: #f2f2f2; 
 }
 
 tr:hover {
-  background-color: #f5f5f5; /* Lisää hover-efektin riveille */
+  background-color: #f5f5f5; 
 }
 
 .spacer {
-  height: 45px; /* Säädä korkeutta tarpeen mukaan */
+  height: 45px; 
 }
 
   
