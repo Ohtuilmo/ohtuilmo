@@ -8,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 
 import LoadingCover from '../common/LoadingCover'
@@ -18,6 +19,9 @@ const customTheme = createMuiTheme({
     overline: {
       color: 'darkOrange',
     }
+  },
+  link: {
+    color: 'darkOrange'
   }
 })
 
@@ -30,28 +34,26 @@ const AdminMarker = () => {
 const InstructorCell = (props) => {
   return <TableCell padding="dense">
     {props.instructor.map((group, index) => {
-      return <Typography variant='body2' key={'instructor'+index}>
-        {group.semester}: {group.groupName}
-      </Typography>
+      return <MuiThemeProvider theme={customTheme}>
+        <Link key={'instructor'+index} href="#" underline="hover" >
+          {group.semester}: {group.groupName}
+        </Link>
+      </MuiThemeProvider>
     })}
   </TableCell>
 }
 
 const ParticipationCell = (props) => {
   const { participated } = props
-  return participated.length === 1
-    ? <TableCell padding="dense">
-      <Typography variant='body2' >
-        {participated[0].semester}: {participated[0].groupName}
-      </Typography>
-    </TableCell>
-    : <TableCell padding="dense">
-      {participated.map((group, index) => {
-        return <Typography variant='body2' key={'participated'+index}>
+  return <TableCell padding="dense">
+    {participated.map((group, index) => {
+      return <MuiThemeProvider theme={customTheme}>
+        <Link key={'participated'+index} href="#" underline="hover" >
           {group.semester}: {group.groupName}
-        </Typography>
-      })}
-    </TableCell>
+        </Link>
+      </MuiThemeProvider>
+    })}
+  </TableCell>
 }
 
 const UserTableBody = (props) => {
