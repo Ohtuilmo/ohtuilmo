@@ -28,6 +28,10 @@ const loggedInItems = (history) => {
     {
       text: 'Time Logs',
       handler: () => history.push('/timelogs')
+    },
+    {
+      text: 'Sprints Dashborad',
+      handler: () => history.push('/sprints')
     }
   ]
 }

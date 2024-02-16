@@ -31,6 +31,7 @@ import Registrations from './components/Registrations'
 import InstructorReviews from './components/InstructorReviews'
 import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
 import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
+import SprintsDashborad from './components/SprintsPage/SprintsDashboard'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -225,6 +226,11 @@ const App = (props) => {
               exact
               path="/timelogs"
               render={() => <TimeLogsPage />}
+            />
+            <LoginRoute
+              exact
+              path="/sprints"
+              render={() => <SprintsDashborad />}
             />
             <Route component={NotFound} />
           </Switch>
