@@ -84,6 +84,10 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/participants')
     },
     {
+      text: 'Users',
+      handler: () => history.push('/administration/users')
+    },
+    {
       text: 'Registration Questions',
       handler: () => history.push('/administration/registration-questions')
     },

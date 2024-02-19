@@ -26,7 +26,7 @@ class UserDetails extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.login.user
   }
 }
 

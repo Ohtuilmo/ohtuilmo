@@ -29,6 +29,7 @@ import InstructorReviewPage from './components/InstructorReviewPage'
 import ViewCustomerReviewsPage from './components/ViewCustomerReviewsPage'
 import Registrations from './components/Registrations'
 import InstructorReviews from './components/InstructorReviews'
+import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -131,6 +132,11 @@ const App = (props) => {
           />
           <AdminRoute
             exact
+            path="/administration/users"
+            render={() => <ViewUsersPage />}
+          />
+          <AdminRoute
+            exact
             path="/administration/customer-review-questions"
             render={() => <CustomerReviewQuestionsPage />}
           />
@@ -216,7 +222,7 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.user
+    user: state.login.user
   }
 }
 
