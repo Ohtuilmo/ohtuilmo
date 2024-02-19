@@ -7,6 +7,7 @@ services:
       - 5432:5432
     environment:
       PGDATA: /data/test
+    container_name: ohtudb
     volumes:
       - pg-data:/data/test
 
@@ -21,7 +22,8 @@ services:
       - 3001:3001
     volumes:
       - ./backend:/usr/src/app
-      - ohtuback_node_modules:/usr/src/app/node_modules
+      - backend_node_modules:/usr/src/app/node_modules
+    container_name: ohtuback
     depends_on:
       - db
 
@@ -35,7 +37,8 @@ services:
       - 3000:3000
     volumes:
       - ./frontend:/usr/src/app
-      - ohtufront_node_modules:/usr/src/app/node_modules
+      - frontend_node_modules:/usr/src/app/node_modules
+    container_name: ohtufront
     depends_on:
       - backend
       - db
@@ -43,5 +46,5 @@ services:
 
 volumes:
   pg-data:
-  ohtuback_node_modules:
-  ohtufront_node_modules:
+  frontend_node_modules:
+  backend_node_modules:
