@@ -18,7 +18,6 @@ const SprintsPage = ({ studentNumber }) => {
     const fetchSprints = async () => {
       try {
         const fetchedData = await sprintService.getSprints()
-        console.log('fetchedData:', fetchedData)
         setAllSprints(fetchedData)
       } catch (error) {
         console.error('Error fetching sprints:', error)
@@ -38,7 +37,6 @@ const SprintsPage = ({ studentNumber }) => {
 
     try {
       const updatedSprints = await sprintService.createSprint(sprint)
-      console.log('updatedSprints:', updatedSprints)
       setAllSprints(updatedSprints)
     } catch (error) {
       console.error('Error creating sprint:', error)
@@ -49,7 +47,6 @@ const SprintsPage = ({ studentNumber }) => {
     try {
       const updatedSprints = await sprintService.deleteSprint(sprintId)
       setAllSprints(updatedSprints)
-      console.log('Updated sprints:', updatedSprints)
     } catch (error) {
       console.error('Error deleting sprint:', error)
     }

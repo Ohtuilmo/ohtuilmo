@@ -100,7 +100,7 @@ const TimeLogsPage = (props) => {
 
 const mapStateToProps = (state) => ({
   state: state,
-  studentNumber: state.user.user.student_number,
+  studentNumber: state.login.user.user.student_number,
   group: state.registrationDetails.myGroup,
   isLoading: state.app.isLoading,
 })

@@ -76,17 +76,22 @@ const App = (props) => {
   } = props
 
   useEffect(() => {
-    const handleLogin = () =>
-      !window.location.href.includes('customer-review/') && loginUser()
+    const handleLogin = async () => {
+      if (!window.location.href.includes('customer-review/')) {
+        await loginUser()
+      }
+    }
 
-    // TODO: these should prolly use async/await?
-    updateIsLoading(true)
-    handleLogin()
-    fetchRegistrationManagementData()
-    initializeMyGroup()
-    updateIsLoading(false)
+    const fetchData = async () => {
+      updateIsLoading(true)
+      await handleLogin()
+      await fetchRegistrationManagementData()
+      await initializeMyGroup()
+      updateIsLoading(false)
+    }
 
-    // TODO: what's the purpose of this?
+    fetchData()
+
     const loginInterval = setInterval(() => {
       handleLogin()
     }, 60 * 1000)
@@ -244,7 +249,7 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.user,
+    user: state.login.user,
   }
 }
 

@@ -131,8 +131,6 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
       description: description,
     })
 
-    // this simply ignores any tags that don't exist in the database
-    // error could be raised if the tags are not found, but is it necessary?
     if (tags && tags.length > 0) {
       const tagObjects = await db.Tag.findAll({
         where: {
