@@ -1,9 +1,7 @@
-
 const timeLogsRouter = require('express').Router()
 const { checkLogin } = require('../middleware')
 const db = require('../models/index')
 const { Sequelize } = require('sequelize')
-
 
 const validateTimeEntry = ({ sprint, date, minutes, description }) => {
   if (!sprint || !date || isNaN(parseFloat(minutes)) || !description) {
@@ -18,10 +16,9 @@ const validateTimeEntry = ({ sprint, date, minutes, description }) => {
   return null
 }
 
-
 const fetchFromDb = async (studentNumber) => {
   try {
-    const raw_logs = await db.TimeLog.findAll({
+    const rawLogs = await db.TimeLog.findAll({
       where: { student_number: studentNumber },
       attributes: [
         ['id', 'id'],
@@ -42,17 +39,35 @@ const fetchFromDb = async (studentNumber) => {
           model: db.Tag,
           as: 'tags',
           attributes: ['title'],
-          through: { attributes: [] }
-        }
+          through: { attributes: [] },
+        },
       ],
       raw: true,
     })
 
     const timeLogMap = new Map()
-    raw_logs.forEach(log => {
-      const { id, studentNumber, sprint, date, minutes, description, groupId, ...rest } = log
+    rawLogs.forEach((log) => {
+      const {
+        id,
+        studentNumber,
+        sprint,
+        date,
+        minutes,
+        description,
+        groupId,
+        ...rest
+      } = log
       const formattedDate = new Date(date).toISOString().slice(0, 10)
-      const timeLog = timeLogMap.get(id) || { id, studentNumber, sprint, date: formattedDate, minutes, description, groupId, tags: [] }
+      const timeLog = timeLogMap.get(id) || {
+        id,
+        studentNumber,
+        sprint,
+        date: formattedDate,
+        minutes,
+        description,
+        groupId,
+        tags: [],
+      }
       const tag = rest['tags.title']
       if (tag) {
         timeLog.tags.push(tag)
@@ -77,7 +92,6 @@ timeLogsRouter.get('/', checkLogin, async (req, res) => {
 })
 
 timeLogsRouter.post('/', checkLogin, async (req, res) => {
-  //req.body.tags = ['Frontend', 'Backend', 'React'] // Mock data, remove
   const { sprint, date, minutes, description, tags, groupId } = req.body
   const studentNumber = req.user.id
   const newLog = {
@@ -100,8 +114,8 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
     const sprintRecord = await db.Sprint.findOne({
       where: {
         sprint: sprint,
-        group_id: groupId
-      }
+        group_id: groupId,
+      },
     })
     if (!sprintRecord) {
       return res.status(404).json({ error: 'Sprint not found.' })
@@ -122,11 +136,11 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
     if (tags && tags.length > 0) {
       const tagObjects = await db.Tag.findAll({
         where: {
-          title: tags
-        }
+          title: tags,
+        },
       })
 
-      const tagIds = tagObjects.map(tag => tag.id)
+      const tagIds = tagObjects.map((tag) => tag.id)
       await timeLog.addTags(tagIds)
     }
 
@@ -143,17 +157,21 @@ timeLogsRouter.delete('/:id', checkLogin, async (req, res) => {
   const userId = req.user.id
 
   try {
-    const timeLog = await db.TimeLog.findOne({ where: { id: id, student_number: userId } })
+    const timeLog = await db.TimeLog.findOne({
+      where: { id: id, student_number: userId },
+    })
 
     if (!timeLog) {
-      return res.status(404).json({ error: 'Time log not found or unauthorized to delete' })
+      return res
+        .status(404)
+        .json({ error: 'Time log not found or unauthorized to delete' })
     }
 
     await db.TimeLog.destroy({ where: { id: id } })
     const timeLogs = await fetchFromDb(userId)
     return res.status(200).json(timeLogs)
   } catch (error) {
-    console.error('Error deleting time log:' , error)
+    console.error('Error deleting time log:', error)
     return res.status(500).json({ error: 'Internal server error' })
   }
 })
