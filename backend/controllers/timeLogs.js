@@ -5,88 +5,6 @@ const db = require('../models/index')
 const { Sequelize } = require('sequelize')
 
 
-// Mock-data tuntikirjauksille
-
-// const timeLogs = [
-//   {
-//     id: 1,
-//     studentNumber:
-//       '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3',
-//     sprint: 1,
-//     date: '2023-01-15',
-//     minutes: 50,
-//     description: 'Frontend development',
-//     tags: ['frontend', 'react'],
-//     groupId: '23567836',
-//   },
-//   {
-//     id: 2,
-//     studentNumber:
-//       '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3',
-//     sprint: 1,
-//     date: '2023-02-19',
-//     minutes: 120,
-//     description: 'Backend development',
-//     tags: ['backend', 'node'],
-//     groupId: '23567836',
-//   },
-//   {
-//     id: 3,
-//     studentNumber:
-//       '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3',
-//     sprint: 2,
-//     date: '2023-02-25',
-//     minutes: 80,
-//     description: 'Backend development',
-//     tags: ['backend', 'node'],
-//     groupId: '23567836',
-//   },
-//   {
-//     id: 4,
-//     studentNumber:
-//       '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3',
-//     sprint: 2,
-//     date: '2023-02-23',
-//     minutes: 100,
-//     description: 'Wrote unit tests.',
-//     tags: ['backend'],
-//     groupId: '23567836',
-//   },
-//   {
-//     id: 5,
-//     studentNumber:
-//       '10f8bdef82c62acf57da2c7bf8064641fb14f7b07f49b3f2f3316bf697ea3706',
-//     sprint: 1,
-//     date: '2023-01-17',
-//     minutes: 30,
-//     description: 'Customer meeting',
-//   },
-//   {
-//     id: 6,
-//     studentNumber:
-//       '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3',
-//     sprint: 1,
-//     date: '2023-01-19',
-//     minutes: 220,
-//     description: 'Reviewed a PR from Pekka.',
-//     tags: ['backend'],
-//     groupId: '23567836',
-//   },
-//   {
-//     id: 7,
-//     studentNumber:
-//       '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3',
-//     sprint: 3,
-//     date: '2023-03-01',
-//     minutes: 120,
-//     description: 'Refactored code.',
-//     tags: ['backend'],
-//     groupId: '23567836',
-//   },
-// ]
-
-// TODO: validate date field
-
 const validateTimeEntry = ({ sprint, date, minutes, description }) => {
   if (!sprint || !date || isNaN(parseFloat(minutes)) || !description) {
     return 'All fields must be filled.'
@@ -159,6 +77,7 @@ timeLogsRouter.get('/', checkLogin, async (req, res) => {
 })
 
 timeLogsRouter.post('/', checkLogin, async (req, res) => {
+  //req.body.tags = ['Frontend', 'Backend', 'React'] // Mock data, remove
   const { sprint, date, minutes, description, tags, groupId } = req.body
   const studentNumber = req.user.id
   const newLog = {
@@ -173,7 +92,7 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
 
   const error = validateTimeEntry(newLog)
   if (error) {
-    console.log('error:', error)
+    console.error('error:', error)
     return res.status(400).json({ error })
   }
 
@@ -190,7 +109,7 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
 
     const sprintId = sprintRecord.id
 
-    await db.TimeLog.create({
+    const timeLog = await db.TimeLog.create({
       student_number: studentNumber,
       sprint_id: sprintId,
       date: date,
@@ -198,10 +117,23 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
       description: description,
     })
 
+    // this simply ignores any tags that don't exist in the database
+    // error could be raised if the tags are not found, but is it necessary?
+    if (tags && tags.length > 0) {
+      const tagObjects = await db.Tag.findAll({
+        where: {
+          title: tags
+        }
+      })
+
+      const tagIds = tagObjects.map(tag => tag.id)
+      await timeLog.addTags(tagIds)
+    }
+
     const timeLogs = await fetchFromDb(studentNumber)
     return res.status(201).json(timeLogs)
   } catch (error) {
-    console.log('error:', error)
+    console.error('error:', error)
     return res.status(500).json({ error: 'Error creating time log.' })
   }
 })
