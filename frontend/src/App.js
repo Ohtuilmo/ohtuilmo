@@ -31,7 +31,7 @@ import Registrations from './components/Registrations'
 import InstructorReviews from './components/InstructorReviews'
 import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
 import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
-import SprintsDashborad from './components/SprintsPage/SprintsDashboard'
+import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -76,7 +76,8 @@ const App = (props) => {
   } = props
 
   useEffect(() => {
-    const handleLogin = () => !window.location.href.includes('customer-review/') && loginUser()
+    const handleLogin = () =>
+      !window.location.href.includes('customer-review/') && loginUser()
 
     // TODO: these should prolly use async/await?
     updateIsLoading(true)
@@ -230,7 +231,7 @@ const App = (props) => {
             <LoginRoute
               exact
               path="/sprints"
-              render={() => <SprintsDashborad />}
+              render={() => <SprintsDashboard />}
             />
             <Route component={NotFound} />
           </Switch>
