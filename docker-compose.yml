@@ -11,7 +11,7 @@ services:
       - db
 
   backend:
-    image: quay.io/ohtuilmo/ohtuback
+    image: quay.io/ohtuilmo/backend
     build: './backend'
     restart: always
     ports:
