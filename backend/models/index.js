@@ -1,3 +1,4 @@
+const { isProductionEnvironment } = require('./utils/index')
 const Sequelize = require('sequelize')
 const config = require('../config/sequelize.js')
 
@@ -7,8 +8,11 @@ db.connect = () => {
   const sequelizeConfig = config[process.env.NODE_ENV]
 
   let sequelize
-  if (process.env.DATABASE_URL) {
-    sequelize = new Sequelize(process.env.DATABASE_URL, { logging: true, dialect: 'postgres' })
+  if (isProductionEnvironment()) {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+      logging: true,
+      dialect: 'postgres',
+    })
   } else {
     sequelize = new Sequelize(sequelizeConfig)
   }
