@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import './PeerReviewPage.css'
 import { getUser } from '../utils/functions'
+import {
+  NotInGroupPlaceholder,
+  LoadingPlaceholder,
+} from './common/Placeholders'
 
 // Actions
 import appActions from '../reducers/actions/appActions'
@@ -47,7 +51,7 @@ class PeerReview extends React.Component {
         type: 'radio',
         id: questionId,
         questionHeader: question.header,
-        peers: {}
+        peers: {},
       }
 
       peers.forEach(
@@ -63,7 +67,7 @@ class PeerReview extends React.Component {
         type: 'number',
         questionHeader: question.header,
         id: questionId,
-        answer: 0
+        answer: 0,
       }
     }
 
@@ -72,7 +76,7 @@ class PeerReview extends React.Component {
         type: 'text',
         questionHeader: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
 
@@ -106,8 +110,8 @@ class PeerReview extends React.Component {
           answer_sheet: answerSheet,
           user_id: getUser().student_number,
           configuration_id: reviewConf,
-          review_round: this.props.reviewRound
-        }
+          review_round: this.props.reviewRound,
+        },
       })
       this.props.setSubmittedReviews(
         this.props.submittedReviews.concat(createdReview)
@@ -131,15 +135,11 @@ class PeerReview extends React.Component {
       questionObject,
       reviewConf,
       reviewOpen,
-      reviewRound
+      reviewRound,
     } = this.props
 
     if (isInitializing) {
-      return (
-        <div className="peer-review-container">
-          <h1 className="peer-review-container__h1">Loading!</h1>
-        </div>
-      )
+      return <LoadingPlaceholder />
     } else if (!reviewOpen) {
       return (
         <div className="peer-review-container">
@@ -149,13 +149,7 @@ class PeerReview extends React.Component {
         </div>
       )
     } else if (groupsLoading) {
-      return (
-        <div className="peer-review-container">
-          <h1 className="peer-review-container__h1">
-            You are not currently assigned to any group!
-          </h1>
-        </div>
-      )
+      return <NotInGroupPlaceholder />
     } else if (submittedReviews.length >= reviewRound) {
       return (
         <div className="peer-review-container">
@@ -215,7 +209,7 @@ const Question = ({
   question,
   questionId,
   answerSheet,
-  updateAnswer
+  updateAnswer,
 }) => {
   if (question.type === 'radio') {
     let temp = question.options
@@ -335,7 +329,7 @@ const QuestionRow = ({
   options,
   peerId,
   questionId,
-  answerSheet
+  answerSheet,
 }) => {
   return (
     <tr className="peer-review-box__peer-row">
@@ -375,14 +369,14 @@ const mapStateToProps = (state) => {
     questionObject: state.peerReviewPage.questions,
     reviewConf: state.registrationManagement.peerReviewConf,
     reviewRound: state.registrationManagement.peerReviewRound,
-    reviewOpen: state.registrationManagement.peerReviewOpen
+    reviewOpen: state.registrationManagement.peerReviewOpen,
   }
 }
 
 const mapDispatchToProps = {
   ...peerReviewPageActions,
   ...notificationActions,
-  ...appActions
+  ...appActions,
 }
 
 const ConnectedPeerReview = connect(

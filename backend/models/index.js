@@ -43,6 +43,10 @@ db.connect = () => {
   const CustomerReviewModel = require('./customer_review')
   const SentTopicEmailModel = require('./sent_topic_email')
 
+  const SprintModel = require('./sprint')
+  const TagModel = require('./tag')
+  const TimeLogModel = require('./time_log')
+
   const User = UserModel(sequelize, Sequelize)
   const Group = GroupModel(sequelize, Sequelize)
   const Topic = TopicModel(sequelize, Sequelize)
@@ -68,6 +72,10 @@ db.connect = () => {
   const InstructorReview = InstructorReviewModel(sequelize, Sequelize)
   const SentTopicEmail = SentTopicEmailModel(sequelize, Sequelize)
 
+  const Sprint = SprintModel(sequelize, Sequelize)
+  const Tag = TagModel(sequelize, Sequelize)
+  const TimeLog = TimeLogModel(sequelize, Sequelize)
+
   db.User = User
   db.Group = Group
   db.Topic = Topic
@@ -87,84 +95,125 @@ db.connect = () => {
   db.CustomerReview = CustomerReview
   db.SentTopicEmail = SentTopicEmail
 
+  db.Sprint = Sprint
+  db.Tag = Tag
+  db.TimeLog = TimeLog
+
   Group.belongsTo(Topic, {
-    as: 'topic'
+    as: 'topic',
   })
   Group.belongsTo(Configuration, {
-    as: 'configuration'
+    as: 'configuration',
   })
   Group.belongsToMany(User, {
     through: 'group_students',
-    as: 'students'
+    as: 'students',
   })
   User.belongsToMany(Group, {
     through: 'group_students',
-    as: 'groups'
+    as: 'groups',
   })
   Group.belongsTo(User, {
     as: 'instructor',
-    foreignKey: 'instructorId'
+    foreignKey: 'instructorId',
   })
 
   PeerReview.belongsTo(User, {
     as: 'user',
-    foreignKey: 'user_id'
+    foreignKey: 'user_id',
   })
 
   PeerReview.belongsTo(Configuration, {
     as: 'configuration',
-    foreignKey: 'configuration_id'
+    foreignKey: 'configuration_id',
   })
 
   CustomerReview.belongsTo(Group, {
     as: 'group',
-    foreignKey: 'group_id'
+    foreignKey: 'group_id',
   })
   CustomerReview.belongsTo(Topic, {
     as: 'topic',
-    foreignKey: 'topic_id'
+    foreignKey: 'topic_id',
   })
   Topic.hasMany(CustomerReview, {
     as: 'customer_review',
-    foreignKey: 'topic_id'
+    foreignKey: 'topic_id',
   })
   CustomerReview.belongsTo(Configuration, {
     as: 'configuration',
-    foreignKey: 'configuration_id'
+    foreignKey: 'configuration_id',
   })
 
   Configuration.hasOne(RegistrationManagement, {
     as: 'peer_review_configuration',
-    foreignKey: 'peer_review_conf'
+    foreignKey: 'peer_review_conf',
   })
 
   Configuration.hasOne(RegistrationManagement, {
     as: 'project_registration_configuration',
-    foreignKey: 'project_registration_conf'
+    foreignKey: 'project_registration_conf',
   })
 
   Configuration.hasOne(RegistrationManagement, {
     as: 'topic_registration_configuration',
-    foreignKey: 'topic_registration_conf'
+    foreignKey: 'topic_registration_conf',
   })
 
   Topic.belongsTo(Configuration, {
     as: 'configuration',
-    foreignKey: 'configuration_id'
+    foreignKey: 'configuration_id',
   })
 
   InstructorReview.belongsTo(User, {
     as: 'user',
-    foreignKey: 'user_id'
+    foreignKey: 'user_id',
   })
 
   SentTopicEmail.belongsTo(Topic, {
     as: 'topic',
-    foreignKey: 'topic_id'
+    foreignKey: 'topic_id',
   })
   Topic.hasMany(SentTopicEmail, {
     as: 'sent_emails',
-    foreignKey: 'topic_id'
+    foreignKey: 'topic_id',
+  })
+
+  Group.hasMany(Sprint, {
+    foreignKey: 'group_id',
+    as: 'sprints',
+  })
+
+  Sprint.belongsTo(Group, {
+    foreignKey: 'group_id',
+    as: 'group',
+  })
+
+  TimeLog.belongsTo(Sprint, {
+    foreignKey: 'sprint_id',
+    as: 'sprint',
+  })
+
+  Sprint.hasMany(TimeLog, {
+    foreignKey: 'sprint_id',
+    as: 'timeLogs',
+  })
+
+  TimeLog.belongsTo(User, {
+    foreignKey: 'student_number',
+    as: 'student',
+  })
+
+  Tag.belongsToMany(TimeLog, {
+    through: 'time_log_tags',
+    foreignKey: 'tag_id',
+    as: 'timeLogs',
+  })
+
+  TimeLog.belongsToMany(Tag, {
+    through: 'time_log_tags',
+    foreignKey: 'time_log_id',
+    as: 'tags',
   })
 
   db.Configuration.associate(db)

@@ -1,13 +1,16 @@
 import store from '../reducers/store'
 
 export const getUserToken = () => {
-  const { login } = store.getState()
-  return login.user.token
+  const state = store.getState()
+  if (state && state.login && state.login.user) return state.login.user.token
+  return undefined
 }
 
 export const getUser = () => {
   const { login } = store.getState()
-  return login.user
+
+  if (login && login.user && login.user.user) return login.user.user
+  return undefined
 }
 
 /**
@@ -17,4 +20,23 @@ export const getUser = () => {
 export const formatDate = (date) => {
   const parsedDate = new Date(date).toLocaleString('fi-FI')
   return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
+}
+
+export const minutesToFormattedHoursAndMinutes = (totalMinutes) => {
+  const hours = Math.floor(totalMinutes / 60)
+    .toString()
+    .padStart(2, '0')
+  const minutes = (totalMinutes % 60).toString().padStart(2, '0')
+  return { hours, minutes }
+}
+
+export const hoursAndMinutesToMinutes = ({ hours, minutes }) => {
+  return hours * 60 + minutes
+}
+
+export const minutesAndHoursFromString = (string) => {
+  const parts = string.split(':')
+  const hours = parseInt(parts[0], 10)
+  const minutes = parseInt(parts[1], 10)
+  return { hours, minutes }
 }

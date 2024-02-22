@@ -7,10 +7,11 @@ import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import MenuIcon from '@material-ui/icons/Menu'
+import './NavigationBar.css'
 
 class NavigationMenu extends React.Component {
   state = {
-    open: false
+    open: false,
   }
 
   handleToggle = () => {
@@ -33,7 +34,9 @@ class NavigationMenu extends React.Component {
   render() {
     const { open } = this.state
 
-    const menuItemsArray = Array.isArray(this.props.menuItems) ? this.props.menuItems : this.props.menuItems.items
+    const menuItemsArray = Array.isArray(this.props.menuItems)
+      ? this.props.menuItems
+      : this.props.menuItems.items
 
     const renderMenuItems = (items) => {
       return items.map((item) => {
@@ -58,10 +61,8 @@ class NavigationMenu extends React.Component {
       })
     }
 
-
-
     return (
-      <div>
+      <div className="navigation-menu">
         <div>
           <IconButton
             className="nav-menu-button"
@@ -87,7 +88,7 @@ class NavigationMenu extends React.Component {
                 id="menu-list-grow"
                 style={{
                   transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom'
+                    placement === 'bottom' ? 'center top' : 'center bottom',
                 }}
               >
                 <Paper>

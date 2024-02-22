@@ -7,6 +7,20 @@
   flex-grow: 1
 }
 
+.navigation-bar-title {
+  flex-grow: 1;
+
+  @media (max-width: 650px) {
+    display: none !important;
+  }
+}
+
+.navigation-menu {
+  @media (max-width: 650px) {
+    flex-grow: 1;
+  }
+}
+
 .navigation-bar-username {
   padding-left: 5px;
 }
