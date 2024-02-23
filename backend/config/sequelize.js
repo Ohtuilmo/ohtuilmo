@@ -7,7 +7,7 @@ module.exports = {
     port: '5432',
     host: 'localhost',
     dialect: 'postgres',
-    operatorsAliases: false,
+    operatorsAliases: 0,
     pool: {
       max: 5,
       min: 0,
@@ -22,7 +22,7 @@ module.exports = {
     host: process.env.DB_HOST,
     password: process.env.DB_PASSWORD,
     dialect: 'postgres',
-    operatorsAliases: false,
+    operatorsAliases: 0,
     pool: {
       max: 5,
       min: 0,
