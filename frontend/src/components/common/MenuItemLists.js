@@ -30,11 +30,10 @@ const loggedInItems = (history) => {
       handler: () => history.push('/timelogs'),
     },
     // TODO: uncomment this in the Sprint Management PR.
-    //
-    // {
-    //   text: 'Sprint Dashboard',
-    //   handler: () => history.push('/sprints'),
-    // },
+    {
+      text: 'Sprint Dashboard',
+      handler: () => history.push('/sprints'),
+    },
   ]
 }
 
