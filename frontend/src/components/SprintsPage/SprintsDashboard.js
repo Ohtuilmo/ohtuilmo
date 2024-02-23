@@ -119,7 +119,7 @@ const SprintsPage = ({ studentNumber }) => {
 }
 
 const mapStateToProps = (state) => ({
-  studentNumber: state.user.user.student_number,
+  studentNumber: state.login.user.user.student_number,
 })
 
 export default withRouter(connect(mapStateToProps)(SprintsPage))
