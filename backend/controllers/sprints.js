@@ -23,8 +23,8 @@ const findLatestGroupId = async (studentNumber) => {
     const latestGroupId = latestGroup.id
     return latestGroupId
   } catch (error) {
-    console.error('User does not belong to any group or not found')
-    throw new Error('User does not belong to any group or not found')
+    console.error('Error finding latest group:', error)
+    throw new Error('Error finding latest group.')
   }
 }
 
@@ -72,7 +72,7 @@ const fetchSprintsFromDb = async (studentNumber) => {
 
     return formattedSprints
   } catch (error) {
-    console.error('Error fetching sprtings:', error)
+    console.error('Error fetching sprints:', error)
     throw new Error('Error fetching sprints.')
   }
 }
