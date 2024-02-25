@@ -9,10 +9,7 @@ db.connect = () => {
 
   let sequelize
   if (isProductionEnvironment()) {
-    sequelize = new Sequelize(process.env.DATABASE_URL, {
-      logging: false,
-      dialect: 'postgres',
-    })
+    sequelize = new Sequelize(process.env.DATABASE_URL)
   } else {
     sequelize = new Sequelize(sequelizeConfig)
   }
