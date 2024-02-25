@@ -148,11 +148,11 @@ const up = async (query, Sequelize) => {
   })
 }
 
-const down = async ({ context: queryInterface }) => {
-  await queryInterface.dropTable('time_logs')
-  await queryInterface.dropTable('sprints')
-  await queryInterface.dropTable('tags')
-  await queryInterface.dropTable('time_log_tags')
+const down = async (query) => {
+  await query.dropTable('time_log_tags')
+  await query.dropTable('tags')
+  await query.dropTable('time_logs')
+  await query.dropTable('sprints')
 }
 
 module.exports = {
