@@ -59,6 +59,7 @@ const initialQuestionsWithAnswers = [
 
 const initialRegistrationQuestionSet = [
   {
+    id: 1,
     name: 'Kysymyssetti 1',
     questions: JSON.stringify(
       initialQuestionsWithAnswers.map((item) => {
@@ -73,6 +74,7 @@ const initialRegistrationQuestionSet = [
 
 const initialConfiguration = [
   {
+    id: 1,
     name: 'Konfiguraatio 1',
     registration_question_set_id: 1,
     created_at: new Date(),
