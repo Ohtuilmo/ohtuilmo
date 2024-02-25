@@ -8,6 +8,7 @@ module.exports = {
     host: 'localhost',
     dialect: 'postgres',
     operatorsAliases: 0,
+    logging: false,
     pool: {
       max: 5,
       min: 0,
