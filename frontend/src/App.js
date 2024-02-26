@@ -91,12 +91,6 @@ const App = (props) => {
     }
 
     fetchData()
-
-    const loginInterval = setInterval(() => {
-      handleLogin()
-    }, 60 * 1000)
-
-    return () => clearInterval(loginInterval)
   }, [])
 
   const fetchRegistrationManagementData = async () => {
