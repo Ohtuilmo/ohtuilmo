@@ -51,6 +51,8 @@ import {
   InstructorRoute,
 } from '../src/utils/protectedRoutes'
 
+import loginService from './services/login'
+
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
 const NotFound = () => (
@@ -91,6 +93,14 @@ const App = (props) => {
     }
 
     fetchData()
+
+    const loginInterval = setInterval(() => {
+      if (!window.location.href.includes('customer-review/')) {
+        loginService.login()
+      }
+    }, 60 * 1000)
+
+    return () => clearInterval(loginInterval)
   }, [])
 
   const fetchRegistrationManagementData = async () => {
