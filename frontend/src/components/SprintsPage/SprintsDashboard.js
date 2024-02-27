@@ -37,9 +37,16 @@ const SprintsPage = ({ studentNumber }) => {
     try {
       const updatedSprints = await sprintService.createSprint(sprint)
       setAllSprints(updatedSprints)
+      clearForm()
     } catch (error) {
       console.error('Error creating sprint:', error)
     }
+  }
+
+  const clearForm = () => {
+    setSprintNumber('')
+    setStartDate('')
+    setEndDate('')
   }
 
   const handleDeleteSprint = async (sprintId) => {
