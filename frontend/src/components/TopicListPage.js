@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import Button from '@material-ui/core/Button'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import Radio from '@material-ui/core/Radio'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
@@ -18,9 +22,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Icon from '@material-ui/icons/Input'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
-import orange from '@material-ui/core/colors/orange'
+import { green, red, orange } from '@material-ui/core/colors'
 
 import emailService from '../services/email'
 import { formatDate } from '../utils/functions'
@@ -377,8 +379,37 @@ const getApiError = (e) => {
   return isAxiosError(e) && e.response.data && e.response.data.error
 }
 
+const TopicAcceptanceFilter = (props) => {
+  const {
+    acceptanceFilter,
+    updateAcceptanceFilter
+  } = props
+
+  const handleAcceptanceFilterChange = (event) => {
+    updateAcceptanceFilter(event.target.value)
+  }
+
+  return <Fragment>
+    <FormControl sx={{ margin: '0 4rem' }}>
+      <MuiThemeProvider theme={redGreenTheme}>
+        <RadioGroup
+          row
+          defaultValue='all'
+          name='topic-acceptance-filter'
+          value={acceptanceFilter}
+          onChange={handleAcceptanceFilterChange}>
+          <FormControlLabel value='all' control={<Radio color='default' />} label='All' />
+          <FormControlLabel value='accepted' control={<Radio color='primary' />} label='Accepted' />
+          <FormControlLabel value='rejected' control={<Radio color='secondary' />} label='Rejected' />
+        </RadioGroup>
+      </MuiThemeProvider>
+    </FormControl>
+  </Fragment>
+}
+
 const TopicListPage = (props) => {
   const {
+    acceptanceFilter,
     fetchTopics,
     setError,
     configurations,
@@ -512,9 +543,16 @@ const TopicListPage = (props) => {
       )
   }
 
-  const shownTopics = topics
-    .filter((topic) => topic.configuration_id === filter)
-    .sort(activeFirstThenByTitle)
+  const shownTopics = acceptanceFilter === 'all'
+    ? topics
+      .filter((topic) => topic.configuration_id === filter)
+      .sort(activeFirstThenByTitle)
+    : topics
+      .filter((topic) => topic.configuration_id === filter && topic.active)
+      .filter((topic) => acceptanceFilter === 'accepted'
+        ? topic.sentEmails[0].email.type === 'topicAccepted'
+        : topic.sentEmails[0].email.type === 'topicRejected')
+      .sort(activeFirstThenByTitle)
 
   return (
     <div className="topics-container">
@@ -522,12 +560,16 @@ const TopicListPage = (props) => {
         <LoadingCover className="topics-container__loading-cover" />
       )}
 
-      <Select
-        value={filter}
-        onChange={(event) => updateFilter(event.target.value)}
-      >
-        {configurationMenuItems()}
-      </Select>
+      <div className='topics-filter-container'>
+        <Select
+          value={filter}
+          onChange={(event) => updateFilter(event.target.value)}
+        >
+          {configurationMenuItems()}
+        </Select>
+
+        <TopicAcceptanceFilter {...props} />
+      </div>
 
       <TopicTable
         topics={shownTopics}
@@ -558,6 +600,7 @@ const mapStateToProps = (state) => {
     // done in quick succession and their "loading" doesn't affect page usage
     isLoading: topicListPage.isTopicsLoading,
     filter: topicListPage.filter,
+    acceptanceFilter: topicListPage.acceptanceFilter,
     configurations: state.configurationPage.configurations,
   }
 }
@@ -565,6 +608,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
+  updateAcceptanceFilter: topicListPageActions.updateAcceptanceFilter,
   setTopicActive: topicListPageActions.setTopicActive,
   sendCustomerEmail: topicListPageActions.sendCustomerEmail,
   setError: notificationActions.setError,

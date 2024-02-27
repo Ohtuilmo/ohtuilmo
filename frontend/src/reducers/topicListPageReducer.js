@@ -9,6 +9,15 @@ const filter = (state = 0, action) => {
   }
 }
 
+const acceptanceFilter = (state = 'all', action) => {
+  switch (action.type) {
+  case 'TOPIC_PAGE_UPDATE_ACCEPTANCE_FILTER':
+    return action.payload
+  default:
+    return state
+  }
+}
+
 const isTopicsLoading = (state = false, action) => {
   switch (action.type) {
   case 'TOPIC_PAGE_FETCH_TOPICS_REQUEST':
@@ -47,6 +56,7 @@ const topics = (state = [], action) => {
 }
 
 export default combineReducers({
+  acceptanceFilter,
   filter,
   topics,
   isTopicsLoading
