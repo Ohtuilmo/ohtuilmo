@@ -13,7 +13,6 @@ const SprintsPage = ({ studentNumber }) => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
-
   useEffect(() => {
     const fetchSprints = async () => {
       try {
@@ -58,33 +57,59 @@ const SprintsPage = ({ studentNumber }) => {
       <div className="spacer"></div>
       <div className="add-sprint-container">
         <TextField
+          className="sprint-number"
+          id="sprintNumber"
           label="Sprint Number"
+          aria-describedby="sprintNumber"
           type="number"
           value={sprintNumber}
           onChange={(e) => setSprintNumber(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
         />
         <TextField
-          label="Start Date"
+          className="date"
+          id="startDate"
           type="date"
+          label="Start Date"
+          aria-describedby="startDate"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
+          variant="outlined"
         />
         <TextField
-          label="End Date"
+          className="date"
+          id="endDate"
           type="date"
+          label="End Date"
+          aria-describedby="endDate"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
+          variant="outlined"
         />
-        <Button onClick={handleAddSprint} variant="contained" color="primary">
-          Add Sprint
-        </Button>
       </div>
+      <Button
+        variant="contained"
+        className="button"
+        onClick={handleAddSprint}
+        style={{
+          backgroundColor: '#188433',
+          color: 'white',
+          borderRadius: '8px',
+          boxShadow: 'none',
+          fontWeight: 'bolder',
+        }}
+      >
+        Add Sprint
+      </Button>
       <div className="sprint-list-container">
         <table>
           <thead>
@@ -105,7 +130,8 @@ const SprintsPage = ({ studentNumber }) => {
                   <Button
                     onClick={() => handleDeleteSprint(sprint.id)}
                     variant="contained"
-                    color="secondary">
+                    color="secondary"
+                  >
                     Delete
                   </Button>
                 </td>
