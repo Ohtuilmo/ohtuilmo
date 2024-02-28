@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "watch:test": "npm run db:recreate && cross-env NODE_ENV=test nodemon index.js",
     "start": "cross-env NODE_ENV=production node index.js",
     "test": "npm run lint",
     "lint": "eslint .",
