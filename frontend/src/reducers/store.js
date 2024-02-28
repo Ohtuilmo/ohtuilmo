@@ -61,7 +61,13 @@ let tokenString = window.localStorage.getItem('loggedInUser')
 console.log('store tokenString', tokenString)
 if (tokenString) {
   const user = JSON.parse(tokenString)
-  initialStore = { user }
+  initialStore = {
+    login: {
+      username: '',
+      password: '',
+      user: user
+    }
+  }
 }
 
 const store = createStore(
