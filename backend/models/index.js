@@ -1,18 +1,14 @@
 const { isProductionEnvironment } = require('../utils/index')
 const Sequelize = require('sequelize')
-const config = require('../config/sequelize.js')
 
 const db = {}
 
 db.connect = () => {
-  const sequelizeConfig = config[process.env.NODE_ENV]
 
   let sequelize
-  if (isProductionEnvironment()) {
-    sequelize = new Sequelize(process.env.DATABASE_URL)
-  } else {
-    sequelize = new Sequelize(sequelizeConfig)
-  }
+  isProductionEnvironment()
+    ? sequelize = new Sequelize(process.env.DATABASE_URL, { logging: console.log })
+    : sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
 
   sequelize
     .authenticate()
