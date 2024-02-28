@@ -8,6 +8,7 @@ const updateIsInstructor = (user, isInstructor) => ({
 })
 
 export const loginUser = (userCredentials) => {
+  console.log('in loingUser action userCredentials', userCredentials)
   return async (dispatch) => {
     const { user, token } = await loginService.login(userCredentials)
 

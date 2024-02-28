@@ -6,6 +6,8 @@ const initialState = {
 }
 
 const loginReducer = (state = initialState, action) => {
+  console.log('loginReducer state', state)
+  console.log('loginReducer action', action)
   switch (action.type) {
   case 'LOGIN_USER':
     return {

@@ -58,6 +58,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 let initialStore
 let tokenString = window.localStorage.getItem('loggedInUser')
+console.log('store tokenString', tokenString)
 if (tokenString) {
   const user = JSON.parse(tokenString)
   initialStore = { user }

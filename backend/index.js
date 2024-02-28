@@ -32,9 +32,9 @@ const shibbolethHeaders = [
 // Middleware
 app.use(cors())
 app.use(bodyParser.json())
-!isDevelopmentEnvironment()
-  ? app.use(headersMiddleware(shibbolethHeaders))
-  : app.use(fakeshibbo)
+// !isDevelopmentEnvironment()
+//   ? app.use(headersMiddleware(shibbolethHeaders))
+//   : app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
 
 // Routers

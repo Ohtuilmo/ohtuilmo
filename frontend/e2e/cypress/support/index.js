@@ -20,6 +20,9 @@ import { TEST_USER, TEST_USER2, TEST_ADMIN } from '../common'
 
 const postLogin = (user) => {
   const { headers } = user
+  console.log('headers', headers)
+
+
   return cy.request({
     url: '/api/login',
     method: 'POST',

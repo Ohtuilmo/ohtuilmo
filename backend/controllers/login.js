@@ -11,6 +11,8 @@ const handleDatabaseError = (res, error) => {
 }
 
 loginRouter.post('/', async (req, res) => {
+  console.log('req.headers.hypesonstudentid', req.headers.hypersonstudentid)
+  console.log('req.headers.sn', req.headers.sn)
   if (!req.headers.hypersonstudentid)
     return res
       .status(401)

@@ -3,8 +3,10 @@ export const TEST_USER = {
   password: 'testertester123',
   headers: {
     uid: 'testertester',
-    schacpersonaluniquecode:
-      'urn:schac:personalUniqueCode:int:studentID:helsinki.fi:012345678'
+    givenname: 'Timo *Teppo Tellervo',
+    mail: '',
+    hypersonstudentid: '012345678',
+    sn: 'Testaaja'  
   }
 }
 
@@ -13,8 +15,10 @@ export const TEST_USER2 = {
   password: 'testertester123',
   headers: {
     uid: 'testertester3',
-    schacpersonaluniquecode:
-      'urn:schac:personalUniqueCode:int:studentID:helsinki.fi:012345698'
+    givenname: 'Donald John',
+    mail: '',
+    hypersonstudentid: '012345698',
+    sn: 'Trump'
   }
 }
 
@@ -23,7 +27,9 @@ export const TEST_ADMIN = {
   password: 'testertester123',
   headers: {
     uid: 'testertester2',
-    schacpersonaluniquecode:
-      'urn:schac:personalUniqueCode:int:studentID:helsinki.fi:012345688'
+    givenname: 'Angela',
+    mail: '',
+    hypersonstudentid: '012345688',
+    sn: 'Merkel'
   }
 }
