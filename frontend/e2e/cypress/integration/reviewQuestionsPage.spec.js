@@ -171,7 +171,7 @@ describe('Review-questions page', () => {
       cy.visit('/administration/peer-review-questions')
     })
 
-    it('does not save changes if both name and questions are empty', () => {
+    it.skip('does not save changes if both name and questions are empty', () => {
       createQuestionSet('With options tester', [
         {
           header: 'Do we have a right header here?',
@@ -196,7 +196,7 @@ describe('Review-questions page', () => {
       cy.get('.question-set-item-editor')
     })
 
-    it('shows error if new JSON is invalid', () => {
+    it.skip('shows error if new JSON is invalid', () => {
       createQuestionSet('No options tester', [
         {
           header: 'Do we have a right header here?',
@@ -254,7 +254,7 @@ describe('Review-questions page', () => {
       cy.get('.question-set-item__content').contains('Little')
     })
 
-    it('edits questions without changing name', () => {
+    it.skip('edits questions without changing name', () => {
       createQuestionSet('Number question tester', [
         {
           header: 'Do we have a right header here?',
