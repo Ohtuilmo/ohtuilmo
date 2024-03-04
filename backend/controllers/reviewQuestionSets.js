@@ -6,13 +6,15 @@ const handleDatabaseError = (res, error) => {
   console.log('--')
   console.log(error)
   console.log('--')
-  res.status(500).json({ error: 'Something is wrong... try reloading the page ' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page ' })
 }
 
 const createReviewQuestionSet = (req, res) => {
   db.ReviewQuestionSet.create({
     name: req.body.name,
-    questions: req.body.questions
+    questions: req.body.questions,
   })
     .then((createdSet) => res.status(200).json({ questionSet: createdSet }))
     .catch((error) => handleDatabaseError(res, error))
@@ -22,7 +24,7 @@ const updateReviewQuestionSet = (req, res, questionSet) => {
   questionSet
     .update({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
     .then((questionSet) => {
       questionSet
