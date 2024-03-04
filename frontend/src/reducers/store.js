@@ -51,7 +51,7 @@ const reducer = combineReducers({
   instructorReviewPage: instructorReviewPageReducer,
   viewCustomerReviewsPage: viewCustomerReviewsPageReducer,
   login: loginReducer,
-  users: userReducer
+  users: userReducer,
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -60,7 +60,13 @@ let initialStore
 let tokenString = window.localStorage.getItem('loggedInUser')
 if (tokenString) {
   const user = JSON.parse(tokenString)
-  initialStore = { user }
+  initialStore = {
+    login: {
+      username: '',
+      password: '',
+      user: user,
+    },
+  }
 }
 
 const store = createStore(
