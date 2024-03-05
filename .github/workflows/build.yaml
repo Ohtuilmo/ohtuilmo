@@ -1,14 +1,14 @@
 name: Release pipeline
 
-on:
-  schedule:
+on: [workflow_call]
+#  schedule:
     # Run every day at 5:00 UTC
-    - cron: '0 3 * * *'
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize]
+    #- cron: '0 3 * * *'
+#  push:
+#    branches: [main]
+#  pull_request:
+#    branches: [main]
+#    types: [opened, synchronize]
 
 jobs:
   checkup:
