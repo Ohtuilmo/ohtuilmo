@@ -15,10 +15,10 @@ jobs:
       - name: Install backend dependencies & run linter
         working-directory: ./backend
         run: |
-          npm ci
-          npm run lint:fix
+          npm install --only=dev
+          npm run lint
       - name: Install frontend dependencies & run linter
         working-directory: ./frontend
         run: |
-          npm ci
-          npm run lint:fix
+          npm install --only=dev
+          npm run lint 
