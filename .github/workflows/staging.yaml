@@ -22,9 +22,11 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: backend
+          
           tags: staging ${{ github.sha }}
+          context: backend/
           containerfiles: |
-            backend/Dockerfile
+            Dockerfile
           #build-args: |
           #  BASE_PATH=/example
           #  STAGING=true
