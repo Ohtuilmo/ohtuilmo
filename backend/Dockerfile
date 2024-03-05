@@ -7,8 +7,8 @@ ENV TZ="Europe/Helsinki"
 WORKDIR /opt/app-root/src
 
 # Copy package.json to container's /app directory and install dependencies
-COPY package.json ./
-COPY package-lock.json ./
+COPY ./package.json ./
+COPY ./package-lock.json ./
 RUN npm ci
 COPY . .
 
