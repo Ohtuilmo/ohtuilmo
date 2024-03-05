@@ -23,7 +23,7 @@ jobs:
         with:
           image: backend
           
-          tags: staging ${{ github.sha }}
+          tags: latest ${{ github.sha }}
           context: backend/
           containerfiles: |
             backend/Dockerfile
