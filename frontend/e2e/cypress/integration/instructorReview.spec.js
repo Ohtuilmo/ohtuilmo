@@ -28,7 +28,7 @@ const expectNotification = (text) => {
   cy.get('.notification').should('be.text', text)
 }
 
-describe.skip('Instructor review page', () => {
+describe('Instructor review page', () => {
   before(() => {
     initTests()
   })
@@ -46,13 +46,13 @@ describe.skip('Instructor review page', () => {
     expectNotification('You must answer all questions')
   })
 
-  it('shows error when text fields are under 5 characters long', () => {
+  it.skip('shows error when text fields are under 5 characters long', () => {
     answerTextInput('foo', 0)
     submitInstructorReview()
     expectNotification('Text answers must be over 5 characters long.')
   })
 
-  it('shows error when text fields are filled but there are other unfilled fields', () => {
+  it.skip('shows error when text fields are filled but there are other unfilled fields', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
       0
@@ -61,7 +61,7 @@ describe.skip('Instructor review page', () => {
     expectNotification('You must answer all questions')
   })
 
-  it('shows error when number fields are filled but are higher than 5', () => {
+  it.skip('shows error when number fields are filled but are higher than 5', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
       0
@@ -71,7 +71,7 @@ describe.skip('Instructor review page', () => {
     expectNotification('Grade can not be over 5.')
   })
 
-  it('shows error when number fields are filled but are lower than 5', () => {
+  it.skip('shows error when number fields are filled but are lower than 5', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
       0
@@ -81,7 +81,7 @@ describe.skip('Instructor review page', () => {
     expectNotification('Number answer can not be negative')
   })
 
-  it('submits instructor review when all fields are filled', () => {
+  it.skip('submits instructor review when all fields are filled', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
       0

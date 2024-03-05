@@ -9,7 +9,7 @@ import groupManagementActions from '../../reducers/actions/groupManagementAction
 const ConfigurationSelect = ({
   groupConfigurationID,
   onConfigurationChange,
-  configurations
+  configurations,
 }) => {
   return (
     <Select
@@ -31,13 +31,21 @@ const ConfigurationSelect = ({
   )
 }
 
-const mapStateToPropsForm = (state) => ({
-  groupConfigurationID: state.groupPage.groupConfigurationID,
-  configurations: state.configurationPage.configurations
-})
+const mapStateToPropsForm = (state) => {
+  const defaultConfiguration =
+    state.configurationPage.configurations.length > 0
+      ? state.configurationPage.configurations[0].id
+      : ''
+
+  return {
+    groupConfigurationID:
+      state.groupPage.groupConfigurationID || defaultConfiguration,
+    configurations: state.configurationPage.configurations,
+  }
+}
 
 const mapDispatchToPropsForm = {
-  onConfigurationChange: groupManagementActions.updateGroupConfigurationID
+  onConfigurationChange: groupManagementActions.updateGroupConfigurationID,
 }
 
 export default connect(

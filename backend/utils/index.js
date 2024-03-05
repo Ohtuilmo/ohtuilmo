@@ -12,16 +12,16 @@ const randomstring = require('randomstring')
 const msgTypeToDbColumn = {
   topicAccepted: {
     finnish: 'topic_accepted_fin',
-    english: 'topic_accepted_eng'
+    english: 'topic_accepted_eng',
   },
   topicRejected: {
     finnish: 'topic_rejected_fin',
-    english: 'topic_rejected_eng'
+    english: 'topic_rejected_eng',
   },
   customerReviewLink: {
     finnish: 'customer_review_link_fin',
-    english: 'customer_review_link_eng'
-  }
+    english: 'customer_review_link_eng',
+  },
 }
 
 /**
@@ -33,7 +33,7 @@ const dbColumnToMsgType = {
   topic_rejected_fin: { type: 'topicRejected', language: 'finnish' },
   topic_rejected_eng: { type: 'topicRejected', language: 'english' },
   customer_review_link_fin: { type: 'customerReviewLink', language: 'finnish' },
-  customer_review_link_eng: { type: 'customerReviewLink', language: 'english' }
+  customer_review_link_eng: { type: 'customerReviewLink', language: 'english' },
 }
 
 /**
@@ -56,18 +56,23 @@ const templateNameToEmailType = (templateName) =>
  *   is same as  ↓
  * pipe(trim, uppercase, reverse)(str)
  */
-const pipe = (...fns) => (value) => fns.reduce((v, fn) => fn(v), value)
+const pipe =
+  (...fns) =>
+    (value) =>
+      fns.reduce((v, fn) => fn(v), value)
 
 const getRandomId = () => {
   return 'a' + randomstring.generate(16)
 }
 
 const isDevelopmentEnvironment = () => process.env.NODE_ENV === 'development'
+const isProductionEnvironment = () => process.env.NODE_ENV === 'production'
 
 module.exports = {
   emailTypeToTemplateName,
   templateNameToEmailType,
   pipe,
   getRandomId,
-  isDevelopmentEnvironment
+  isDevelopmentEnvironment,
+  isProductionEnvironment,
 }

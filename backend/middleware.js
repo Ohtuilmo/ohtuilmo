@@ -26,7 +26,7 @@ const authenticateToken = (req) => {
   if (token === null) {
     return {
       error: 'token missing or invalid',
-      status: 401
+      status: 401,
     }
   }
 
@@ -35,23 +35,23 @@ const authenticateToken = (req) => {
     if (!decodedToken || !decodedToken.id) {
       return {
         error: 'token missing or invalid',
-        status: 401
+        status: 401,
       }
     }
 
     return {
-      token: decodedToken
+      token: decodedToken,
     }
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
       return {
         error: error.message,
-        status: 401
+        status: 401,
       }
     } else {
       return {
         error,
-        status: 401
+        status: 401,
       }
     }
   }
@@ -85,12 +85,13 @@ const checkAdmin = (req, res, next) => {
 
 /** @type {RequestHandler} */
 const fakeshibbo = (req, res, next) => {
-  req.headers.employeenumber = '9876543'
+  req.headers.employeenumber = ''
   req.headers.mail = ''
-  req.headers.hypersonstudentid = '012345688'
-  req.headers.uid = 'testertester2'
-  req.headers.givenname = 'Angela'
-  req.headers.sn = 'Merkel'
+  req.headers.hypersonstudentid =
+    '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3'
+  req.headers.uid = 'yannabram840'
+  req.headers.givenname = 'Abram'
+  req.headers.sn = 'Yann'
   next()
 }
 
@@ -107,5 +108,5 @@ module.exports = {
   checkLogin,
   checkAdmin,
   logger,
-  fakeshibbo
+  fakeshibbo,
 }

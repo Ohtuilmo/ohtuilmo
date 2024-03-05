@@ -1,17 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import userService from '../../services/user'
 
 import topicListPageActions from '../../reducers/actions/topicListPageActions'
-import configurationPageActions from '../../reducers/actions/configurationPageActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
+import configurationPageActions from '../../reducers/actions/configurationPageActions'
 
 import GroupManagementForm from './GroupManagementForm'
 import ConfigurationSelect from './ConfigurationSelect'
@@ -24,68 +23,65 @@ const ConfigurationSelectWrapper = ({ label, children }) => (
   </div>
 )
 
-class GroupManagementPage extends React.Component {
-  async componentDidMount() {
-    try {
-      const fetchedConfiguration = await configurationService.getAll()
+const GroupManagementPage = (props) => {
+  const { setUsers, setGroups, fetchTopics, setConfigurations, setError, fetchConfigurations } =
+    props
 
-      const fetchedGroups = await groupManagementService.get()
+  useEffect(() => {
+    fetchConfigurations()
+    const fetchData = async () => {
+      try {
+        const fetchedGroups = await groupManagementService.get()
+        const fetchedUsers = await userService.get()
 
-      const fetchedUsers = await userService.get()
-
-      this.props.setUsers(fetchedUsers)
-
-      this.props.setGroups(fetchedGroups)
-      await this.props.fetchTopics()
-      this.props.setConfigurations(fetchedConfiguration.configurations)
-    } catch (e) {
-      this.props.setError('Some error happened')
+        setUsers(fetchedUsers)
+        setGroups(fetchedGroups)
+        await fetchTopics()
+      } catch (err) {
+        setError('Some error happened')
+      }
     }
-  }
 
-  render() {
-    return (
-      <div>
-        <h2>Administration</h2>
-        <h3>Group Management</h3>
+    fetchData()
+  }, [setUsers, setGroups, fetchTopics, setConfigurations, setError])
 
-        <ConfigurationSelectWrapper label="Select configuration">
-          <ConfigurationSelect props={this.props} />
-        </ConfigurationSelectWrapper>
+  return (
+    <div>
+      <h2>Administration</h2>
+      <h3>Group Management</h3>
 
-        <Paper elevation={2} style={{ padding: '1rem 1.5rem' }}>
-          <h4>Create group</h4>
-          <GroupCreationForm />
-        </Paper>
+      <ConfigurationSelectWrapper label="Select configuration">
+        <ConfigurationSelect props={props} />
+      </ConfigurationSelectWrapper>
 
-        <p />
+      <Paper elevation={2} style={{ padding: '1rem 1.5rem' }}>
+        <h4>Create group</h4>
+        <GroupCreationForm />
+      </Paper>
 
-        <h4>Created groups</h4>
+      <p />
 
-        <GroupManagementForm />
-      </div>
-    )
-  }
+      <h4>Created groups</h4>
+
+      <GroupManagementForm />
+    </div>
+  )
 }
-
 const mapStateToProps = (state) => ({
   topics: state.topicListPage.topics,
   configurations: state.configurationPage.configurations,
   groups: state.groupPage.groups,
-  users: state.groupPage.users
+  users: state.groupPage.users,
 })
 
 const mapDispatchToProps = {
   updateTopics: topicListPageActions.updateTopics,
-  setConfigurations: configurationPageActions.setConfigurations,
   setGroups: groupManagementActions.setGroups,
   setUsers: groupManagementActions.setUsers,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchTopics: topicListPageActions.fetchTopics
+  fetchTopics: topicListPageActions.fetchTopics,
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GroupManagementPage)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupManagementPage)

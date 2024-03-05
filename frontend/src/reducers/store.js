@@ -4,7 +4,6 @@ import userHandler from './middleware/userHandler'
 
 // Import all reducers here
 import appReducer from './appReducer'
-import loginPageReducer from './loginPageReducer'
 import topicListPageReducer from './topicListPageReducer'
 import notificationReducer from './notificationReducer'
 import topicFormReducer from './topicFormReducer'
@@ -24,13 +23,13 @@ import instructorPageReducer from './instructorPageReducer'
 import customerReviewPageReducer from './customerReviewPageReducer'
 import customerReviewQuestionsPageReducer from './customerReviewQuestionsPageReducer'
 import instructorReviewPageReducer from './instructorReviewPageReducer'
-import userReducer from './userReducer'
 import viewCustomerReviewsPageReducer from './viewCustomerReviewsPageReducer'
+import loginReducer from './loginReducer'
+import userReducer from './userReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
   app: appReducer,
-  loginPage: loginPageReducer,
   topicFormPage: topicFormReducer,
   topicListPage: topicListPageReducer,
   notifications: notificationReducer,
@@ -50,8 +49,9 @@ const reducer = combineReducers({
   instructorPage: instructorPageReducer,
   customerReviewPage: customerReviewPageReducer,
   instructorReviewPage: instructorReviewPageReducer,
-  user: userReducer,
-  viewCustomerReviewsPage: viewCustomerReviewsPageReducer
+  viewCustomerReviewsPage: viewCustomerReviewsPageReducer,
+  login: loginReducer,
+  users: userReducer,
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -60,7 +60,13 @@ let initialStore
 let tokenString = window.localStorage.getItem('loggedInUser')
 if (tokenString) {
   const user = JSON.parse(tokenString)
-  initialStore = { user }
+  initialStore = {
+    login: {
+      username: '',
+      password: '',
+      user: user,
+    },
+  }
 }
 
 const store = createStore(

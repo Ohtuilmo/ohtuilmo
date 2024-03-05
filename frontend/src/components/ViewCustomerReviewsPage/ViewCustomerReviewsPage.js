@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -15,164 +15,163 @@ import LoadingCover from './../common/LoadingCover'
 
 import './ViewCustomerReviewsPage.css'
 
-class ViewCustomerReviewsPage extends React.Component {
-  async componentDidMount() {
-    await this.props.fetchConfigurations()
+
+
+const ViewCustomerReviewsPage = (props) => {
+  useEffect(() => {
+    props.fetchConfigurations()
+    handleConfigurationChange(0)
+  }, [])
+
+  const { isInitializing } = props
+
+  const handleConfigurationChange = async (confId) => {
+    props.setConfiguration(confId)
+
+    props.setReviewData(
+      await customerReviewService.getCustomerReviewAnswers(confId)
+    )
   }
 
-  render() {
-    const { isInitializing } = this.props
+  const CustomerReviewsContainer = (props) => {
+    const { reviews } = props
+    return reviews.map((review) => (
+      <Group group={review.group} key={review.group.id} />
+    ))
+  }
 
-    const handleConfigurationChange = async (confId) => {
-      this.props.setConfiguration(confId)
+  const Group = ({ group }) => {
+    return (
+      <div
+        className="customer-reviews-container__group"
+        id={`review-${group.id}`}
+      >
+        <h2>{group.name}</h2>
 
-      this.props.setReviewData(
-        await customerReviewService.getCustomerReviewAnswers(confId)
-      )
-    }
+        {!group.answerSheet ? (
+          <p> No review submitted for group {group.name}</p>
+        ) : (
+          <Answers answerSheet={group.answerSheet} />
+        )}
+      </div>
+    )
+  }
 
-    const CustomerReviewsContainer = (props) => {
-      const { reviews } = props
-      return reviews.map((review) => (
-        <Group group={review.group} key={review.group.id} />
-      ))
-    }
+  const Answers = ({ answerSheet }) => {
+    return answerSheet.map((answer) => {
+      if (answer.type === 'text' || answer.type === 'oneliner') {
+        return <TextAnswer answer={answer} key={answer.id} />
+      }
 
-    const Group = ({ group }) => {
-      return (
-        <div
-          className="customer-reviews-container__group"
-          id={`review-${group.id}`}
+      if (answer.type === 'number' || answer.type === 'range') {
+        return <NumberAnswer answer={answer} key={answer.id} />
+      }
+      //if there is something else, like instructions return null
+      return null
+    })
+  }
+
+  const TextAnswer = ({ answer }) => {
+    return (
+      <div className="customer-reviews-container__group__text-answer">
+        <h3> {answer.questionHeader} </h3>
+        <p>
+          <b>Customer's answer:</b> {answer.answer}
+        </p>
+      </div>
+    )
+  }
+
+  const NumberAnswer = ({ answer }) => {
+    return (
+      <div className="customer-reviews-container__group__number-answer">
+        <h3> {answer.questionHeader} </h3>
+        <p>
+          {' '}
+          <b>Customer's answer:</b> {answer.answer}{' '}
+        </p>
+      </div>
+    )
+  }
+
+  const configurationMenuItems = () => {
+    const { configurations } = props
+    const configurationOptions = [].concat(
+      <MenuItem value={0} key={0} data-cy="all-configurations">
+        All configurations
+      </MenuItem>
+    ).concat(
+      configurations.map((configuration) => (
+        <MenuItem
+          value={configuration.id}
+          key={configuration.id}
+          data-cy={configuration.name}
         >
-          <h2>{group.name}</h2>
+          {configuration.name}
+        </MenuItem>
+      )))
+    return configurationOptions
+  }
 
-          {!group.answerSheet ? (
-            <p> No review submitted for group {group.name}</p>
-          ) : (
-            <Answers answerSheet={group.answerSheet} />
-          )}
-        </div>
-      )
-    }
+  const DownloadButton = ({ jsonData, fileName }) => {
+    const data = `text/json;charset=utf-8,${encodeURIComponent(jsonData)}`
+    const href = `data:${data}`
 
-    const Answers = ({ answerSheet }) => {
-      return answerSheet.map((answer) => {
-        if (answer.type === 'text' || answer.type === 'oneliner') {
-          return <TextAnswer answer={answer} key={answer.id} />
-        }
+    return (
+      <Button
+        className="customer-review-download-button"
+        component="a"
+        href={href}
+        download={fileName}
+        variant="contained"
+        color="primary"
+      >
+        Download as JSON
+      </Button>
+    )
+  }
 
-        if (answer.type === 'number' || answer.type === 'range') {
-          return <NumberAnswer answer={answer} key={answer.id} />
-        }
-        //if there is something else, like instructions return null
-        return null
-      })
-    }
+  if (props.reviewFetched) {
+    return (
+      <div className="customer-reviews-container">
+        {isInitializing && (
+          <LoadingCover className="customer-reviews-container__loading-cover" />
+        )}
 
-    const TextAnswer = ({ answer }) => {
-      return (
-        <div className="customer-reviews-container__group__text-answer">
-          <h3> {answer.questionHeader} </h3>
-          <p>
-            <b>Customer's answer:</b> {answer.answer}
-          </p>
-        </div>
-      )
-    }
-
-    const NumberAnswer = ({ answer }) => {
-      return (
-        <div className="customer-reviews-container__group__number-answer">
-          <h3> {answer.questionHeader} </h3>
-          <p>
-            {' '}
-            <b>Customer's answer:</b> {answer.answer}{' '}
-          </p>
-        </div>
-      )
-    }
-
-    const configurationMenuItems = () => {
-      const { configurations } = this.props
-      return []
-        .concat(
-          <MenuItem value={0} key={0} data-cy="all-configurations">
-            All configurations
-          </MenuItem>
-        )
-        .concat(
-          configurations.map((configuration) => (
-            <MenuItem
-              value={configuration.id}
-              key={configuration.id}
-              data-cy={configuration.name}
-            >
-              {configuration.name}
-            </MenuItem>
-          ))
-        )
-    }
-
-    const DownloadButton = ({ jsonData, fileName }) => {
-      const data = `text/json;charset=utf-8,${encodeURIComponent(jsonData)}`
-      const href = `data:${data}`
-
-      return (
-        <Button
-          className="customer-review-download-button"
-          component="a"
-          href={href}
-          download={fileName}
-          variant="contained"
-          color="primary"
+        <Select
+          value={props.configuration}
+          onChange={(event) => handleConfigurationChange(event.target.value)}
+          data-cy="customer-reviews-select"
         >
-          Download as JSON
-        </Button>
-      )
-    }
+          {configurationMenuItems()}
+        </Select>
+        <DownloadButton
+          jsonData={JSON.stringify(props.reviewData)}
+          fileName="customerReviews.json"
+        />
 
-    if (this.props.reviewFetched) {
-      return (
-        <div className="customer-reviews-container">
-          {isInitializing && (
-            <LoadingCover className="customer-reviews-container__loading-cover" />
-          )}
-
-          <Select
-            value={this.props.configuration}
-            onChange={(event) => handleConfigurationChange(event.target.value)}
-            data-cy="customer-reviews-select"
-          >
-            {configurationMenuItems()}
-          </Select>
-          <DownloadButton
-            jsonData={JSON.stringify(this.props.reviewData)}
-            fileName="customerReviews.json"
-          />
-
-          <h1 className="customer-reviews-h1">Customer reviews</h1>
-          <CustomerReviewsContainer reviews={this.props.reviewData} />
-        </div>
-      )
-    } else {
-      return (
-        <div className="customer-reviews-container">
-          {isInitializing && (
-            <LoadingCover className="customer-reviews-container__loading-cover" />
-          )}
-          <Select
-            value={this.props.configuration}
-            onChange={(event) => handleConfigurationChange(event.target.value)}
-            data-cy="customer-reviews-select"
-          >
-            {configurationMenuItems()}
-          </Select>
-          <h1 className="customer-reviews-h1">Customer reviews</h1>
-          <h3>No configuration selected!</h3>
-          <h3>Please select a configuration!</h3>
-        </div>
-      )
-    }
+        <h1 className="customer-reviews-h1">Customer reviews</h1>
+        <CustomerReviewsContainer reviews={props.reviewData} />
+      </div>
+    )
+  } else {
+    return (
+      <div className="customer-reviews-container">
+        {isInitializing && (
+          <LoadingCover className="customer-reviews-container__loading-cover" />
+        )}
+        <Select
+          value={props.configuration}
+          onChange={(event) => handleConfigurationChange(event.target.value)}
+          data-cy="customer-reviews-select"
+        >
+          {configurationMenuItems()}
+        </Select>
+        <h1 className="customer-reviews-h1">Customer reviews</h1>
+        <h3>No configuration selected!</h3>
+        <h3>Please select a configuration!</h3>
+      </div>
+    )
   }
 }
 
@@ -195,9 +194,7 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations
 }
 
-const ConnectedViewCustomerReviewsPage = connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewCustomerReviewsPage)
-
-export default withRouter(ConnectedViewCustomerReviewsPage)
+)(ViewCustomerReviewsPage))

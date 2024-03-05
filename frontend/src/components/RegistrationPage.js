@@ -96,7 +96,7 @@ class RegistrationPage extends React.Component {
 
   updateUser = async () => {
     const user = {
-      student_number: this.props.user.user.student_number,
+      student_number: this.props.user.student_number,
       email: { email: this.props.email }
     }
     try {
@@ -299,7 +299,7 @@ class RegistrationPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    user: state.login.user,
     isLoading: state.app.isLoading,
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
