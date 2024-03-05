@@ -15,11 +15,7 @@ jobs:
   #  needs: test
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            backend
+      - uses: actions/checkout@v3
 
       - name: Build backend
         id: build-backend
@@ -28,7 +24,7 @@ jobs:
           image: backend
           tags: staging ${{ github.sha }}
           containerfiles: |
-            ./backend/Dockerfile
+            Dockerfile.backend
           #build-args: |
           #  BASE_PATH=/example
           #  STAGING=true
