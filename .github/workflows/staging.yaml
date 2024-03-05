@@ -24,7 +24,7 @@ jobs:
           image: backend
           tags: staging ${{ github.sha }}
           containerfiles: |
-            Dockerfile.backend
+            backend/Dockerfile
           #build-args: |
           #  BASE_PATH=/example
           #  STAGING=true
