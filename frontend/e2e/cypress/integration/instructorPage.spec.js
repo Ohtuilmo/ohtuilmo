@@ -258,6 +258,10 @@ describe('Instructor review page', () => {
   it('Starting testing', () => {
     // submit not successfull, still on same page
     cy.url().should('contain', '/instructorpage')
+    cy.get('[data-cy=configuration-selector]').click()
+    cy.get('.configuration-menu-item')
+      .contains('Konfiguraatio 1')
+      .click()
     cy.contains('Tykittelijät')
     cy.contains('2.50')
   })
