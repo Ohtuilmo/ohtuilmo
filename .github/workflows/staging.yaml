@@ -27,9 +27,6 @@ jobs:
           context: backend/
           containerfiles: |
             backend/Dockerfile
-          #build-args: |
-          #  BASE_PATH=/example
-          #  STAGING=true
 
       - name: Push to quay.io
         uses: redhat-actions/push-to-registry@v2
