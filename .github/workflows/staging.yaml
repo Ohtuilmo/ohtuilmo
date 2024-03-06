@@ -15,28 +15,30 @@ jobs:
     needs: test
 
     steps:
+      - name: Build backend
+        id: build-backend
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: backend
+          tags: latest ${{ github.sha }}
+          context: backend/
+          containerfiles: |
+            backend/Dockerfile
 
-#      - name: Build backend
-#        id: build-backend
-#        uses: redhat-actions/buildah-build@v2
-#        with:
-#          image: backend
-#          tags: latest ${{ github.sha }}
-#          context: backend/
-#          containerfiles: |
-#            backend/Dockerfile
-
-      - name: test outputs connection
-        run: |
-          echo "Testing outputs"
-          echo ${{ needs.test.jobs.build-images.steps.build-backend.outputs.image }}
-          echo ${{ needs.test.jobs.build-images.steps.build-backend.outputs.image }}
-          echo ${{ steps.build-backend.outputs.image }}
+      - name: Build frontend
+        id: build-frontend
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: frontend
+          tags: latest ${{ github.sha }}
+          context: frontend/
+          containerfiles: |
+            frontend/Dockerfile
 
       - name: Push backend to quay.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: backend
+          image: ${{ steps.build-backend.outputs.image }}
           tags: ${{ steps.build-backend.outputs.tags }}
           registry: quay.io/ohtuilmo
           username: ${{ secrets.QUAY_USERNAME }}
