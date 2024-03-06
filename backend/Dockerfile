@@ -8,7 +8,7 @@ WORKDIR /opt/app-root/src
 
 # Copy package.json to container's /app directory and install dependencies
 COPY package* ./
-RUN npm ci --omit=dev
+RUN npm ci --production
 COPY . .
 
 # Expose container's port 8081 to the outside
