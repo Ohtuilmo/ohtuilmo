@@ -15,33 +15,11 @@ jobs:
     needs: test
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Build backend
-        id: build-backend
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: backend
-          tags: latest ${{ github.sha }}
-          context: backend/
-          containerfiles: |
-            backend/Dockerfile
-
-      - name: Build frontend
-        id: build-frontend
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: frontend
-          tags: latest ${{ github.sha }}
-          context: frontend/
-          containerfiles: |
-            frontend/Dockerfile
-
       - name: Push backend to quay.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ steps.build-backend.outputs.image }}
-          tags: ${{ steps.build-backend.outputs.tags }}
+          image: ${{ needs.test.steps.build-backend.outputs.image }}
+          tags: ${{ needs.test.steps.build-backend.outputs.tags }}
           registry: quay.io/ohtuilmo
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
@@ -49,8 +27,8 @@ jobs:
       - name: Push frontend to quay.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ steps.build-frontend.outputs.image }}
-          tags: ${{ steps.build-frontend.outputs.tags }}
+          image: ${{ needs.test.steps.build-frontend.outputs.image }}
+          tags: ${{ needs.test.steps.build-frontend.outputs.tags }}
           registry: quay.io/ohtuilmo
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
