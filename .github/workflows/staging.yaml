@@ -15,11 +15,16 @@ jobs:
     needs: test
 
     steps:
+      - name: test outputs connection
+        run: |
+          echo ${{ needs.test.build-images.steps.build-backend.outputs.image }}
+          echo ${{ needs.test.jobs.build-images.steps.build-backend.outputs.image }}
+          echo "Testing outputs"
       - name: Push backend to quay.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ needs.test.steps.build-backend.outputs.image }}
-          tags: ${{ needs.test.steps.build-backend.outputs.tags }}
+          image: ${{ needs.test.jobs.build-images.steps.build-backend.outputs.image }}
+          tags: ${{ needs.test.build-backend.outputs.tags }}
           registry: quay.io/ohtuilmo
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
@@ -27,8 +32,8 @@ jobs:
       - name: Push frontend to quay.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ needs.test.steps.build-frontend.outputs.image }}
-          tags: ${{ needs.test.steps.build-frontend.outputs.tags }}
+          image: ${{ steps.build-frontend.outputs.image }}
+          tags: ${{ steps.build-frontend.outputs.tags }}
           registry: quay.io/ohtuilmo
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
