@@ -23,6 +23,10 @@ jobs:
           npm ci
           npm run lint
 
+  build-images:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Build backend
         id: build-backend
         uses: redhat-actions/buildah-build@v2
@@ -33,12 +37,12 @@ jobs:
           containerfiles: |
             backend/Dockerfile
 
-      - name: Build frontend
-        id: build-frontend
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: frontend
-          tags: latest ${{ github.sha }}
-          context: frontend/
-          containerfiles: |
-            frontend/Dockerfile
+#      - name: Build frontend
+#        id: build-frontend
+#        uses: redhat-actions/buildah-build@v2
+#        with:
+#          image: frontend
+#          tags: latest ${{ github.sha }}
+#          context: frontend/
+#          containerfiles: |
+#            frontend/Dockerfile
