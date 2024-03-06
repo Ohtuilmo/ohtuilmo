@@ -84,7 +84,7 @@ def insert_into_database(row, group_id):
         if conn:
             conn.close()
 
-def import_sprints_data(filepath):
+def main(filepath):
     with open(filepath, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file, delimiter=';')
         invalid_rows = []
@@ -111,4 +111,4 @@ def import_sprints_data(filepath):
                 print(f"Error: {error}\n")
 
 
-import_sprints_data('scripts/sprints.csv')
+main('scripts/sprints.csv')

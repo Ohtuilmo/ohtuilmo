@@ -114,7 +114,7 @@ def add_time_log(date, minutes, description, student_number, sprint_id):
         if conn:
             conn.close()
 
-def import_timelogs_data(filepath):
+def main(filepath):
     with open(filepath, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file, delimiter=';')
         invalid_rows = []
@@ -163,4 +163,4 @@ def import_timelogs_data(filepath):
 
 
 
-import_timelogs_data('scripts/timelogs.csv')
+main('scripts/timelogs.csv')
