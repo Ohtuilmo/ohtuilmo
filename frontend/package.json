@@ -2,7 +2,7 @@
   "name": "ohtuilmo-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://shibboleth.ext.ocp-test-0.k8s.it.helsinki.fi/projekti",
+  "homepage": ".",
   "proxy": "http://localhost:3001",
   "dependencies": {
     "@babel/runtime": "^7.3.1",
