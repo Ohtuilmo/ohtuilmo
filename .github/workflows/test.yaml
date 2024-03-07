@@ -8,6 +8,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+  
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12.22.12
 
       - name: Install backend dependencies & run linter
         working-directory: ./backend
@@ -32,7 +37,7 @@ jobs:
       
       - name: Create, migrate and seed db
         run: |
-          cd /backend
+          cd backend
           npm install
           npm run db:create
           npm run db:migrate
