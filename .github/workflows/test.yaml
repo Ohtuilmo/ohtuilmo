@@ -5,20 +5,47 @@ on: [workflow_call]
 jobs:
   eslint:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-  
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 12.22.12
+
       - name: Install backend dependencies & run linter
         working-directory: ./backend
         run: |
           npm ci
           npm run lint
+
       - name: Install frontend dependencies & run linter
         working-directory: ./frontend
         run: |
           npm ci
           npm run lint
+
+  cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start db container
+        run: docker compose -f compose.ci.yaml up db -d
+      
+      - name: Create, migrate and seed db
+        run: |
+          cd /backend
+          npm install
+          npm run db:create
+          npm run db:migrate
+          npm run db:seed:all
+      
+      - name: Start backend, frontend and nginx
+        run: docker compose -f compose.ci.yaml up -d
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./frontend
+          install-command: npm i
+          browser: chrome
+      
+        
