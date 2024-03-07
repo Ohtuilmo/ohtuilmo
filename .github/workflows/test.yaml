@@ -57,6 +57,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: ./frontend
+          config: baseUrl=http://localhost:3000/projekti
           install-command: npm i
           browser: chrome
       
