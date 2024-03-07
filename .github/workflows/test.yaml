@@ -36,6 +36,8 @@ jobs:
         run: docker compose -f compose.ci.yaml up db -d
       
       - name: Create, migrate and seed db
+        env: 
+          DATABASE_URL: postgres://postgres@localhost:5432/dev_postgres
         run: |
           cd backend
           npm install
