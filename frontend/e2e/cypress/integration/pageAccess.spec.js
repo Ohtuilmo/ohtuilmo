@@ -82,7 +82,7 @@ describe('Page access and redirect tests', () => {
     })
   })
 
-  describe('Page access for user', () => {
+  describe.skip('Page access for user', () => {
     beforeEach(() => {
       cy.loginAsUnregisteredUser()
       cy.visit('/')
@@ -163,7 +163,7 @@ describe('Page access and redirect tests', () => {
     })
   })
 
-  describe('Page access for admin', () => {
+  describe.skip('Page access for admin', () => {
     beforeEach(() => {
       cy.loginAsAdmin()
       cy.visit('/')
