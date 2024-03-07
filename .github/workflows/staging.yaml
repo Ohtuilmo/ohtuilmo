@@ -20,7 +20,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: backend
-          tags: latest ${{ github.sha }}
+          tags: staging ${{ github.sha }}
           context: backend/
           containerfiles: |
             backend/Dockerfile
@@ -30,7 +30,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: frontend
-          tags: latest ${{ github.sha }}
+          tags: staging ${{ github.sha }}
           context: frontend/
           containerfiles: |
             frontend/Dockerfile
