@@ -60,8 +60,6 @@ jobs:
           install-command: npm install
           browser: chrome
           config: baseUrl=http://localhost:3000/projekti
-          wait-on: 'http://localhost:3000/projekti'
-          wait-on-timeout: 60
           record: true
           parallel: true
           auto-cancel-after-failures: 1
