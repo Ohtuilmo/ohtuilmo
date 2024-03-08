@@ -1,6 +1,12 @@
 name: Run tests
 
-on: [workflow_call]
+on:
+  workflow_call:
+  schedule:
+      - cron: '50 3 * * *'
+  push:
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   eslint:
@@ -57,15 +63,6 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: ./frontend
+          config: baseUrl=http://localhost:3000/projekti
           install-command: npm install
           browser: chrome
-          config: baseUrl=http://localhost:3000/projekti
-          record: true
-          parallel: true
-          auto-cancel-after-failures: 1
-          tag: chrome
-        env:
-          CI: true
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
