@@ -22,13 +22,13 @@ jobs:
       - name: Install backend dependencies & run linter
         working-directory: ./backend
         run: |
-          npm ci
+          npm install
           npm run lint
 
       - name: Install frontend dependencies & run linter
         working-directory: ./frontend
         run: |
-          npm ci
+          npm install
           npm run lint
 
   cypress:
