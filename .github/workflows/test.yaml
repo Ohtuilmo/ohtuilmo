@@ -5,6 +5,8 @@ on:
   schedule:
       - cron: '50 3 * * *'
   push:
+    branches-ignore:
+      - main
   pull_request:
     types: [opened, synchronize]
 
@@ -34,6 +36,10 @@ jobs:
 
   cypress:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser-options: ['chrome', 'firefox', 'edge']
 
     steps:
       - uses: actions/checkout@v4
@@ -65,4 +71,4 @@ jobs:
           working-directory: ./frontend
           config: baseUrl=http://localhost:3000/projekti
           install-command: npm install
-          browser: chrome
+          browser: ${{ matrix.browser-options }}
