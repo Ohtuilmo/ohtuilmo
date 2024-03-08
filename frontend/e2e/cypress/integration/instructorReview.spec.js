@@ -28,7 +28,7 @@ const expectNotification = (text) => {
   cy.get('.notification').should('be.text', text)
 }
 
-describe.skip('Instructor review page', () => {
+describe('Instructor review page', () => {
   before(() => {
     initTests()
   })

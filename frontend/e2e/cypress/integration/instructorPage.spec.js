@@ -255,7 +255,7 @@ describe('Instructor review page', () => {
     cy.visit('/instructorpage')
   })
 
-  it.skip('Starting testing', () => {
+  it('Starting testing', () => {
     // submit not successfull, still on same page
     cy.url().should('contain', '/instructorpage')
     cy.contains('Tykittelijät')

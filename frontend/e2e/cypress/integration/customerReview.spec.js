@@ -81,21 +81,21 @@ describe('Customer review page', () => {
     cy.visit('/customer-review/eec0neeT0jo0ae9F')
   })
 
-  it.skip('requires text fields to be filled', () => {
+  it('requires text fields to be filled', () => {
     submitCustomerReview()
     // submit not successfull, still on same page
     cy.url().should('contain', '/customer-review/eec0neeT0jo0ae9F')
     cy.contains('Customer review')
   })
 
-  it.skip('shows error when text fields are under 5 characters long', () => {
+  it('shows error when text fields are under 5 characters long', () => {
     answerTextInput('foo')
     answerOnelinerInput('spammiosoite')
     submitCustomerReview()
     expectNotification('Text answers must be over 5 characters long.')
   })
 
-  it.skip('shows error when oneliner fields are under 5 characters long', () => {
+  it('shows error when oneliner fields are under 5 characters long', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
     )
@@ -104,7 +104,7 @@ describe('Customer review page', () => {
     expectNotification('Short text answers must be over 5 characters long.')
   })
 
-  it.skip('shows error when text fields are filled but there are other unfilled fields', () => {
+  it('shows error when text fields are filled but there are other unfilled fields', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
     )
@@ -113,7 +113,7 @@ describe('Customer review page', () => {
     expectNotification('You must answer all questions')
   })
 
-  it.skip('submits customer review when all fields are filled', () => {
+  it('submits customer review when all fields are filled', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
     )
