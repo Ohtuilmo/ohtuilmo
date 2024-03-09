@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 12.22.12
+          node-version: 12.0.0
 
       - name: Install backend dependencies & run linter
         working-directory: ./backend
@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 12.22.12
+          node-version: 12.0.0
 
       - name: Start db container
         run: docker compose -f compose.ci.yaml up db -d
