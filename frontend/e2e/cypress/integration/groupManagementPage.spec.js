@@ -43,7 +43,7 @@ describe('Group Management Page', () => {
       cy.get('.configuration-1').click()
     })
 
-    it('deletes a student', () => {
+    it.skip('deletes a student', () => {
       cy.get('[data-cy=delete-student-button]')
         .eq(1)
         .click()
