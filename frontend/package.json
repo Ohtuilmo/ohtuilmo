@@ -31,6 +31,7 @@
     "test": "CYPRESS_baseUrl=http://localhost:3000 npm run cypress:open",
     "lint": "eslint ./src/",
     "lint:fix": "eslint --fix src/",
+    "test:headless": "CYPRESS_baseUrl=http://localhost:3000 npm run cypress:run",
     "e2e:install": "./e2e/run_cypress_e2e.sh install",
     "e2e:setup": "./e2e/run_cypress_e2e.sh setup",
     "e2e:run": "./e2e/run_cypress_e2e.sh run",
