@@ -80,11 +80,7 @@ const App = (props) => {
   useEffect(() => {
     const handleLogin = async () => {
       if (!window.location.href.includes('customer-review/')) {
-        try {
-          await loginUser()
-        } catch (err) {
-          console.log(err)
-        }
+        await loginUser()
       }
     }
 
@@ -97,13 +93,10 @@ const App = (props) => {
     }
 
     fetchData()
+
     const loginInterval = setInterval(() => {
       if (!window.location.href.includes('customer-review/')) {
-        try {
-          loginService.login()
-        } catch (err) {
-          console.log(err)
-        }
+        loginService.login()
       }
     }, 60 * 1000)
 
