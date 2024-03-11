@@ -136,7 +136,7 @@ describe('Page access and redirect tests', () => {
     it('renders /peerreview when visited', () => {
       cy.visit('/peerreview')
       cy.url().should('include', '/peerreview')
-      cy.contains('You are not currently assigned to any group!')
+      cy.contains('You are currently not assigned to any group.')
     })
 
     it('renders /register when visited', () => {
@@ -237,9 +237,7 @@ describe('Page access and redirect tests', () => {
 
     it.skip('redirects to / when clicking the return link', () => {
       cy.visit('/amksfmkafg-qfq435tefds')
-      cy.get('.not-found-page')
-        .find('[data-cy="return-link"]')
-        .click()
+      cy.get('.not-found-page').find('[data-cy="return-link"]').click()
 
       assertIsOnLoginPage()
     })
