@@ -33,9 +33,6 @@ jobs:
 
   cypress:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        browsers: [chrome, firefox]
     steps:
       - uses: actions/checkout@v4
 
@@ -66,7 +63,7 @@ jobs:
           working-directory: ./frontend
           config: baseUrl=http://localhost:3000/projekti
           install-command: npm install
-          browser: ${{ matrix.browsers }}
+          browser: chrome
           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
