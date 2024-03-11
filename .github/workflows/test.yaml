@@ -17,13 +17,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 12.0.0
+          node-version: 12
 
       - name: Install backend dependencies & run linter
         working-directory: ./backend
         run: |
           npm install
           npm run lint
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 10
 
       - name: Install frontend dependencies & run linter
         working-directory: ./frontend
@@ -40,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 12.0.0
+          node-version: 12
 
       - name: Start db container
         run: docker compose -f compose.ci.yaml up db -d
@@ -57,6 +62,11 @@ jobs:
       
       - name: Start backend, frontend and nginx
         run: docker compose -f compose.ci.yaml up -d
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 10
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
