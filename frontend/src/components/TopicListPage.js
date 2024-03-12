@@ -550,7 +550,10 @@ const TopicListPage = (props) => {
   }
 
   const shownTopics = filter === 0
-    ? topics.sort(activeFirstThenByTitle)
+    ? topics.filter((topic) => acceptanceFilter === 'accepted'
+      ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
+      : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
+      .sort(activeFirstThenByTitle)
     : acceptanceFilter === 'all'
       ? topics
         .filter((topic) => topic.configuration_id === filter && topic.active)
