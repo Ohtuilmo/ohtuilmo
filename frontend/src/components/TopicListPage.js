@@ -33,6 +33,7 @@ import configurationPageActions from '../reducers/actions/configurationPageActio
 import LoadingCover from './common/LoadingCover'
 import './TopicListPage.css'
 import { NoneAvailable } from './common/Placeholders'
+import configurationMapper from '../utils/configurationMapper'
 
 const redGreenTheme = createMuiTheme({
   palette: {
@@ -543,7 +544,7 @@ const TopicListPage = (props) => {
       .concat(
         configurations.map((configuration) => (
           <MenuItem value={configuration.id} key={configuration.id}>
-            {configuration.name}
+            {configurationMapper(configuration.name)}
           </MenuItem>
         ))
       )
