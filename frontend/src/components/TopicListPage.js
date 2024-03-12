@@ -32,6 +32,7 @@ import configurationPageActions from '../reducers/actions/configurationPageActio
 
 import LoadingCover from './common/LoadingCover'
 import './TopicListPage.css'
+import { NoneAvailable } from './common/Placeholders'
 
 const redGreenTheme = createMuiTheme({
   palette: {
@@ -341,23 +342,28 @@ const TopicTableHead = () => (
  * @param {{ topics: any[], onEmailSendRequested: (info: TopicEmailInfo) => void, onActiveToggle: (topic: any) => void }} props
  */
 const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
-  return (
-    <Table>
-      <TopicTableHead />
-      <TableBody>
-        {topics.map((topic) => (
-          <TopicTableRow
-            key={topic.id}
-            topic={topic}
-            onEmailSendRequested={(emailInfo) =>
-              onEmailSendRequested({ ...emailInfo, topic })
-            }
-            onActiveToggle={() => onActiveToggle(topic)}
-          />
-        ))}
-      </TableBody>
-    </Table>
-  )
+  console.table(topics)
+  return topics.length > 0
+    ? (
+      <Table>
+        <TopicTableHead />
+        <TableBody>
+          {topics.map((topic) => (
+            <TopicTableRow
+              key={topic.id}
+              topic={topic}
+              onEmailSendRequested={(emailInfo) =>
+                onEmailSendRequested({ ...emailInfo, topic })
+              }
+              onActiveToggle={() => onActiveToggle(topic)}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    )
+    : (
+      <NoneAvailable />
+    )
 }
 
 TopicTable.propTypes = {
@@ -543,16 +549,18 @@ const TopicListPage = (props) => {
       )
   }
 
-  const shownTopics = acceptanceFilter === 'all'
-    ? topics
-      .filter((topic) => topic.configuration_id === filter)
-      .sort(activeFirstThenByTitle)
-    : topics
-      .filter((topic) => topic.configuration_id === filter && topic.active)
-      .filter((topic) => acceptanceFilter === 'accepted'
-        ? topic.sentEmails[0].email.type === 'topicAccepted'
-        : topic.sentEmails[0].email.type === 'topicRejected')
-      .sort(activeFirstThenByTitle)
+  const shownTopics = filter === 0
+    ? topics.sort(activeFirstThenByTitle)
+    : acceptanceFilter === 'all'
+      ? topics
+        .filter((topic) => topic.configuration_id === filter && topic.active)
+        .sort(activeFirstThenByTitle)
+      : topics
+        .filter((topic) => topic.configuration_id === filter && topic.active)
+        .filter((topic) => acceptanceFilter === 'accepted'
+          ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
+          : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
+        .sort(activeFirstThenByTitle)
 
   return (
     <div className="topics-container">
@@ -571,11 +579,11 @@ const TopicListPage = (props) => {
         <TopicAcceptanceFilter {...props} />
       </div>
 
-      <TopicTable
+      {!isLoading && <TopicTable
         topics={shownTopics}
         onEmailSendRequested={handleEmailSendRequested}
         onActiveToggle={handleActiveToggle}
-      />
+      />}
     </div>
   )
 }

@@ -11,3 +11,9 @@ export const LoadingPlaceholder = () => (
     Loading...
   </h1>
 )
+
+export const NoneAvailable = () => (
+  <h1 style={{ textAlign: 'center' }}>
+    None available
+  </h1>
+)
