@@ -61,10 +61,12 @@ const instructorItems = (history) => {
 const adminItems = (history) => {
   return [
     {
+      className: 'create-topic-menu-item',
       text: 'Create Topic',
       handler: () => history.push('/topics/create'),
     },
     {
+      className: 'topics-menu-item',
       text: 'Topics',
       handler: () => history.push('/topics'),
     },
@@ -73,18 +75,22 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/reviews'),
     },
     {
+      className: 'configuration-menu-item',
       text: 'Configuration',
       handler: () => history.push('/administration/configuration'),
     },
     {
+      className: 'registration-management-menu-item',
       text: 'Registration Management',
       handler: () => history.push('/administration/registrationmanagement'),
     },
     {
+      className: 'customer-review-menu-item',
       text: 'Current regstrations',
       handler: () => history.push('/administration/registrations'),
     },
     {
+      className: 'group-management-menu-item',
       text: 'Group Management',
       handler: () => history.push('/administration/groups'),
     },
@@ -109,6 +115,7 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/peer-review-questions'),
     },
     {
+      className: 'email-templates-menu-item',
       text: 'Email Templates',
       handler: () => history.push('/administration/email-templates'),
     },

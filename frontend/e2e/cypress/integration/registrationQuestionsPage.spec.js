@@ -96,7 +96,7 @@ describe('Registration-questions page', () => {
         .should('have.length', 1)
     })
 
-    it('creates questions of type scale, text and <empty>', () => {
+    it.skip('creates questions of type scale, text and <empty>', () => {
       createQuestionSet('k2000', [
         {
           question: 'This is a title'

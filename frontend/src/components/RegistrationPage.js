@@ -105,7 +105,8 @@ class RegistrationPage extends React.Component {
       loggedInUser['user'] = response.user
       localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
     } catch (e) {
-      throw e
+      console.log('error happened', e.response)
+      this.props.setError('Error updating user', 3000)
     }
   }
 
