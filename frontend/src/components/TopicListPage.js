@@ -405,9 +405,9 @@ const TopicAcceptanceFilter = (props) => {
           name='topic-acceptance-filter'
           value={acceptanceFilter}
           onChange={handleAcceptanceFilterChange}>
-          <FormControlLabel value='all' control={<Radio color='default' />} label='All' />
-          <FormControlLabel value='accepted' control={<Radio color='primary' />} label='Accepted' />
-          <FormControlLabel value='rejected' control={<Radio color='secondary' />} label='Rejected' />
+          <FormControlLabel data-cy='acceptance-filter-all' value='all' control={<Radio color='default' />} label='All' />
+          <FormControlLabel data-cy='acceptance-filter-accepted' value='accepted' control={<Radio color='primary' />} label='Accepted' />
+          <FormControlLabel data-cy='acceptance-filter-rejected' value='rejected' control={<Radio color='secondary' />} label='Rejected' />
         </RadioGroup>
       </MuiThemeProvider>
     </FormControl>
@@ -537,16 +537,20 @@ const TopicListPage = (props) => {
   const configurationMenuItems = () => {
     return []
       .concat(
-        <MenuItem value={0} key={0}>
+        <MenuItem value={0} key={0} data-cy="configurations-all">
           All configurations
         </MenuItem>
       )
       .concat(
-        configurations.map((configuration) => (
-          <MenuItem value={configuration.id} key={configuration.id}>
-            {configurationMapper(configuration.name)}
-          </MenuItem>
-        ))
+        configurations.map((configuration) => {
+          const confName = configurationMapper(configuration.name)
+          const splits = confName.split(' ')
+          return (
+            <MenuItem value={configuration.id} key={configuration.id} data-cy={'configurations-'+splits[0]+'-'+splits[1]}>
+              {confName}
+            </MenuItem>
+          )
+        })
       )
   }
 
@@ -557,10 +561,10 @@ const TopicListPage = (props) => {
       .sort(activeFirstThenByTitle)
     : acceptanceFilter === 'all'
       ? topics
-        .filter((topic) => topic.configuration_id === filter && topic.active)
+        .filter((topic) => topic.configuration_id === filter)
         .sort(activeFirstThenByTitle)
       : topics
-        .filter((topic) => topic.configuration_id === filter && topic.active)
+        .filter((topic) => topic.configuration_id === filter)
         .filter((topic) => acceptanceFilter === 'accepted'
           ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
           : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
@@ -574,6 +578,7 @@ const TopicListPage = (props) => {
 
       <div className='topics-filter-container'>
         <Select
+          data-cy="configurations-filter"
           value={filter}
           onChange={(event) => updateFilter(event.target.value)}
         >

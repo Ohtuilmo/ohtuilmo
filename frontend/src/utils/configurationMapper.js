@@ -11,7 +11,7 @@ const mapSemesterField = (content) => {
     /fall/i,
     /winter/i
   ]
-  const yearPattern = /20\d\d/
+  const yearPattern = /[0-9]{1,4}/
   const replacements = [
     'Spring',
     'Summer',
