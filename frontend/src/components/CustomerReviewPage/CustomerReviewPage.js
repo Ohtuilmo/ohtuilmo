@@ -157,13 +157,12 @@ const CustomerReviewPage = (props) => {
           props.setGroupId(group.groupId)
           props.setTopicId(group.topicId)
           props.setConfiguration(group.configuration)
-          const reviewQuestionSet = await customerReviewService.getReviewQuestions(
-            group.configuration
-          )
+          const { questions: reviewQuestions } = await customerReviewService
+            .getReviewQuestions(group.configuration)
 
-          props.setQuestions(reviewQuestionSet.questions)
+          props.setQuestions(reviewQuestions)
 
-          fetchCustomerReviewQuestions(props.questionObject)
+          fetchCustomerReviewQuestions(reviewQuestions)
         } else {
           props.setNoGroup(true)
         }
