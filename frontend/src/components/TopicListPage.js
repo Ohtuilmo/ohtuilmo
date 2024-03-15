@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import Button from '@material-ui/core/Button'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import Radio from '@material-ui/core/Radio'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
@@ -18,9 +22,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Icon from '@material-ui/icons/Input'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
-import orange from '@material-ui/core/colors/orange'
+import { green, red, orange } from '@material-ui/core/colors'
 
 import emailService from '../services/email'
 import { formatDate } from '../utils/functions'
@@ -30,6 +32,8 @@ import configurationPageActions from '../reducers/actions/configurationPageActio
 
 import LoadingCover from './common/LoadingCover'
 import './TopicListPage.css'
+import { NoneAvailable } from './common/Placeholders'
+import configurationMapper from '../utils/configurationMapper'
 
 const redGreenTheme = createMuiTheme({
   palette: {
@@ -339,23 +343,28 @@ const TopicTableHead = () => (
  * @param {{ topics: any[], onEmailSendRequested: (info: TopicEmailInfo) => void, onActiveToggle: (topic: any) => void }} props
  */
 const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
-  return (
-    <Table>
-      <TopicTableHead />
-      <TableBody>
-        {topics.map((topic) => (
-          <TopicTableRow
-            key={topic.id}
-            topic={topic}
-            onEmailSendRequested={(emailInfo) =>
-              onEmailSendRequested({ ...emailInfo, topic })
-            }
-            onActiveToggle={() => onActiveToggle(topic)}
-          />
-        ))}
-      </TableBody>
-    </Table>
-  )
+  console.table(topics)
+  return topics.length > 0
+    ? (
+      <Table>
+        <TopicTableHead />
+        <TableBody>
+          {topics.map((topic) => (
+            <TopicTableRow
+              key={topic.id}
+              topic={topic}
+              onEmailSendRequested={(emailInfo) =>
+                onEmailSendRequested({ ...emailInfo, topic })
+              }
+              onActiveToggle={() => onActiveToggle(topic)}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    )
+    : (
+      <NoneAvailable />
+    )
 }
 
 TopicTable.propTypes = {
@@ -377,8 +386,37 @@ const getApiError = (e) => {
   return isAxiosError(e) && e.response.data && e.response.data.error
 }
 
+const TopicAcceptanceFilter = (props) => {
+  const {
+    acceptanceFilter,
+    updateAcceptanceFilter
+  } = props
+
+  const handleAcceptanceFilterChange = (event) => {
+    updateAcceptanceFilter(event.target.value)
+  }
+
+  return <Fragment>
+    <FormControl sx={{ margin: '0 4rem' }}>
+      <MuiThemeProvider theme={redGreenTheme}>
+        <RadioGroup
+          row
+          defaultValue='all'
+          name='topic-acceptance-filter'
+          value={acceptanceFilter}
+          onChange={handleAcceptanceFilterChange}>
+          <FormControlLabel data-cy='acceptance-filter-all' value='all' control={<Radio color='default' />} label='All' />
+          <FormControlLabel data-cy='acceptance-filter-accepted' value='accepted' control={<Radio color='primary' />} label='Accepted' />
+          <FormControlLabel data-cy='acceptance-filter-rejected' value='rejected' control={<Radio color='secondary' />} label='Rejected' />
+        </RadioGroup>
+      </MuiThemeProvider>
+    </FormControl>
+  </Fragment>
+}
+
 const TopicListPage = (props) => {
   const {
+    acceptanceFilter,
     fetchTopics,
     setError,
     configurations,
@@ -497,24 +535,58 @@ const TopicListPage = (props) => {
   }
 
   const configurationMenuItems = () => {
+    const semesterValues = {
+      'Spring': 1,
+      'Summer': 2,
+      'Autumn': 3,
+      'Fall': 3
+    }
+    const configurationSorting = (a, b) => {
+      const aConf = configurationMapper(a.name).split(' ')
+      const bConf = configurationMapper(b.name).split(' ')
+      const result = bConf[0] - aConf[0]
+      if (result !== 0) {
+        return result
+      } else {
+        return semesterValues[bConf[1]] - semesterValues[aConf[1]]
+      }
+    }
     return []
       .concat(
-        <MenuItem value={0} key={0}>
+        <MenuItem value={0} key={0} data-cy="configurations-all">
           All configurations
         </MenuItem>
       )
       .concat(
-        configurations.map((configuration) => (
-          <MenuItem value={configuration.id} key={configuration.id}>
-            {configuration.name}
-          </MenuItem>
-        ))
+        configurations
+          .sort(configurationSorting)
+          .map((configuration) => {
+            const confName = configurationMapper(configuration.name)
+            const splits = confName.split(' ')
+            return (
+              <MenuItem value={configuration.id} key={configuration.id} data-cy={'configurations-'+splits[0]+'-'+splits[1]}>
+                {confName}
+              </MenuItem>
+            )
+          })
       )
   }
 
-  const shownTopics = topics
-    .filter((topic) => topic.configuration_id === filter)
-    .sort(activeFirstThenByTitle)
+  const shownTopics = filter === 0
+    ? topics.filter((topic) => acceptanceFilter === 'accepted'
+      ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
+      : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
+      .sort(activeFirstThenByTitle)
+    : acceptanceFilter === 'all'
+      ? topics
+        .filter((topic) => topic.configuration_id === filter)
+        .sort(activeFirstThenByTitle)
+      : topics
+        .filter((topic) => topic.configuration_id === filter)
+        .filter((topic) => acceptanceFilter === 'accepted'
+          ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
+          : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
+        .sort(activeFirstThenByTitle)
 
   return (
     <div className="topics-container">
@@ -522,18 +594,23 @@ const TopicListPage = (props) => {
         <LoadingCover className="topics-container__loading-cover" />
       )}
 
-      <Select
-        value={filter}
-        onChange={(event) => updateFilter(event.target.value)}
-      >
-        {configurationMenuItems()}
-      </Select>
+      <div className='topics-filter-container'>
+        <Select
+          data-cy="configurations-filter"
+          value={filter}
+          onChange={(event) => updateFilter(event.target.value)}
+        >
+          {configurationMenuItems()}
+        </Select>
 
-      <TopicTable
+        <TopicAcceptanceFilter {...props} />
+      </div>
+
+      {!isLoading && <TopicTable
         topics={shownTopics}
         onEmailSendRequested={handleEmailSendRequested}
         onActiveToggle={handleActiveToggle}
-      />
+      />}
     </div>
   )
 }
@@ -558,6 +635,7 @@ const mapStateToProps = (state) => {
     // done in quick succession and their "loading" doesn't affect page usage
     isLoading: topicListPage.isTopicsLoading,
     filter: topicListPage.filter,
+    acceptanceFilter: topicListPage.acceptanceFilter,
     configurations: state.configurationPage.configurations,
   }
 }
@@ -565,6 +643,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
+  updateAcceptanceFilter: topicListPageActions.updateAcceptanceFilter,
   setTopicActive: topicListPageActions.setTopicActive,
   sendCustomerEmail: topicListPageActions.sendCustomerEmail,
   setError: notificationActions.setError,
