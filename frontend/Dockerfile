@@ -18,7 +18,7 @@ COPY package*.json .
 # Run "ci" instead of "install" to make sure we get exact deps we think we're
 # getting. Downside is that dev deps are downloaded as well.
 # As "ci" uses the $HOME/.npm package cache, we can tell Travis to cache that.
-RUN npm ci --production
+RUN npm ci
 
 COPY . .
 
