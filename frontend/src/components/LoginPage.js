@@ -92,7 +92,6 @@ const mapStateToProps = (state) => {
   return {
     username: state.login.username,
     password: state.login.password,
-    isLoading: state.app.isLoading
   }
 }
 
@@ -101,7 +100,7 @@ const mapDispatchToProps = {
   ...appActions,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  loginUser: userActions.loginUser
+  loginUser: userActions.loginUser,
 }
 
 const ConnectedLoginPage = connect(

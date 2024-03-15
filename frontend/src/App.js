@@ -42,7 +42,6 @@ import registrationmanagementActions from './reducers/actions/registrationManage
 import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 import * as userActions from './reducers/actions/userActions'
-import myGroupActions from './reducers/actions/myGroupActions'
 
 // Protected routes
 import {
@@ -70,38 +69,34 @@ const App = (props) => {
     loginUser,
     fetchRegistrationManagement,
     setError,
-    initializeMyGroup,
     logoutUser,
     clearRegistrations,
     isLoading,
     user,
   } = props
 
+  const isCustomerReviewPage = window.location.href.includes('customer-review/')
+
   useEffect(() => {
     const handleLogin = async () => {
-      if (!window.location.href.includes('customer-review/')) {
-        try {
-          await loginUser()
-        } catch (err) {
-          console.log(err)
-        }
+      try {
+        await loginUser()
+      } catch (err) {
+        console.log(err)
       }
     }
 
     const fetchData = async () => {
-      // TODO: updateIsLoading() is breaking tests. Determine why and fix.
-      //
-      // updateIsLoading(true)
-      await handleLogin()
+      updateIsLoading(true)
+      !isCustomerReviewPage && (await handleLogin())
       await fetchRegistrationManagementData()
-      await initializeMyGroup()
-      // updateIsLoading(false)
+      updateIsLoading(false)
     }
 
     fetchData()
 
     const loginInterval = setInterval(() => {
-      if (!window.location.href.includes('customer-review/')) {
+      if (!isCustomerReviewPage) {
         try {
           loginService.login()
         } catch (err) {
@@ -129,128 +124,138 @@ const App = (props) => {
     updateIsLoading(false)
   }
 
+  const renderWithLoadingCheck = (component) =>
+    isLoading ? () => <LoadingSpinner /> : () => component
+
   return (
     <Router history={history}>
       <div id="app-wrapper">
         <NavigationBar logout={logout} />
         <Notification />
         <div id="app-content">
-          {isLoading ? <LoadingSpinner /> : null}
           <Switch>
-            <Route path="/login" render={() => null} />
-            <LoginRoute exact path="/" render={() => <LandingPage />} />
-            <AdminRoute exact path="/topics" render={() => <TopicListPage />} />
+            <Route path="/login" render={renderWithLoadingCheck(null)} />
+            <LoginRoute
+              exact
+              path="/"
+              render={renderWithLoadingCheck(<LandingPage />)}
+            />
+            <AdminRoute
+              exact
+              path="/topics"
+              render={renderWithLoadingCheck(<TopicListPage />)}
+            />
             <Route
               exact
               path="/topics/create"
-              render={() => <TopicFormPage />}
+              render={renderWithLoadingCheck(<TopicFormPage />)}
             />
             <Route
               exact
               path="/topics/:id"
-              render={(props) => <ViewTopicPage {...props} />}
+              render={renderWithLoadingCheck(<ViewTopicPage {...props} />)}
             />
             <AdminRoute
               exact
               path="/administration/configuration"
-              render={() => <ConfigurationPage />}
+              render={renderWithLoadingCheck(<ConfigurationPage />)}
             />
             <AdminRoute
               exact
               path="/administration/participants"
-              render={() => <ParticipantsPage />}
+              render={renderWithLoadingCheck(<ParticipantsPage />)}
             />
             <AdminRoute
               exact
               path="/administration/users"
-              render={() => <ViewUsersPage />}
+              render={renderWithLoadingCheck(<ViewUsersPage />)}
             />
             <AdminRoute
               exact
               path="/administration/customer-review-questions"
-              render={() => <CustomerReviewQuestionsPage />}
+              render={renderWithLoadingCheck(<CustomerReviewQuestionsPage />)}
             />
             <AdminRoute
               exact
               path="/administration/peer-review-questions"
-              render={() => <PeerReviewQuestionsPage />}
+              render={renderWithLoadingCheck(<PeerReviewQuestionsPage />)}
             />
             <AdminRoute
               exact
               path="/administration/registration-questions"
-              render={() => <RegistrationQuestionsPage />}
+              render={renderWithLoadingCheck(<RegistrationQuestionsPage />)}
             />
             <AdminRoute
               exact
               path="/administration/groups"
-              render={() => <GroupManagementPage />}
+              render={renderWithLoadingCheck(<GroupManagementPage />)}
             />
             <AdminRoute
               exact
               path="/administration/email-templates"
-              render={() => <EmailTemplatesPage />}
+              render={renderWithLoadingCheck(<EmailTemplatesPage />)}
             />
             <AdminRoute
               exact
               path="/administration/registrations"
-              render={() => <Registrations />}
+              render={renderWithLoadingCheck(<Registrations />)}
             />
             <AdminRoute
               exact
               path="/administration/reviews"
-              render={() => <InstructorReviews />}
+              render={renderWithLoadingCheck(<InstructorReviews />)}
             />
             <Route
               exact
               path="/customer-review/:id"
-              render={(props) => <CustomerReviewPage {...props} />}
+              render={renderWithLoadingCheck(<CustomerReviewPage {...props} />)}
             />
             <LoginRoute
               exact
               path="/register"
               user={user}
-              render={() => <RegistrationPage />}
+              render={renderWithLoadingCheck(<RegistrationPage />)}
             />
             <LoginRoute
               exact
               path="/peerreview"
               user={user}
-              render={() => <PeerReviewPage />}
+              render={renderWithLoadingCheck(<PeerReviewPage />)}
             />
             <AdminRoute
               exact
               path="/administration/registrationmanagement"
-              render={() => <RegistrationManagementPage />}
+              render={renderWithLoadingCheck(<RegistrationManagementPage />)}
             />
             <InstructorRoute
               exact
               path="/instructorpage"
-              render={() => <InstructorPage />}
+              render={renderWithLoadingCheck(<InstructorPage />)}
             />
             <InstructorRoute
               exact
               path="/instructorreviewpage"
-              render={() => <InstructorReviewPage />}
+              render={renderWithLoadingCheck(<InstructorReviewPage />)}
             />
             <InstructorRoute
               path="/adminstration/customer-reviews"
-              render={() => <ViewCustomerReviewsPage />}
+              render={renderWithLoadingCheck(<ViewCustomerReviewsPage />)}
             />
 
             <LoginRoute
               exact
               path="/registrationdetails"
-              render={() => <RegistrationDetailsPage />}
+              render={renderWithLoadingCheck(<RegistrationDetailsPage />)}
             />
             <LoginRoute
               exact
               path="/timelogs"
-              render={() => <TimeLogsPage />}
+              render={renderWithLoadingCheck(<TimeLogsPage />)}
             />
             <LoginRoute
               exact
               path="/sprints"
-              render={() => <SprintsDashboard />}
+              render={renderWithLoadingCheck(<SprintsDashboard />)}
             />
             <Route component={NotFound} />
           </Switch>
@@ -278,7 +283,6 @@ const mapDispatchToProps = {
   ...peerReviewPageActions,
   logoutUser: userActions.logoutUser,
   loginUser: userActions.loginUser,
-  initializeMyGroup: myGroupActions.initializeMyGroup,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
