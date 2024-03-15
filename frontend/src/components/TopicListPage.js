@@ -535,6 +535,22 @@ const TopicListPage = (props) => {
   }
 
   const configurationMenuItems = () => {
+    const semesterValues = {
+      'Spring': 1,
+      'Summer': 2,
+      'Autumn': 3,
+      'Fall': 3
+    }
+    const configurationSorting = (a, b) => {
+      const aConf = configurationMapper(a.name).split(' ')
+      const bConf = configurationMapper(b.name).split(' ')
+      const result = bConf[0] - aConf[0]
+      if (result !== 0) {
+        return result
+      } else {
+        return semesterValues[bConf[1]] - semesterValues[aConf[1]]
+      }
+    }
     return []
       .concat(
         <MenuItem value={0} key={0} data-cy="configurations-all">
@@ -542,15 +558,17 @@ const TopicListPage = (props) => {
         </MenuItem>
       )
       .concat(
-        configurations.map((configuration) => {
-          const confName = configurationMapper(configuration.name)
-          const splits = confName.split(' ')
-          return (
-            <MenuItem value={configuration.id} key={configuration.id} data-cy={'configurations-'+splits[0]+'-'+splits[1]}>
-              {confName}
-            </MenuItem>
-          )
-        })
+        configurations
+          .sort(configurationSorting)
+          .map((configuration) => {
+            const confName = configurationMapper(configuration.name)
+            const splits = confName.split(' ')
+            return (
+              <MenuItem value={configuration.id} key={configuration.id} data-cy={'configurations-'+splits[0]+'-'+splits[1]}>
+                {confName}
+              </MenuItem>
+            )
+          })
       )
   }
 

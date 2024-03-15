@@ -72,12 +72,17 @@ describe('Topic list page', () => {
         .children()
         .eq(1)
         .should('be.visible')
-        .and('include.text', '1')
+        .and('include.text', '2')
       cy.get('ul')
         .children()
         .eq(2)
         .should('be.visible')
-        .and('include.text', '2')
+        .and('include.text', '1')
+    })
+
+    it('after loading the topics page, latest configuration should be selected', () => {
+      cy.wait(1500)
+      cy.window().its('store').invoke('getState').its('topicListPage.filter').should('eq', 2)
     })
   })
 
@@ -86,6 +91,9 @@ describe('Topic list page', () => {
 
     beforeEach(() => {
       visitTopicsPage()
+      cy.wait(1500)
+      cy.get('[data-cy="configurations-filter"]').click()
+      cy.get('[data-cy="configurations-1-"]').click()
     })
 
     it('renders the topic names correctly', () => {
@@ -124,6 +132,9 @@ describe('Topic list page', () => {
         findTopicActiveCheckbox(toggleTestTopicName).should(desiredState)
 
         visitTopicsPage()
+        cy.wait(1500)
+        cy.get('[data-cy="configurations-filter"]').click()
+        cy.get('[data-cy="configurations-1-"]').click()
 
         // still in correct state after refresh?
         findTopicActiveCheckbox(toggleTestTopicName).should(desiredState)
@@ -186,6 +197,9 @@ describe('Topic list page', () => {
           cy.spy(win, 'confirm')
         }
       })
+      cy.wait(1500)
+      cy.get('[data-cy="configurations-filter"]').click()
+      cy.get('[data-cy="configurations-1-"]').click()
     })
 
     it('shows email languages after clicking accept', () => {
