@@ -41,3 +41,9 @@
 .topic-table-row > td {
   vertical-align: baseline;
 }
+
+.topics-filter-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

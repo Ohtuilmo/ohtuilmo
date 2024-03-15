@@ -8,6 +8,13 @@ const updateFilter = (filter) => {
   }
 }
 
+const updateAcceptanceFilter = (filter) => {
+  return {
+    type: 'TOPIC_PAGE_UPDATE_ACCEPTANCE_FILTER',
+    payload: filter
+  }
+}
+
 const fetchTopicsRequest = () => ({
   type: 'TOPIC_PAGE_FETCH_TOPICS_REQUEST'
 })
@@ -87,6 +94,7 @@ const sendCustomerEmail = (topicId, messageType, messageLanguage) => {
 }
 
 export default {
+  updateAcceptanceFilter,
   fetchTopics,
   setTopicActive,
   updateFilter,
