@@ -45,8 +45,5 @@ services:
       - backend
       - frontend
 
-
-
-
 volumes:
   pg-data:

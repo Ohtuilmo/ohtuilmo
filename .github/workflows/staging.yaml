@@ -42,7 +42,7 @@ jobs:
           image: ${{ steps.build-backend.outputs.image }}
           tags: ${{ steps.build-backend.outputs.tags }}
           registry: quay.io/ohtuilmo
-          username: ${{ secrets.QUAY_USERNAME }}
+          username: ohtuilmo+github
           password: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Push frontend to quay.io
@@ -51,5 +51,5 @@ jobs:
           image: ${{ steps.build-frontend.outputs.image }}
           tags: ${{ steps.build-frontend.outputs.tags }}
           registry: quay.io/ohtuilmo
-          username: ${{ secrets.QUAY_USERNAME }}
+          username: ohtuilmo+github
           password: ${{ secrets.QUAY_PASSWORD }}
