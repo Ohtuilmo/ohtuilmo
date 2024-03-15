@@ -79,10 +79,22 @@ describe('Topic list page', () => {
         .should('be.visible')
         .and('include.text', '1')
     })
+  })
+
+  describe('default configuration selected while loading Topics page', () => {
+    beforeEach(() => {
+      visitTopicsPage()
+      cy.wait(1500)
+    })
 
     it('after loading the topics page, latest configuration should be selected', () => {
-      cy.wait(1500)
       cy.window().its('store').invoke('getState').its('topicListPage.filter').should('eq', 2)
+    })
+
+    it('after loading the topics page, message should be rendered without topics', () => {
+      cy.get('h1')
+        .should('be.visible')
+        .and('have.text', 'None available')
     })
   })
 
