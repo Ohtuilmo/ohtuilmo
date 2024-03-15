@@ -1,0 +1,55 @@
+name: Deploy to staging
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend
+        id: build-backend
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: backend
+          tags: staging ${{ github.sha }}
+          context: backend/
+          containerfiles: |
+            backend/Dockerfile
+
+      - name: Build frontend
+        id: build-frontend
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: frontend
+          tags: staging ${{ github.sha }}
+          context: frontend/
+          containerfiles: |
+            frontend/Dockerfile
+
+      - name: Push backend to quay.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-backend.outputs.image }}
+          tags: ${{ steps.build-backend.outputs.tags }}
+          registry: quay.io/ohtuilmo
+          username: ohtuilmo+github
+          password: ${{ secrets.QUAY_PASSWORD }}
+
+      - name: Push frontend to quay.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-frontend.outputs.image }}
+          tags: ${{ steps.build-frontend.outputs.tags }}
+          registry: quay.io/ohtuilmo
+          username: ohtuilmo+github
+          password: ${{ secrets.QUAY_PASSWORD }}

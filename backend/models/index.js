@@ -1,14 +1,10 @@
-const { isProductionEnvironment } = require('../utils/index')
 const Sequelize = require('sequelize')
 
 const db = {}
 
 db.connect = () => {
 
-  let sequelize
-  isProductionEnvironment()
-    ? sequelize = new Sequelize(process.env.DATABASE_URL, { logging: console.log })
-    : sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
+  const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
 
   sequelize
     .authenticate()
@@ -17,7 +13,6 @@ db.connect = () => {
     })
     .catch((err) => {
       console.error('Unable to connect to the database:', err)
-      // process.exit(1)
     })
 
   const UserModel = require('./user')

@@ -1,0 +1,70 @@
+name: Run tests
+
+on:
+  workflow_call:
+  schedule:
+    - cron: "50 3 * * *"
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12
+
+      - name: Install backend dependencies & run linter
+        working-directory: ./backend
+        run: |
+          npm install
+          npm run lint
+
+      - name: Install frontend dependencies & run linter
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run lint
+
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12
+
+      - name: Start db container
+        run: docker compose -f compose.ci.yaml up db -d
+
+      - name: Create, migrate and seed db
+        env:
+          DATABASE_URL: postgres://postgres@localhost:5432/dev_postgres
+        run: |
+          cd backend
+          npm install
+          npm run db:create
+          npm run db:migrate
+          npm run db:seed:all
+
+      - name: Start backend, frontend and nginx
+        run: docker compose -f compose.ci.yaml up -d
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./frontend
+          config: baseUrl=http://localhost:3000/projekti
+          install-command: npm install
+          browser: chrome
+          record: true
+        env:
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

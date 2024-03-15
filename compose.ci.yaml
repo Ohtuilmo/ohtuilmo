@@ -1,0 +1,49 @@
+version: '2'
+services:
+  db:
+    image: postgres:10.6
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      PGDATA: /data/test
+    volumes:
+      - pg-data:/data/test
+
+  backend:
+    build: './backend'
+    restart: always
+    ports:
+      - '7001:3001'
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - SECRET=yoursecrethere
+      - EMAIL_ENABLED=false
+      - DATABASE_URL=postgres://postgres@db:5432/dev_postgres
+
+  frontend:
+    build: './frontend'
+    ports:
+      - '7000:3000'
+    depends_on:
+      - db
+      - backend
+    environment:
+      - PUBLIC_URL=http://localhost:7001
+
+  nginx:
+    image: nginx:1.25.4
+    ports:
+      - '3000:80'
+    restart: always
+    volumes:
+      - ./frontend/e2e/nginx.e2e.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  pg-data:
