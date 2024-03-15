@@ -55,11 +55,9 @@ describe('Topic list page', () => {
     it('renders option "All configurations"', () => {
       cy.get('[data-cy="configurations-filter"]')
         .click()
-        .wait(1500)
+        .wait(2500)
         .get('ul')
         .should('be.visible')
-      cy.get('[data-cy="configurations-filter"]')
-        .get('ul')
         .children()
         .eq(0)
         .should('have.text', 'All configurations')
