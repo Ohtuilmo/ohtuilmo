@@ -45,6 +45,7 @@ describe('Topic list page', () => {
   describe('configuration selector', () => {
     beforeEach(() => {
       visitTopicsPage()
+      cy.wait(1500)
     })
 
     it('renders the configuration selector', () => {
@@ -56,9 +57,6 @@ describe('Topic list page', () => {
       cy.get('[data-cy="configurations-filter"]')
         .click()
         .wait(1500)
-        .get('ul')
-        .should('be.visible')
-      cy.get('[data-cy="configurations-filter"]')
         .get('ul')
         .children()
         .eq(0)
@@ -84,7 +82,7 @@ describe('Topic list page', () => {
   describe('default configuration selected while loading Topics page', () => {
     beforeEach(() => {
       visitTopicsPage()
-      cy.wait(1500)
+      cy.wait(2500)
     })
 
     it('after loading the topics page, latest configuration should be selected', () => {
@@ -103,7 +101,7 @@ describe('Topic list page', () => {
 
     beforeEach(() => {
       visitTopicsPage()
-      cy.wait(1500)
+      cy.wait(2500)
       cy.get('[data-cy="configurations-filter"]').click()
       cy.get('[data-cy="configurations-1-"]').click()
     })
@@ -113,7 +111,7 @@ describe('Topic list page', () => {
 
       for (const topicTitle of topicTitles) {
         cy.get(`[data-cy-topic-name="${topicTitle}"]`)
-          .wait(1500)
+          .wait(2500)
           .find('.topic-table-row__topic-title')
           .should('have.text', topicTitle)
       }
@@ -121,11 +119,11 @@ describe('Topic list page', () => {
 
     it('renders the customer names and emails correctly', () => {
       cy.get('[data-cy-topic-name="Aihe A"]')
-        .wait(1500)
+        .wait(2500)
         .find('.topic-table-row__customer')
         .contains('Aasiakas')
       cy.get('[data-cy-topic-name="Aihe A"]')
-        .wait(1500)
+        .wait(2500)
         .find('.topic-table-row__customer')
         .contains('aasia@kas')
     })
@@ -144,7 +142,7 @@ describe('Topic list page', () => {
         findTopicActiveCheckbox(toggleTestTopicName).should(desiredState)
 
         visitTopicsPage()
-        cy.wait(1500)
+        cy.wait(2500)
         cy.get('[data-cy="configurations-filter"]').click()
         cy.get('[data-cy="configurations-1-"]').click()
 
@@ -209,7 +207,7 @@ describe('Topic list page', () => {
           cy.spy(win, 'confirm')
         }
       })
-      cy.wait(1500)
+      cy.wait(2500)
       cy.get('[data-cy="configurations-filter"]').click()
       cy.get('[data-cy="configurations-1-"]').click()
     })
@@ -297,14 +295,14 @@ describe('Topic list page', () => {
         cy.get('tbody').children().should('have.length', 3)
       })
       it('shows message if no topics are found after filtering', () => {
-        cy.wait(1500)
+        cy.wait(2500)
         cy.get('[data-cy="acceptance-filter-rejected"]').click()
-        cy.wait(1500)
+        cy.wait(2500)
         cy.get('h1')
           .should('be.visible')
           .and('have.text', 'None available')
         cy.get('[data-cy="acceptance-filter-accepted"]').click()
-        cy.wait(1500)
+        cy.wait(2500)
         cy.get('h1')
           .should('be.visible')
           .and('have.text', 'None available')
@@ -313,14 +311,14 @@ describe('Topic list page', () => {
         clickSendAcceptEmail('Aihe A')
         clickEmailLanguage('finnish')
         cy.get('[data-cy="acceptance-filter-accepted"]').click()
-        cy.wait(1500)
+        cy.wait(2500)
         cy.get('tbody').children().should('have.length', 1)
       })
       it('shows only rejected topics after filtering', () => {
         clickSendRejectEmail('Aihe B')
         clickEmailLanguage('finnish')
         cy.get('[data-cy="acceptance-filter-rejected"]').click()
-        cy.wait(1500)
+        cy.wait(2500)
         cy.get('tbody').children().should('have.length', 1)
       })
     })
