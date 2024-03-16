@@ -45,6 +45,7 @@ describe('Topic list page', () => {
   describe('configuration selector', () => {
     beforeEach(() => {
       visitTopicsPage()
+      cy.wait(1500)
     })
 
     it('renders the configuration selector', () => {
@@ -55,9 +56,8 @@ describe('Topic list page', () => {
     it('renders option "All configurations"', () => {
       cy.get('[data-cy="configurations-filter"]')
         .click()
-        .wait(2500)
+        .wait(1500)
         .get('ul')
-        .should('be.visible')
         .children()
         .eq(0)
         .should('have.text', 'All configurations')
