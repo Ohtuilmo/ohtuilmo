@@ -103,7 +103,7 @@ class NavigationMenu extends React.Component {
                         </React.Fragment>
                       ) : (
                         renderMenuItems(group)
-                      )
+                      ),
                     )}
                   </ClickAwayListener>
                 </Paper>

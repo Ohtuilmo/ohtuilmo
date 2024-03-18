@@ -13,7 +13,7 @@ const PeerReviewQuestionsTableRow = ({
   type,
   header,
   description,
-  options
+  options,
 }) => (
   <TableRow className="registration-questions-table-row">
     <TableCell component="th" scope="row">
@@ -50,7 +50,7 @@ const RegistrationQuestionsTable = ({ questions }) => (
 )
 
 RegistrationQuestionsTable.propTypes = {
-  questions: PropTypes.arrayOf(peerReviewQuestionShape)
+  questions: PropTypes.arrayOf(peerReviewQuestionShape),
 }
 
 export default RegistrationQuestionsTable

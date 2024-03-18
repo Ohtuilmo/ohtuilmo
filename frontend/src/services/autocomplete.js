@@ -12,9 +12,9 @@ const findUsersByPartialName = async (partialName) => {
   // returns 400 if less than 3 characters passed!
   const response = await axios.get(`${url}/users`, {
     params: {
-      name: partialName
+      name: partialName,
     },
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
 
   // [ { student_number, first_names, last_name } ]

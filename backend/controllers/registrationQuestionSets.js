@@ -4,13 +4,15 @@ const { checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const createRegistrationQuestionSet = (req, res) => {
   db.RegistrationQuestionSet.create({
     name: req.body.name,
-    questions: req.body.questions
+    questions: req.body.questions,
   })
     .then((createdSet) => res.status(200).json({ questionSet: createdSet }))
     .catch((error) => handleDatabaseError(res, error))
@@ -20,7 +22,7 @@ const updateRegistrationQuestionSet = (req, res, questionSet) => {
   questionSet
     .update({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
     .then((questionSet) => {
       questionSet
@@ -58,9 +60,9 @@ const updateChecks = (req, res) => {
               .status(400)
               .json({ error: 'no registration question set with that id' })
           updateRegistrationQuestionSet(req, res, foundSet)
-        }
+        },
       )
-    }
+    },
   )
 }
 
@@ -91,7 +93,7 @@ registrationQuestionSetsRouter.delete('/:id', checkAdmin, async (req, res) => {
     console.error(
       'error while deleting question set with id',
       req.params.id,
-      err
+      err,
     )
     return res.status(500).json({ error: 'internal server error' })
   }

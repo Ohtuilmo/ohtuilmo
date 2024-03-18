@@ -24,7 +24,7 @@ const questionSets = (state = [], action) => {
 }
 
 const peerReviewQuestionsPageReducer = combineReducers({
-  questionSets
+  questionSets,
 })
 
 export default peerReviewQuestionsPageReducer

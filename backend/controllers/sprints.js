@@ -4,17 +4,18 @@ const { checkLogin } = require('../middleware')
 const sprintsRouter = express.Router()
 const db = require('../models/index')
 
-
 // latest group, because student may belong to multiple groups (dropout, etc.)
 const findLatestGroupId = async (studentNumber) => {
   try {
     const latestGroup = await db.Group.findOne({
-      include: [{
-        model: db.User,
-        as: 'students',
-        where: { student_number: studentNumber }
-      }],
-      order: [['createdAt', 'DESC']]
+      include: [
+        {
+          model: db.User,
+          as: 'students',
+          where: { student_number: studentNumber },
+        },
+      ],
+      order: [['createdAt', 'DESC']],
     })
     if (!latestGroup) {
       console.error('User does not belong to any group or not found')
@@ -28,7 +29,6 @@ const findLatestGroupId = async (studentNumber) => {
   }
 }
 
-
 function validateSprint({ start_date, end_date, sprint }) {
   const startDate = new Date(start_date)
   const endDate = new Date(end_date)
@@ -40,7 +40,11 @@ function validateSprint({ start_date, end_date, sprint }) {
     return 'Start date must be before end date.'
   }
 
-  if (typeof sprint !== 'number' || isNaN(sprint) || parseInt(sprint, 10) !== sprint) {
+  if (
+    typeof sprint !== 'number' ||
+    isNaN(sprint) ||
+    parseInt(sprint, 10) !== sprint
+  ) {
     return 'Sprint must be a valid number.'
   }
 
@@ -55,15 +59,15 @@ const fetchSprintsFromDb = async (studentNumber) => {
       where: { group_id: latestGroupId },
       //add group_id to attributes if needed for frontend
       attributes: ['id', 'start_date', 'end_date', 'sprint'],
-      raw: true
+      raw: true,
     })
 
-    const formattedSprints = groupSprints.map(sprint => ({
+    const formattedSprints = groupSprints.map((sprint) => ({
       id: sprint.id,
       start_date: new Date(sprint.start_date).toISOString().slice(0, 10),
       end_date: new Date(sprint.end_date).toISOString().slice(0, 10),
       sprint: sprint.sprint,
-      user_id: studentNumber
+      user_id: studentNumber,
     }))
 
     return formattedSprints
@@ -100,7 +104,7 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
       start_date,
       end_date,
       sprint,
-      group_id: groupId
+      group_id: groupId,
     })
     const sprints = await fetchSprintsFromDb(user_id)
     res.status(201).json(sprints)
@@ -108,7 +112,6 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     console.error('Error creating sprint:', error)
     return res.status(500).json({ error: 'Error creating sprint.' })
   }
-
 })
 
 sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
@@ -126,7 +129,9 @@ sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
     }
     const isMember = await group.hasStudent(user_id)
     if (!isMember) {
-      return res.status(403).json({ error: 'User is not a member of the group.' })
+      return res
+        .status(403)
+        .json({ error: 'User is not a member of the group.' })
     }
     await sprint.destroy()
     const sprints = await fetchSprintsFromDb(user_id)
@@ -135,7 +140,6 @@ sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
     console.error('Error deleting sprint:', error)
     return res.status(500).json({ error: 'Error deleting sprint.' })
   }
-
 })
 
 module.exports = sprintsRouter

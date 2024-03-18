@@ -1,7 +1,7 @@
 const initializeAnswerSheet = (answerSheet) => {
   return {
     type: 'INITIALIZE_ANSWER_SHEET',
-    payload: answerSheet
+    payload: answerSheet,
   }
 }
 
@@ -9,39 +9,39 @@ const updateAnswer = (answer, questionId) => {
   return {
     type: 'UPDATE_ANSWER',
     answer: answer,
-    questionId: questionId
+    questionId: questionId,
   }
 }
 const createPeers = (peers) => {
   return {
     type: 'CREATE_PEERS',
-    payload: peers
+    payload: peers,
   }
 }
 const setSubmittedReviews = (submittedReviews) => {
   return {
     type: 'SET_SUBMITTED_REVIEWS',
-    payload: submittedReviews
+    payload: submittedReviews,
   }
 }
 const setLoading = (loading) => {
   return {
     type: 'LOADING',
-    payload: loading
+    payload: loading,
   }
 }
 
 const setQuestions = (questions) => {
   return {
     type: 'SET_QUESTIONS',
-    payload: questions
+    payload: questions,
   }
 }
 
 const setConfiguration = (configurationId) => {
   return {
     type: 'SET_CONFIGURATION',
-    payload: configurationId
+    payload: configurationId,
   }
 }
 
@@ -52,5 +52,5 @@ export default {
   setSubmittedReviews,
   setLoading,
   setQuestions,
-  setConfiguration
+  setConfiguration,
 }

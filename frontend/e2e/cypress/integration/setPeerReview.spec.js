@@ -7,24 +7,31 @@ describe('Review-questions page', () => {
       {
         type: 'info',
         header: 'This is info',
-        description: 'Just fill the form'
+        description: 'Just fill the form',
       },
       {
         header: 'Previous experiene in software developemnt',
         description: 'How many hours?',
-        type: 'number'
+        type: 'number',
       },
       {
         header: 'Without option?',
         description: '',
-        type: 'number'
+        type: 'number',
       },
       {
         header: 'Ok and with option',
         description: 'Choose a radio button you want',
         type: 'radio',
-        options: ['Cant say', 'Not at all', 'Little', 'Decent', 'Good', 'Super']
-      }
+        options: [
+          'Cant say',
+          'Not at all',
+          'Little',
+          'Decent',
+          'Good',
+          'Super',
+        ],
+      },
     ])
   })
 

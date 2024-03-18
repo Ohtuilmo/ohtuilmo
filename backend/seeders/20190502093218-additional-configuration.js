@@ -9,8 +9,8 @@ const additionalConfiguration = [
     name: 'Konfiguraatio 2',
     registration_question_set_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
 
 module.exports = {
@@ -20,5 +20,5 @@ module.exports = {
 
   down: async (query) => {
     await query.bulkDelete('configurations', { name: 'Konfiguraatio 2' }, {})
-  }
+  },
 }

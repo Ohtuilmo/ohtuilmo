@@ -38,7 +38,7 @@ const GroupDetails = ({ myGroup }) => {
 
 const Answers = ({ answers, currentConfiguration }) => {
   answers = answers.filter(
-    (group) => group.group.configurationId === currentConfiguration
+    (group) => group.group.configurationId === currentConfiguration,
   )
 
   return (
@@ -320,7 +320,7 @@ const InstructorPage = (props) => {
       try {
         const peerReviewData = await peerReviewService.getAnswersByInstructor()
         const uniqueConfigurations = getUniqueConfigurations(
-          peerReviewData.map((data) => data.group)
+          peerReviewData.map((data) => data.group),
         )
 
         setAnswers(peerReviewData)
@@ -374,7 +374,7 @@ const mapDispatchToProps = {
 
 const ConnectedInstructorPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)

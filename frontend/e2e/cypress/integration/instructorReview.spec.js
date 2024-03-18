@@ -4,7 +4,7 @@ const initTests = () => {
     topicId: 1,
     configurationId: 1,
     instructorId: '012345688',
-    studentIds: ['012345678', '012345698']
+    studentIds: ['012345678', '012345698'],
   })
 }
 const submitInstructorReview = () => {
@@ -15,7 +15,7 @@ const answerTextInput = (text, index) => {
   cy.get(`[data-cy="textInput- Osasko jaba tykitella. user:${index}"]`).within(
     () => {
       cy.get('textarea').type(text)
-    }
+    },
   )
 }
 const answerNumberInput = (number, index) => {
@@ -55,7 +55,7 @@ describe('Instructor review page', () => {
   it.skip('shows error when text fields are filled but there are other unfilled fields', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-      0
+      0,
     )
     submitInstructorReview()
     expectNotification('You must answer all questions')
@@ -64,7 +64,7 @@ describe('Instructor review page', () => {
   it.skip('shows error when number fields are filled but are higher than 5', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-      0
+      0,
     )
     answerNumberInput(6, 0)
     submitInstructorReview()
@@ -74,7 +74,7 @@ describe('Instructor review page', () => {
   it.skip('shows error when number fields are filled but are lower than 5', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-      0
+      0,
     )
     answerNumberInput(-1, 0)
     submitInstructorReview()
@@ -84,11 +84,11 @@ describe('Instructor review page', () => {
   it.skip('submits instructor review when all fields are filled', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-      0
+      0,
     )
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-      1
+      1,
     )
     answerNumberInput(5, 0)
     answerNumberInput(0, 1)

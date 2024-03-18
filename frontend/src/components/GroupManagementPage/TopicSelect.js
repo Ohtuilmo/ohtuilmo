@@ -9,7 +9,7 @@ const TopicSelect = ({
   onTopicSelectChange,
   groupTopicID,
   className,
-  groupConfig
+  groupConfig,
 }) => {
   return (
     <Select
@@ -19,7 +19,7 @@ const TopicSelect = ({
     >
       {topics
         .filter(
-          (topic) => topic.active && topic.configuration_id === groupConfig
+          (topic) => topic.active && topic.configuration_id === groupConfig,
         )
         .map((topic) => (
           <MenuItem key={topic.id} value={topic.id} className="topic-menu-item">
@@ -32,7 +32,7 @@ const TopicSelect = ({
 
 const mapStateToProps = (state) => {
   return {
-    groupConfig: state.groupPage.groupConfigurationID
+    groupConfig: state.groupPage.groupConfigurationID,
   }
 }
 

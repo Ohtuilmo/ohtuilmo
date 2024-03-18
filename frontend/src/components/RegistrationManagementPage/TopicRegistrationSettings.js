@@ -10,7 +10,7 @@ import {
   TextField,
   Switch,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@material-ui/core'
 
 // Actions
@@ -23,7 +23,7 @@ const TopicRegistrationSettings = ({
   updateTopicOpen,
   updateTopicConf,
   updateTopicMessage,
-  configurationMenuItems
+  configurationMenuItems,
 }) => {
   return (
     <Card style={{ marginBottom: '10px' }}>
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
   return {
     topicConf: state.registrationManagement.topicRegistrationConf,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
-    topicMessage: state.registrationManagement.topicRegistrationMessage
+    topicMessage: state.registrationManagement.topicRegistrationMessage,
   }
 }
 
@@ -77,10 +77,10 @@ const mapDispatchToProps = {
   updateTopicConf: registrationManagementActions.updateTopicRegistrationConf,
   updateTopicOpen: registrationManagementActions.updateTopicRegistrationOpen,
   updateTopicMessage:
-    registrationManagementActions.updateTopicRegistrationMessage
+    registrationManagementActions.updateTopicRegistrationMessage,
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TopicRegistrationSettings)

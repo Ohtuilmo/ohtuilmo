@@ -49,8 +49,7 @@ describe('Topic list page', () => {
     })
 
     it('renders the configuration selector', () => {
-      cy.get('[data-cy="configurations-filter"]')
-        .should('be.visible')
+      cy.get('[data-cy="configurations-filter"]').should('be.visible')
     })
 
     it('renders option "All configurations"', () => {
@@ -86,13 +85,15 @@ describe('Topic list page', () => {
     })
 
     it('after loading the topics page, latest configuration should be selected', () => {
-      cy.window().its('store').invoke('getState').its('topicListPage.filter').should('eq', 2)
+      cy.window()
+        .its('store')
+        .invoke('getState')
+        .its('topicListPage.filter')
+        .should('eq', 2)
     })
 
     it('after loading the topics page, message should be rendered without topics', () => {
-      cy.get('h1')
-        .should('be.visible')
-        .and('have.text', 'None available')
+      cy.get('h1').should('be.visible').and('have.text', 'None available')
     })
   })
 
@@ -152,26 +153,24 @@ describe('Topic list page', () => {
     })
 
     it('renders correct number of topics', () => {
-      cy.get('tbody')
-        .children()
-        .should('have.length', 3)
+      cy.get('tbody').children().should('have.length', 3)
     })
 
     it('renders topics in correct order', () => {
       cy.get('tbody')
         .children()
         .eq(0)
-        .invoke('attr','data-cy-topic-name')
+        .invoke('attr', 'data-cy-topic-name')
         .should('eq', 'Aihe A')
       cy.get('tbody')
         .children()
         .eq(1)
-        .invoke('attr','data-cy-topic-name')
+        .invoke('attr', 'data-cy-topic-name')
         .should('eq', 'Aihe B')
       cy.get('tbody')
         .children()
         .eq(2)
-        .invoke('attr','data-cy-topic-name')
+        .invoke('attr', 'data-cy-topic-name')
         .should('eq', 'Aihe C')
     })
   })
@@ -188,24 +187,24 @@ describe('Topic list page', () => {
       cy.updateAllEmailTemplates({
         topicAccepted: {
           finnish: 'Projekti {{topicName}} hyväksytty.',
-          english: 'Project {{topicName}} was accepted.'
+          english: 'Project {{topicName}} was accepted.',
         },
         topicRejected: {
           finnish: 'Projekti {{topicName}} hylätty.',
-          english: 'Project {{topicName}} was rejected.'
+          english: 'Project {{topicName}} was rejected.',
         },
         customerReviewLink: {
           finnish:
             'Arviointi on nyt auki projektille {{topicName}} osoitteessa {{secretLink}}',
           english:
-            'Review is now open for project {{topicName}}, go to {{secretLink}}'
-        }
+            'Review is now open for project {{topicName}}, go to {{secretLink}}',
+        },
       })
       visitTopicsPage({
         // spy window.confirm for email preview tests
         onBeforeLoad(win) {
           cy.spy(win, 'confirm')
-        }
+        },
       })
       cy.wait(2500)
       cy.get('[data-cy="configurations-filter"]').click()
@@ -298,14 +297,10 @@ describe('Topic list page', () => {
         cy.wait(2500)
         cy.get('[data-cy="acceptance-filter-rejected"]').click()
         cy.wait(2500)
-        cy.get('h1')
-          .should('be.visible')
-          .and('have.text', 'None available')
+        cy.get('h1').should('be.visible').and('have.text', 'None available')
         cy.get('[data-cy="acceptance-filter-accepted"]').click()
         cy.wait(2500)
-        cy.get('h1')
-          .should('be.visible')
-          .and('have.text', 'None available')
+        cy.get('h1').should('be.visible').and('have.text', 'None available')
       })
       it('shows only accepted topics after filtering', () => {
         clickSendAcceptEmail('Aihe A')
@@ -352,7 +347,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Projekti ${topicName} hyväksytty.`
+              `Projekti ${topicName} hyväksytty.`,
             )
           })
       })
@@ -365,7 +360,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Project ${topicName} was accepted.`
+              `Project ${topicName} was accepted.`,
             )
           })
       })
@@ -378,7 +373,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Projekti ${topicName} hylätty.`
+              `Projekti ${topicName} hylätty.`,
             )
           })
       })
@@ -391,7 +386,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Project ${topicName} was rejected.`
+              `Project ${topicName} was rejected.`,
             )
           })
       })
@@ -404,7 +399,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Arviointi on nyt auki projektille ${topicName} osoitteessa ${secretReviewLink}`
+              `Arviointi on nyt auki projektille ${topicName} osoitteessa ${secretReviewLink}`,
             )
           })
       })
@@ -417,7 +412,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Review is now open for project ${topicName}, go to ${secretReviewLink}`
+              `Review is now open for project ${topicName}, go to ${secretReviewLink}`,
             )
           })
       })

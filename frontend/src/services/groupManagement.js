@@ -67,7 +67,7 @@ const getByInstructor = async (studentNumber = null) => {
     `${url}/byinstructor/${studentNumberToUse}`,
     {
       headers: { Authorization: 'Bearer ' + getUserToken() },
-    }
+    },
   )
 
   return response.data

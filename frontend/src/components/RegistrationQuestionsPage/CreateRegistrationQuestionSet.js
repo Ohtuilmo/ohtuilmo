@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createRegistrationQuestionSet } from '../../reducers/actions/registrationQuestionsPageActions'
 import {
   setError,
-  setSuccess
+  setSuccess,
 } from '../../reducers/actions/notificationActions'
 import QuestionSetForm from '../QuestionSetForm'
 
@@ -13,17 +13,15 @@ const isValidationError = (err) => err.response && err.response.status === 400
 const CreateRegistrationQuestionSet = ({
   onCreateRequested,
   onSuccess,
-  onError
+  onError,
 }) => {
   const handleError = (err) => {
     console.error('Error while creating registration question set', err)
 
     if (isValidationError(err)) {
       onError(
-        `An error occurred while creating question set: ${
-          err.response.data.error
-        }`,
-        5000
+        `An error occurred while creating question set: ${err.response.data.error}`,
+        5000,
       )
     } else {
       onError('Some error happened', 3000)
@@ -51,10 +49,7 @@ const CreateRegistrationQuestionSet = ({
 const mapDispatchToProps = {
   onCreateRequested: createRegistrationQuestionSet,
   onSuccess: setSuccess,
-  onError: setError
+  onError: setError,
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(CreateRegistrationQuestionSet)
+export default connect(null, mapDispatchToProps)(CreateRegistrationQuestionSet)

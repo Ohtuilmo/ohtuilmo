@@ -25,7 +25,7 @@ class PeerReview extends React.Component {
       if (group) {
         const reviewQuestionsSet = await peerReviewService.getReviewQuestions(
           this.props.reviewConf,
-          this.props.reviewRound
+          this.props.reviewRound,
         )
 
         const questionObject = { questions: reviewQuestionsSet.questions }
@@ -56,7 +56,7 @@ class PeerReview extends React.Component {
 
       peers.forEach(
         (peer) =>
-          (peerAnswers.peers[peer.first_names + ' ' + peer.last_name] = null)
+          (peerAnswers.peers[peer.first_names + ' ' + peer.last_name] = null),
       )
 
       return peerAnswers
@@ -91,7 +91,7 @@ class PeerReview extends React.Component {
         } else {
           return question
         }
-      }
+      },
     )
 
     this.props.initializeAnswerSheet(tempAnswerSheet)
@@ -101,7 +101,7 @@ class PeerReview extends React.Component {
     event.preventDefault()
 
     const answer = window.confirm(
-      'Answers can not be changed after submitting. Continue?'
+      'Answers can not be changed after submitting. Continue?',
     )
     if (!answer) return
     try {
@@ -114,7 +114,7 @@ class PeerReview extends React.Component {
         },
       })
       this.props.setSubmittedReviews(
-        this.props.submittedReviews.concat(createdReview)
+        this.props.submittedReviews.concat(createdReview),
       )
       this.props.setSuccess('Peer review saved!')
       this.props.history.push('/')
@@ -381,6 +381,6 @@ const mapDispatchToProps = {
 
 const ConnectedPeerReview = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PeerReview)
 export default withRouter(ConnectedPeerReview)

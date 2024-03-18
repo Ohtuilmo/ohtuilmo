@@ -16,10 +16,10 @@ const GroupManagementForm = ({
   users,
   deleteGroup,
   setSuccess,
-  setError
+  setError,
 }) => {
   const filteredGroups = groups.filter(
-    (group) => group.configurationId === groupConfigurationID
+    (group) => group.configurationId === groupConfigurationID,
   )
 
   return (
@@ -60,17 +60,17 @@ const mapStateToPropsForm = (state) => ({
   groupConfigurationID: state.groupPage.groupConfigurationID,
   groups: state.groupPage.groups,
   topics: state.topicListPage.topics,
-  users: state.groupPage.users
+  users: state.groupPage.users,
 })
 
 const mapDispatchToPropsForm = {
   deleteFromGroupAction: groupManagementActions.deleteFromGroup,
   deleteGroup: groupManagementActions.deleteGroup,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
 export default connect(
   mapStateToPropsForm,
-  mapDispatchToPropsForm
+  mapDispatchToPropsForm,
 )(GroupManagementForm)

@@ -96,7 +96,7 @@ const getQuestionInputComponent = (type) => {
     text: TextInput,
     number: NumberInput,
     range: RangeInput,
-    oneliner: OnelinerInput
+    oneliner: OnelinerInput,
   }
   return typeToComponent[type]
 }
@@ -157,8 +157,8 @@ const CustomerReviewPage = (props) => {
           props.setGroupId(group.groupId)
           props.setTopicId(group.topicId)
           props.setConfiguration(group.configuration)
-          const { questions: reviewQuestions } = await customerReviewService
-            .getReviewQuestions(group.configuration)
+          const { questions: reviewQuestions } =
+            await customerReviewService.getReviewQuestions(group.configuration)
 
           props.setQuestions(reviewQuestions)
 
@@ -180,7 +180,7 @@ const CustomerReviewPage = (props) => {
         type: 'number',
         questionHeader: question.header,
         id: questionId,
-        answer: 0
+        answer: 0,
       }
     }
 
@@ -189,7 +189,7 @@ const CustomerReviewPage = (props) => {
         type: 'text',
         questionHeader: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
 
@@ -198,7 +198,7 @@ const CustomerReviewPage = (props) => {
         type: 'oneliner',
         questionHeader: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
 
@@ -207,14 +207,14 @@ const CustomerReviewPage = (props) => {
       questionHeader: question.header,
       questionOptions: question.options,
       id: questionId,
-      answer: null
+      answer: null,
     })
 
     const initializers = {
       number: initializeNumberAnswer,
       text: initializeTextAnswer,
       range: initializeRangeAnswer,
-      oneliner: initializeOnelinerAnswer
+      oneliner: initializeOnelinerAnswer,
     }
 
     const tempAnswerSheet = questionObject.map((question, questionID) => {
@@ -229,7 +229,7 @@ const CustomerReviewPage = (props) => {
     event.preventDefault()
 
     const answer = window.confirm(
-      'Answers can not be changed after submitting. Continue?'
+      'Answers can not be changed after submitting. Continue?',
     )
     if (!answer) return
     try {
@@ -238,8 +238,8 @@ const CustomerReviewPage = (props) => {
           answer_sheet: props.answerSheet,
           group_id: props.groupId,
           topic_id: props.topicId,
-          configuration_id: props.configuration
-        }
+          configuration_id: props.configuration,
+        },
       })
 
       props.setSuccess('Review saved!')
@@ -257,7 +257,7 @@ const CustomerReviewPage = (props) => {
     hasReviewed,
     questionObject,
     groupName,
-    noGroup
+    noGroup,
   } = props
 
   if (isInitializing) {
@@ -327,7 +327,7 @@ const mapStateToProps = (state) => {
     groupId: state.customerReviewPage.groupId,
     topicId: state.customerReviewPage.topicId,
     configuration: state.customerReviewPage.configuration,
-    noGroup: state.customerReviewPage.noGroup
+    noGroup: state.customerReviewPage.noGroup,
   }
 }
 
@@ -343,10 +343,9 @@ const mapDispatchToProps = {
   setConfiguration: customerReviewPageActions.setConfiguration,
   setNoGroup: customerReviewPageActions.setNoGroup,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CustomerReviewPage))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(CustomerReviewPage),
+)

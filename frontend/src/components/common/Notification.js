@@ -21,10 +21,10 @@ const Notification = ({
   message,
   open,
   duration,
-  onNotificationClose
+  onNotificationClose,
 }) => {
   const style = {
-    backgroundColor: getBackgroundColor(type)
+    backgroundColor: getBackgroundColor(type),
   }
 
   return (
@@ -32,7 +32,7 @@ const Notification = ({
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         open={open}
         autoHideDuration={duration}
@@ -43,7 +43,7 @@ const Notification = ({
           message={message}
           headlineMapping={{
             body1: 'div',
-            body2: 'div'
+            body2: 'div',
           }}
         />
       </Snackbar>
@@ -59,15 +59,12 @@ const mapStateToProps = (state) => {
     type,
     open,
     message,
-    duration
+    duration,
   }
 }
 
 const mapDispatchToProps = {
-  onNotificationClose: clearNotifications
+  onNotificationClose: clearNotifications,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Notification)
+export default connect(mapStateToProps, mapDispatchToProps)(Notification)

@@ -1,17 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
-  const Topic_date = sequelize.define('topic_date', {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+  const Topic_date = sequelize.define(
+    'topic_date',
+    {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      dates: {
+        type: Sequelize.JSONB,
+      },
     },
-    dates: {
-      type: Sequelize.JSONB
-    }
-  },
-  {
-    underscored: true
-  })
+    {
+      underscored: true,
+    },
+  )
 
   return Topic_date
 }

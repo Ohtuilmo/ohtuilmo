@@ -2,7 +2,7 @@
   flex-flow: row nowrap;
   justify-content: center;
   align-content: center;
-  align-items:center;
+  align-items: center;
   display: flex;
   padding: 0 24px 0 24px;
 }
@@ -28,12 +28,12 @@
 }
 
 .dragndrop-list {
-  flex: 99
+  flex: 99;
 }
 
 .dragndrop-indexes-container {
   flex: 1;
-  height: 80px
+  height: 80px;
 }
 
 .dragndrop-index {

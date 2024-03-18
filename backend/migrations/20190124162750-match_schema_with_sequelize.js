@@ -22,10 +22,10 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'groups',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
     // memberships.student_number <-> users.student_number
     return query.addConstraint('memberships', ['student_number'], {
@@ -33,10 +33,10 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'users',
-        field: 'student_number'
+        field: 'student_number',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
   },
 
@@ -44,7 +44,7 @@ module.exports = {
     // remove added associations
     await query.removeConstraint(
       'memberships',
-      'memberships_student_number_fkey'
+      'memberships_student_number_fkey',
     )
     await query.removeConstraint('memberships', 'memberships_group_id_fkey')
 
@@ -56,12 +56,12 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'groups',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
       // Oddly enough the constraint does not have Sequelize's default
       // ON DELETE SET NULL, but ON DELETE CASCADE
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     })
-  }
+  },
 }

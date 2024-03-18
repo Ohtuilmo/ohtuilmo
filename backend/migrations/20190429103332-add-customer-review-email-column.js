@@ -5,12 +5,12 @@ module.exports = {
     await query.addColumn(
       'email_templates',
       'customer_review_link_fin',
-      Sequelize.TEXT
+      Sequelize.TEXT,
     )
     await query.addColumn(
       'email_templates',
       'customer_review_link_eng',
-      Sequelize.TEXT
+      Sequelize.TEXT,
     )
 
     // instead of leaving these new templates null, set them to '' which is what
@@ -18,21 +18,21 @@ module.exports = {
     await query.bulkUpdate(
       'email_templates',
       {
-        customer_review_link_fin: ''
+        customer_review_link_fin: '',
       },
-      { customer_review_link_fin: null }
+      { customer_review_link_fin: null },
     )
     await query.bulkUpdate(
       'email_templates',
       {
-        customer_review_link_eng: ''
+        customer_review_link_eng: '',
       },
-      { customer_review_link_eng: null }
+      { customer_review_link_eng: null },
     )
   },
 
   down: async (query) => {
     await query.removeColumn('email_templates', 'customer_review_link_eng')
     await query.removeColumn('email_templates', 'customer_review_link_fin')
-  }
+  },
 }

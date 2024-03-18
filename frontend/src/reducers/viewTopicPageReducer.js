@@ -1,7 +1,7 @@
 const initialState = {
   topic: '',
   isEditable: false,
-  isOnEditMode: false
+  isOnEditMode: false,
 }
 
 const viewTopicPageReducer = (state = initialState, action) => {
@@ -9,24 +9,24 @@ const viewTopicPageReducer = (state = initialState, action) => {
   case 'SET_TOPIC':
     return {
       ...state,
-      topic: action.payload
+      topic: action.payload,
     }
   case 'SET_TOPIC_CONTENT':
     return {
       ...state,
       topic: {
-        content: action.payload
-      }
+        content: action.payload,
+      },
     }
   case 'SET_EDITABLE':
     return {
       ...state,
-      isEditable: action.payload
+      isEditable: action.payload,
     }
   case 'SET_EDITMODE':
     return {
       ...state,
-      isOnEditMode: action.payload
+      isOnEditMode: action.payload,
     }
   default:
   }

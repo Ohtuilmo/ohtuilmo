@@ -4,8 +4,8 @@ import './LoadingSpinner.css'
 
 const LoadingSpinner = () => {
   return (
-    <div className='spinner-container'>
-      <div className='spinner'>
+    <div className="spinner-container">
+      <div className="spinner">
         <CircularProgress />
       </div>
     </div>

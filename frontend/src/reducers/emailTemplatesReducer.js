@@ -18,16 +18,16 @@ const isLoading = (state = false, action) => {
 const initialTemplatesState = {
   topicAccepted: {
     finnish: '',
-    english: ''
+    english: '',
   },
   topicRejected: {
     finnish: '',
-    english: ''
+    english: '',
   },
   customerReviewLink: {
     finnish: '',
-    english: ''
-  }
+    english: '',
+  },
 }
 
 const templates = (state = initialTemplatesState, action) => {
@@ -42,5 +42,5 @@ const templates = (state = initialTemplatesState, action) => {
 
 export default combineReducers({
   isLoading,
-  templates
+  templates,
 })

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user
+    user: state.login.user,
   }
 }
 
@@ -28,7 +28,7 @@ export const AdminRoute = connect(mapStateToProps)(
         return null
       }}
     />
-  )
+  ),
 )
 
 export const InstructorRoute = connect(mapStateToProps)(
@@ -46,7 +46,7 @@ export const InstructorRoute = connect(mapStateToProps)(
         return null
       }}
     />
-  )
+  ),
 )
 
 export const LoginRoute = connect(mapStateToProps)(
@@ -57,5 +57,5 @@ export const LoginRoute = connect(mapStateToProps)(
         return user ? <Component {...props} /> : null
       }}
     />
-  )
+  ),
 )

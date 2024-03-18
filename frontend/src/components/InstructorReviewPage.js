@@ -35,10 +35,9 @@ class InstructorReviewPage extends React.Component {
         this.fetchInstructorReviewQuestions(
           filteredGroups[0].students,
           questionsJson,
-          this.props.initializeAnswerSheet
+          this.props.initializeAnswerSheet,
         )
       }
-
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Something is wrong... try reloading the page')
@@ -48,14 +47,14 @@ class InstructorReviewPage extends React.Component {
   async fetchInstructorReviewQuestions(
     students,
     questions,
-    initializeAnswerSheet
+    initializeAnswerSheet,
   ) {
     const initializeNumberAnswer = (question, questionId) => {
       return {
         type: 'number',
         header: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
 
@@ -64,7 +63,7 @@ class InstructorReviewPage extends React.Component {
         type: 'text',
         header: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
     const emptyAnswerSheet = questions.questions.map((question, questionId) => {
@@ -81,7 +80,7 @@ class InstructorReviewPage extends React.Component {
       const sheet = emptyAnswerSheet
       return {
         name: name,
-        answers: sheet
+        answers: sheet,
       }
     }
     const tempAnswerSheet = students.map((student) => {
@@ -94,7 +93,7 @@ class InstructorReviewPage extends React.Component {
     event.preventDefault()
 
     const answer = window.confirm(
-      'Answers can not be changed after submitting. Continue?'
+      'Answers can not be changed after submitting. Continue?',
     )
     if (!answer) return
     this.props.selectGroup(0)
@@ -104,8 +103,8 @@ class InstructorReviewPage extends React.Component {
           group_id: groupId,
           group_name: groupName,
           answer_sheet: answerSheet,
-          user_id: getUser().student_number
-        }
+          user_id: getUser().student_number,
+        },
       })
 
       this.props.setSuccess('Instructor review saved!')
@@ -123,7 +122,7 @@ class InstructorReviewPage extends React.Component {
         this.fetchInstructorReviewQuestions(
           filteredGroups[0].students,
           questionsJson,
-          this.props.initializeAnswerSheet
+          this.props.initializeAnswerSheet,
         )
       }
     } catch (e) {
@@ -140,7 +139,7 @@ class InstructorReviewPage extends React.Component {
       groups,
       selectedGroup,
       selectGroup,
-      initializeAnswerSheet
+      initializeAnswerSheet,
     } = this.props
 
     if (submittedReview === true) {
@@ -178,7 +177,7 @@ class InstructorReviewPage extends React.Component {
                 event,
                 answerSheet,
                 groups[selectedGroup].groupName,
-                groups[selectedGroup].id
+                groups[selectedGroup].id,
               )
             }
           >
@@ -201,7 +200,7 @@ const groupSelectHandler = (
   selectGroup,
   fetchInstructorReviewQuestions,
   groups,
-  initializeAnswerSheet
+  initializeAnswerSheet,
 ) => {
   if (
     !window.confirm('Changing group will wipe current inserted information.')
@@ -213,7 +212,7 @@ const groupSelectHandler = (
   fetchInstructorReviewQuestions(
     groups[value].students,
     questionsJson,
-    initializeAnswerSheet
+    initializeAnswerSheet,
   )
 }
 const ConfigurationSelectWrapper = ({ label, children }) => (
@@ -229,7 +228,7 @@ const ConfigurationSelect = ({
   groups,
   fetchInstructorReviewQuestions,
   selectGroup,
-  initializeAnswerSheet
+  initializeAnswerSheet,
 }) => {
   return (
     <Select
@@ -240,7 +239,7 @@ const ConfigurationSelect = ({
           selectGroup,
           fetchInstructorReviewQuestions,
           groups,
-          initializeAnswerSheet
+          initializeAnswerSheet,
         )
       }
     >
@@ -303,7 +302,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
                 e.target.value,
                 userId,
                 questionId,
-                updateAnswer
+                updateAnswer,
               )
             }
           />
@@ -337,18 +336,18 @@ const mapStateToProps = (state) => {
     answerSheet: state.instructorReviewPage.answerSheet,
     submittedReview: state.instructorReviewPage.submittedReview,
     groups: state.instructorReviewPage.groups,
-    selectedGroup: state.instructorReviewPage.selectedGroup
+    selectedGroup: state.instructorReviewPage.selectedGroup,
   }
 }
 
 const mapDispatchToProps = {
   ...instructorReviewPageActions,
   ...notificationActions,
-  ...appActions
+  ...appActions,
 }
 const ConnectedInstructorReviewPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(InstructorReviewPage)
 
 export default withRouter(ConnectedInstructorReviewPage)

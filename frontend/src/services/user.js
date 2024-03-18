@@ -6,7 +6,7 @@ const url = `${BACKEND_API_BASE}/users`
 
 const get = async () => {
   const response = await axios.get(url, {
-    headers: { Authorization: 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   })
 
   return response.data
@@ -14,19 +14,19 @@ const get = async () => {
 
 const update = async (user) => {
   const config = {
-    headers: { Authorization: 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   }
   const response = await axios.put(
     url + `/${user.student_number}`,
     user.email,
-    config
+    config,
   )
   return response.data
 }
 
 const checkInstructor = async (token) => {
   const config = {
-    headers: { Authorization: 'bearer ' + token }
+    headers: { Authorization: 'bearer ' + token },
   }
   const response = await axios.get(`${url}/isInstructor`, config)
   return response.data

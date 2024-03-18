@@ -1,5 +1,5 @@
 const initialState = {
-  myGroup: null
+  myGroup: null,
 }
 
 const myGroupReducer = (state = initialState, action) => {
@@ -7,12 +7,12 @@ const myGroupReducer = (state = initialState, action) => {
   case 'INITIALIZE_MYGROUP':
     return {
       ...state,
-      myGroup: action.payload
+      myGroup: action.payload,
     }
   case 'CLEAR_MYGROUP':
     return {
       ...state,
-      myGroup: null
+      myGroup: null,
     }
   default:
     return state

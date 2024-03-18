@@ -5,7 +5,7 @@ const initialState = {
   groupsLoading: true,
   submittedReviews: [],
   questions: '',
-  configurationId: ''
+  configurationId: '',
 }
 
 const peerReviewReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ const peerReviewReducer = (state = initialState, action) => {
     return {
       ...state,
       answerSheet: action.payload,
-      isInitializing: false
+      isInitializing: false,
     }
   case 'UPDATE_ANSWER':
     return {
@@ -23,36 +23,36 @@ const peerReviewReducer = (state = initialState, action) => {
         ...state.answerSheet.slice(0, action.questionId),
         {
           ...state.answerSheet[action.questionId],
-          answer: action.answer
+          answer: action.answer,
         },
-        ...state.answerSheet.slice(action.questionId + 1)
-      ]
+        ...state.answerSheet.slice(action.questionId + 1),
+      ],
     }
   case 'CREATE_PEERS':
     return {
       ...state,
       peers: action.payload,
-      groupsLoading: false
+      groupsLoading: false,
     }
   case 'SET_SUBMITTED_REVIEWS':
     return {
       ...state,
-      submittedReviews: action.payload
+      submittedReviews: action.payload,
     }
   case 'LOADING':
     return {
       ...state,
-      isInitializing: action.payload
+      isInitializing: action.payload,
     }
   case 'SET_QUESTIONS':
     return {
       ...state,
-      questions: action.payload
+      questions: action.payload,
     }
   case 'SET_CONFIGURATION':
     return {
       ...state,
-      configurationId: action.payload
+      configurationId: action.payload,
     }
   default:
     return state

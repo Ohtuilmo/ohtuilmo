@@ -6,7 +6,7 @@ const url = `${BACKEND_API_BASE}/reviewQuestions`
 
 const create = async (reviewQuestionSet) => {
   const config = {
-    headers: { 'Authorization': 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   }
   const response = await axios.post(url, reviewQuestionSet, config)
   return response.data.questionSet
@@ -14,15 +14,19 @@ const create = async (reviewQuestionSet) => {
 
 const update = async (reviewQuestionsSet) => {
   const config = {
-    headers: { 'Authorization': 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   }
-  const response = await axios.put(url + '/' + reviewQuestionsSet.id, reviewQuestionsSet, config)
+  const response = await axios.put(
+    url + '/' + reviewQuestionsSet.id,
+    reviewQuestionsSet,
+    config,
+  )
   return response.data.questionSet
 }
 
 const getAll = async () => {
   const config = {
-    headers: { 'Authorization': 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   }
   const response = await axios.get(url, config)
   return response.data.questionSets

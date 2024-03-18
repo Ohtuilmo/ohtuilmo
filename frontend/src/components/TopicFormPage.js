@@ -18,7 +18,7 @@ class TopicFormPage extends React.Component {
     try {
       const content = {
         content: this.props.content,
-        configuration_id: this.props.topicConf
+        configuration_id: this.props.topicConf,
       }
       const createdTopic = await topicService.create(content)
 
@@ -84,19 +84,19 @@ const mapStateToProps = (state) => {
     preview: state.topicFormPage.preview,
     isSaved: state.topicFormPage.isSaved,
     secretId: state.topicFormPage.secretId,
-    topicConf: state.registrationManagement.topicRegistrationConf
+    topicConf: state.registrationManagement.topicRegistrationConf,
   }
 }
 
 const mapDispatchToProps = {
   ...topicFormPageActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
 const ConnectedTopicFormPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TopicFormPage)
 
 export default ConnectedTopicFormPage

@@ -24,7 +24,7 @@ module.exports = {
     const createTimestampColumns = ({ camelCase }) => {
       const timestampType = {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       }
 
       const fieldNames = camelCase
@@ -39,9 +39,9 @@ module.exports = {
       return fieldNames.reduce(
         (opts, name) => ({
           ...opts,
-          [name]: timestampType
+          [name]: timestampType,
         }),
-        {}
+        {},
       )
     }
     // since associations are created afterwards, we can do all of these
@@ -53,59 +53,59 @@ module.exports = {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         name: Sequelize.STRING,
         content: Sequelize.JSONB,
         active: {
           type: Sequelize.BOOLEAN,
-          defaultValue: false
+          defaultValue: false,
         },
         // sequelize timestamps
         ...createTimestampColumns({ camelCase: false }),
         // foreign keys for associations
         review_question_set1_id: Sequelize.INTEGER,
         review_question_set2_id: Sequelize.INTEGER,
-        registration_question_set_id: Sequelize.INTEGER
+        registration_question_set_id: Sequelize.INTEGER,
       }),
       query.createTable('groups', {
         id: {
           type: Sequelize.INTEGER,
           autoIncrement: true,
-          primaryKey: true
+          primaryKey: true,
         },
         group_name: Sequelize.STRING,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: false })
+        ...createTimestampColumns({ camelCase: false }),
       }),
       query.createTable('memberships', {
         id: {
           type: Sequelize.INTEGER,
           autoIncrement: true,
-          primaryKey: true
+          primaryKey: true,
         },
         role: Sequelize.STRING,
         // sequelize timestamps
         ...createTimestampColumns({ camelCase: false }),
         // foreign keys for associations
-        student_number: Sequelize.STRING
+        student_number: Sequelize.STRING,
       }),
       query.createTable('registration_question_sets', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         name: Sequelize.STRING,
         questions: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: false })
+        ...createTimestampColumns({ camelCase: false }),
       }),
       query.createTable('registrations', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         preferred_topics: Sequelize.JSONB,
         questions: Sequelize.JSONB,
@@ -113,49 +113,49 @@ module.exports = {
         ...createTimestampColumns({ camelCase: false }),
         // foreign keys for associations
         configuration_id: Sequelize.INTEGER,
-        student_student_number : Sequelize.STRING(255)
+        student_student_number: Sequelize.STRING(255),
       }),
       query.createTable('review_question_sets', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         name: Sequelize.STRING,
         questions: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: false })
+        ...createTimestampColumns({ camelCase: false }),
       }),
       query.createTable('topic_dates', {
         id: {
           type: Sequelize.INTEGER,
           autoIncrement: true,
-          primaryKey: true
+          primaryKey: true,
         },
         dates: Sequelize.JSONB,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: false })
+        ...createTimestampColumns({ camelCase: false }),
       }),
       query.createTable('topics', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         active: {
           type: Sequelize.BOOLEAN,
-          defaultValue: false
+          defaultValue: false,
         },
         content: Sequelize.JSONB,
         acronym: Sequelize.STRING,
         secret_id: Sequelize.STRING,
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: false })
+        ...createTimestampColumns({ camelCase: false }),
       }),
       query.createTable('users', {
         student_number: {
           type: Sequelize.STRING,
-          primaryKey: true
+          primaryKey: true,
         },
         username: Sequelize.STRING,
         first_names: Sequelize.STRING,
@@ -163,11 +163,11 @@ module.exports = {
         email: Sequelize.STRING,
         admin: {
           type: Sequelize.BOOLEAN,
-          defaultValue: false
+          defaultValue: false,
         },
         // sequelize timestamps
-        ...createTimestampColumns({ camelCase: false })
-      })
+        ...createTimestampColumns({ camelCase: false }),
+      }),
     ]
 
     // wait for table creation
@@ -183,14 +183,14 @@ module.exports = {
      */
     const defaultOnDeleteAndUpdate = {
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     }
 
     const addForeignKey = (
       constraintName,
       targetTable,
       referencedTable,
-      onDeleteAndUpdate = defaultOnDeleteAndUpdate
+      onDeleteAndUpdate = defaultOnDeleteAndUpdate,
     ) => {
       const [table, field] = targetTable
       const [foreignTable, foreignField] = referencedTable
@@ -200,10 +200,10 @@ module.exports = {
         type: 'FOREIGN KEY',
         references: {
           table: foreignTable,
-          field: foreignField
+          field: foreignField,
         },
         onUpdate: onDeleteAndUpdate.onUpdate,
-        onDelete: onDeleteAndUpdate.onDelete
+        onDelete: onDeleteAndUpdate.onDelete,
       })
     }
 
@@ -212,17 +212,17 @@ module.exports = {
     await addForeignKey(
       'configurations_registration_question_set_id_fkey',
       ['configurations', 'registration_question_set_id'],
-      ['registration_question_sets', 'id']
+      ['registration_question_sets', 'id'],
     )
     await addForeignKey(
       'configurations_review_question_set1_id_fkey',
       ['configurations', 'review_question_set1_id'],
-      ['review_question_sets', 'id']
+      ['review_question_sets', 'id'],
     )
     await addForeignKey(
       'configurations_review_question_set2_id_fkey',
       ['configurations', 'review_question_set2_id'],
-      ['review_question_sets', 'id']
+      ['review_question_sets', 'id'],
     )
     await addForeignKey(
       'memberships_id_fkey',
@@ -230,13 +230,13 @@ module.exports = {
       ['groups', 'id'],
       {
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE' // Production schema's single constraint oddity.
-      }
+        onDelete: 'CASCADE', // Production schema's single constraint oddity.
+      },
     )
     await addForeignKey(
       'registrations_configuration_id_fkey',
       ['registrations', 'configuration_id'],
-      ['configurations', 'id']
+      ['configurations', 'id'],
     )
 
     // Important: migration must return promise which, when resolved, marks the
@@ -245,7 +245,7 @@ module.exports = {
     return await addForeignKey(
       'registrations_student_student_number _fkey',
       ['registrations', 'student_student_number'],
-      ['users', 'student_number']
+      ['users', 'student_number'],
     )
   },
 
@@ -259,28 +259,28 @@ module.exports = {
     const constraints = [
       {
         table: 'configurations',
-        constraint: 'configurations_registration_question_set_id_fkey'
+        constraint: 'configurations_registration_question_set_id_fkey',
       },
       {
         table: 'configurations',
-        constraint: 'configurations_review_question_set1_id_fkey'
+        constraint: 'configurations_review_question_set1_id_fkey',
       },
       {
         table: 'configurations',
-        constraint: 'configurations_review_question_set2_id_fkey'
+        constraint: 'configurations_review_question_set2_id_fkey',
       },
       { table: 'memberships', constraint: 'memberships_id_fkey' },
       {
         table: 'registrations',
-        constraint: 'registrations_configuration_id_fkey'
+        constraint: 'registrations_configuration_id_fkey',
       },
       {
         table: 'registrations',
-        constraint: 'registrations_student_student_number _fkey'
-      }
+        constraint: 'registrations_student_student_number _fkey',
+      },
     ]
     const removeConstraintPromises = constraints.map(({ table, constraint }) =>
-      query.removeConstraint(table, constraint)
+      query.removeConstraint(table, constraint),
     )
     await Promise.all(removeConstraintPromises)
 
@@ -294,11 +294,11 @@ module.exports = {
       'review_question_sets',
       'topic_dates',
       'topics',
-      'users'
+      'users',
     ]
 
     return await Promise.all(
-      tableNames.map((tableName) => query.dropTable(tableName))
+      tableNames.map((tableName) => query.dropTable(tableName)),
     )
-  }
+  },
 }

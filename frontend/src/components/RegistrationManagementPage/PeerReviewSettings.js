@@ -10,7 +10,7 @@ import {
   Card,
   Switch,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@material-ui/core'
 
 // Actions
@@ -23,7 +23,7 @@ const PeerReviewSettings = ({
   updatePeerReviewOpen,
   updatePeerReviewConf,
   updatePeerReviewRound,
-  configurationMenuItems
+  configurationMenuItems,
 }) => {
   return (
     <Card style={{ marginBottom: '10px' }}>
@@ -76,17 +76,14 @@ const mapStateToProps = (state) => {
   return {
     peerReviewConf: state.registrationManagement.peerReviewConf,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
-    peerReviewRound: state.registrationManagement.peerReviewRound
+    peerReviewRound: state.registrationManagement.peerReviewRound,
   }
 }
 
 const mapDispatchToProps = {
   updatePeerReviewConf: registrationManagementActions.updatePeerReviewConf,
   updatePeerReviewOpen: registrationManagementActions.updatePeerReviewOpen,
-  updatePeerReviewRound: registrationManagementActions.updatePeerReviewRound
+  updatePeerReviewRound: registrationManagementActions.updatePeerReviewRound,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PeerReviewSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(PeerReviewSettings)

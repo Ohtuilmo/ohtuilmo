@@ -24,14 +24,14 @@ const EmailTemplate = ({
   availableReplacements,
   template,
   onTemplateEdited,
-  className
+  className,
 }) => {
   const { finnish, english } = template
 
   const createHandleTemplateEdited = (language) => (e) => {
     const newTemplate = {
       ...template,
-      [language]: e.target.value
+      [language]: e.target.value,
     }
     onTemplateEdited(newTemplate)
   }
@@ -75,7 +75,7 @@ EmailTemplate.propTypes = {
   name: PropTypes.string.isRequired,
   template: templateShape.isRequired,
   availableReplacements: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onTemplateEdited: PropTypes.func.isRequired
+  onTemplateEdited: PropTypes.func.isRequired,
 }
 
 export default EmailTemplate

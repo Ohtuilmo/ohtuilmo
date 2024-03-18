@@ -1,90 +1,90 @@
 const updateTitle = (title) => {
   return {
     type: 'UPDATE_TITLE',
-    payload: title
+    payload: title,
   }
 }
 
 const updateCustomerName = (customerName) => {
   return {
     type: 'UPDATE_CUSTOMER_NAME',
-    payload: customerName
+    payload: customerName,
   }
 }
 
 const updateEmail = (email) => {
   return {
     type: 'UPDATE_EMAIL',
-    payload: email
+    payload: email,
   }
 }
 
 const updateDescription = (description) => {
   return {
     type: 'UPDATE_DESCRIPTION',
-    payload: description
+    payload: description,
   }
 }
 
 const updateEnvironment = (environment) => {
   return {
     type: 'UPDATE_ENVIRONMENT',
-    payload: environment
+    payload: environment,
   }
 }
 
 const updateSpecialRequests = (specialRequests) => {
   return {
     type: 'UPDATE_SPECIAL_REQUESTS',
-    payload: specialRequests
+    payload: specialRequests,
   }
 }
 
 const updateAdditionalInfo = (additionalInfo) => {
   return {
     type: 'UPDATE_ADDITIONAL_INFO',
-    payload: additionalInfo
+    payload: additionalInfo,
   }
 }
 
 const clearForm = () => {
   return {
-    type: 'CLEAR_FORM'
+    type: 'CLEAR_FORM',
   }
 }
 
 const setCurrentTopic = (topic) => {
   return {
     type: 'SET_CURRENT_TOPIC',
-    payload: topic
+    payload: topic,
   }
 }
 
 const updatePreview = (preview) => {
   return {
     type: 'UPDATE_PREVIEW',
-    payload: preview
+    payload: preview,
   }
 }
 
 const setSaved = (status) => {
   return {
     type: 'SET_SAVED',
-    payload: status
+    payload: status,
   }
 }
 
 const updateSecretId = (secretId) => {
   return {
     type: 'UPDATE_SECRETID',
-    payload: secretId
+    payload: secretId,
   }
 }
 
 const updateShowInfo = (showInfo) => {
   return {
     type: 'UPDATE_SHOWINFO',
-    payload: showInfo
+    payload: showInfo,
   }
 }
 
@@ -101,5 +101,5 @@ export default {
   setSaved,
   updateSecretId,
   setCurrentTopic,
-  updateShowInfo
+  updateShowInfo,
 }

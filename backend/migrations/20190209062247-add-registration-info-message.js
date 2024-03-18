@@ -11,14 +11,14 @@ module.exports = {
     await query.addColumn(
       'registration_managements',
       'project_registration_info',
-      Sequelize.STRING
+      Sequelize.STRING,
     )
   },
 
   down: async (query) => {
     await query.removeColumn(
       'registration_managements',
-      'project_registration_info'
+      'project_registration_info',
     )
-  }
+  },
 }

@@ -4,7 +4,9 @@ const { checkLogin, checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const isNil = (value) => value === undefined || value === null
@@ -126,7 +128,9 @@ const createTestData = async (req, res) => {
   let returnLog = []
   for (let peerReview in peerReviews) {
     try {
-      const sentAnswerSheet = await db.PeerReview.create(peerReviews[peerReview])
+      const sentAnswerSheet = await db.PeerReview.create(
+        peerReviews[peerReview],
+      )
       returnLog = returnLog.concat(sentAnswerSheet)
     } catch (err) {
       return handleDatabaseError(res, err)
@@ -138,14 +142,14 @@ const createTestData = async (req, res) => {
 peerReviewRouter.get('/', checkLogin, async (req, res) => {
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     const entries = await db.PeerReview.findAll({
       where: {
         user_id: req.user.id,
-        configuration_id: registrationManagement.peer_review_conf
-      }
+        configuration_id: registrationManagement.peer_review_conf,
+      },
     })
 
     return res.status(200).json(entries)
@@ -157,7 +161,7 @@ peerReviewRouter.get('/', checkLogin, async (req, res) => {
 peerReviewRouter.get('/all', checkAdmin, async (req, res) => {
   try {
     const reviews = await db.PeerReview.findAll({
-      include: ['user']
+      include: ['user'],
     })
     return res.status(200).json(reviews)
   } catch (error) {
@@ -167,9 +171,11 @@ peerReviewRouter.get('/all', checkAdmin, async (req, res) => {
 
 peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
   try {
-    const query = req.user.admin ? {} : {
-      where: { instructorId: req.user.id }
-    }
+    const query = req.user.admin
+      ? {}
+      : {
+        where: { instructorId: req.user.id },
+      }
     const instructedGroups = await db.Group.findAll(query)
 
     if (instructedGroups.length === 0) {
@@ -177,7 +183,7 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
     }
 
     const instructedConfigurations = instructedGroups.map(
-      (group) => group.configurationId
+      (group) => group.configurationId,
     )
 
     const groupsOfInstructedConfigurations = await db.Group.findAll({
@@ -187,21 +193,21 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
           as: 'students',
           model: db.User,
           attributes: ['student_number', 'first_names', 'last_name'],
-          through: { attributes: [] }
+          through: { attributes: [] },
         },
         {
           as: 'configuration',
-          model: db.Configuration
+          model: db.Configuration,
         },
         {
           as: 'instructor',
-          model: db.User
-        }
-      ]
+          model: db.User,
+        },
+      ],
     })
 
     const allAnswers = await db.PeerReview.findAll({
-      include: ['user']
+      include: ['user'],
     })
 
     const filterAndFormatAnswers = (answers, group, round) => {
@@ -212,15 +218,15 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
               .map(({ student_number }) => student_number)
               .includes(answer.user.student_number) &&
             answer.configuration_id === group.configurationId &&
-            answer.review_round === round
+            answer.review_round === round,
         )
         .map((answer) => {
           return {
             student: {
               first_names: answer.user.first_names,
-              last_name: answer.user.last_name
+              last_name: answer.user.last_name,
             },
-            answer_sheet: answer.answer_sheet
+            answer_sheet: answer.answer_sheet,
           }
         })
     }
@@ -235,21 +241,21 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
             id: group.id,
             name: group.name,
             studentNames: group.students.map(
-              (student) => student.first_names + ' ' + student.last_name
+              (student) => student.first_names + ' ' + student.last_name,
             ),
             configurationId: group.configurationId,
             configurationName: group.configuration.name,
             instructorName: group.instructor
               ? group.instructor.first_names + ' ' + group.instructor.last_name
-              : ''
+              : '',
           },
           round1Answers,
-          round2Answers
+          round2Answers,
         })
 
         return list
       },
-      []
+      [],
     )
 
     return res.status(200).json(answersByGroup)
@@ -277,7 +283,7 @@ peerReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
     console.error(
       'error while deleting question set with id',
       req.params.id,
-      err
+      err,
     )
     return res.status(500).json({ error: 'internal server error' })
   }

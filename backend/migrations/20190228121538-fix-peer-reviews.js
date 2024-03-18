@@ -9,29 +9,29 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       user_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       configuration_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       review_round: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       answer_sheet: {
-        type: Sequelize.JSONB
+        type: Sequelize.JSONB,
       },
       // Sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     })
 
     // peer_reviews.user <-> users.student_number
@@ -40,10 +40,10 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'users',
-        field: 'student_number'
+        field: 'student_number',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
 
     // peer_reviews.configuration <-> configuration.id
@@ -52,10 +52,10 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'configurations',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
   },
 
@@ -63,8 +63,8 @@ module.exports = {
     await query.removeConstraint('peer_reviews', 'peer_reviews_user_fkey')
     await query.removeConstraint(
       'peer_reviews',
-      'peer_reviews_configuration_fkey'
+      'peer_reviews_configuration_fkey',
     )
     await query.dropTable('peer_reviews')
-  }
+  },
 }

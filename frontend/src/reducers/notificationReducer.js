@@ -2,7 +2,7 @@ const initialState = {
   type: '',
   message: '',
   duration: 3000,
-  open: false
+  open: false,
 }
 
 const notificationReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ const notificationReducer = (state = initialState, action) => {
       open: true,
       type,
       message,
-      duration
+      duration,
     }
   }
   case 'CLEAR_NOTIFICATIONS':
@@ -22,7 +22,7 @@ const notificationReducer = (state = initialState, action) => {
       // preserve other state so material-ui can transition out the
       // snackbar with the old text still on it
       ...state,
-      open: false
+      open: false,
     }
   default:
     return state

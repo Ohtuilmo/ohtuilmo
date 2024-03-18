@@ -13,8 +13,8 @@ const initialRegistrationManagement = [
     topic_registration_message: 'Topic registration will open on DD.MM.YYYY.',
     peer_review_conf: 1,
     peer_review_open: true,
-    peer_review_round: 1
-  }
+    peer_review_round: 1,
+  },
 ]
 
 const initialUsers = [
@@ -24,7 +24,7 @@ const initialUsers = [
     first_names: 'Timo *Teppo Tellervo',
     last_name: 'Testaaja',
     email: '',
-    admin: false
+    admin: false,
   },
   {
     student_number: '012345688',
@@ -32,7 +32,7 @@ const initialUsers = [
     first_names: 'Angela',
     last_name: 'Merkel',
     email: '',
-    admin: true
+    admin: true,
   },
   {
     student_number: '012345698',
@@ -40,21 +40,21 @@ const initialUsers = [
     first_names: 'Donald John',
     last_name: 'Trump',
     email: '',
-    admin: false
-  }
+    admin: false,
+  },
 ]
 
 const initialQuestionsWithAnswers = [
   {
     type: 'scale',
     answer: 5,
-    question: 'Osaatko koodata?'
+    question: 'Osaatko koodata?',
   },
   {
     type: 'text',
     answer: 'Jo vain, olen helvetin kova tykittelemään jäsää!?!',
-    question: 'Oletko varma, että osaat koodata?'
-  }
+    question: 'Oletko varma, että osaat koodata?',
+  },
 ]
 
 const initialRegistrationQuestionSet = [
@@ -64,11 +64,11 @@ const initialRegistrationQuestionSet = [
       initialQuestionsWithAnswers.map((item) => {
         return {
           type: item.type,
-          question: item.question
+          question: item.question,
         }
-      })
-    )
-  }
+      }),
+    ),
+  },
 ]
 
 const initialConfiguration = [
@@ -76,8 +76,8 @@ const initialConfiguration = [
     name: 'Konfiguraatio 1',
     registration_question_set_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
 
 const initialTopic = [
@@ -91,11 +91,11 @@ const initialTopic = [
       environment: 'Joku hyvä toteutusympäristö',
       customerName: 'Aasiakas',
       additionalInfo: 'Joku hyvä lisätieto',
-      specialRequests: 'Joku hyvä erityistoive'
+      specialRequests: 'Joku hyvä erityistoive',
     }),
     secret_id: 'eec0neeT0jo0ae9F',
-    configuration_id: 1
-  }
+    configuration_id: 1,
+  },
 ]
 
 const initialPreferredTopics = [
@@ -110,11 +110,11 @@ const initialPreferredTopics = [
       environment: 'Joku hyvä toteutusympäristö',
       customerName: 'Aasiakas',
       additionalInfo: 'Joku hyvä lisätieto',
-      specialRequests: 'Joku hyvä erityistoive'
+      specialRequests: 'Joku hyvä erityistoive',
     },
     secret_id: 'eec0neeT0jo0ae9F',
-    configuration_id: 1
-  }
+    configuration_id: 1,
+  },
 ]
 
 const initialRegistration = [
@@ -122,8 +122,8 @@ const initialRegistration = [
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    student_student_number: '012345698'
-  }
+    student_student_number: '012345698',
+  },
 ]
 
 const addTimeStamps = (arr) => {
@@ -131,7 +131,7 @@ const addTimeStamps = (arr) => {
     return {
       ...item,
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date(),
     }
   })
 }
@@ -142,19 +142,19 @@ module.exports = {
     await query.bulkInsert(
       'registration_question_sets',
       addTimeStamps(initialRegistrationQuestionSet),
-      {}
+      {},
     )
     await query.bulkInsert('configurations', initialConfiguration, {})
     await query.bulkInsert(
       'registration_managements',
       addTimeStamps(initialRegistrationManagement),
-      {}
+      {},
     )
     await query.bulkInsert('topics', addTimeStamps(initialTopic), {})
     await query.bulkInsert(
       'registrations',
       addTimeStamps(initialRegistration),
-      {}
+      {},
     )
   },
 
@@ -165,5 +165,5 @@ module.exports = {
     await query.bulkDelete('configurations', null, {})
     await query.bulkDelete('topics', null, {})
     await query.bulkDelete('registrations', null, {})
-  }
+  },
 }

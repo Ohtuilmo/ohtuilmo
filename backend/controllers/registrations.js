@@ -5,13 +5,15 @@ const { checkAdmin, checkLogin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const registrationCheck = async (req, res, next) => {
   try {
     const latestConfig = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!latestConfig || !latestConfig.project_registration_open) {
@@ -25,7 +27,9 @@ const registrationCheck = async (req, res, next) => {
     next()
   } catch (err) {
     console.error('Error in registrationCheck', err)
-    return res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    return res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 }
 
@@ -42,7 +46,7 @@ registrationsRouter.post(
 
     try {
       const user = await db.User.findOne({
-        where: { student_number: loggedInUserStudentNumber }
+        where: { student_number: loggedInUserStudentNumber },
       })
 
       if (!user) {
@@ -50,7 +54,7 @@ registrationsRouter.post(
       }
 
       const registrationManagement = await db.RegistrationManagement.findOne({
-        order: [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC']],
       })
 
       if (!registrationManagement) {
@@ -60,7 +64,7 @@ registrationsRouter.post(
       }
 
       const configuration = await db.Configuration.findByPk(
-        registrationManagement.project_registration_conf
+        registrationManagement.project_registration_conf,
       )
 
       if (!configuration) {
@@ -70,8 +74,8 @@ registrationsRouter.post(
       const registration = await db.Registration.findOne({
         where: {
           configuration_id: configuration.id,
-          studentStudentNumber: loggedInUserStudentNumber
-        }
+          studentStudentNumber: loggedInUserStudentNumber,
+        },
       })
 
       if (registration) {
@@ -81,14 +85,14 @@ registrationsRouter.post(
       const newRegistration = await db.Registration.create({
         preferred_topics: req.body.preferred_topics,
         questions: req.body.questions,
-        configuration_id: configuration.id
+        configuration_id: configuration.id,
       })
       await newRegistration.setStudent(loggedInUserStudentNumber)
       return res.status(201).json({ newRegistration })
     } catch (error) {
       handleDatabaseError(res, error)
     }
-  }
+  },
 )
 
 registrationsRouter.get('/current', checkAdmin, async (req, res) => {
@@ -108,30 +112,30 @@ registrationsRouter.get('/current', checkAdmin, async (req, res) => {
       first_names: registration.student.first_names,
       email: registration.student.email,
       preferred_topics: registration.preferred_topics,
-      questions: registration.questions
+      questions: registration.questions,
     }
   }
 
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     const registrations = await db.Registration.findAll({
       where: {
-        configuration_id: registrationManagement.project_registration_conf
+        configuration_id: registrationManagement.project_registration_conf,
       },
       include: [
         {
           model: db.User,
-          as: 'student'
-        }
-      ]
+          as: 'student',
+        },
+      ],
     })
 
     res.status(200).json({
       registrationCount: registrations.length,
-      registrations: registrations.map(formatJson)
+      registrations: registrations.map(formatJson),
     })
   } catch (error) {
     handleDatabaseError(res, error)
@@ -143,7 +147,7 @@ registrationsRouter.get('/', checkLogin, async (req, res) => {
 
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     const peerReviewConf = registrationManagement.peer_review_conf
@@ -153,11 +157,11 @@ registrationsRouter.get('/', checkLogin, async (req, res) => {
       where: {
         [Op.or]: [
           { configuration_id: peerReviewConf },
-          { configuration_id: projectConf }
+          { configuration_id: projectConf },
         ],
-        studentStudentNumber: loggedInUserStudentNumber
+        studentStudentNumber: loggedInUserStudentNumber,
       },
-      include: ['student']
+      include: ['student'],
     })
 
     if (!registrations) {

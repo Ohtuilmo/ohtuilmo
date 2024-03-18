@@ -27,7 +27,7 @@ loginRouter.post('/', async (req, res) => {
         //user already in database, no need to add
         const token = jwt.sign(
           { id: foundUser.student_number, admin: foundUser.admin },
-          config.secret
+          config.secret,
         )
         return res.status(200).json({
           token,
@@ -46,7 +46,7 @@ loginRouter.post('/', async (req, res) => {
           .then((savedUser) => {
             const token = jwt.sign(
               { id: savedUser.student_number, admin: savedUser.admin },
-              config.secret
+              config.secret,
             )
             return res.status(200).json({
               token,

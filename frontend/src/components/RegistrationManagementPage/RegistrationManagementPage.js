@@ -38,7 +38,7 @@ const RegistrationManagement = (props) => {
       projectInfo,
       updateIsLoading,
       setSuccess,
-      setError
+      setError,
     } = props
 
     updateIsLoading(true)
@@ -55,8 +55,8 @@ const RegistrationManagement = (props) => {
           project_registration_info: projectInfo,
           topic_registration_conf: topicConf,
           topic_registration_open: topicOpen,
-          topic_registration_message: topicMessage
-        }
+          topic_registration_message: topicMessage,
+        },
       })
       setSuccess('Saving configuration succesful!', 3000)
       updateIsLoading(false)
@@ -75,46 +75,47 @@ const RegistrationManagement = (props) => {
       .concat(
         <MenuItem value={-1} key={-1} disabled>
           <em>Pick one</em>
-        </MenuItem>
+        </MenuItem>,
       )
       .concat(
         configurations.map((configuration) => (
           <MenuItem value={configuration.id} key={configuration.id}>
             {configuration.name}
           </MenuItem>
-        ))
+        )),
       )
   }
 
-  return <div className="registrationManagement-container">
-    <h3>Registration and review management</h3>
-    <form
-      className="registration-management-form"
-      onSubmit={saveConfiguration}
-    >
-      <p>Control state of registrations and reviews</p>
-
-      <ProjectRegistrationSettings
-        configurationMenuItems={configurationMenuItems}
-      />
-
-      <TopicRegistrationSettings
-        configurationMenuItems={configurationMenuItems}
-      />
-
-      <PeerReviewSettings configurationMenuItems={configurationMenuItems} />
-
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        data-cy="save-configuration-submit"
+  return (
+    <div className="registrationManagement-container">
+      <h3>Registration and review management</h3>
+      <form
+        className="registration-management-form"
+        onSubmit={saveConfiguration}
       >
-        Save Configuration
-      </Button>
-    </form>
-  </div>
+        <p>Control state of registrations and reviews</p>
 
+        <ProjectRegistrationSettings
+          configurationMenuItems={configurationMenuItems}
+        />
+
+        <TopicRegistrationSettings
+          configurationMenuItems={configurationMenuItems}
+        />
+
+        <PeerReviewSettings configurationMenuItems={configurationMenuItems} />
+
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          data-cy="save-configuration-submit"
+        >
+          Save Configuration
+        </Button>
+      </form>
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => {
@@ -130,7 +131,7 @@ const mapStateToProps = (state) => {
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     isLoading: state.app.isLoading,
-    configurations: state.configurationPage.configurations
+    configurations: state.configurationPage.configurations,
   }
 }
 
@@ -141,7 +142,6 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RegistrationManagement))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RegistrationManagement),
+)

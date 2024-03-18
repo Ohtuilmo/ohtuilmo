@@ -4,7 +4,9 @@ const { checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const isNil = (value) => value === undefined || value === null
@@ -112,7 +114,7 @@ customerReviewRouter.post('/', async (req, res) => {
 customerReviewRouter.get('/', checkAdmin, async (req, res) => {
   try {
     const foundReviews = await db.CustomerReview.findAll({
-      include: ['group']
+      include: ['group'],
     })
     return res.status(200).json({ reviews: foundReviews })
   } catch (error) {
@@ -125,12 +127,12 @@ customerReviewRouter.get('/all', checkAdmin, async (req, res) => {
     const groups = await db.Group.findAll()
 
     const reviews = await db.CustomerReview.findAll({
-      include: ['group']
+      include: ['group'],
     })
 
     const connectAnswerToGroup = (answers, group) => {
       const connectedAnswers = answers.filter(
-        (answer) => answer.group.id === group.id
+        (answer) => answer.group.id === group.id,
       )
       if (connectedAnswers.length < 1) {
         return null
@@ -145,8 +147,8 @@ customerReviewRouter.get('/all', checkAdmin, async (req, res) => {
         group: {
           id: group.id,
           name: group.name,
-          answerSheet: groupAnswer
-        }
+          answerSheet: groupAnswer,
+        },
       })
       return list
     }, [])
@@ -165,20 +167,20 @@ customerReviewRouter.get(
     try {
       const groups = await db.Group.findAll({
         where: {
-          configurationId: id
-        }
+          configurationId: id,
+        },
       })
 
       const reviews = await db.CustomerReview.findAll({
         where: {
-          configuration_id: id
+          configuration_id: id,
         },
-        include: ['group']
+        include: ['group'],
       })
 
       const connectAnswerToGroup = (answers, group) => {
         const connectedAnswers = answers.filter(
-          (answer) => answer.group.id === group.id
+          (answer) => answer.group.id === group.id,
         )
         if (connectedAnswers.length < 1) {
           return null
@@ -193,8 +195,8 @@ customerReviewRouter.get(
           group: {
             id: group.id,
             name: group.name,
-            answerSheet: groupAnswer
-          }
+            answerSheet: groupAnswer,
+          },
         })
         return list
       }, [])
@@ -203,12 +205,12 @@ customerReviewRouter.get(
     } catch (error) {
       return handleDatabaseError(res, error)
     }
-  }
+  },
 )
 
 const hasCustomerAlreadyAnswered = async (groupId) => {
   const foundAnswer = await db.CustomerReview.findOne({
-    where: { group_id: groupId }
+    where: { group_id: groupId },
   })
   return !!foundAnswer
 }
@@ -220,8 +222,8 @@ customerReviewRouter.get('/:id', async (req, res) => {
   try {
     const topic = await db.Topic.findOne({
       where: {
-        secret_id: id
-      }
+        secret_id: id,
+      },
     })
 
     if (!topic) {
@@ -232,8 +234,8 @@ customerReviewRouter.get('/:id', async (req, res) => {
 
     const group = await db.Group.findOne({
       where: {
-        topicId: topic.id
-      }
+        topicId: topic.id,
+      },
     })
 
     if (!group) {
@@ -249,7 +251,7 @@ customerReviewRouter.get('/:id', async (req, res) => {
       groupName: group.name,
       topicId: topic.id,
       configuration: group.configurationId,
-      hasAnswered: hasAnswered
+      hasAnswered: hasAnswered,
     })
   } catch (error) {
     console.error('Error while updating group', error)
@@ -265,7 +267,7 @@ customerReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
 
   try {
     const customerReview = await db.CustomerReview.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     })
 
     if (!customerReview) {
@@ -279,7 +281,7 @@ customerReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
     console.error(
       'error while deleting customer review with id',
       req.params.id,
-      err
+      err,
     )
     return res.status(500).json({ error: 'internal server error' })
   }

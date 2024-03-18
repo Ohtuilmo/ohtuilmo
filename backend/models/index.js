@@ -3,7 +3,6 @@ const Sequelize = require('sequelize')
 const db = {}
 
 db.connect = () => {
-
   const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
 
   sequelize
@@ -47,16 +46,16 @@ db.connect = () => {
   const Configuration = ConfigurationModel(sequelize, Sequelize)
   const RegistrationQuestionSet = RegistrationQuestionSetModel(
     sequelize,
-    Sequelize
+    Sequelize,
   )
   const ReviewQuestionSet = ReviewQuestionSetModel(sequelize, Sequelize)
   const CustomerReviewQuestionSet = CustomerReviewQuestionSetModel(
     sequelize,
-    Sequelize
+    Sequelize,
   )
   const RegistrationManagement = RegistrationManagementModel(
     sequelize,
-    Sequelize
+    Sequelize,
   )
   const PeerReview = PeerReviewModel(sequelize, Sequelize)
   const EmailTemplate = EmailTemplateModel(sequelize, Sequelize)

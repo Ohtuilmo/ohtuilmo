@@ -5,7 +5,7 @@ import { getUserToken } from '../utils/functions'
 const url = `${BACKEND_API_BASE}/email`
 
 const getAuthHeaders = () => ({
-  Authorization: 'Bearer ' + getUserToken()
+  Authorization: 'Bearer ' + getUserToken(),
 })
 
 const sendCustomerEmail = async ({ messageType, messageLanguage, topicId }) => {
@@ -14,11 +14,11 @@ const sendCustomerEmail = async ({ messageType, messageLanguage, topicId }) => {
     {
       messageType,
       messageLanguage,
-      topicId
+      topicId,
     },
     {
-      headers: getAuthHeaders()
-    }
+      headers: getAuthHeaders(),
+    },
   )
   return response.data
 }
@@ -26,18 +26,18 @@ const sendCustomerEmail = async ({ messageType, messageLanguage, topicId }) => {
 const previewCustomerEmail = async ({
   messageType,
   messageLanguage,
-  topicId
+  topicId,
 }) => {
   const res = await axios.post(
     `${url}/preview`,
     {
       messageType,
       messageLanguage,
-      topicId
+      topicId,
     },
     {
-      headers: getAuthHeaders()
-    }
+      headers: getAuthHeaders(),
+    },
   )
 
   return res.data
@@ -45,14 +45,14 @@ const previewCustomerEmail = async ({
 
 const getTemplates = async () => {
   const res = await axios.get(`${url}/templates`, {
-    headers: getAuthHeaders()
+    headers: getAuthHeaders(),
   })
   return res.data
 }
 
 const updateTemplates = async (templates) => {
   const res = await axios.post(`${url}/templates`, templates, {
-    headers: getAuthHeaders()
+    headers: getAuthHeaders(),
   })
   return res.data
 }
@@ -61,5 +61,5 @@ export default {
   sendCustomerEmail,
   previewCustomerEmail,
   getTemplates,
-  updateTemplates
+  updateTemplates,
 }

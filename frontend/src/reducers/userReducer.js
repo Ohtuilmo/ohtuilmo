@@ -1,5 +1,5 @@
 const initialState = {
-  users: []
+  users: [],
 }
 
 const userReducer = (state = initialState, action) => {
@@ -7,14 +7,14 @@ const userReducer = (state = initialState, action) => {
   case 'SET_USERS':
     return {
       ...state,
-      users: action.payload
+      users: action.payload,
     }
   case 'RESET_USERS':
     return initialState
   case 'SET_TEST_USERS':
     return {
       ...state,
-      users: action.payload
+      users: action.payload,
     }
   default:
     return state

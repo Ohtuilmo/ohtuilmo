@@ -108,5 +108,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {}
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TimeLogsPage)
+  connect(mapStateToProps, mapDispatchToProps)(TimeLogsPage),
 )

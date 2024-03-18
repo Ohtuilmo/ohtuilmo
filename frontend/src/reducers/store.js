@@ -72,7 +72,7 @@ if (tokenString) {
 const store = createStore(
   reducer,
   initialStore,
-  composeEnhancers(applyMiddleware(userHandler, thunk))
+  composeEnhancers(applyMiddleware(userHandler, thunk)),
 )
 
 export default store

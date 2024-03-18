@@ -6,7 +6,7 @@ const url = `${BACKEND_API_BASE}/configurations`
 
 const getAll = async () => {
   const response = await axios.get(url, {
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
   return response.data
 }
@@ -18,14 +18,14 @@ const getById = async (id) => {
 
 const create = async (configuration) => {
   const response = await axios.post(url, configuration, {
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
   return response.data
 }
 
 const update = async (configuration, id) => {
   const response = await axios.put(url + '/' + id, configuration, {
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
   return response.data
 }

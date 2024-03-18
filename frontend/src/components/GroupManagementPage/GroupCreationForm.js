@@ -57,7 +57,7 @@ const saveGroup = async (event, props) => {
     students,
     groupTopicID,
     groupInstructor,
-    groupConfigurationID
+    groupConfigurationID,
   } = props
 
   const splitStudents = students
@@ -77,7 +77,7 @@ const saveGroup = async (event, props) => {
       topicId: groupTopicID,
       configurationId: groupConfigurationID,
       instructorId: groupInstructor ? groupInstructor.student_number : '',
-      studentIds: splitStudents
+      studentIds: splitStudents,
     })
     props.createGroupSuccsess(createdGroup)
     props.onInstructorChange(null)
@@ -101,7 +101,7 @@ const GroupCreationForm = ({
   groupConfigurationID,
   createGroupSuccsess,
   setSuccess,
-  setError
+  setError,
 }) => {
   const handleTopicChange = (topicid) => {
     onTopicSelectChange(topicid)
@@ -121,7 +121,7 @@ const GroupCreationForm = ({
             createGroupSuccsess,
             setSuccess,
             setError,
-            onInstructorChange
+            onInstructorChange,
           })
         }
       >
@@ -141,7 +141,7 @@ const GroupCreationForm = ({
                 value={groupName}
                 onChange={onNameChangeForm}
                 inputProps={{
-                  className: 'create-group-form__name'
+                  className: 'create-group-form__name',
                 }}
               />
             </FormInput>
@@ -180,7 +180,7 @@ const mapStateToPropsForm = (state) => ({
   groupTopicID: state.groupPage.groupTopicID,
   groupInstructor: state.groupPage.groupInstructor,
   groupConfigurationID: state.groupPage.groupConfigurationID,
-  topics: state.topicListPage.topics
+  topics: state.topicListPage.topics,
 })
 
 const mapDispatchToPropsForm = {
@@ -190,10 +190,10 @@ const mapDispatchToPropsForm = {
   onInstructorChange: groupManagementActions.updateGroupInstructor,
   createGroupSuccsess: groupManagementActions.createGroupSuccsess,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
 export default connect(
   mapStateToPropsForm,
-  mapDispatchToPropsForm
+  mapDispatchToPropsForm,
 )(GroupCreationForm)

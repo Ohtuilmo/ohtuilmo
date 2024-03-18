@@ -4,30 +4,30 @@ const initTests = () => {
     {
       type: 'text',
       header: 'Mitä mieltä olit tykittelystä?',
-      description: 'Vastaa lyhyesti 5000 merkillä'
+      description: 'Vastaa lyhyesti 5000 merkillä',
     },
     {
       type: 'oneliner',
       header: 'Minne spämmi?',
-      description: 'Max 7 päivässä.'
+      description: 'Max 7 päivässä.',
     },
     {
       type: 'number',
-      header: 'Monta tuntia viikossa olit yhteydessä tiimiin?'
+      header: 'Monta tuntia viikossa olit yhteydessä tiimiin?',
     },
     {
       type: 'range',
       header: 'Minkä arvosanan antaisit tiimille?',
       description: 'Pienet epätykittelyt on ihan ok',
-      options: ['1', '2', '3', '4', '5']
-    }
+      options: ['1', '2', '3', '4', '5'],
+    },
   ])
   cy.createGroup({
     name: 'Tykittelijät',
     topicId: 1,
     configurationId: 1,
     instructorId: '012345698',
-    studentIds: ['012345678', '012345688']
+    studentIds: ['012345678', '012345688'],
   })
 
   cy.setCustomerReviewQuestionSetToConfiguration(1)
@@ -51,7 +51,7 @@ const answerOnelinerInput = (text) => {
 
 const answerNumberInput = (number) => {
   cy.get(
-    '[data-cy="numberInput-Monta tuntia viikossa olit yhteydessä tiimiin?"]'
+    '[data-cy="numberInput-Monta tuntia viikossa olit yhteydessä tiimiin?"]',
   )
     .clear()
     .type(number)
@@ -63,7 +63,7 @@ const answerRangeInput = (number) => {
       cy.get('input')
         .eq(number - 1)
         .click()
-    }
+    },
   )
 }
 
@@ -97,7 +97,7 @@ describe('Customer review page', () => {
 
   it('shows error when oneliner fields are under 5 characters long', () => {
     answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
     )
     answerOnelinerInput('spam')
     submitCustomerReview()
@@ -106,7 +106,7 @@ describe('Customer review page', () => {
 
   it('shows error when text fields are filled but there are other unfilled fields', () => {
     answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
     )
     answerOnelinerInput('spammiosoite')
     submitCustomerReview()
@@ -115,7 +115,7 @@ describe('Customer review page', () => {
 
   it('submits customer review when all fields are filled', () => {
     answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
     )
     answerNumberInput(1337)
     answerRangeInput(3)

@@ -1,7 +1,7 @@
 const initialState = {
   topics: [],
   questions: [],
-  email: ''
+  email: '',
 }
 
 const registrationPageReducer = (state = initialState, action) => {
@@ -9,24 +9,26 @@ const registrationPageReducer = (state = initialState, action) => {
   case 'UPDATE_REGISTRATION_TOPICS':
     return {
       ...state,
-      topics: action.payload
+      topics: action.payload,
     }
   case 'UPDATE_REGISTRATION_EMAIL':
     return {
       ...state,
-      email: action.payload
+      email: action.payload,
     }
   case 'UPDATE_REGISTRATION_QUESTIONS':
     return {
       ...state,
-      questions: action.payload
+      questions: action.payload,
     }
   case 'UPDATE_REGISTRATION_QUESTION_ANSWER':
     return {
       ...state,
-      questions: state.questions.map(
-        (question, i) => i === action.index ? { ...question, answer: action.answer } : question
-      )
+      questions: state.questions.map((question, i) =>
+        i === action.index
+          ? { ...question, answer: action.answer }
+          : question,
+      ),
     }
   default:
   }

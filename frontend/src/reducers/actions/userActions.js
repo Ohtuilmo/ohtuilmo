@@ -4,7 +4,7 @@ import logoutService from '../../services/logout'
 
 const updateIsInstructor = (user, isInstructor) => ({
   ...user,
-  instructor: isInstructor
+  instructor: isInstructor,
 })
 
 export const loginUser = (userCredentials) => {
@@ -17,8 +17,8 @@ export const loginUser = (userCredentials) => {
       type: 'LOGIN_USER',
       payload: {
         token,
-        user: updateIsInstructor(user, isInstructor)
-      }
+        user: updateIsInstructor(user, isInstructor),
+      },
     })
   }
 }

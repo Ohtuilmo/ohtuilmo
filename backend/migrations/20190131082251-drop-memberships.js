@@ -10,7 +10,7 @@ module.exports = {
     await query.removeConstraint('memberships', 'memberships_group_id_fkey')
     await query.removeConstraint(
       'memberships',
-      'memberships_student_number_fkey'
+      'memberships_student_number_fkey',
     )
 
     // Drop table
@@ -24,21 +24,21 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       role: Sequelize.STRING,
       group_id: Sequelize.INTEGER,
       // sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       // foreign keys for associations
-      student_number: Sequelize.STRING
+      student_number: Sequelize.STRING,
     })
 
     // create foreign key constraints
@@ -48,20 +48,20 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'groups',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
     return query.addConstraint('memberships', ['student_number'], {
       name: 'memberships_student_number_fkey',
       type: 'FOREIGN KEY',
       references: {
         table: 'users',
-        field: 'student_number'
+        field: 'student_number',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
-  }
+  },
 }

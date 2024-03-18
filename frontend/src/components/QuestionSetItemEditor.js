@@ -17,7 +17,7 @@ const SaveButton = ({ className }) => (
 )
 
 SaveButton.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 const CancelButton = ({ className, onClick }) => (
@@ -28,14 +28,14 @@ const CancelButton = ({ className, onClick }) => (
 
 CancelButton.propTypes = {
   className: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 }
 
 const QuestionSetItemEditor = ({
   initialName,
   initialQuestionsJson,
   onSave,
-  onCancel
+  onCancel,
 }) => {
   const formControls = (
     <>
@@ -65,7 +65,7 @@ QuestionSetItemEditor.propTypes = {
   initialName: PropTypes.string,
   initialQuestionsJson: PropTypes.string,
   onSave: PropTypes.func,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
 }
 
 export default QuestionSetItemEditor

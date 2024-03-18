@@ -35,7 +35,7 @@ const updateTopic = (topics, updatedTopic) =>
 
 const addSentEmail = (topic, newSentEmail) => ({
   ...topic,
-  sentEmails: [...topic.sentEmails, newSentEmail]
+  sentEmails: [...topic.sentEmails, newSentEmail],
 })
 
 const topics = (state = [], action) => {
@@ -47,7 +47,7 @@ const topics = (state = [], action) => {
   case 'TOPIC_PAGE_TOPIC_ADD_SENT_EMAIL': {
     const { topicId, sentEmail } = action.payload
     return state.map((topic) =>
-      topic.id === topicId ? addSentEmail(topic, sentEmail) : topic
+      topic.id === topicId ? addSentEmail(topic, sentEmail) : topic,
     )
   }
   default:
@@ -59,5 +59,5 @@ export default combineReducers({
   acceptanceFilter,
   filter,
   topics,
-  isTopicsLoading
+  isTopicsLoading,
 })

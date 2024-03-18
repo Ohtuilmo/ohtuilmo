@@ -48,7 +48,7 @@ class RegistrationPage extends React.Component {
       console.log('error happened', e)
       this.props.setError(
         'Error fetching registration management configuration',
-        5000
+        5000,
       )
     }
   }
@@ -58,7 +58,10 @@ class RegistrationPage extends React.Component {
       await this.props.fetchRegistrations()
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Error fetching own registration... try reloading the page', 3000)
+      this.props.setError(
+        'Error fetching own registration... try reloading the page',
+        3000,
+      )
     }
   }
 
@@ -79,7 +82,7 @@ class RegistrationPage extends React.Component {
     try {
       const fetchedTopics = await topicService
         .getAllActive()
-        .then(function(defs) {
+        .then(function (defs) {
           return defs
         })
 
@@ -97,7 +100,7 @@ class RegistrationPage extends React.Component {
   updateUser = async () => {
     const user = {
       student_number: this.props.user.student_number,
-      email: { email: this.props.email }
+      email: { email: this.props.email },
     }
     try {
       const response = await userService.update(user)
@@ -114,7 +117,7 @@ class RegistrationPage extends React.Component {
     e.preventDefault()
 
     const answer = window.confirm(
-      'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?'
+      'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?',
     )
     if (!answer) return
 
@@ -122,7 +125,7 @@ class RegistrationPage extends React.Component {
       await this.updateUser()
       await registrationService.create({
         questions: this.props.questions,
-        preferred_topics: this.props.topics
+        preferred_topics: this.props.topics,
       })
       this.props.setSuccess('Registration submitted', 15000)
       this.props.history.push('/')
@@ -131,7 +134,7 @@ class RegistrationPage extends React.Component {
       if (e.response.data.error === 'student already registered') {
         this.props.setError(
           'You have already registered for this course',
-          15000
+          15000,
         )
       } else if (e.response.data.error === 'missing email') {
         this.props.setError('Email is missing', 5000)
@@ -147,7 +150,7 @@ class RegistrationPage extends React.Component {
     if (
       ownRegistrations.length > 0 &&
       ownRegistrations.find(
-        (registration) => registration.configuration_id === projectConf
+        (registration) => registration.configuration_id === projectConf,
       )
     ) {
       return <h2>You have already registered to current project.</h2>
@@ -218,7 +221,7 @@ class RegistrationPage extends React.Component {
           style={{
             fontWeight: 'bold',
             color: 'green',
-            marginBottom: 20
+            marginBottom: 20,
           }}
         >
           {this.props.projectInfo}
@@ -233,11 +236,17 @@ class RegistrationPage extends React.Component {
                 marginBottom: 20,
                 border: 'solid',
                 padding: 10,
-                borderRadius: 10
+                borderRadius: 10,
               }}
             >
-              Huomaa, että projektiin osallistuminen edellyttää että kaikki esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä kaksi kurssia seuraavista (Tietokannat ja Web-ohjelmointi, Tietokantasovellus, Ohjelmistotekniikka, Full stack -websovelluskehitys, Aineopintojen harjoitustyö: Algoritmit ja teköäly, Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit, Aineopintojen harjoitustyö: Tietoliikenne)
-             on tehtynä (suoritettu tai palautettu arvosteltavaksi) projektin alkuun mennessä.
+              Huomaa, että projektiin osallistuminen edellyttää että kaikki
+              esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä
+              kaksi kurssia seuraavista (Tietokannat ja Web-ohjelmointi,
+              Tietokantasovellus, Ohjelmistotekniikka, Full stack
+              -websovelluskehitys, Aineopintojen harjoitustyö: Algoritmit ja
+              teköäly, Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit,
+              Aineopintojen harjoitustyö: Tietoliikenne) on tehtynä (suoritettu
+              tai palautettu arvosteltavaksi) projektin alkuun mennessä.
             </div>
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
@@ -260,7 +269,7 @@ class RegistrationPage extends React.Component {
                 marginBottom: 20,
                 border: 'solid',
                 padding: 10,
-                borderRadius: 10
+                borderRadius: 10,
               }}
             >
               Set the order of the list of topics according to your preference
@@ -310,7 +319,7 @@ const mapStateToProps = (state) => {
     projectInfo: state.registrationManagement.projectRegistrationInfo,
     ownRegistrations: state.registrations,
     registrationManagementFetched:
-      state.registrationManagement.registrationManagementFetched
+      state.registrationManagement.registrationManagementFetched,
   }
 }
 
@@ -320,12 +329,12 @@ const mapDispatchToProps = {
   setSuccess: notificationActions.setSuccess,
   fetchRegistrations: registrationActions.fetchRegistrations,
   fetchRegistrationManagement:
-    registrationmanagementActions.fetchRegistrationManagement
+    registrationmanagementActions.fetchRegistrationManagement,
 }
 
 const ConnectedRegistrationPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(RegistrationPage)
 
 export default withRouter(ConnectedRegistrationPage)

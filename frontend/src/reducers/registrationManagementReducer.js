@@ -9,7 +9,7 @@ const initialState = {
   projectRegistrationInfo: '',
   topicRegistrationConf: 0,
   topicRegistrationOpen: false,
-  topicRegistrationMessage: 'Registration is closed.'
+  topicRegistrationMessage: 'Registration is closed.',
 }
 
 const registrationManagementReducer = (state = initialState, action) => {
@@ -26,57 +26,57 @@ const registrationManagementReducer = (state = initialState, action) => {
       projectRegistrationInfo: action.payload.projectRegistrationInfo,
       topicRegistrationConf: action.payload.topicRegistrationConf,
       topicRegistrationOpen: action.payload.topicRegistrationOpen,
-      topicRegistrationMessage: action.payload.topicRegistrationMessage
+      topicRegistrationMessage: action.payload.topicRegistrationMessage,
     }
   case 'UPDATE_PEER_REVIEW_CONF':
     return {
       ...state,
-      peerReviewConf: action.payload
+      peerReviewConf: action.payload,
     }
   case 'UPDATE_PEER_REVIEW_OPEN':
     return {
       ...state,
-      peerReviewOpen: action.payload
+      peerReviewOpen: action.payload,
     }
   case 'UPDATE_PEER_REVIEW_ROUND':
     return {
       ...state,
-      peerReviewRound: action.payload
+      peerReviewRound: action.payload,
     }
   case 'UPDATE_PROJECT_REGISTRATION_CONF':
     return {
       ...state,
-      projectRegistrationConf: action.payload
+      projectRegistrationConf: action.payload,
     }
   case 'UPDATE_PROJECT_REGISTRATION_OPEN':
     return {
       ...state,
-      projectRegistrationOpen: action.payload
+      projectRegistrationOpen: action.payload,
     }
   case 'UPDATE_PROJECT_REGISTRATION_MESSAGE':
     return {
       ...state,
-      projectRegistrationMessage: action.payload
+      projectRegistrationMessage: action.payload,
     }
   case 'UPDATE_PROJECT_REGISTRATION_INFO':
     return {
       ...state,
-      projectRegistrationInfo: action.payload
+      projectRegistrationInfo: action.payload,
     }
   case 'UPDATE_TOPIC_REGISTRATION_CONF':
     return {
       ...state,
-      topicRegistrationConf: action.payload
+      topicRegistrationConf: action.payload,
     }
   case 'UPDATE_TOPIC_REGISTRATION_OPEN':
     return {
       ...state,
-      topicRegistrationOpen: action.payload
+      topicRegistrationOpen: action.payload,
     }
   case 'UPDATE_TOPIC_REGISTRATION_MESSAGE':
     return {
       ...state,
-      topicRegistrationMessage: action.payload
+      topicRegistrationMessage: action.payload,
     }
   default:
     return state

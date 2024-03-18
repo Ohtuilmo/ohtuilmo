@@ -2,17 +2,17 @@ import peerReviewQuestionsService from '../../services/peerReviewQuestionSet'
 
 const fetchPeerReviewQuestionSetsSuccess = (questionSets) => ({
   type: 'FETCH_PEER_REVIEW_QUESTION_SETS_SUCCESS',
-  payload: questionSets
+  payload: questionSets,
 })
 
 const createPeerReviewQuestionSetSuccess = (createdSet) => ({
   type: 'CREATE_PEER_REVIEW_QUESTION_SET_SUCCESS',
-  payload: createdSet
+  payload: createdSet,
 })
 
 const updatePeerReviewQuestionSetSuccess = (updatedSet) => ({
   type: 'UPDATE_PEER_REVIEW_QUESTION_SET_SUCCESS',
-  payload: updatedSet
+  payload: updatedSet,
 })
 
 /**
@@ -29,7 +29,7 @@ export const createPeerReviewQuestionSet = (name, questions) => {
   return async (dispatch) => {
     const createdSet = await peerReviewQuestionsService.create({
       name,
-      questions
+      questions,
     })
     dispatch(createPeerReviewQuestionSetSuccess(createdSet))
   }

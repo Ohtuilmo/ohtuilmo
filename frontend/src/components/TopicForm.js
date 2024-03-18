@@ -51,7 +51,11 @@ const TopicForm = (props) => {
         </div>
         <p>
           The fields below have Markdown support. / Seuraavia kenttiä voi
-          muotoilla Markdown-notaatiolla. (<a href='https://guides.github.com/features/mastering-markdown/'>Markdown instructions / Markdown ohjeet</a>)
+          muotoilla Markdown-notaatiolla. (
+          <a href="https://guides.github.com/features/mastering-markdown/">
+            Markdown instructions / Markdown ohjeet
+          </a>
+          )
         </p>
         <div>
           <TextField
@@ -88,13 +92,16 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateSpecialRequests(e.target.value)}
           />
         </div>
-        {false&&<div >
-          Kerro seuraavassa kohdassa myös sopivat ajankohdat / tell also what is the suitable timing for your project
-          <ul>
-            <li>alkukesä / early summer 15.5.-30.6.</li>
-            <li>koko kesän projekti / whole summer 15.5.-30.8.</li>
-          </ul>
-        </div>}
+        {false && (
+          <div>
+            Kerro seuraavassa kohdassa myös sopivat ajankohdat / tell also what
+            is the suitable timing for your project
+            <ul>
+              <li>alkukesä / early summer 15.5.-30.6.</li>
+              <li>koko kesän projekti / whole summer 15.5.-30.8.</li>
+            </ul>
+          </div>
+        )}
         <div>
           <TextField
             fullWidth
@@ -108,19 +115,19 @@ const TopicForm = (props) => {
         </div>
         <div>
           <div style={{ padding: 10 }}>
-            As a customer I promise to be flexible enough with my schedule so that I can be available for the group often enough, especially at the start of the project.
+            As a customer I promise to be flexible enough with my schedule so
+            that I can be available for the group often enough, especially at
+            the start of the project.
           </div>
           <div style={{ padding: 10 }}>
-            Lupaan joustaa omien aikataulujeni suhteen riittävästi, erityisesti projektin alkuvaiheessa, jotta kommunikointi ryhmän kanssa sujuu riittävällä tasolla.
+            Lupaan joustaa omien aikataulujeni suhteen riittävästi, erityisesti
+            projektin alkuvaiheessa, jotta kommunikointi ryhmän kanssa sujuu
+            riittävällä tasolla.
           </div>
         </div>
         <div className="form-buttons">
           <div className="form-button">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" variant="contained" color="primary">
               {props.submitButtonText}
             </Button>
           </div>
@@ -142,12 +149,9 @@ const TopicForm = (props) => {
 }
 
 const mapDispatchToProps = {
-  ...topicFormPageActions
+  ...topicFormPageActions,
 }
 
-const ConnectedTopicForm = connect(
-  null,
-  mapDispatchToProps
-)(TopicForm)
+const ConnectedTopicForm = connect(null, mapDispatchToProps)(TopicForm)
 
 export default ConnectedTopicForm

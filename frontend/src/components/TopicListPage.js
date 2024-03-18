@@ -344,27 +344,25 @@ const TopicTableHead = () => (
  */
 const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
   console.table(topics)
-  return topics.length > 0
-    ? (
-      <Table>
-        <TopicTableHead />
-        <TableBody>
-          {topics.map((topic) => (
-            <TopicTableRow
-              key={topic.id}
-              topic={topic}
-              onEmailSendRequested={(emailInfo) =>
-                onEmailSendRequested({ ...emailInfo, topic })
-              }
-              onActiveToggle={() => onActiveToggle(topic)}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    )
-    : (
-      <NoneAvailable />
-    )
+  return topics.length > 0 ? (
+    <Table>
+      <TopicTableHead />
+      <TableBody>
+        {topics.map((topic) => (
+          <TopicTableRow
+            key={topic.id}
+            topic={topic}
+            onEmailSendRequested={(emailInfo) =>
+              onEmailSendRequested({ ...emailInfo, topic })
+            }
+            onActiveToggle={() => onActiveToggle(topic)}
+          />
+        ))}
+      </TableBody>
+    </Table>
+  ) : (
+    <NoneAvailable />
+  )
 }
 
 TopicTable.propTypes = {
@@ -387,31 +385,46 @@ const getApiError = (e) => {
 }
 
 const TopicAcceptanceFilter = (props) => {
-  const {
-    acceptanceFilter,
-    updateAcceptanceFilter
-  } = props
+  const { acceptanceFilter, updateAcceptanceFilter } = props
 
   const handleAcceptanceFilterChange = (event) => {
     updateAcceptanceFilter(event.target.value)
   }
 
-  return <Fragment>
-    <FormControl sx={{ margin: '0 4rem' }}>
-      <MuiThemeProvider theme={redGreenTheme}>
-        <RadioGroup
-          row
-          defaultValue='all'
-          name='topic-acceptance-filter'
-          value={acceptanceFilter}
-          onChange={handleAcceptanceFilterChange}>
-          <FormControlLabel data-cy='acceptance-filter-all' value='all' control={<Radio color='default' />} label='All' />
-          <FormControlLabel data-cy='acceptance-filter-accepted' value='accepted' control={<Radio color='primary' />} label='Accepted' />
-          <FormControlLabel data-cy='acceptance-filter-rejected' value='rejected' control={<Radio color='secondary' />} label='Rejected' />
-        </RadioGroup>
-      </MuiThemeProvider>
-    </FormControl>
-  </Fragment>
+  return (
+    <Fragment>
+      <FormControl sx={{ margin: '0 4rem' }}>
+        <MuiThemeProvider theme={redGreenTheme}>
+          <RadioGroup
+            row
+            defaultValue="all"
+            name="topic-acceptance-filter"
+            value={acceptanceFilter}
+            onChange={handleAcceptanceFilterChange}
+          >
+            <FormControlLabel
+              data-cy="acceptance-filter-all"
+              value="all"
+              control={<Radio color="default" />}
+              label="All"
+            />
+            <FormControlLabel
+              data-cy="acceptance-filter-accepted"
+              value="accepted"
+              control={<Radio color="primary" />}
+              label="Accepted"
+            />
+            <FormControlLabel
+              data-cy="acceptance-filter-rejected"
+              value="rejected"
+              control={<Radio color="secondary" />}
+              label="Rejected"
+            />
+          </RadioGroup>
+        </MuiThemeProvider>
+      </FormControl>
+    </Fragment>
+  )
 }
 
 const TopicListPage = (props) => {
@@ -447,8 +460,7 @@ const TopicListPage = (props) => {
 
   useEffect(() => {
     const updateData = async () => {
-      if (configurations.length)
-        await updateFilter(configurations[0].id)
+      if (configurations.length) await updateFilter(configurations[0].id)
     }
 
     updateData()
@@ -462,7 +474,7 @@ const TopicListPage = (props) => {
       const activeDescription = newActiveState ? 'active' : 'inactive'
       setSuccess(
         `Topic '${topic.content.title}' has been set ${activeDescription}.`,
-        3000
+        3000,
       )
     } catch (err) {
       console.error('error happened', err.response)
@@ -496,7 +508,7 @@ const TopicListPage = (props) => {
         getApiError(err) || 'server error, see console for details'
       setError(
         `Failed to generate preview. See console for details. Error: ${errorMsg}`,
-        10000
+        10000,
       )
       return false
     }
@@ -510,7 +522,7 @@ const TopicListPage = (props) => {
     const userConfirmedPreview = await confirmEmailPreview(
       messageType,
       messageLanguage,
-      topic.id
+      topic.id,
     )
 
     if (!userConfirmedPreview) {
@@ -529,17 +541,17 @@ const TopicListPage = (props) => {
         getApiError(err) || 'server error, see console for details'
       setError(
         `Failed to send email. See console for details. Error: '${errorMsg}'`,
-        10000
+        10000,
       )
     }
   }
 
   const configurationMenuItems = () => {
     const semesterValues = {
-      'Spring': 1,
-      'Summer': 2,
-      'Autumn': 3,
-      'Fall': 3
+      Spring: 1,
+      Summer: 2,
+      Autumn: 3,
+      Fall: 3,
     }
     const configurationSorting = (a, b) => {
       const aConf = configurationMapper(a.name).split(' ')
@@ -555,38 +567,50 @@ const TopicListPage = (props) => {
       .concat(
         <MenuItem value={0} key={0} data-cy="configurations-all">
           All configurations
-        </MenuItem>
+        </MenuItem>,
       )
       .concat(
-        configurations
-          .sort(configurationSorting)
-          .map((configuration) => {
-            const confName = configurationMapper(configuration.name)
-            const splits = confName.split(' ')
-            return (
-              <MenuItem value={configuration.id} key={configuration.id} data-cy={'configurations-'+splits[0]+'-'+splits[1]}>
-                {confName}
-              </MenuItem>
-            )
-          })
+        configurations.sort(configurationSorting).map((configuration) => {
+          const confName = configurationMapper(configuration.name)
+          const splits = confName.split(' ')
+          return (
+            <MenuItem
+              value={configuration.id}
+              key={configuration.id}
+              data-cy={'configurations-' + splits[0] + '-' + splits[1]}
+            >
+              {confName}
+            </MenuItem>
+          )
+        }),
       )
   }
 
-  const shownTopics = filter === 0
-    ? topics.filter((topic) => acceptanceFilter === 'accepted'
-      ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
-      : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
-      .sort(activeFirstThenByTitle)
-    : acceptanceFilter === 'all'
+  const shownTopics =
+    filter === 0
       ? topics
-        .filter((topic) => topic.configuration_id === filter)
+        .filter((topic) =>
+          acceptanceFilter === 'accepted'
+            ? topic.sentEmails.length > 0 &&
+                topic.sentEmails[0].email.type === 'topicAccepted'
+            : topic.sentEmails.length > 0 &&
+                topic.sentEmails[0].email.type === 'topicRejected',
+        )
         .sort(activeFirstThenByTitle)
-      : topics
-        .filter((topic) => topic.configuration_id === filter)
-        .filter((topic) => acceptanceFilter === 'accepted'
-          ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
-          : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected')
-        .sort(activeFirstThenByTitle)
+      : acceptanceFilter === 'all'
+        ? topics
+          .filter((topic) => topic.configuration_id === filter)
+          .sort(activeFirstThenByTitle)
+        : topics
+          .filter((topic) => topic.configuration_id === filter)
+          .filter((topic) =>
+            acceptanceFilter === 'accepted'
+              ? topic.sentEmails.length > 0 &&
+                  topic.sentEmails[0].email.type === 'topicAccepted'
+              : topic.sentEmails.length > 0 &&
+                  topic.sentEmails[0].email.type === 'topicRejected',
+          )
+          .sort(activeFirstThenByTitle)
 
   return (
     <div className="topics-container">
@@ -594,7 +618,7 @@ const TopicListPage = (props) => {
         <LoadingCover className="topics-container__loading-cover" />
       )}
 
-      <div className='topics-filter-container'>
+      <div className="topics-filter-container">
         <Select
           data-cy="configurations-filter"
           value={filter}
@@ -606,11 +630,13 @@ const TopicListPage = (props) => {
         <TopicAcceptanceFilter {...props} />
       </div>
 
-      {!isLoading && <TopicTable
-        topics={shownTopics}
-        onEmailSendRequested={handleEmailSendRequested}
-        onActiveToggle={handleActiveToggle}
-      />}
+      {!isLoading && (
+        <TopicTable
+          topics={shownTopics}
+          onEmailSendRequested={handleEmailSendRequested}
+          onActiveToggle={handleActiveToggle}
+        />
+      )}
     </div>
   )
 }
@@ -651,7 +677,6 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopicListPage))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TopicListPage),
+)

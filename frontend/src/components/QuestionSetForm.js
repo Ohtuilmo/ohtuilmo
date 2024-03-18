@@ -18,7 +18,7 @@ const QuestionSetForm = ({
   initialName,
   initialQuestionsJson,
   onSubmit,
-  controls
+  controls,
 }) => {
   const [name, setName] = useState(initialName || '')
   const [questionsJson, setQuestionsJson] = useState(initialQuestionsJson || '')
@@ -55,7 +55,7 @@ const QuestionSetForm = ({
     <form className="question-set-form" onSubmit={handleFormSubmit}>
       <TextField
         inputProps={{
-          className: 'question-set-form__name'
+          className: 'question-set-form__name',
         }}
         fullWidth
         required
@@ -70,9 +70,9 @@ const QuestionSetForm = ({
           style: {
             fontFamily:
               'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
-            fontSize: '0.9em'
+            fontSize: '0.9em',
           },
-          className: 'question-set-form__questions'
+          className: 'question-set-form__questions',
         }}
         fullWidth
         required

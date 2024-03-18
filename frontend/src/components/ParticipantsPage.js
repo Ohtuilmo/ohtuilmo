@@ -15,11 +15,11 @@ const styles = (theme) => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto'
+    overflowX: 'auto',
   },
   table: {
-    minWidth: 700
-  }
+    minWidth: 700,
+  },
 })
 
 const testRows = [
@@ -27,90 +27,90 @@ const testRows = [
     id: 1,
     preferredTopics: [
       {
-        topic: 'HTML #1'
+        topic: 'HTML #1',
       },
       {
-        topic: 'JAVA #2'
+        topic: 'JAVA #2',
       },
       {
-        topic: 'PYTHON #1'
+        topic: 'PYTHON #1',
       },
       {
-        topic: 'JS-PRO #99'
+        topic: 'JS-PRO #99',
       },
       {
-        topic: 'C #22'
-      }
+        topic: 'C #22',
+      },
     ],
     questions: 'questions',
-    semester: '2019'
+    semester: '2019',
   },
   {
     id: 2,
     preferredTopics: [
       {
-        topic: 'JAVA #1'
+        topic: 'JAVA #1',
       },
       {
-        topic: 'JAVA #2'
+        topic: 'JAVA #2',
       },
       {
-        topic: 'PYTHON #1'
+        topic: 'PYTHON #1',
       },
       {
-        topic: 'HTML #2'
+        topic: 'HTML #2',
       },
       {
-        topic: 'DOCUMENTATION PRO'
-      }
+        topic: 'DOCUMENTATION PRO',
+      },
     ],
     questions: 'questions',
-    semester: '2019'
+    semester: '2019',
   },
   {
     id: 3,
     preferredTopics: [
       {
-        topic: 'HTML #1'
+        topic: 'HTML #1',
       },
       {
-        topic: 'JAVA #2'
+        topic: 'JAVA #2',
       },
       {
-        topic: 'JAVA #1'
+        topic: 'JAVA #1',
       },
       {
-        topic: 'JS-PRO #99'
+        topic: 'JS-PRO #99',
       },
       {
-        topic: 'C #22'
-      }
+        topic: 'C #22',
+      },
     ],
     questions: 'questions',
-    semester: '2019'
+    semester: '2019',
   },
   {
     id: 4,
     preferredTopics: [
       {
-        topic: 'HTML #1'
+        topic: 'HTML #1',
       },
       {
-        topic: 'HTML #2'
+        topic: 'HTML #2',
       },
       {
-        topic: 'HTML #3'
+        topic: 'HTML #3',
       },
       {
-        topic: 'HTML #99'
+        topic: 'HTML #99',
       },
       {
-        topic: 'HTML #22'
-      }
+        topic: 'HTML #22',
+      },
     ],
     questions: 'questions',
-    semester: '2019'
-  }
+    semester: '2019',
+  },
 ]
 
 class ParticipantsPage extends React.Component {
@@ -163,17 +163,17 @@ class ParticipantsPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    state: state
+    state: state,
   }
 }
 
 const mapDispatchToProps = {
-  setError: notificationActions.setError
+  setError: notificationActions.setError,
 }
 
 const ConnectedParticipantsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ParticipantsPage)
 
 export default withRouter(withStyles(styles)(ConnectedParticipantsPage))

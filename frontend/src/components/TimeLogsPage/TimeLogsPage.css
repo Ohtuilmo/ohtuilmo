@@ -1,100 +1,101 @@
 .timelogs-container-1 {
-    display: flex;
-    flex-direction: column;
-    max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
 }
 
 .timelogs-container-2 {
-    display: flex;
-    flex-direction: column;
-    max-width: 480px;
-    margin-bottom: 26px;
-    gap: 38px;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin-bottom: 26px;
+  gap: 38px;
 }
 
 .timelogs-container-3 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .timelogs-sprint-select {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
 
-    .button {
-        padding: 0px 12px
-    }
+  .button {
+    padding: 0px 12px;
+  }
 
-    .button:hover {
-        background-color: transparent;
-    }
+  .button:hover {
+    background-color: transparent;
+  }
 }
 
 .timelogs-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+
+  .input-container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
 
-    .input-container {
-        display: flex;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        gap: 14px;
-    }
+  .date {
+    flex-grow: 2;
+  }
 
-    .date {
-        flex-grow: 2;
-    }
-
-    .time, .description {
-        flex-grow: 1;
-    }
+  .time,
+  .description {
+    flex-grow: 1;
+  }
 }
 
 .timelogs-form .submit-button:hover {
-    background-color: rgb(231, 231, 231)
+  background-color: rgb(231, 231, 231);
 }
 
 .timelogs-table-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  margin-top: 4px;
 }
 
 .timelogs-table-row:not(:last-child) {
-    border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
 }
-  
-.timelogs-description {
-    flex: 2;
-    padding: 0 8px;
-    white-space: pre-wrap;
 
-    p {
-        margin-top: 0px;
-    }
+.timelogs-description {
+  flex: 2;
+  padding: 0 8px;
+  white-space: pre-wrap;
+
+  p {
+    margin-top: 0px;
+  }
 }
 
 .timelogs-date-and-time {
-    flex: 1;
-    padding: 0 8px;
+  flex: 1;
+  padding: 0 8px;
 
-    p {
-        font-size: small;
-        margin: 4px 0px;
-    }
+  p {
+    font-size: small;
+    margin: 4px 0px;
+  }
 }
 
 .timelogs-remove-button:hover {
-    background-color: transparent
+  background-color: transparent;
 }
 
 .timelogs-remove-button {
-    align-self: flex-start;
+  align-self: flex-start;
 }

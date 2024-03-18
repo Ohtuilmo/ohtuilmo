@@ -7,21 +7,21 @@ class GroupViewer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      editMode: false
+      editMode: false,
     }
   }
 
   toggleEditMode = () => {
     this.setState((prevState) => ({
-      editMode: !prevState.editMode
+      editMode: !prevState.editMode,
     }))
     if (this.state.editMode) {
       this.props.setSuccess(
-        `Editing for group ${this.props.group.name} disabled!`
+        `Editing for group ${this.props.group.name} disabled!`,
       )
     } else {
       this.props.setSuccess(
-        `Editing for group ${this.props.group.name} enabled!`
+        `Editing for group ${this.props.group.name} enabled!`,
       )
     }
   }

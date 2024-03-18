@@ -2,7 +2,7 @@ const initialState = {
   reviewData: [],
   reviewFetched: false,
   isInitializing: false,
-  configurationId: ''
+  configurationId: '',
 }
 
 const viewCustomerReviewsPageReducer = (state = initialState, action) => {
@@ -12,17 +12,17 @@ const viewCustomerReviewsPageReducer = (state = initialState, action) => {
       ...state,
       reviewData: action.payload,
       isInitializing: false,
-      reviewFetched: true
+      reviewFetched: true,
     }
   case 'VIEW_CUSTOMER_REVIEWS_SET_LOADING':
     return {
       ...state,
-      isInitializing: action.payload
+      isInitializing: action.payload,
     }
   case 'SET_VIEW_CUSTOMER_REVIEWS_CONFIGURATION':
     return {
       ...state,
-      configurationId: action.payload
+      configurationId: action.payload,
     }
   default:
     return state

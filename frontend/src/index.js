@@ -10,13 +10,13 @@ import amber from '@material-ui/core/colors/amber'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#fdd835'
+      main: '#fdd835',
     },
-    secondary: amber
+    secondary: amber,
   },
   typography: {
-    useNextVariants: true
-  }
+    useNextVariants: true,
+  },
 })
 
 ReactDOM.render(
@@ -25,7 +25,7 @@ ReactDOM.render(
       <App />
     </MuiThemeProvider>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )
 
 if (window.Cypress) {

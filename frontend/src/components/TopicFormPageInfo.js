@@ -36,17 +36,17 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
 const mapStateToProps = (state) => {
   return {
     topicOpen: state.registrationManagement.topicRegistrationOpen,
-    topicMessage: state.registrationManagement.topicRegistrationMessage
+    topicMessage: state.registrationManagement.topicRegistrationMessage,
   }
 }
 
 const mapDispatchToProps = {
-  ...topicFormPageActions
+  ...topicFormPageActions,
 }
 
 const ConnectedTopicFormPageInfo = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TopicFormPageInfo)
 
 export default ConnectedTopicFormPageInfo

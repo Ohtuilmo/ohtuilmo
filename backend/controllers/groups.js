@@ -13,7 +13,7 @@ const formatGroup = (dbGroup) => {
     topicId,
     configurationId,
     instructorId,
-    students
+    students,
   } = dbGroup
   return {
     id,
@@ -23,7 +23,7 @@ const formatGroup = (dbGroup) => {
     topicId,
     instructorId,
     configurationId,
-    studentIds: students.map(({ student_number }) => student_number)
+    studentIds: students.map(({ student_number }) => student_number),
   }
 }
 
@@ -34,9 +34,9 @@ router.get('/', checkAdmin, async (req, res) => {
         as: 'students',
         model: db.User,
         attributes: ['student_number'], // only select the student number
-        through: { attributes: [] } // don't ignore junction table stuff
-      }
-    ]
+        through: { attributes: [] }, // don't ignore junction table stuff
+      },
+    ],
   })
   const deserialized = groups.map(formatGroup)
   res.json(deserialized)
@@ -71,17 +71,17 @@ const findNonExistingStudents = async (studentNumbers) => {
   const students = await db.User.findAll({
     where: {
       student_number: {
-        [Op.in]: studentNumbers
-      }
-    }
+        [Op.in]: studentNumbers,
+      },
+    },
   })
 
   const expectedStudentNumbers = new Set(
-    students.map((user) => user.student_number)
+    students.map((user) => user.student_number),
   )
 
   return studentNumbers.filter(
-    (studentNumber) => !expectedStudentNumbers.has(studentNumber)
+    (studentNumber) => !expectedStudentNumbers.has(studentNumber),
   )
 }
 
@@ -137,7 +137,7 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     updatedAt,
     topicId,
     configurationId,
-    instructorId
+    instructorId,
   } = dbGroup
   return {
     id,
@@ -148,8 +148,8 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     instructorId,
     configurationId,
     studentIds: dbGroupStudents.map(
-      ({ userStudentNumber }) => userStudentNumber
-    )
+      ({ userStudentNumber }) => userStudentNumber,
+    ),
   }
 }
 
@@ -178,20 +178,20 @@ router.post('/', checkAdmin, async (req, res) => {
             name,
             topicId,
             configurationId,
-            instructorId: instructorId || null
+            instructorId: instructorId || null,
           },
-          options
+          options,
         )
         const groupStudents = await createdGroup.setStudents(
           studentIds,
-          options
+          options,
         )
 
         return {
           createdGroup,
-          groupStudents
+          groupStudents,
         }
-      }
+      },
     )
 
     // setStudents returns an array of the created group_students rows, but that
@@ -218,7 +218,7 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
 
   try {
     const group = await db.Group.findOne({
-      where: { id: req.params.groupId }
+      where: { id: req.params.groupId },
     })
 
     if (!group) {
@@ -232,13 +232,13 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
         {
           name,
           topicId,
-          instructorId: instructorId || null
+          instructorId: instructorId || null,
         },
         {
           ...options,
           returning: true,
-          plain: true
-        }
+          plain: true,
+        },
       )
 
       await updatedGroup.setStudents(studentIds, options)
@@ -257,9 +257,9 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
             as: 'students',
             model: db.User,
             attributes: ['student_number'], // only select the student number
-            through: { attributes: [] } // don't ignore junction table stuff
-          }
-        ]
+            through: { attributes: [] }, // don't ignore junction table stuff
+          },
+        ],
       })
       return res.status(200).json(formatGroup(updatedGroupWithStudents))
     } else {
@@ -293,7 +293,7 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
     }
 
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     const peerReviewConf = registrationManagement.peer_review_conf
@@ -305,17 +305,17 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
       where: {
         [Op.or]: [
           { configurationId: peerReviewConf },
-          { configurationId: projectConf }
-        ]
+          { configurationId: projectConf },
+        ],
       },
       include: [
         {
           as: 'students',
           model: db.User,
           attributes: ['first_names', 'last_name'], // only select the student number
-          through: { attributes: [] } // don't ignore junction table stuff
-        }
-      ]
+          through: { attributes: [] }, // don't ignore junction table stuff
+        },
+      ],
     })
 
     if (!allGroups || allGroups.length === 0) {
@@ -323,10 +323,10 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
     }
 
     const peerReviewGroup = allGroups.find(
-      (group) => group.configurationId === peerReviewConf
+      (group) => group.configurationId === peerReviewConf,
     )
     const projectGroup = allGroups.find(
-      (group) => group.configurationId === projectConf
+      (group) => group.configurationId === projectConf,
     )
 
     const usersGroup = peerReviewGroup ? peerReviewGroup : projectGroup
@@ -350,7 +350,7 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
       configurationId: usersGroup.configurationId,
       groupName: usersGroup.name,
       students: usersGroup.students,
-      instructor: instructorString
+      instructor: instructorString,
     })
   } catch (error) {
     console.error('Error while updating group', error)
@@ -371,9 +371,9 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
           as: 'students',
           model: db.User,
           attributes: ['first_names', 'last_name'], // only select the student number
-          through: { attributes: [] } // don't ignore junction table stuff
-        }
-      ]
+          through: { attributes: [] }, // don't ignore junction table stuff
+        },
+      ],
     })
     if (groups.length === 0) {
       return res.status(404).json({ error: 'Not an instructor' })
@@ -385,9 +385,9 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
           id: group.id,
           configurationId: group.configurationId,
           groupName: group.name,
-          students: group.students
+          students: group.students,
         }
-      })
+      }),
     )
   } catch (error) {
     console.error('Error while updating group', error)

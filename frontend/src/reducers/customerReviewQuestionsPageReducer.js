@@ -24,7 +24,7 @@ const questionSets = (state = [], action) => {
 }
 
 const customerReviewQuestionsPageReducer = combineReducers({
-  questionSets
+  questionSets,
 })
 
 export default customerReviewQuestionsPageReducer

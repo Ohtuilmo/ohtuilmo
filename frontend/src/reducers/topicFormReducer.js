@@ -6,12 +6,12 @@ const initialState = {
     description: '',
     environment: '',
     specialRequests: '',
-    additionalInfo: ''
+    additionalInfo: '',
   },
   showInfo: true,
   preview: false,
   isSaved: false,
-  secretId: ''
+  secretId: '',
 }
 
 const topicFormReducer = (state = initialState, action) => {
@@ -21,56 +21,56 @@ const topicFormReducer = (state = initialState, action) => {
       ...state,
       content: {
         ...state.content,
-        title: action.payload
-      }
+        title: action.payload,
+      },
     }
   case 'UPDATE_CUSTOMER_NAME':
     return {
       ...state,
       content: {
         ...state.content,
-        customerName: action.payload
-      }
+        customerName: action.payload,
+      },
     }
   case 'UPDATE_EMAIL':
     return {
       ...state,
       content: {
         ...state.content,
-        email: action.payload
-      }
+        email: action.payload,
+      },
     }
   case 'UPDATE_DESCRIPTION':
     return {
       ...state,
       content: {
         ...state.content,
-        description: action.payload
-      }
+        description: action.payload,
+      },
     }
   case 'UPDATE_ENVIRONMENT':
     return {
       ...state,
       content: {
         ...state.content,
-        environment: action.payload
-      }
+        environment: action.payload,
+      },
     }
   case 'UPDATE_SPECIAL_REQUESTS':
     return {
       ...state,
       content: {
         ...state.content,
-        specialRequests: action.payload
-      }
+        specialRequests: action.payload,
+      },
     }
   case 'UPDATE_ADDITIONAL_INFO':
     return {
       ...state,
       content: {
         ...state.content,
-        additionalInfo: action.payload
-      }
+        additionalInfo: action.payload,
+      },
     }
   case 'CLEAR_FORM':
     return {
@@ -82,8 +82,8 @@ const topicFormReducer = (state = initialState, action) => {
         description: '',
         environment: '',
         specialRequests: '',
-        additionalInfo: ''
-      }
+        additionalInfo: '',
+      },
     }
   case 'SET_CURRENT_TOPIC':
     return {
@@ -95,28 +95,28 @@ const topicFormReducer = (state = initialState, action) => {
         description: action.payload.description,
         environment: action.payload.environment,
         specialRequests: action.payload.specialRequests,
-        additionalInfo: action.payload.additionalInfo
-      }
+        additionalInfo: action.payload.additionalInfo,
+      },
     }
   case 'UPDATE_PREVIEW':
     return {
       ...state,
-      preview: action.payload
+      preview: action.payload,
     }
   case 'SET_SAVED':
     return {
       ...state,
-      isSaved: action.payload
+      isSaved: action.payload,
     }
   case 'UPDATE_SECRETID':
     return {
       ...state,
-      secretId: action.payload
+      secretId: action.payload,
     }
   case 'UPDATE_SHOWINFO':
     return {
       ...state,
-      showInfo: action.payload
+      showInfo: action.payload,
     }
   default:
   }

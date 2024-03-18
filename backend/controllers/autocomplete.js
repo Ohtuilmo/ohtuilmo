@@ -40,8 +40,8 @@ router.get('/users', checkAdmin, async (req, res) => {
       'LIMIT 10',
     {
       bind: { name: `%${name.toLowerCase()}%` },
-      type: db.sequelize.QueryTypes.SELECT
-    }
+      type: db.sequelize.QueryTypes.SELECT,
+    },
   )
 
   res.status(200).json(matches)

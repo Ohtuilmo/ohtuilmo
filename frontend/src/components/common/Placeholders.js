@@ -7,13 +7,9 @@ export const NotInGroupPlaceholder = () => (
 )
 
 export const LoadingPlaceholder = () => (
-  <h1 style={{ textAlign: 'center' }}>
-    Loading...
-  </h1>
+  <h1 style={{ textAlign: 'center' }}>Loading...</h1>
 )
 
 export const NoneAvailable = () => (
-  <h1 style={{ textAlign: 'center' }}>
-    None available
-  </h1>
+  <h1 style={{ textAlign: 'center' }}>None available</h1>
 )

@@ -1,20 +1,20 @@
 const updateUsername = (username) => {
   return {
     type: 'UPDATE_USERNAME',
-    payload: username
+    payload: username,
   }
 }
 
 const updatePassword = (password) => {
   return {
     type: 'UPDATE_PASSWORD',
-    payload: password
+    payload: password,
   }
 }
 
 const clearForm = () => {
   return {
-    type: 'CLEAR_FORM'
+    type: 'CLEAR_FORM',
   }
 }
 

@@ -34,7 +34,7 @@ class PeerReviewInfo extends React.Component {
     const data = await peerReviewService.get()
     if (data) {
       this.setState({
-        submittedReviews: data
+        submittedReviews: data,
       })
     }
   }
@@ -200,7 +200,10 @@ class RegistrationDetailsPage extends React.Component {
       await this.props.fetchRegistrations()
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Error fetching own registration... try reloading the page', 3000)
+      this.props.setError(
+        'Error fetching own registration... try reloading the page',
+        3000,
+      )
     }
   }
 
@@ -212,7 +215,7 @@ class RegistrationDetailsPage extends React.Component {
       groupDetails,
       ownRegistrations,
       peerReviewConf,
-      projectRegistrationConf
+      projectRegistrationConf,
     } = this.props
 
     if (ownRegistrations.length === 0) {
@@ -221,11 +224,11 @@ class RegistrationDetailsPage extends React.Component {
 
     const projectReg = ownRegistrations.find(
       (registration) =>
-        registration.configuration_id === projectRegistrationConf
+        registration.configuration_id === projectRegistrationConf,
     )
 
     const reviewConf = ownRegistrations.find(
-      (registration) => registration.configuration_id === peerReviewConf
+      (registration) => registration.configuration_id === peerReviewConf,
     )
 
     const registration = reviewConf ? reviewConf : projectReg
@@ -264,18 +267,18 @@ const mapStateToProps = (state) => {
     peerReviewRound: state.registrationManagement.peerReviewRound,
     peerReviewConf: state.registrationManagement.peerReviewConf,
     projectRegistrationConf:
-      state.registrationManagement.projectRegistrationConf
+      state.registrationManagement.projectRegistrationConf,
   }
 }
 
 const mapDispatchToProps = {
   fetchRegistrations: registrationActions.fetchRegistrations,
-  initializeMyGroup: myGroupActions.initializeMyGroup
+  initializeMyGroup: myGroupActions.initializeMyGroup,
 }
 
 const ConnectedRegistrationDetailsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(RegistrationDetailsPage)
 
 export default withRouter(ConnectedRegistrationDetailsPage)

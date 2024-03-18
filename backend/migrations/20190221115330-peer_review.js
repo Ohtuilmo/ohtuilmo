@@ -7,29 +7,29 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncerment: false,
-        allowNull: false
+        allowNull: false,
       },
       configuration: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       answer_sheet: {
         type: Sequelize.JSONB,
-        allowNull: false
+        allowNull: false,
       },
       // Sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     })
   },
 
   down: (query) => {
     return query.dropTable('peer_review')
-  }
+  },
 }

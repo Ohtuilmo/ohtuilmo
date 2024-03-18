@@ -6,11 +6,11 @@ import Paper from '@material-ui/core/Paper'
 
 import {
   fetchPeerReviewQuestionSets,
-  updatePeerReviewQuestionSet
+  updatePeerReviewQuestionSet,
 } from '../../reducers/actions/peerReviewQuestionsPageActions'
 import {
   setError,
-  setSuccess
+  setSuccess,
 } from '../../reducers/actions/notificationActions'
 
 import { peerReviewQuestionSetShape } from '../common/sharedPropTypes'
@@ -89,23 +89,23 @@ PeerReviewQuestionsPage.propTypes = {
   setError: PropTypes.func,
   setSuccess: PropTypes.func,
   fetchPeerReviewQuestionSets: PropTypes.func,
-  updatePeerReviewQuestionSet: PropTypes.func
+  updatePeerReviewQuestionSet: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
-  questionSets: state.peerReviewQuestionsPage.questionSets
+  questionSets: state.peerReviewQuestionsPage.questionSets,
 })
 
 const mapDispatchToProps = {
   fetchPeerReviewQuestionSets,
   updatePeerReviewQuestionSet,
   setError,
-  setSuccess
+  setSuccess,
 }
 
 const ConnectedPeerReviewQuestionsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PeerReviewQuestionsPage)
 
 export default withRouter(ConnectedPeerReviewQuestionsPage)

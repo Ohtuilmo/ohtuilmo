@@ -8,12 +8,12 @@ module.exports = (sequelize, Sequelize) => {
     {
       email_template_name: {
         type: Sequelize.STRING,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {
-      underscored: true
-    }
+      underscored: true,
+    },
   )
 
   SentTopicEmail.format = (sentEmail) => {
@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
       id,
       timestamp: created_at,
       topic_id: topic_id,
-      email: templateNameToEmailType(email_template_name)
+      email: templateNameToEmailType(email_template_name),
     }
   }
 

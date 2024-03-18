@@ -7,7 +7,7 @@ const initialState = {
   groupId: '',
   topicId: '',
   configuration: '',
-  noGroup: false
+  noGroup: false,
 }
 
 const customerReviewPageReducer = (state = initialState, action) => {
@@ -16,7 +16,7 @@ const customerReviewPageReducer = (state = initialState, action) => {
     return {
       ...state,
       answerSheet: action.payload,
-      isInitializing: false
+      isInitializing: false,
     }
   case 'CUSTOMER_REVIEW_UPDATE_ANSWER':
     return {
@@ -25,51 +25,51 @@ const customerReviewPageReducer = (state = initialState, action) => {
         ...state.answerSheet.slice(0, action.questionId),
         {
           ...state.answerSheet[action.questionId],
-          answer: action.answer
+          answer: action.answer,
         },
-        ...state.answerSheet.slice(action.questionId + 1)
-      ]
+        ...state.answerSheet.slice(action.questionId + 1),
+      ],
     }
   case 'CUSTOMER_REVIEW_LOADING':
     return {
       ...state,
-      isInitializing: action.payload
+      isInitializing: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_REVIEW':
     return {
       ...state,
-      hasReviewed: action.payload
+      hasReviewed: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_QUESTIONS':
     return {
       ...state,
-      questions: action.payload
+      questions: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_GROUP_NAME':
     return {
       ...state,
-      groupName: action.payload
+      groupName: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_GROUP_ID':
     return {
       ...state,
-      groupId: action.payload
+      groupId: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_TOPIC_ID':
     return {
       ...state,
-      topicId: action.payload
+      topicId: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_CONFIGURATION':
     return {
       ...state,
-      configuration: action.payload
+      configuration: action.payload,
     }
   case 'CUSTOMER_REVIEW_SET_NOGROUP':
     return {
       ...state,
       noGroup: action.payload,
-      isInitializing: false
+      isInitializing: false,
     }
   default:
     return state

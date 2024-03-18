@@ -7,7 +7,7 @@ const compareQuestionSetCreatedAtDesc = (a, b) =>
 
 const RegistrationQuestionSetList = ({ questionSets, onQuestionSetUpdate }) => {
   const byCreatedAtDesc = [...questionSets].sort(
-    compareQuestionSetCreatedAtDesc
+    compareQuestionSetCreatedAtDesc,
   )
 
   return (

@@ -4,7 +4,6 @@ import { getUserToken } from '../utils/functions'
 
 const url = `${BACKEND_API_BASE}/customerReview`
 
-
 const create = async (customerReview) => {
   const response = await axios.post(url, customerReview)
 
@@ -13,7 +12,7 @@ const create = async (customerReview) => {
 
 const getReviewQuestions = async (configurationId) => {
   const response = await axios.get(
-    `${BACKEND_API_BASE}/configurations/${configurationId}/customerreviewquestions`
+    `${BACKEND_API_BASE}/configurations/${configurationId}/customerreviewquestions`,
   )
 
   return response.data
@@ -27,24 +26,23 @@ const getDataForReview = async (secretId) => {
 const getCustomerReviewAnswers = async (configurationId) => {
   if (configurationId === 0) {
     const response = await axios.get(`${url}/all`, {
-      headers: { Authorization: 'Bearer ' + getUserToken() }
+      headers: { Authorization: 'Bearer ' + getUserToken() },
     })
     return response.data
   } else {
     const response = await axios.get(
       `${url}/all/forConfiguration/${configurationId}`,
       {
-        headers: { Authorization: 'Bearer ' + getUserToken() }
-      }
+        headers: { Authorization: 'Bearer ' + getUserToken() },
+      },
     )
     return response.data
   }
 }
 
-
 export default {
   create,
   getReviewQuestions,
   getDataForReview,
-  getCustomerReviewAnswers
+  getCustomerReviewAnswers,
 }

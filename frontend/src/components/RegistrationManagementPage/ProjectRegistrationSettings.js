@@ -10,7 +10,7 @@ import {
   TextField,
   Switch,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@material-ui/core'
 
 // Actions
@@ -25,7 +25,7 @@ const ProjectRegistrationSettings = ({
   updateProjectConf,
   updateProjectMessage,
   updateProjectInfo,
-  configurationMenuItems
+  configurationMenuItems,
 }) => {
   return (
     <Card style={{ marginBottom: '10px' }}>
@@ -80,7 +80,7 @@ const mapStateToProps = (state) => {
     projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
-    projectInfo: state.registrationManagement.projectRegistrationInfo
+    projectInfo: state.registrationManagement.projectRegistrationInfo,
   }
 }
 
@@ -91,10 +91,11 @@ const mapDispatchToProps = {
     registrationManagementActions.updateProjectRegistrationConf,
   updateProjectMessage:
     registrationManagementActions.updateProjectRegistrationMessage,
-  updateProjectInfo: registrationManagementActions.updateProjectRegistrationInfo
+  updateProjectInfo:
+    registrationManagementActions.updateProjectRegistrationInfo,
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ProjectRegistrationSettings)

@@ -18,7 +18,7 @@ const isSecretId = (id) => {
 const registrationCheck = async (req, res, next) => {
   try {
     const latestConfig = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!latestConfig || !latestConfig.topic_registration_open) {
@@ -32,13 +32,15 @@ const registrationCheck = async (req, res, next) => {
     next()
   } catch (err) {
     console.error('Error in registrationCheck', err)
-    return res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    return res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 }
 
 topicsRouter.post('/:id/copy', async (req, res) => {
   const conf = await db.RegistrationManagement.findOne({
-    order: [['createdAt', 'DESC']]
+    order: [['createdAt', 'DESC']],
   })
 
   const from = await db.Topic.findByPk(req.params.id)
@@ -50,14 +52,16 @@ topicsRouter.post('/:id/copy', async (req, res) => {
     configuration_id: conf.topic_registration_conf,
     content: from.content,
     acronym: from.acronym,
-    secret_id
+    secret_id,
   })
     .then((topic) => {
       res.status(200).json({ topic })
     })
     .catch((error) => {
       console.log(error)
-      res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+      res
+        .status(500)
+        .json({ error: 'Something is wrong... try reloading the page' })
     })
 })
 
@@ -78,7 +82,7 @@ topicsRouter.post('/', registrationCheck, (req, res) => {
     configuration_id: req.body.configuration_id,
     content: req.body.content,
     acronym: req.body.acronym,
-    secret_id
+    secret_id,
   })
     .then((topic) => {
       email.sendSecretLink(topic.secret_id, topic.content.email)
@@ -86,7 +90,9 @@ topicsRouter.post('/', registrationCheck, (req, res) => {
     })
     .catch((error) => {
       console.log(error)
-      res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+      res
+        .status(500)
+        .json({ error: 'Something is wrong... try reloading the page' })
     })
 })
 
@@ -106,8 +112,8 @@ topicsRouter.put(
     if (res.locals.isSecret) {
       db.Topic.findOne({
         where: {
-          secret_id: req.params.id
-        }
+          secret_id: req.params.id,
+        },
       })
         .then((topic) => {
           if (!topic)
@@ -116,7 +122,7 @@ topicsRouter.put(
             .update({
               active: req.body.active,
               content: req.body.content,
-              acronym: req.body.acronym
+              acronym: req.body.acronym,
             })
             .then((topic) => {
               topic.reload().then((topic) => {
@@ -126,12 +132,16 @@ topicsRouter.put(
             })
             .catch((error) => {
               console.log(error)
-              res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+              res
+                .status(500)
+                .json({ error: 'Something is wrong... try reloading the page' })
             })
         })
         .catch((error) => {
           console.log(error)
-          res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+          res
+            .status(500)
+            .json({ error: 'Something is wrong... try reloading the page' })
         })
     } else {
       db.Topic.findByPk(req.params.id)
@@ -142,7 +152,7 @@ topicsRouter.put(
             .update({
               active: req.body.active,
               content: req.body.content,
-              acronym: req.body.acronym
+              acronym: req.body.acronym,
             })
             .then((topic) => {
               topic.reload().then((topic) => {
@@ -152,15 +162,19 @@ topicsRouter.put(
             })
             .catch((error) => {
               console.log(error)
-              res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+              res
+                .status(500)
+                .json({ error: 'Something is wrong... try reloading the page' })
             })
         })
         .catch((error) => {
           console.log(error)
-          res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+          res
+            .status(500)
+            .json({ error: 'Something is wrong... try reloading the page' })
         })
     }
-  }
+  },
 )
 
 const serializeHasReviewed = (plainTopic) => {
@@ -170,7 +184,7 @@ const serializeHasReviewed = (plainTopic) => {
 
   return {
     ...topic,
-    hasReviewed
+    hasReviewed,
   }
 }
 
@@ -180,7 +194,7 @@ const serializeSentEmails = (plainTopic) => {
 
   return {
     ...topicWithoutSentEmails,
-    sentEmails
+    sentEmails,
   }
 }
 
@@ -191,13 +205,13 @@ topicsRouter.get('/', checkAdmin, async (req, res) => {
       include: [
         {
           model: db.CustomerReview,
-          as: 'customer_review'
+          as: 'customer_review',
         },
         {
           model: db.SentTopicEmail,
-          as: 'sent_emails'
-        }
-      ]
+          as: 'sent_emails',
+        },
+      ],
     })
 
     const serializer = pipe(
@@ -205,13 +219,15 @@ topicsRouter.get('/', checkAdmin, async (req, res) => {
       // JSON.stringify exploding due to circular references
       (topicModel) => topicModel.get({ plain: true }),
       serializeHasReviewed,
-      serializeSentEmails
+      serializeSentEmails,
     )
 
     return res.status(200).json({ topics: topics.map(serializer) })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 })
 
@@ -221,7 +237,7 @@ topicsRouter.get('/', checkAdmin, async (req, res) => {
 topicsRouter.get('/active', async (req, res) => {
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!registrationManagement) {
@@ -233,16 +249,18 @@ topicsRouter.get('/active', async (req, res) => {
     const activeTopics = await db.Topic.findAll({
       where: {
         active: true,
-        configuration_id: registrationManagement.project_registration_conf
-      }
+        configuration_id: registrationManagement.project_registration_conf,
+      },
     })
 
     return res.status(200).json({
-      topics: shuffle(activeTopics.map((topic) => censorSecretId(topic)))
+      topics: shuffle(activeTopics.map((topic) => censorSecretId(topic))),
     })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 })
 
@@ -251,8 +269,8 @@ topicsRouter.get('/:id', (req, res) => {
   if (isSecretId(id)) {
     db.Topic.findOne({
       where: {
-        secret_id: id
-      }
+        secret_id: id,
+      },
     })
       .then((topic) => {
         if (!topic)
@@ -262,13 +280,15 @@ topicsRouter.get('/:id', (req, res) => {
       })
       .catch((error) => {
         console.log(error)
-        res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+        res
+          .status(500)
+          .json({ error: 'Something is wrong... try reloading the page' })
       })
   } else {
     db.Topic.findOne({
       where: {
-        id: id
-      }
+        id: id,
+      },
     })
       .then((topic) => {
         if (!topic)
@@ -278,7 +298,9 @@ topicsRouter.get('/:id', (req, res) => {
       })
       .catch((error) => {
         console.log(error)
-        res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+        res
+          .status(500)
+          .json({ error: 'Something is wrong... try reloading the page' })
       })
   }
 })

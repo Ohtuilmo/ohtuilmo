@@ -6,8 +6,8 @@ export const TEST_USER = {
     givenname: 'Timo *Teppo Tellervo',
     mail: '',
     hypersonstudentid: '012345678',
-    sn: 'Testaaja'
-  }
+    sn: 'Testaaja',
+  },
 }
 
 export const TEST_USER2 = {
@@ -18,8 +18,8 @@ export const TEST_USER2 = {
     givenname: 'Donald John',
     mail: '',
     hypersonstudentid: '012345698',
-    sn: 'Trump'
-  }
+    sn: 'Trump',
+  },
 }
 
 export const TEST_ADMIN = {
@@ -30,6 +30,6 @@ export const TEST_ADMIN = {
     givenname: 'Angela',
     mail: '',
     hypersonstudentid: '012345688',
-    sn: 'Merkel'
-  }
+    sn: 'Merkel',
+  },
 }

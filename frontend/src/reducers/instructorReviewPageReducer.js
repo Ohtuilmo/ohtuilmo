@@ -5,7 +5,7 @@ const initialState = {
   groupsLoading: true,
   submittedReview: false,
   groups: [],
-  selectedGroup: 0
+  selectedGroup: 0,
 }
 
 const updateQuestionAnswer = (question, answer) => ({ ...question, answer })
@@ -15,20 +15,20 @@ const updateRevieweeQuestionAnswer = (user, targetQuestionIndex, answer) => ({
   answers: user.answers.map((question, questionIndex) =>
     questionIndex === targetQuestionIndex
       ? updateQuestionAnswer(question, answer)
-      : question
-  )
+      : question,
+  ),
 })
 
 const updateAnswerSheet = (
   answerSheet,
   targetUserIndex,
   targetQuestionIndex,
-  answer
+  answer,
 ) => {
   return answerSheet.map((user, userIndex) =>
     userIndex === targetUserIndex
       ? updateRevieweeQuestionAnswer(user, targetQuestionIndex, answer)
-      : user
+      : user,
   )
 }
 
@@ -38,7 +38,7 @@ const instructorReviewReducer = (state = initialState, action) => {
     return {
       ...state,
       answerSheet: action.payload,
-      isInitializing: false
+      isInitializing: false,
     }
   case 'INSTRUCTOR_UPDATE_ANSWER': {
     return {
@@ -47,27 +47,27 @@ const instructorReviewReducer = (state = initialState, action) => {
         state.answerSheet,
         action.user,
         action.question,
-        action.answer
-      )
+        action.answer,
+      ),
     }
   }
   case 'SET_INSTRUCTOR_REVIEW_GROUPS': {
     return {
       ...state,
-      groups: action.payload
+      groups: action.payload,
     }
   }
 
   case 'INSTRUCTOR_SET_SUBMITTED_REVIEW':
     return {
       ...state,
-      submittedReview: action.payload
+      submittedReview: action.payload,
     }
 
   case 'INSTRUCTOR_SELECT_GROUP':
     return {
       ...state,
-      selectedGroup: action.payload
+      selectedGroup: action.payload,
     }
   default:
     return state

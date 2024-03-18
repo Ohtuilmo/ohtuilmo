@@ -20,7 +20,10 @@ class LandingPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e)
-      this.props.setError('Error fetching own registration... try reloading the page', 3000)
+      this.props.setError(
+        'Error fetching own registration... try reloading the page',
+        3000,
+      )
     }
   }
 
@@ -44,19 +47,19 @@ const mapStateToProps = (state) => {
   return {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
-    ownRegistrations: state.registrations
+    ownRegistrations: state.registrations,
   }
 }
 
 const mapDispatchToProps = {
   fetchRegistrations: registrationActions.fetchRegistrations,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
 const ConnectedLandingPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(LandingPage)
 
 export default withRouter(ConnectedLandingPage)

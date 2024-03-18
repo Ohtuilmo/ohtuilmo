@@ -16,7 +16,7 @@ const EditableRegistrationQuestionSet = ({ questionSet, onEditSave }) => {
     const updatedItem = {
       ...questionSet,
       name,
-      questions
+      questions,
     }
     onEditSave(updatedItem)
     setIsEditing(false)
@@ -44,7 +44,7 @@ const EditableRegistrationQuestionSet = ({ questionSet, onEditSave }) => {
 
 EditableRegistrationQuestionSet.propTypes = {
   questionSet: registrationQuestionSetShape,
-  onEditSave: PropTypes.func
+  onEditSave: PropTypes.func,
 }
 
 export default EditableRegistrationQuestionSet

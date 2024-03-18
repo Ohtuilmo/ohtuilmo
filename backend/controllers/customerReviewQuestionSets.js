@@ -4,14 +4,16 @@ const { checkAdmin, checkLogin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page ' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page ' })
 }
 
 const createCustomerReviewQuestionSet = async (req, res) => {
   try {
     const createdSet = await db.CustomerReviewQuestionSet.create({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
     res.status(200).json({ questionSet: createdSet })
   } catch (e) {
@@ -23,7 +25,7 @@ const updateCustomerReviewQuestionSet = async (req, res, questionSet) => {
   try {
     const updatedSet = await questionSet.update({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
 
     const reloadedSet = await updatedSet.reload()
@@ -40,7 +42,7 @@ customerReviewQuestionSetsRouter.post('/', checkAdmin, async (req, res) => {
 
   try {
     const foundSet = await db.CustomerReviewQuestionSet.findOne({
-      where: { name: req.body.name }
+      where: { name: req.body.name },
     })
     if (foundSet) {
       return res.status(400).json({ error: 'name already in use' })
@@ -61,7 +63,7 @@ customerReviewQuestionSetsRouter.put('/:id', checkAdmin, async (req, res) => {
 
   try {
     const duplicateNameSet = await db.CustomerReviewQuestionSet.findOne({
-      where: { name: req.body.name }
+      where: { name: req.body.name },
     })
 
     if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id)) {
@@ -69,7 +71,7 @@ customerReviewQuestionSetsRouter.put('/:id', checkAdmin, async (req, res) => {
     }
 
     const foundSet = await db.CustomerReviewQuestionSet.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     })
 
     if (!foundSet) {
@@ -112,9 +114,8 @@ customerReviewQuestionSetsRouter.delete(
     }
 
     try {
-      const targetSet = await db.CustomerReviewQuestionSet.findByPk(
-        questionSetId
-      )
+      const targetSet =
+        await db.CustomerReviewQuestionSet.findByPk(questionSetId)
       if (!targetSet) {
         // already deleted, eh, just return ok
         return res.status(204).end()
@@ -126,11 +127,11 @@ customerReviewQuestionSetsRouter.delete(
       console.error(
         'error while deleting question set with id',
         req.params.id,
-        err
+        err,
       )
       return res.status(500).json({ error: 'internal server error' })
     }
-  }
+  },
 )
 
 module.exports = customerReviewQuestionSetsRouter

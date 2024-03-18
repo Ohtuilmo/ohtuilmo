@@ -7,25 +7,25 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
       },
       user_id: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       answer_sheet: {
         type: Sequelize.JSONB,
-        allowNull: false
+        allowNull: false,
       },
       // Sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     })
 
     // instructor_reviews.user <-> users.student_number
@@ -34,18 +34,18 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'users',
-        field: 'student_number'
+        field: 'student_number',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
   },
 
   down: async (query) => {
     await query.removeConstraint(
       'instructor_reviews',
-      'instructor_reviews_user_id_fkey'
+      'instructor_reviews_user_id_fkey',
     )
     await query.dropTable('instructor_reviews')
-  }
+  },
 }

@@ -20,30 +20,30 @@ const email = {
     port: 587,
     secure: false,
     replyTo: 'matti.luukkainen@helsinki.fi',
-    cc: 'matti.luukkainen@helsinki.fi'
+    cc: 'matti.luukkainen@helsinki.fi',
   },
   subjects: {
     topicAccepted: {
       finnish: makeSubjectFin('Aihe-ehdotuksesi on hyväksytty'),
-      english: makeSubjectEng('Your topic proposal has been accepted')
+      english: makeSubjectEng('Your topic proposal has been accepted'),
     },
     topicRejected: {
       finnish: makeSubjectFin('Aihe-ehdotustasi ei valittu'),
-      english: makeSubjectEng('Your topic proposal was not selected')
+      english: makeSubjectEng('Your topic proposal was not selected'),
     },
     customerReviewLink: {
       finnish: makeSubjectFin('Asiakkaan arvio on nyt auki'),
-      english: makeSubjectEng('Customer review is now open')
+      english: makeSubjectEng('Customer review is now open'),
     },
-    secretLink: makeSubjectEng('Project proposal confirmation')
-  }
+    secretLink: makeSubjectEng('Project proposal confirmation'),
+  },
 }
 
 const urls = {
   forSecretTopicLink: (secretId) =>
     `https://study.cs.helsinki.fi/projekti/topics/${secretId}`,
   forCustomerReviewLink: (secretId) =>
-    `https://study.cs.helsinki.fi/projekti/customer-review/${secretId}`
+    `https://study.cs.helsinki.fi/projekti/customer-review/${secretId}`,
 }
 
 module.exports = {
@@ -52,5 +52,5 @@ module.exports = {
   login,
   secret,
   email,
-  urls
+  urls,
 }

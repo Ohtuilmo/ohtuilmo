@@ -24,7 +24,7 @@ const questionSets = (state = [], action) => {
 }
 
 const registrationQuestionsPageReducer = combineReducers({
-  questionSets
+  questionSets,
 })
 
 export default registrationQuestionsPageReducer

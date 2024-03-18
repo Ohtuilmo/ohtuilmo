@@ -16,7 +16,7 @@ const copy = async (id) => {
 
 const getAll = async () => {
   const config = {
-    headers: { 'Authorization': 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   }
   const response = await axios.get(url, config)
   return response.data.topics
@@ -29,7 +29,7 @@ const getAllActive = async () => {
 
 const update = async (topic) => {
   const config = {
-    headers: { 'Authorization': 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() },
   }
   const response = await axios.put(url + '/' + topic.id, topic, config)
   return response.data.topic

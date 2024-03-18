@@ -2,17 +2,17 @@ import registrationQuestionsService from '../../services/registrationQuestionSet
 
 const fetchRegistrationQuestionSetsSuccess = (questionSets) => ({
   type: 'FETCH_REGISTRATION_QUESTION_SETS_SUCCESS',
-  payload: questionSets
+  payload: questionSets,
 })
 
 const createRegistrationQuestionSetSuccess = (createdSet) => ({
   type: 'CREATE_REGISTRATION_QUESTION_SET_SUCCESS',
-  payload: createdSet
+  payload: createdSet,
 })
 
 const updateRegistrationQuestionSetSuccess = (updatedSet) => ({
   type: 'UPDATE_REGISTRATION_QUESTION_SET_SUCCESS',
-  payload: updatedSet
+  payload: updatedSet,
 })
 
 /**
@@ -29,7 +29,7 @@ export const createRegistrationQuestionSet = (name, questions) => {
   return async (dispatch) => {
     const createdSet = await registrationQuestionsService.create({
       name,
-      questions
+      questions,
     })
     dispatch(createRegistrationQuestionSetSuccess(createdSet))
   }

@@ -5,19 +5,19 @@ module.exports = {
     await query.addColumn(
       'registration_managements',
       'project_registration_conf',
-      Sequelize.INTEGER
+      Sequelize.INTEGER,
     )
 
     await query.addColumn(
       'registration_managements',
       'peer_review_conf',
-      Sequelize.INTEGER
+      Sequelize.INTEGER,
     )
 
     await query.addColumn(
       'registration_managements',
       'topic_registration_conf',
-      Sequelize.INTEGER
+      Sequelize.INTEGER,
     )
 
     await query.addColumn('topics', 'configuration_id', Sequelize.INTEGER)
@@ -30,11 +30,11 @@ module.exports = {
         type: 'FOREIGN KEY',
         references: {
           table: 'configurations',
-          field: 'id'
+          field: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      }
+        onDelete: 'SET NULL',
+      },
     )
 
     await query.addConstraint(
@@ -45,11 +45,11 @@ module.exports = {
         type: 'FOREIGN KEY',
         references: {
           table: 'configurations',
-          field: 'id'
+          field: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      }
+        onDelete: 'SET NULL',
+      },
     )
 
     await query.addConstraint(
@@ -60,11 +60,11 @@ module.exports = {
         type: 'FOREIGN KEY',
         references: {
           table: 'configurations',
-          field: 'id'
+          field: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      }
+        onDelete: 'SET NULL',
+      },
     )
 
     await query.addConstraint('topics', ['configuration_id'], {
@@ -72,10 +72,10 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'configurations',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
 
     await query.removeColumn('configurations', 'active')
@@ -86,33 +86,33 @@ module.exports = {
 
     await query.removeConstraint(
       'registration_managements',
-      'registration_managements_project_registration_conf_fkey'
+      'registration_managements_project_registration_conf_fkey',
     )
 
     await query.removeConstraint(
       'registration_managements',
-      'registration_managements_peer_review_conf_fkey'
+      'registration_managements_peer_review_conf_fkey',
     )
 
     await query.removeConstraint(
       'registration_managements',
-      'registration_managements_topic_registration_conf_fkey'
+      'registration_managements_topic_registration_conf_fkey',
     )
 
     await query.removeConstraint('topics', 'topics_configuration_id_fkey')
 
     await query.removeColumn(
       'registration_managements',
-      'project_registration_conf'
+      'project_registration_conf',
     )
 
     await query.removeColumn('registration_managements', 'peer_review_conf')
 
     await query.removeColumn(
       'registration_managements',
-      'topic_registration_conf'
+      'topic_registration_conf',
     )
 
     await query.removeColumn('topics', 'configuration_id')
-  }
+  },
 }

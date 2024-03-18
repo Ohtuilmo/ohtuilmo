@@ -28,8 +28,8 @@ class ViewTopicPage extends React.Component {
   copyToConfiguration = async () => {
     // eslint-disable-next-line
     const ok = confirm('sure?')
-    console.log(this.props.topic.id )
-    if ( ok ) {
+    console.log(this.props.topic.id)
+    if (ok) {
       try {
         // eslint-disable-next-line
         const createdTopic = await topicService.copy(this.props.topic.id)
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
     topic: state.viewTopicPage.topic,
     isEditable: state.viewTopicPage.isEditable,
     isOnEditMode: state.viewTopicPage.isOnEditMode,
-    user: state.login.user
+    user: state.login.user,
   }
 }
 
@@ -83,7 +83,7 @@ const mapDispatchToProps = {
 
 const ConnectedViewTopicPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ViewTopicPage)
 
 export default ConnectedViewTopicPage

@@ -24,8 +24,14 @@ const ConfigurationSelectWrapper = ({ label, children }) => (
 )
 
 const GroupManagementPage = (props) => {
-  const { setUsers, setGroups, fetchTopics, setConfigurations, setError, fetchConfigurations } =
-    props
+  const {
+    setUsers,
+    setGroups,
+    fetchTopics,
+    setConfigurations,
+    setError,
+    fetchConfigurations,
+  } = props
 
   useEffect(() => {
     fetchConfigurations()

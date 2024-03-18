@@ -4,7 +4,9 @@ const { checkLogin, checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  res
+    .status(500)
+    .json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const isNil = (value) => value === undefined || value === null
@@ -75,9 +77,9 @@ const create = async (req, res) => {
     answer_sheet: {
       answer_sheet,
       group_name,
-      group_id
+      group_id,
     },
-    user_id
+    user_id,
   }
 
   try {
@@ -101,14 +103,16 @@ instructorReviewRouter.post('/', checkLogin, async (req, res) => {
 
   try {
     const instructedGroups = await db.Group.findAll({
-      where: { instructorId: req.user.id }
+      where: { instructorId: req.user.id },
     })
     if (instructedGroups.length === 0) {
       return res.status(401).json({ error: 'unauthorized' })
     }
   } catch (error) {
     console.log(error)
-    return res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    return res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 
   const error = validateAnswerSheet(instructorReview)
@@ -134,8 +138,8 @@ instructorReviewRouter.get(
     try {
       const reviews = await db.InstructorReview.findAll({
         where: {
-          user_id: req.user.id
-        }
+          user_id: req.user.id,
+        },
       })
 
       const reviewGroups = reviews.map((review) => review.answer_sheet.group_id)
@@ -144,7 +148,7 @@ instructorReviewRouter.get(
     } catch (error) {
       return handleDatabaseError(res, error)
     }
-  }
+  },
 )
 
 instructorReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
@@ -155,7 +159,7 @@ instructorReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
 
   try {
     const instructorReview = await db.InstructorReview.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     })
 
     if (!instructorReview) {
@@ -169,7 +173,7 @@ instructorReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
     console.error(
       'error while deleting instructor review with id',
       req.params.id,
-      err
+      err,
     )
     return res.status(500).json({ error: 'internal server error' })
   }

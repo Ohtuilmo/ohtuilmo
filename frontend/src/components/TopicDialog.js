@@ -12,7 +12,7 @@ class TopicDialog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false
+      open: false,
     }
 
     this.handleClose = this.handleClose.bind(this)
@@ -29,10 +29,20 @@ class TopicDialog extends React.Component {
           style={{ padding: '15px', display: 'flex', flexDirection: 'row' }}
         >
           <div style={{ flex: 4 }}>
-            <Typography style={{ flex:  1, fontWeight: 'bold', color: 'gray' }}>{this.props.topic.content.title}</Typography>
-            <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>Customer: {this.props.topic.content.customerName}</Typography>
+            <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>
+              {this.props.topic.content.title}
+            </Typography>
+            <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>
+              Customer: {this.props.topic.content.customerName}
+            </Typography>
           </div>
-          <Button variant="outlined" style={{ flex: 1, maxHeight: '42px' }} onClick={() => this.setState({ open: true })}>Details</Button>
+          <Button
+            variant="outlined"
+            style={{ flex: 1, maxHeight: '42px' }}
+            onClick={() => this.setState({ open: true })}
+          >
+            Details
+          </Button>
         </CardContent>
         <Dialog
           open={this.state.open}
@@ -40,10 +50,10 @@ class TopicDialog extends React.Component {
           scroll={this.state.scroll}
         >
           <DialogContent>
-            <Topic content={this.props.topic.content}/>
-          </ DialogContent>
+            <Topic content={this.props.topic.content} />
+          </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} variant='outlined'>
+            <Button onClick={this.handleClose} variant="outlined">
               Close
             </Button>
           </DialogActions>

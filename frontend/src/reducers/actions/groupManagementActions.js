@@ -1,56 +1,56 @@
 const updateCreateGroupFormName = (groupName) => ({
   type: 'UPDATE_CREATE_GROUP_FORM_NAME',
-  payload: groupName
+  payload: groupName,
 })
 
 const updateStudentsForm = (students) => ({
   type: 'UPDATE_STUDENTS_FORM',
-  payload: students
+  payload: students,
 })
 
 const updateGroupTopicID = (topicID) => ({
   type: 'UPDATE_TOPIC_ID',
-  payload: topicID
+  payload: topicID,
 })
 
 const updateGroupInstructor = (groupInstructor) => ({
   type: 'UPDATE_INSTRUCTOR',
-  payload: groupInstructor
+  payload: groupInstructor,
 })
 
 const updateGroupConfigurationID = (groupConfigurationID) => ({
   type: 'UPDATE_GROUP_CONFIGURATION_ID',
-  payload: groupConfigurationID
+  payload: groupConfigurationID,
 })
 
 const createGroupSuccsess = (newGroup) => ({
   type: 'CREATE_GROUP_SUCCSESS',
-  payload: newGroup
+  payload: newGroup,
 })
 
 const setGroups = (groups) => ({
   type: 'SET_GROUPS',
-  payload: groups
+  payload: groups,
 })
 
 const deleteFromGroup = (group) => ({
   type: 'DELETE_FROM_GROUP',
-  payload: group
+  payload: group,
 })
 
 const updateExistingGroup = (group) => ({
   type: 'UPDATE_EXISTING_GROUP',
-  payload: group
+  payload: group,
 })
 
 const deleteGroup = (groupId) => ({
   type: 'DELETE_GROUP',
-  payload: groupId
+  payload: groupId,
 })
 
 const setUsers = (users) => ({
   type: 'SET_USERS',
-  payload: users
+  payload: users,
 })
 
 export default {
@@ -64,5 +64,5 @@ export default {
   deleteFromGroup,
   updateExistingGroup,
   deleteGroup,
-  setUsers
+  setUsers,
 }

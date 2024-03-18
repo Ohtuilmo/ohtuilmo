@@ -50,5 +50,5 @@ const mapDispatchToPropsForm = {
 
 export default connect(
   mapStateToPropsForm,
-  mapDispatchToPropsForm
+  mapDispatchToPropsForm,
 )(ConfigurationSelect)

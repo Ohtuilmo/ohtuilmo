@@ -13,7 +13,7 @@ const SingleGroupView = ({
   deleteFromGroupAction,
   toggleEditMode,
   setSuccess,
-  setError
+  setError,
 }) => {
   const thisTopic = topics.filter((topic) => topic.id === group.topicId)
 
@@ -21,7 +21,7 @@ const SingleGroupView = ({
 
   const getUserNames = (user) => {
     const namedUser = users.filter(
-      (userIterator) => userIterator.student_number === user
+      (userIterator) => userIterator.student_number === user,
     )[0]
     return `${namedUser.first_names} ${namedUser.last_name} (${user})`
   }
@@ -40,7 +40,7 @@ const SingleGroupView = ({
                 group,
                 deleteFromGroupAction,
                 setSuccess,
-                setError
+                setError,
               })
             }
             data-cy="delete-instructor-button"
@@ -78,7 +78,7 @@ const SingleGroupView = ({
                     student,
                     deleteFromGroupAction,
                     setSuccess,
-                    setError
+                    setError,
                   })
                 }
                 data-cy="delete-student-button"
@@ -112,23 +112,15 @@ const deleteFromGroupStudent = async (event, props) => {
   event.preventDefault()
 
   const confirm = window.confirm(
-    `Are you sure you want to delete student ${props.student} from a group ${
-      props.group.name
-    }? `
+    `Are you sure you want to delete student ${props.student} from a group ${props.group.name}? `,
   )
 
   if (!confirm) {
     return
   }
 
-  const {
-    id,
-    name,
-    topicId,
-    studentIds,
-    instructorId,
-    configurationId
-  } = props.group
+  const { id, name, topicId, studentIds, instructorId, configurationId } =
+    props.group
 
   const removedStudents = studentIds
     .map((studentmap) => studentmap.trim())
@@ -141,7 +133,7 @@ const deleteFromGroupStudent = async (event, props) => {
       topicId: topicId,
       configurationId: configurationId,
       instructorId: instructorId,
-      studentIds: removedStudents
+      studentIds: removedStudents,
     })
     props.deleteFromGroupAction(updatedGroup)
 
@@ -156,9 +148,7 @@ const deleteFromGroupInstructor = async (event, props) => {
   event.preventDefault()
 
   const confirm = window.confirm(
-    `Are you sure you want to delete instructor ${
-      props.group.instructorId
-    } from a group ${props.group.name}? `
+    `Are you sure you want to delete instructor ${props.group.instructorId} from a group ${props.group.name}? `,
   )
 
   if (!confirm) {
@@ -174,7 +164,7 @@ const deleteFromGroupInstructor = async (event, props) => {
       topicId: topicId,
       configurationId: configurationId,
       instructorId: '',
-      studentIds: studentIds
+      studentIds: studentIds,
     })
     props.deleteFromGroupAction(updatedGroup)
 

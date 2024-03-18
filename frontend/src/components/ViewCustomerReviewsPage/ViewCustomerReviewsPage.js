@@ -15,8 +15,6 @@ import LoadingCover from './../common/LoadingCover'
 
 import './ViewCustomerReviewsPage.css'
 
-
-
 const ViewCustomerReviewsPage = (props) => {
   useEffect(() => {
     props.fetchConfigurations()
@@ -29,7 +27,7 @@ const ViewCustomerReviewsPage = (props) => {
     props.setConfiguration(confId)
 
     props.setReviewData(
-      await customerReviewService.getCustomerReviewAnswers(confId)
+      await customerReviewService.getCustomerReviewAnswers(confId),
     )
   }
 
@@ -96,20 +94,23 @@ const ViewCustomerReviewsPage = (props) => {
 
   const configurationMenuItems = () => {
     const { configurations } = props
-    const configurationOptions = [].concat(
-      <MenuItem value={0} key={0} data-cy="all-configurations">
-        All configurations
-      </MenuItem>
-    ).concat(
-      configurations.map((configuration) => (
-        <MenuItem
-          value={configuration.id}
-          key={configuration.id}
-          data-cy={configuration.name}
-        >
-          {configuration.name}
-        </MenuItem>
-      )))
+    const configurationOptions = []
+      .concat(
+        <MenuItem value={0} key={0} data-cy="all-configurations">
+          All configurations
+        </MenuItem>,
+      )
+      .concat(
+        configurations.map((configuration) => (
+          <MenuItem
+            value={configuration.id}
+            key={configuration.id}
+            data-cy={configuration.name}
+          >
+            {configuration.name}
+          </MenuItem>
+        )),
+      )
     return configurationOptions
   }
 
@@ -181,7 +182,7 @@ const mapStateToProps = (state) => {
     isInitializing: state.viewCustomerReviewsPage.isInitializing,
     reviewData: state.viewCustomerReviewsPage.reviewData,
     configuration: state.viewCustomerReviewsPage.configurationId,
-    configurations: state.configurationPage.configurations
+    configurations: state.configurationPage.configurations,
   }
 }
 
@@ -191,10 +192,9 @@ const mapDispatchToProps = {
   setConfiguration: viewCustomerReviewsPageActions.setConfiguration,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: configurationPageActions.fetchConfigurations
+  fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ViewCustomerReviewsPage))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ViewCustomerReviewsPage),
+)

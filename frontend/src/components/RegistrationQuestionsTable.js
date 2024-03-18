@@ -22,7 +22,7 @@ const RegistrationQuestionsTableRow = ({ question, type }) => (
 
 RegistrationQuestionsTableRow.propTypes = {
   question: PropTypes.string.isRequired,
-  type: PropTypes.string
+  type: PropTypes.string,
 }
 
 const RegistrationQuestionsTable = ({ questions }) => (
@@ -48,7 +48,7 @@ const RegistrationQuestionsTable = ({ questions }) => (
 )
 
 RegistrationQuestionsTable.propTypes = {
-  questions: PropTypes.arrayOf(registrationQuestionShape)
+  questions: PropTypes.arrayOf(registrationQuestionShape),
 }
 
 export default RegistrationQuestionsTable

@@ -5,9 +5,9 @@ const initialState = {
     id: '',
     name: '',
     questions: '',
-    old_name: ''
+    old_name: '',
   },
-  mode: ''
+  mode: '',
 }
 
 const questionsFormPageReducer = (state = initialState, action) => {
@@ -15,38 +15,38 @@ const questionsFormPageReducer = (state = initialState, action) => {
   case 'UPDATE_REGISTRATION_QUESTION_SETS':
     return {
       ...state,
-      registration_question_sets: action.payload
+      registration_question_sets: action.payload,
     }
   case 'UPDATE_REVIEW_QUESTION_SETS':
     return {
       ...state,
-      review_question_sets: action.payload
+      review_question_sets: action.payload,
     }
   case 'UPDATE_SELECTED_QUESTION_SET':
     return {
       ...state,
-      selected_question_set: action.payload
+      selected_question_set: action.payload,
     }
   case 'UPDATE_SELECTED_QUESTION_SET_NAME':
     return {
       ...state,
       selected_question_set: {
         ...state.selected_question_set,
-        name: action.payload
-      }
+        name: action.payload,
+      },
     }
   case 'UPDATE_SELECTED_QUESTION_SET_QUESTIONS':
     return {
       ...state,
       selected_question_set: {
         ...state.selected_question_set,
-        questions: action.payload
-      }
+        questions: action.payload,
+      },
     }
   case 'UPDATE_MODE':
     return {
       ...state,
-      mode: action.payload
+      mode: action.payload,
     }
   case 'CLEAR_SELECTED_QUESTION_SET':
     return {
@@ -55,8 +55,8 @@ const questionsFormPageReducer = (state = initialState, action) => {
         id: '',
         questions: '',
         name: '',
-        old_name: ''
-      }
+        old_name: '',
+      },
     }
   default:
   }

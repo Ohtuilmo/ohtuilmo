@@ -1,5 +1,5 @@
 const initialState = {
-  isLoading: false
+  isLoading: false,
 }
 
 const appReducer = (state = initialState, action) => {
@@ -7,7 +7,7 @@ const appReducer = (state = initialState, action) => {
   case 'UPDATE_IS_LOADING':
     return {
       ...state,
-      isLoading: action.payload
+      isLoading: action.payload,
     }
   default:
   }

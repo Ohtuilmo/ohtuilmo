@@ -6,11 +6,11 @@ import Paper from '@material-ui/core/Paper'
 
 import {
   fetchRegistrationQuestionSets,
-  updateRegistrationQuestionSet
+  updateRegistrationQuestionSet,
 } from '../../reducers/actions/registrationQuestionsPageActions'
 import {
   setError,
-  setSuccess
+  setSuccess,
 } from '../../reducers/actions/notificationActions'
 
 import { registrationQuestionSetShape } from '../common/sharedPropTypes'
@@ -89,23 +89,23 @@ RegistrationQuestionsPage.propTypes = {
   setError: PropTypes.func,
   setSuccess: PropTypes.func,
   fetchRegistrationQuestionSets: PropTypes.func,
-  updateRegistrationQuestionSet: PropTypes.func
+  updateRegistrationQuestionSet: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
-  questionSets: state.registrationQuestionsPage.questionSets
+  questionSets: state.registrationQuestionsPage.questionSets,
 })
 
 const mapDispatchToProps = {
   fetchRegistrationQuestionSets,
   updateRegistrationQuestionSet,
   setError,
-  setSuccess
+  setSuccess,
 }
 
 const ConnectedRegistrationQuestionsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(RegistrationQuestionsPage)
 
 export default withRouter(ConnectedRegistrationQuestionsPage)
