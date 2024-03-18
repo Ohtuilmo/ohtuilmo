@@ -3,13 +3,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
-import {
-  NotInGroupPlaceholder,
-  LoadingPlaceholder,
-} from '../common/Placeholders'
+import { NotInGroupPlaceholder } from '../common/Placeholders'
 import { SprintSelect } from './SprintSelect'
 import { Typography } from '@material-ui/core'
 import timeLogsService from '../../services/timeLogs'
+import myGroupActions from '../../reducers/actions/myGroupActions'
 import {
   minutesAndHoursFromString,
   hoursAndMinutesToMinutes,
@@ -21,9 +19,16 @@ const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
   const [sprintNumber, setSprintNumber] = useState(1) // TODO: determine current sprint.
 
-  const { studentNumber, group, isLoading } = props
+  const { studentNumber, group, initializeMyGroup } = props
 
   useEffect(() => {
+    const fetchGroup = async () => {
+      try {
+        await initializeMyGroup()
+      } catch (error) {
+        console.error('Error fetching group:', error)
+      }
+    }
     const fetchTimeLogs = async () => {
       try {
         const fetchedData = await timeLogsService.getTimeLogs()
@@ -33,6 +38,7 @@ const TimeLogsPage = (props) => {
       }
     }
 
+    fetchGroup()
     fetchTimeLogs()
   }, [])
 
@@ -69,7 +75,6 @@ const TimeLogsPage = (props) => {
   const logsBySprint =
     isLogs(allLogs) && allLogs.filter((log) => log.sprint === sprintNumber)
 
-  if (isLoading) return <LoadingPlaceholder />
   if (!group) return <NotInGroupPlaceholder />
 
   return (
@@ -102,10 +107,11 @@ const mapStateToProps = (state) => ({
   state: state,
   studentNumber: state.login.user.user.student_number,
   group: state.registrationDetails.myGroup,
-  isLoading: state.app.isLoading,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  initializeMyGroup: myGroupActions.initializeMyGroup,
+}
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(TimeLogsPage)

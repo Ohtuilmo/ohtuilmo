@@ -1,31 +1,39 @@
 describe('Review-questions page', () => {
   beforeEach(() => {
     cy.loginAsAdmin()
-    cy.visit('/administration/configuration')
     cy.deleteReviewQuestions()
     cy.createReviewQuestionSet('Super nice review questions', [
       {
         type: 'info',
         header: 'This is info',
-        description: 'Just fill the form'
+        description: 'Just fill the form',
       },
       {
         header: 'Previous experiene in software developemnt',
         description: 'How many hours?',
-        type: 'number'
+        type: 'number',
       },
       {
         header: 'Without option?',
         description: '',
-        type: 'number'
+        type: 'number',
       },
       {
         header: 'Ok and with option',
         description: 'Choose a radio button you want',
         type: 'radio',
-        options: ['Cant say', 'Not at all', 'Little', 'Decent', 'Good', 'Super']
-      }
+        options: [
+          'Cant say',
+          'Not at all',
+          'Little',
+          'Decent',
+          'Good',
+          'Super',
+        ],
+      },
     ])
+
+    cy.visit('/administration/configuration')
   })
 
   it('is on adminstration page', () => {
