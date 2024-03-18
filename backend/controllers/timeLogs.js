@@ -118,6 +118,7 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
       },
     })
     if (!sprintRecord) {
+      console.error('Sprint not found.')
       return res.status(404).json({ error: 'Sprint not found.' })
     }
 

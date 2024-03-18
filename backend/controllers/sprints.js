@@ -58,10 +58,6 @@ const fetchSprintsFromDb = async (studentNumber) => {
       raw: true
     })
 
-    if (groupSprints.length === 0) {
-      console.error('No sprints found for the group')
-      throw new Error('No sprints found for the group')
-    }
     const formattedSprints = groupSprints.map(sprint => ({
       id: sprint.id,
       start_date: new Date(sprint.start_date).toISOString().slice(0, 10),
