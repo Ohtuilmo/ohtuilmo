@@ -16,6 +16,22 @@ const validateTimeEntry = ({ sprint, date, minutes, description }) => {
   return null
 }
 
+const validateDateRange = (date, start, end) => {
+  const logDate = new Date(date)
+  logDate.setHours(0, 0, 0, 0)
+
+  const startDate = new Date(start)
+  startDate.setHours(0, 0, 0, 0)
+
+  const endDate = new Date(end)
+  endDate.setHours(0, 0, 0, 0)
+
+  if (logDate < startDate || logDate > endDate) {
+    return 'The log data is not within sprint start and end date.'
+  }
+  return null
+}
+
 const fetchFromDb = async (studentNumber) => {
   try {
     const rawLogs = await db.TimeLog.findAll({
@@ -122,6 +138,11 @@ timeLogsRouter.post('/', checkLogin, async (req, res) => {
       return res.status(404).json({ error: 'Sprint not found.' })
     }
 
+    const err = validateDateRange(date, sprintRecord.start_date, sprintRecord.end_date)
+    if (err) {
+      console.error('error:', err)
+      return res.status(400).json({ error: err })
+    }
     const sprintId = sprintRecord.id
 
     const timeLog = await db.TimeLog.create({
