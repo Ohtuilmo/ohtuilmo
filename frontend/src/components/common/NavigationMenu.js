@@ -65,6 +65,7 @@ class NavigationMenu extends React.Component {
       <div className="navigation-menu">
         <div>
           <IconButton
+            id="hamburger-menu-button"
             className="nav-menu-button"
             buttonRef={(node) => {
               this.anchorEl = node
