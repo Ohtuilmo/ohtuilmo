@@ -83,6 +83,7 @@ const TimeLogsPage = (props) => {
     try {
       const updatedLogs = await timeLogsService.createTimeLog(log)
       setAllLogs(updatedLogs)
+      props.setSuccess('Time log created successfully')
     } catch (error) {
       console.error('Error creating time log:', error.message, ' / ' , error.response.data.error)
       props.setError(error.response.data.error)
@@ -93,6 +94,7 @@ const TimeLogsPage = (props) => {
     try {
       const updatedLogs = await timeLogsService.deleteTimeLog(logId)
       setAllLogs(updatedLogs)
+      props.setSuccess('Time log deleted successfully')
     } catch (error) {
       console.error('Error deleting time log:', error.message, ' / ' , error.response.data.error)
       props.setError(error.response.data.error)
@@ -153,6 +155,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   initializeMyGroup: myGroupActions.initializeMyGroup,
   setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess,
 }
 
 export default withRouter(
