@@ -168,32 +168,6 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').children().should('have.length', 1)
   })
 
-  it('remove sprints, should not display sprints or time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Sprint Dashboard').click()
-      })
-
-    cy.get('.sprints-container')
-      .find('[id^="sprint-remove-button-"]')
-      .click({ multiple: true })
-      .then(() =>
-        cy.get('#app-content').should('not.contain', '.sprint-list-container')
-      )
-
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
-    cy.get('#app-content').should(
-      'contain',
-      'Your group has no sprints. Add a sprint using Sprint Dashboard.'
-    )
-  })
-
     it('displays frontend notification from form with negative hours', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
@@ -257,6 +231,32 @@ describe('Time logs & sprints', () => {
 
       cy.get('.input-container').contains('Description must be at least 5 characters')
       cy.get('.timelog-list').should('not.contain', '1234')
+    })
+
+    it('remove sprints, should not display sprints or time logs', () => {
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Sprint Dashboard').click()
+        })
+
+      cy.get('.sprints-container')
+        .find('[id^="sprint-remove-button-"]')
+        .click({ multiple: true })
+        .then(() =>
+          cy.get('#app-content').should('not.contain', '.sprint-list-container')
+        )
+
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Time Log').click()
+        })
+
+      cy.get('#app-content').should(
+        'contain',
+        'Your group has no sprints. Add a sprint using Sprint Dashboard.'
+      )
     })
 
   after(() => {
