@@ -194,6 +194,71 @@ describe('Time logs & sprints', () => {
     )
   })
 
+    it('displays frontend notification from form with negative hours', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('-01:00')
+      cy.get('.description').type('negative time')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('.timelog-list').should('not.contain', 'negative time')
+    })
+
+    it('displays frontend notification from form with letters in hours', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('aabee')
+      cy.get('.description').type('letters in time')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('.timelog-list').should('not.contain', 'letters in time')
+    })
+
+    it('displays frontend notification from form without colon in the middle', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('0100')
+      cy.get('.description').type('missing colon')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('.timelog-list').should('not.contain', 'missing colon')
+    })
+
+    it('displays frontend notification from form with over 60 minutes', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('01:61')
+      cy.get('.description').type('over 60 minutes')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('.timelog-list').should('not.contain', 'over 60 minutes')
+    })
+
+    it('displays frontend notification from form with description under 5 characters', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('01:00')
+      cy.get('.description').type('1234')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Description must be at least 5 characters')
+      cy.get('.timelog-list').should('not.contain', '1234')
+    })
+
   after(() => {
     cy.deleteAllGroups()
   })
