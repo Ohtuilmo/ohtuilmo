@@ -28,13 +28,19 @@ const TimeLogsPage = (props) => {
   const [isLoading, setIsLoading] = useState(true)
 
   const { studentNumber, group, initializeMyGroup } = props
+  const existingSprintNumbers = allSprints.map((sprint) => sprint.sprint).sort()
 
   useEffect(() => {
     const fetchGroup = async () => {
       try {
         await initializeMyGroup()
       } catch (error) {
-        console.error('Error fethcing group:', error.message, ' / ' , error.response.data.error)
+        console.error(
+          'Error fetching group:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -43,7 +49,12 @@ const TimeLogsPage = (props) => {
         const fetchedData = await timeLogsService.getTimeLogs()
         setAllLogs(fetchedData)
       } catch (error) {
-        console.error('Error fethcing timelogs:', error.message, ' / ' , error.response.data.error)
+        console.error(
+          'Error fetching timelogs:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -52,7 +63,12 @@ const TimeLogsPage = (props) => {
         const fetchedData = await sprintService.getSprints()
         setAllSprints(fetchedData)
       } catch (error) {
-        console.error('Error fethcing sprints:', error.message, ' / ' , error.response.data.error)
+        console.error(
+          'Error fetching sprints:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -77,6 +93,10 @@ const TimeLogsPage = (props) => {
 
     currentSprintObject && setCurrentSprintNumber(currentSprintObject.sprint)
     currentSprintObject && setSelectedSprintNumber(currentSprintObject.sprint)
+    !currentSprintObject &&
+      setSelectedSprintNumber(
+        existingSprintNumbers.length > 0 ? existingSprintNumbers[0] : null
+      )
   }, [allSprints])
 
   const handleSubmit = async (date, time, description) => {
@@ -94,7 +114,12 @@ const TimeLogsPage = (props) => {
       setAllLogs(updatedLogs)
       props.setSuccess('Time log created successfully')
     } catch (error) {
-      console.error('Error creating time log:', error.message, ' / ' , error.response.data.error)
+      console.error(
+        'Error creating time log:',
+        error.message,
+        ' / ',
+        error.response.data.error
+      )
       props.setError(error.response.data.error)
     }
   }
@@ -105,17 +130,28 @@ const TimeLogsPage = (props) => {
       setAllLogs(updatedLogs)
       props.setSuccess('Time log deleted successfully')
     } catch (error) {
-      console.error('Error deleting time log:', error.message, ' / ' , error.response.data.error)
+      console.error(
+        'Error deleting time log:',
+        error.message,
+        ' / ',
+        error.response.data.error
+      )
       props.setError(error.response.data.error)
     }
   }
 
   const handleClickNextSprint = () => {
-    setSelectedSprintNumber(selectedSprintNumber + 1)
+    setSelectedSprintNumber(
+      existingSprintNumbers.find((sprint) => sprint > selectedSprintNumber) ||
+        selectedSprintNumber
+    )
   }
 
   const handleClickPreviousSprint = () => {
-    setSelectedSprintNumber(selectedSprintNumber - 1)
+    setSelectedSprintNumber(
+      existingSprintNumbers.find((sprint) => sprint < selectedSprintNumber) ||
+        selectedSprintNumber
+    )
   }
 
   const isLogs = (logs) => logs && logs.length > 0
