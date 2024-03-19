@@ -7,70 +7,60 @@ const db = require('../models/index')
 
 // latest group, because student may belong to multiple groups (dropout, etc.)
 const findLatestGroupId = async (studentNumber) => {
-  try {
-    const latestGroup = await db.Group.findOne({
-      include: [{
-        model: db.User,
-        as: 'students',
-        where: { student_number: studentNumber }
-      }],
-      order: [['createdAt', 'DESC']]
-    })
-    if (!latestGroup) {
-      console.error('User does not belong to any group or not found')
-      throw new Error('User does not belong to any group or not found')
-    }
-    const latestGroupId = latestGroup.id
-    return latestGroupId
-  } catch (error) {
-    console.error('Error finding latest group:', error)
-    throw new Error('Error finding latest group.')
+  const latestGroup = await db.Group.findOne({
+    include: [{
+      model: db.User,
+      as: 'students',
+      where: { student_number: studentNumber }
+    }],
+    order: [['createdAt', 'DESC']]
+  })
+  if (!latestGroup) {
+    throw new Error('User does not belong to any group or not found.')
+  } else {
+    return latestGroup.id
   }
 }
 
 
-function validateSprint({ start_date, end_date, sprint }) {
+const validateSprint = ({ start_date, end_date, sprint }) => {
   const startDate = new Date(start_date)
   const endDate = new Date(end_date)
 
   if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-    return 'Start date or end date is invalid.'
+    throw new Error('Start date or end date is invalid.')
   }
   if (startDate >= endDate) {
-    return 'Start date must be before end date.'
+    throw new Error('Start date must be before end date.')
+  }
+  if (startDate <= latestEndDate) {
+    throw new Error('New sprint must start after the latest sprint.')
   }
 
   if (typeof sprint !== 'number' || isNaN(sprint) || parseInt(sprint, 10) !== sprint) {
-    return 'Sprint must be a valid number.'
+    throw new Error('Sprint must be a valid number.')
   }
-
-  return null
 }
 
 const fetchSprintsFromDb = async (studentNumber) => {
-  try {
-    const latestGroupId = await findLatestGroupId(studentNumber)
+  const latestGroupId = await findLatestGroupId(studentNumber)
 
-    const groupSprints = await db.Sprint.findAll({
-      where: { group_id: latestGroupId },
-      //add group_id to attributes if needed for frontend
-      attributes: ['id', 'start_date', 'end_date', 'sprint'],
-      raw: true
-    })
+  const groupSprints = await db.Sprint.findAll({
+    where: { group_id: latestGroupId },
+    //add group_id to attributes if needed for frontend
+    attributes: ['id', 'start_date', 'end_date', 'sprint'],
+    raw: true
+  })
 
-    const formattedSprints = groupSprints.map(sprint => ({
-      id: sprint.id,
-      start_date: new Date(sprint.start_date).toISOString().slice(0, 10),
-      end_date: new Date(sprint.end_date).toISOString().slice(0, 10),
-      sprint: sprint.sprint,
-      user_id: studentNumber
-    }))
+  const formattedSprints = groupSprints.map(sprint => ({
+    id: sprint.id,
+    start_date: new Date(sprint.start_date).toISOString().slice(0, 10),
+    end_date: new Date(sprint.end_date).toISOString().slice(0, 10),
+    sprint: sprint.sprint,
+    user_id: studentNumber
+  }))
 
-    return formattedSprints
-  } catch (error) {
-    console.error('Error fetching sprints:', error)
-    throw new Error('Error fetching sprints.')
-  }
+  return formattedSprints
 }
 
 sprintsRouter.get('/', checkLogin, async (req, res) => {
@@ -79,21 +69,26 @@ sprintsRouter.get('/', checkLogin, async (req, res) => {
   if (!user_id) {
     return res.status(400).json({ error: 'User id is missing.' })
   }
-  const sprints = await fetchSprintsFromDb(user_id)
-  res.status(200).json(sprints)
+
+  try {
+    const sprints = await fetchSprintsFromDb(user_id)
+    res.status(200).json(sprints)
+  } catch (error) {
+    console.error('Error fetching sprints: ', error.message)
+    return res.status(500).json({ error: error.message })
+  }
 })
 
 sprintsRouter.post('/', checkLogin, async (req, res) => {
-  const validationError = validateSprint(req.body)
-  if (validationError) {
-    return res.status(400).json({ error: validationError })
-  }
   const { start_date, end_date, sprint, user_id } = req.body
 
   try {
     const groupId = await findLatestGroupId(user_id)
-    if (!groupId) {
-      return res.status(404).json({ error: 'Group not found for the user.' })
+
+    try {
+      validateSprint(req.body)
+    } catch (error) {
+      return res.status(400).json({ error: error.message })
     }
 
     await db.Sprint.create({
@@ -106,9 +101,8 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     res.status(201).json(sprints)
   } catch (error) {
     console.error('Error creating sprint:', error)
-    return res.status(500).json({ error: 'Error creating sprint.' })
+    return res.status(500).json({ error: error.message })
   }
-
 })
 
 sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
@@ -135,7 +129,6 @@ sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
     console.error('Error deleting sprint:', error)
     return res.status(500).json({ error: 'Error deleting sprint.' })
   }
-
 })
 
 module.exports = sprintsRouter
