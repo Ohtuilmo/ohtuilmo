@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 const initTests = () => {
   cy.createGroup({
     name: 'Tykittelijät',
     topicId: 1,
     configurationId: 1,
     instructorId: '012345688',
-    studentIds: ['012345678', '012345698']
+    studentIds: ['012345678', '012345698'],
   })
 
   cy.createGroup({
@@ -12,7 +14,7 @@ const initTests = () => {
     topicId: 2,
     configurationId: 2,
     instructorId: '012345688',
-    studentIds: ['012345678', '012345698']
+    studentIds: ['012345678', '012345698'],
   })
 
   const konf1vastaukset1 = {
@@ -26,31 +28,31 @@ const initTests = () => {
             id: 1,
             type: 'number',
             answer: '3',
-            questionHeader: ' Anna tekninen arvosana.'
+            questionHeader: ' Anna tekninen arvosana.',
           },
           {
             id: 2,
             type: 'text',
             answer:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?'
+            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
             id: 3,
             type: 'number',
             answer: '2',
-            questionHeader: 'Kurssin arvosana'
+            questionHeader: 'Kurssin arvosana',
           },
           {
             id: 4,
             type: 'radio',
             peers: {
               'Donald John Trump': 3,
-              'Timo *Teppo Tellervo Testaaja': 1
+              'Timo *Teppo Tellervo Testaaja': 1,
             },
-            questionHeader: 'Miten perustelet tämän arvosanan?'
-          }
-        ]
+            questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+        ],
       },
       {
         user_id: '012345698',
@@ -61,33 +63,33 @@ const initTests = () => {
             id: 1,
             type: 'number',
             answer: '4',
-            questionHeader: ' Anna tekninen arvosana.'
+            questionHeader: ' Anna tekninen arvosana.',
           },
           {
             id: 2,
             type: 'text',
             answer:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?'
+            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
             id: 3,
             type: 'number',
             answer: '3',
-            questionHeader: 'Kurssin arvosana'
+            questionHeader: 'Kurssin arvosana',
           },
           {
             id: 4,
             type: 'radio',
             peers: {
               'Donald John Trump': 2,
-              'Timo *Teppo Tellervo Testaaja': 1
+              'Timo *Teppo Tellervo Testaaja': 1,
             },
-            questionHeader: 'Miten perustelet tämän arvosanan?'
-          }
-        ]
-      }
-    ]
+            questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+        ],
+      },
+    ],
   }
 
   const konf1vastaukset2 = {
@@ -101,31 +103,31 @@ const initTests = () => {
             id: 1,
             type: 'number',
             answer: '3',
-            questionHeader: ' Anna tekninen arvosana.'
+            questionHeader: ' Anna tekninen arvosana.',
           },
           {
             id: 2,
             type: 'text',
             answer:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?'
+            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
             id: 3,
             type: 'number',
             answer: '2',
-            questionHeader: 'Kurssin arvosana'
+            questionHeader: 'Kurssin arvosana',
           },
           {
             id: 4,
             type: 'radio',
             peers: {
               'Donald John Trump': 4,
-              'Timo *Teppo Tellervo Testaaja': 4
+              'Timo *Teppo Tellervo Testaaja': 4,
             },
-            questionHeader: 'Miten perustelet tämän arvosanan?'
-          }
-        ]
+            questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+        ],
       },
       {
         user_id: '012345698',
@@ -136,33 +138,33 @@ const initTests = () => {
             id: 1,
             type: 'number',
             answer: '4',
-            questionHeader: ' Anna tekninen arvosana.'
+            questionHeader: ' Anna tekninen arvosana.',
           },
           {
             id: 2,
             type: 'text',
             answer:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?'
+            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
             id: 3,
             type: 'number',
             answer: '5',
-            questionHeader: 'Kurssin arvosana'
+            questionHeader: 'Kurssin arvosana',
           },
           {
             id: 4,
             type: 'radio',
             peers: {
               'Donald John Trump': 5,
-              'Timo *Teppo Tellervo Testaaja': 5
+              'Timo *Teppo Tellervo Testaaja': 5,
             },
-            questionHeader: 'Miten perustelet tämän arvosanan?'
-          }
-        ]
-      }
-    ]
+            questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+        ],
+      },
+    ],
   }
 
   const konf2vastaukset1 = {
@@ -176,31 +178,31 @@ const initTests = () => {
             id: 1,
             type: 'number',
             answer: '0',
-            questionHeader: ' Anna tekninen arvosana.'
+            questionHeader: ' Anna tekninen arvosana.',
           },
           {
             id: 2,
             type: 'text',
             answer:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?'
+            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
             id: 3,
             type: 'number',
             answer: '0',
-            questionHeader: 'Kurssin arvosana'
+            questionHeader: 'Kurssin arvosana',
           },
           {
             id: 4,
             type: 'radio',
             peers: {
               'Donald John Trump': 0,
-              'Timo *Teppo Tellervo Testaaja': 0
+              'Timo *Teppo Tellervo Testaaja': 0,
             },
-            questionHeader: 'Miten perustelet tämän arvosanan?'
-          }
-        ]
+            questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+        ],
       },
       {
         user_id: '012345698',
@@ -211,33 +213,33 @@ const initTests = () => {
             id: 1,
             type: 'number',
             answer: '0',
-            questionHeader: ' Anna tekninen arvosana.'
+            questionHeader: ' Anna tekninen arvosana.',
           },
           {
             id: 2,
             type: 'text',
             answer:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?'
+            questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
             id: 3,
             type: 'number',
             answer: '0',
-            questionHeader: 'Kurssin arvosana'
+            questionHeader: 'Kurssin arvosana',
           },
           {
             id: 4,
             type: 'radio',
             peers: {
               'Donald John Trump': 0,
-              'Timo *Teppo Tellervo Testaaja': 0
+              'Timo *Teppo Tellervo Testaaja': 0,
             },
-            questionHeader: 'Miten perustelet tämän arvosanan?'
-          }
-        ]
-      }
-    ]
+            questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+        ],
+      },
+    ],
   }
 
   cy.createPeerReviews(konf1vastaukset1)
@@ -259,9 +261,7 @@ describe('Instructor review page', () => {
     // submit not successfull, still on same page
     cy.url().should('contain', '/instructorpage')
     cy.get('[data-cy=configuration-selector]').click()
-    cy.get('.configuration-menu-item')
-      .contains('Konfiguraatio 1')
-      .click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
     cy.contains('Tykittelijät')
     cy.contains('2.50')
   })
@@ -269,17 +269,13 @@ describe('Instructor review page', () => {
   it('Change configuration twice', () => {
     // submit not successfull, still on same page
     cy.get('[data-cy=configuration-selector]').click()
-    cy.get('.configuration-menu-item')
-      .contains('Konfiguraatio 2')
-      .click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 2').click()
     cy.contains('Kämmäilijät')
     cy.contains(
-      'This group hasn\'t answered to the second peer review round yet.'
+      "This group hasn't answered to the second peer review round yet."
     )
     cy.get('[data-cy=configuration-selector]').click()
-    cy.get('.configuration-menu-item')
-      .contains('Konfiguraatio 1')
-      .click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
     cy.contains('4.50')
   })
 

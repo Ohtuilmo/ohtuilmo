@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
-import { NotInGroupPlaceholder } from '../common/Placeholders'
+import {
+  NotInGroupPlaceholder,
+  NoSprintsPlaceholder,
+} from '../common/Placeholders'
+import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintSelect } from './SprintSelect'
 import { Typography } from '@material-ui/core'
 import timeLogsService from '../../services/timeLogs'
@@ -20,7 +24,8 @@ const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
   const [allSprints, setAllSprints] = useState([])
   const [currentSprintNumber, setCurrentSprintNumber] = useState(null)
-  const [selectedSprintNumber, setSelectedSprintNumber] = useState(1)
+  const [selectedSprintNumber, setSelectedSprintNumber] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const { studentNumber, group, initializeMyGroup } = props
 
@@ -51,19 +56,23 @@ const TimeLogsPage = (props) => {
         notificationActions.setError(error.response.data.error)
       }
     }
+    const fetchData = async () => {
+      setIsLoading(true)
+      await fetchGroup()
+      await fetchSprints()
+      await fetchTimeLogs()
+      setIsLoading(false)
+    }
 
-    fetchGroup()
-    fetchSprints()
-    fetchTimeLogs()
+    fetchData()
   }, [])
 
   useEffect(() => {
-    const today = new Intl.DateTimeFormat('fi-FI', {
-      timeZone: 'Europe/Helsinki',
-    }).format(new Date())
-
-    const currentSprintObject = allSprints.find((sprint) =>
-      today >= sprint.start_date && today <= sprint.end_date ? sprint : {}
+    const today = new Date()
+    const currentSprintObject = allSprints.find(
+      (sprint) =>
+        today >= new Date(sprint.start_date) &&
+        today <= new Date(sprint.end_date)
     )
 
     currentSprintObject && setCurrentSprintNumber(currentSprintObject.sprint)
@@ -115,7 +124,9 @@ const TimeLogsPage = (props) => {
     isLogs(allLogs) &&
     allLogs.filter((log) => log.sprint === selectedSprintNumber)
 
+  if (isLoading) return <LoadingSpinner />
   if (!group) return <NotInGroupPlaceholder />
+  if (allSprints.length === 0) return <NoSprintsPlaceholder />
 
   return (
     <div className="timelogs-container-1">
@@ -133,15 +144,19 @@ const TimeLogsPage = (props) => {
           disabled={selectedSprintNumber !== currentSprintNumber}
         />
       </div>
-      {isLogs(logsBySprint) &&
-        logsBySprint.map((log) => (
-          <TimeLogRow
-            key={log.id}
-            log={log}
-            handleDelete={() => handleDelete(log.id)}
-          />
-        ))}
-      {!isLogs(logsBySprint) && <p>No logs yet :&#40;</p>}
+      <div id="timelog-rows">
+        {isLogs(logsBySprint) &&
+          logsBySprint.map((log) => (
+            <TimeLogRow
+              key={log.id}
+              log={log}
+              handleDelete={() => handleDelete(log.id)}
+            />
+          ))}
+        {!isLogs(logsBySprint) && allSprints.length > 0 && (
+          <p>No logs yet :&#40;</p>
+        )}
+      </div>
     </div>
   )
 }

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const assertIsOnLandingPage = () => {
   cy.get('[data-cy=registrationlink]').should('be.visible')
 }

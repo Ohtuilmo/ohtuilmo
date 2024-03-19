@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 describe('Review-questions page', () => {
   beforeEach(() => {
     cy.loginAsAdmin()

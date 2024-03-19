@@ -118,6 +118,7 @@ const SprintsPage = (props) => {
         />
       </div>
       <Button
+        id="add-sprint-button"
         variant="contained"
         className="button"
         onClick={handleAddSprint}
@@ -131,37 +132,40 @@ const SprintsPage = (props) => {
       >
         Add Sprint
       </Button>
-      <div className="sprint-list-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Sprint Number</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allSprints.map((sprint) => (
-              <tr key={sprint.id}>
-                <td>{sprint.sprint}</td>
-                <td>{sprint.start_date}</td>
-                <td>{sprint.end_date}</td>
-                <td>
-                  <Button
-                    onClick={() => handleDeleteSprint(sprint.id)}
-                    className = 'delete-sprint-button'
-                    variant="contained"
-                    color="secondary"
-                  >
-                    Delete
-                  </Button>
-                </td>
+      {allSprints.length > 0 && (
+        <div className="sprint-list-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Sprint Number</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {allSprints.map((sprint) => (
+                <tr key={sprint.id}>
+                  <td>{sprint.sprint}</td>
+                  <td>{sprint.start_date}</td>
+                  <td>{sprint.end_date}</td>
+                  <td>
+                    <Button
+                      id={`sprint-remove-button-${sprint.id}`}
+                      onClick={() => handleDeleteSprint(sprint.id)}
+                      className="delete-sprint-button"
+                      variant="contained"
+                      color="secondary"
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

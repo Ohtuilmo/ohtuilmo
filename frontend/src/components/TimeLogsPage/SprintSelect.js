@@ -10,23 +10,29 @@ export const SprintSelect = ({
   handleClickNextSprint,
   handleClickPreviousSprint,
 }) => {
-  return (
-    <div className="timelogs-sprint-select">
-      <IconButton
-        disableRipple
-        onClick={handleClickPreviousSprint}
-        className="button"
-      >
-        <ArrowBackIosIcon style={{ fontSize: '16px' }} />
-      </IconButton>
-      <Typography variant="button">SPRINT {sprintNumber}</Typography>
-      <IconButton
-        disableRipple
-        onClick={handleClickNextSprint}
-        className="button"
-      >
-        <ArrowForwardIosIcon style={{ fontSize: '16px' }} />
-      </IconButton>
-    </div>
-  )
+  if (!sprintNumber) {
+    return <></>
+  } else {
+    return (
+      <div className="timelogs-sprint-select">
+        <IconButton
+          id="previous-sprint-button"
+          disableRipple
+          onClick={handleClickPreviousSprint}
+          className="button"
+        >
+          <ArrowBackIosIcon style={{ fontSize: '16px' }} />
+        </IconButton>
+        <Typography variant="button">SPRINT {sprintNumber}</Typography>
+        <IconButton
+          id="next-sprint-button"
+          disableRipple
+          onClick={handleClickNextSprint}
+          className="button"
+        >
+          <ArrowForwardIosIcon style={{ fontSize: '16px' }} />
+        </IconButton>
+      </div>
+    )
+  }
 }

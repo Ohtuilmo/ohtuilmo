@@ -77,6 +77,7 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
         />
       </div>
       <Button
+        id="time-log-submit-button"
         disabled={disabled}
         type="submit"
         variant="contained"

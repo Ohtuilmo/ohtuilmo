@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 const initTests = () => {
   cy.createGroup({
     name: 'Tykittelijät',
     topicId: 1,
     configurationId: 1,
     instructorId: '012345688',
-    studentIds: ['012345678', '012345698']
+    studentIds: ['012345678', '012345698'],
   })
 }
 const submitInstructorReview = () => {

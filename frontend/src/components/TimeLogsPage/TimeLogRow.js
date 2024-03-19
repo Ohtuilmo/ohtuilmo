@@ -20,6 +20,7 @@ export const TimeLogRow = ({ log, handleDelete }) => {
         <p>{log.description}</p>
       </div>
       <IconButton
+        id={`timelog-remove-button-${log.id}`}
         className="timelogs-remove-button"
         style={{ padding: '0 12px' }}
         disableRipple

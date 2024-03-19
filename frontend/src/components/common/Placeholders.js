@@ -6,14 +6,16 @@ export const NotInGroupPlaceholder = () => (
   </h1>
 )
 
-export const LoadingPlaceholder = () => (
+export const NoSprintsPlaceholder = () => (
   <h1 style={{ textAlign: 'center' }}>
-    Loading...
+    Your group has no sprints. Add a sprint using Sprint Dashboard.
   </h1>
 )
 
+export const LoadingPlaceholder = () => (
+  <h1 style={{ textAlign: 'center' }}>Loading...</h1>
+)
+
 export const NoneAvailable = () => (
-  <h1 style={{ textAlign: 'center' }}>
-    None available
-  </h1>
+  <h1 style={{ textAlign: 'center' }}>None available</h1>
 )

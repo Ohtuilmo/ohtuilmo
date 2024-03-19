@@ -40,3 +40,15 @@ export const minutesAndHoursFromString = (string) => {
   const minutes = parseInt(parts[1], 10)
   return { hours, minutes }
 }
+
+export const addWeeksToDate = (date, weeks) => {
+  const newDate = new Date(date)
+  newDate.setDate(newDate.getDate() + weeks * 7)
+  return newDate
+}
+
+export const addDaysToDate = (date, days) => {
+  const newDate = new Date(date)
+  newDate.setDate(newDate.getDate() + days)
+  return newDate
+}
