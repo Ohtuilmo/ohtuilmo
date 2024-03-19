@@ -151,7 +151,7 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').children().should('have.length', 1)
   })
 
-    it('displays frontend notification from form with negative hours', () => {
+    it('displays error on time field of form when input is negative hours', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
       cy.get('.input-container').should('exist')
@@ -161,10 +161,10 @@ describe('Time logs & sprints', () => {
       cy.get('.submit-button').click()
 
       cy.get('.input-container').contains('Time must be in format HH:MM')
-      cy.get('.timelog-list').should('not.contain', 'negative time')
+      cy.get('#timelog-rows').should('not.contain', 'negative time')
     })
 
-    it('displays frontend notification from form with letters in hours', () => {
+    it('displays error on time field of form when input is letters', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
       cy.get('.input-container').should('exist')
@@ -174,10 +174,10 @@ describe('Time logs & sprints', () => {
       cy.get('.submit-button').click()
 
       cy.get('.input-container').contains('Time must be in format HH:MM')
-      cy.get('.timelog-list').should('not.contain', 'letters in time')
+      cy.get('#timelog-rows').should('not.contain', 'letters in time')
     })
 
-    it('displays frontend notification from form without colon in the middle', () => {
+    it('displays error on time field of form when input is missing a colon', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
       cy.get('.input-container').should('exist')
@@ -187,10 +187,10 @@ describe('Time logs & sprints', () => {
       cy.get('.submit-button').click()
 
       cy.get('.input-container').contains('Time must be in format HH:MM')
-      cy.get('.timelog-list').should('not.contain', 'missing colon')
+      cy.get('#timelog-rows').should('not.contain', 'missing colon')
     })
 
-    it('displays frontend notification from form with over 60 minutes', () => {
+    it('displays error on time field of form when input has over 60 minutes', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
       cy.get('.input-container').should('exist')
@@ -200,10 +200,10 @@ describe('Time logs & sprints', () => {
       cy.get('.submit-button').click()
 
       cy.get('.input-container').contains('Time must be in format HH:MM')
-      cy.get('.timelog-list').should('not.contain', 'over 60 minutes')
+      cy.get('#timelog-rows').should('not.contain', 'over 60 minutes')
     })
 
-    it('displays frontend notification from form with description under 5 characters', () => {
+    it('displays error on description field of form when input is under 5 characters long', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
       cy.get('.input-container').should('exist')
@@ -213,7 +213,7 @@ describe('Time logs & sprints', () => {
       cy.get('.submit-button').click()
 
       cy.get('.input-container').contains('Description must be at least 5 characters')
-      cy.get('.timelog-list').should('not.contain', '1234')
+      cy.get('#timelog-rows').should('not.contain', '1234')
     })
 
     it('remove sprints, should not display sprints or time logs', () => {
