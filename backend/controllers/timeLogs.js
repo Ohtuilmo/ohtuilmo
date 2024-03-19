@@ -27,7 +27,7 @@ const validateDateRange = (date, start, end) => {
   endDate.setHours(0, 0, 0, 0)
 
   if (logDate < startDate || logDate > endDate) {
-    return 'The log data is not within sprint start and end date.'
+    return 'The log date is not within sprint start and end date.'
   }
   return null
 }

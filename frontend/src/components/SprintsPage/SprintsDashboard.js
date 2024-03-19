@@ -150,6 +150,7 @@ const SprintsPage = (props) => {
                 <td>
                   <Button
                     onClick={() => handleDeleteSprint(sprint.id)}
+                    className = 'delete-sprint-button'
                     variant="contained"
                     color="secondary"
                   >
