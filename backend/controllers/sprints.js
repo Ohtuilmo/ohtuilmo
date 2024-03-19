@@ -89,8 +89,9 @@ sprintsRouter.get('/', checkLogin, async (req, res) => {
     const sprints = await fetchSprintsFromDb(user_id)
     res.status(200).json(sprints)
   } catch (error) {
-    console.error('Error fetching sprints: ', error.message)
-    return res.status(500).json({ error: error.message })
+    const errorMessage = 'Error fetching sprints: ' + error.message
+    console.error(errorMessage)
+    return res.status(500).json({ error: errorMessage })
   }
 })
 
@@ -105,7 +106,9 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     try {
       validateSprint(req.body, latestSprint)
     } catch (error) {
-      return res.status(400).json({ error: error.message })
+      const errorMessage = 'Error validating sprint:' + error.message
+      console.error(errorMessage)
+      return res.status(400).json({ error: errorMessage })
     }
 
     await db.Sprint.create({
@@ -117,8 +120,9 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     const sprints = await fetchSprintsFromDb(user_id)
     res.status(201).json(sprints)
   } catch (error) {
-    console.error('Error creating sprint:', error)
-    return res.status(500).json({ error: error.message })
+    const errorMessage = 'Error creating sprint:' + error.message
+    console.error(errorMessage)
+    return res.status(500).json({ error: errorMessage })
   }
 })
 
@@ -143,8 +147,9 @@ sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
     const sprints = await fetchSprintsFromDb(user_id)
     res.status(200).json(sprints)
   } catch (error) {
-    console.error('Error deleting sprint:', error)
-    return res.status(500).json({ error: 'Error deleting sprint.' })
+    const errorMessage = 'Error deleting sprint:' + error.message
+    console.error(errorMessage)
+    return res.status(500).json({ error: errorMessage })
   }
 })
 
