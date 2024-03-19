@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import tagService from '../../services/tags'
-//import { NotInGroupPlaceholder } from '../common/Placeholders'
 import './TagsDashboard.css'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-//import myGroupActions from '../../reducers/actions/myGroupActions'
+import * as notificationActions from '../../reducers/actions/notificationActions'
+
 
 const TagsPage = (props) => {
-  console.log('TagsPage props:', props)
-  // const [allSprints, setAllSprints] = useState([])
-  // const [sprintNumber, setSprintNumber] = useState('')
-  // const [startDate, setStartDate] = useState('')
-  // const [endDate, setEndDate] = useState('')
   const [allTags, setAllTags] = useState([])
   const [tagTitle, setTagTitle] = useState('')
-
-  //const { group, studentNumber, initializeMyGroup } = props
+  const isMounted = useRef(true)
 
   useEffect(() => {
     const fetchTags = async () => {
       try {
         const fetchedData = await tagService.getTags()
-        setAllTags(fetchedData)
+        if (isMounted.current) {
+          setAllTags(fetchedData)
+        }
       } catch (error) {
-        console.error('Error fetching tags:', error)
+        console.error('Error fethcing tags:', error.message, ' / ' , error.response.data.error)
+        if (error.response && error.response.data && error.response.data.error) {
+          props.setError(error.response.data.error)
+        } else {
+          props.setError('An error occurred while fetching tags.')
+        }
       }
     }
     fetchTags()
+    return () => {
+      isMounted.current = false
+    }
   }, [])
 
   const handleAddTag = async () => {
@@ -41,8 +45,10 @@ const TagsPage = (props) => {
       const updatedTags = await tagService.createTag(tag)
       setAllTags(updatedTags)
       clearForm()
+      props.setSuccess('Tag created successfully.')
     } catch (error) {
-      console.error('Error creating tag:', error)
+      console.error('Error fethcing tags:', error.message, ' / ' , error.response.data.error)
+      props.setError(error.response.data.error, 3000)
     }
   }
 
@@ -54,12 +60,12 @@ const TagsPage = (props) => {
     try {
       const updatedTags = await tagService.deleteTag(tagId)
       setAllTags(updatedTags)
+      props.setSuccess('Tag deleted successfully.')
     } catch (error) {
-      console.error('Error deleting sprint:', error)
+      console.error('Error fethcing tags:', error.message, ' / ' , error.response.data.error)
+      props.setError(error.response.data.error)
     }
   }
-
-  //if (!group) return <NotInGroupPlaceholder />
 
   return (
     <div className="tags-container">
@@ -98,7 +104,7 @@ const TagsPage = (props) => {
         <table>
           <thead>
             <tr>
-              <th>Tag Title</th>
+              <th>Tags</th>
             </tr>
           </thead>
           <tbody>
@@ -124,15 +130,18 @@ const TagsPage = (props) => {
   )
 }
 
-// const mapDispatchToProps = {
-//   initializeMyGroup: myGroupActions.initializeMyGroup,
-// }
+const mapDispatchToProps = {
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess,
+}
 
 const mapStateToProps = (state) => ({
-  studentNumber: state.login.user.user.student_number,
-  group: state.registrationDetails.myGroup,
+  state: state,
+  //user: state.login.user,
+  //studentNumber: state.login.user.user.student_number,
+  //group: state.registrationDetails.myGroup,
 })
 
 export default withRouter(
-  connect(mapStateToProps)(TagsPage)
+  connect(mapStateToProps, mapDispatchToProps)(TagsPage)
 )
