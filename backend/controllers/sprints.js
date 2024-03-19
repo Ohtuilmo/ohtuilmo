@@ -22,10 +22,22 @@ const findLatestGroupId = async (studentNumber) => {
   }
 }
 
+const findLatestSprint = async groupId => {
+  const latestSprint = await db.Sprint.findOne({
+    include: [{
+      model: db.Group,
+      as: 'group',
+      where: { id: groupId }
+    }],
+    order: [['sprint', 'DESC']]
+  })
+  return latestSprint
+}
 
-const validateSprint = ({ start_date, end_date, sprint }) => {
+const validateSprint = ({ start_date, end_date, sprint }, latest) => {
   const startDate = new Date(start_date)
   const endDate = new Date(end_date)
+  const latestEndDate = new Date(latest.end_date)
 
   if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
     throw new Error('Start date or end date is invalid.')
@@ -39,6 +51,9 @@ const validateSprint = ({ start_date, end_date, sprint }) => {
 
   if (typeof sprint !== 'number' || isNaN(sprint) || parseInt(sprint, 10) !== sprint) {
     throw new Error('Sprint must be a valid number.')
+  }
+  if (!!latest.sprint && sprint <= latest.sprint) {
+    throw new Error('New sprint must be the successor for the latest sprint.')
   }
 }
 
@@ -84,9 +99,11 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
 
   try {
     const groupId = await findLatestGroupId(user_id)
+    let latestSprint = await findLatestSprint(groupId)
+    if (!latestSprint) latestSprint = { end_date: null, sprint: null }
 
     try {
-      validateSprint(req.body)
+      validateSprint(req.body, latestSprint)
     } catch (error) {
       return res.status(400).json({ error: error.message })
     }
