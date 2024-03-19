@@ -7,24 +7,37 @@ const url = `${BACKEND_API_BASE}/timelogs`
 
 
 const getTimeLogs = async () => {
-  const response = await axios.get(url, {
-    headers: { Authorization: `Bearer ${getUserToken()}` }
-  })
-  return response.data
+  try {
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${getUserToken()}` }
+    })
+    return response.data
+  } catch (error) {
+    throw error
+  }
 }
 
 const createTimeLog = async (timeEntry) => {
-  const response = await axios.post(url, timeEntry, {
-    headers: { Authorization: `Bearer ${getUserToken()}` }
-  })
-  return response.data
+  try {
+    const response = await axios.post(url, timeEntry, {
+      headers: { Authorization: `Bearer ${getUserToken()}` }
+    })
+    return response.data
+  } catch (error) {
+    throw error
+  }
 }
 
 const deleteTimeLog = async (id) => {
-  const response = await axios.delete(`${url}/${id}`, {
-    headers: { Authorization: `Bearer ${getUserToken()}` }
-  })
-  return response.data
+  try {
+    const response = await axios.delete(`${url}/${id}`, {
+      headers: { Authorization: `Bearer ${getUserToken()}` }
+    })
+    return response.data
+  } catch (error) {
+    console.error('error in deleteTimeLog', error.response.data.error)
+    throw error
+  }
 }
 
 export default { getTimeLogs, createTimeLog, deleteTimeLog }

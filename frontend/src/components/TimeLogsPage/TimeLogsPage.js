@@ -14,6 +14,7 @@ import {
   hoursAndMinutesToMinutes,
 } from '../../utils/functions'
 import './TimeLogsPage.css'
+import * as notificationActions from '../../reducers/actions/notificationActions'
 
 const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
@@ -28,7 +29,8 @@ const TimeLogsPage = (props) => {
       try {
         await initializeMyGroup()
       } catch (error) {
-        console.error('Error fetching group:', error)
+        console.error('Error fethcing group:', error.message, ' / ' , error.response.data.error)
+        notificationActions.setError(error.response.data.error)
       }
     }
     const fetchTimeLogs = async () => {
@@ -36,7 +38,8 @@ const TimeLogsPage = (props) => {
         const fetchedData = await timeLogsService.getTimeLogs()
         setAllLogs(fetchedData)
       } catch (error) {
-        console.error('Error fetching logs:', error)
+        console.error('Error fethcing timelogs:', error.message, ' / ' , error.response.data.error)
+        notificationActions.setError(error.response.data.error)
       }
     }
     const fetchSprints = async () => {
@@ -44,7 +47,8 @@ const TimeLogsPage = (props) => {
         const fetchedData = await sprintService.getSprints()
         setAllSprints(fetchedData)
       } catch (error) {
-        console.error('Error fetching sprints:', error)
+        console.error('Error fethcing sprints:', error.message, ' / ' , error.response.data.error)
+        notificationActions.setError(error.response.data.error)
       }
     }
 
@@ -76,14 +80,25 @@ const TimeLogsPage = (props) => {
       tags: [],
       groupId: group.id,
     }
-
-    const updatedLogs = await timeLogsService.createTimeLog(log)
-    setAllLogs(updatedLogs)
+    try {
+      const updatedLogs = await timeLogsService.createTimeLog(log)
+      setAllLogs(updatedLogs)
+      props.setSuccess('Time log created successfully')
+    } catch (error) {
+      console.error('Error creating time log:', error.message, ' / ' , error.response.data.error)
+      props.setError(error.response.data.error)
+    }
   }
 
   const handleDelete = async (logId) => {
-    const updatedLogs = await timeLogsService.deleteTimeLog(logId)
-    setAllLogs(updatedLogs)
+    try {
+      const updatedLogs = await timeLogsService.deleteTimeLog(logId)
+      setAllLogs(updatedLogs)
+      props.setSuccess('Time log deleted successfully')
+    } catch (error) {
+      console.error('Error deleting time log:', error.message, ' / ' , error.response.data.error)
+      props.setError(error.response.data.error)
+    }
   }
 
   const handleClickNextSprint = () => {
@@ -139,6 +154,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   initializeMyGroup: myGroupActions.initializeMyGroup,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess,
 }
 
 export default withRouter(
