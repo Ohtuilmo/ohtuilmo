@@ -13,23 +13,19 @@ const validateTag = async ({ title }) => {
     return 'Title must be at least 3 characters.'
   }
   const current_tags = await fetchFromDb()
-  if (current_tags.includes(title)) {
+  const current_titles = current_tags.map(tag => tag.title)
+  if (current_titles.includes(title)) {
     return 'Tag already exists.'
   }
   return null
 }
 
 const fetchFromDb = async () => {
-  try {
-    const tags = await db.Tag.findAll({
-      attributes: ['id', 'title'],
-      raw: true
-    })
-    return tags
-  } catch (error) {
-    console.error('Error fetching tags:', error)
-    throw new Error('Error fetching tags.')
-  }
+  const tags = await db.Tag.findAll({
+    attributes: ['id', 'title'],
+    raw: true
+  })
+  return tags
 }
 
 tagsRouter.get('/', checkAdmin, async (req, res) => {
@@ -66,10 +62,11 @@ tagsRouter.post('/', checkAdmin, async (req, res) => {
 
 tagsRouter.delete('/:id', checkAdmin, async (req, res) => {
   const id = parseInt(req.params.id)
-  // const count = await db.TimeLogTag.count({ where: { tagId: id } })
-  // if (count > 0) {
-  //   return res.status(400).json({ error: 'Tag cannot be deleted because it is used in time logs.' })
-  // }
+  const count = await db.TimeLogTag.count({ where: { tag_id: id } })
+
+  if (count > 0) {
+    return res.status(400).json({ error: 'Tag cannot be deleted because it is used in time logs.' })
+  }
 
   try {
     await db.Tag.destroy({ where: { id } })

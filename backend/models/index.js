@@ -38,6 +38,7 @@ db.connect = () => {
   const SprintModel = require('./sprint')
   const TagModel = require('./tag')
   const TimeLogModel = require('./time_log')
+  const TimeLogTagModel = require('./time_log_tag')
 
   const User = UserModel(sequelize, Sequelize)
   const Group = GroupModel(sequelize, Sequelize)
@@ -67,6 +68,7 @@ db.connect = () => {
   const Sprint = SprintModel(sequelize, Sequelize)
   const Tag = TagModel(sequelize, Sequelize)
   const TimeLog = TimeLogModel(sequelize, Sequelize)
+  const TimeLogTag = TimeLogTagModel(sequelize, Sequelize)
 
   db.User = User
   db.Group = Group
@@ -90,6 +92,7 @@ db.connect = () => {
   db.Sprint = Sprint
   db.Tag = Tag
   db.TimeLog = TimeLog
+  db.TimeLogTag = TimeLogTag
 
   Group.belongsTo(Topic, {
     as: 'topic',
