@@ -98,23 +98,6 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').children().should('have.length', 2)
   })
 
-  // this test will fail when frontend validation is done properly, remove at that point
-  it('shows error from backend when creating timeLog fails too short description', () => {
-    cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container').should('exist')
-    cy.get('.date').type('2022-01-01')
-    cy.get('.time').type('01:00')
-    cy.get('.description').type('inv')
-    cy.get('.submit-button').click()
-
-    cy.get('.notification').should('exist')
-    cy.get('.notification').should(
-      'have.text',
-      'Description must be over 5 characters.'
-    )
-  })
-
   it('shows error from backend when creating timeLog fails with data outside sprint', () => {
     cy.visit('/timelogs')
     cy.get('.timelogs-container-1').should('exist')
