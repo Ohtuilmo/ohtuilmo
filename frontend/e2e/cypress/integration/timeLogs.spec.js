@@ -26,7 +26,7 @@ describe('Time Logs Page', () => {
       cy.get('.timelogs-container-1').should('not.exist')
     })
 
-    it('creates timeLog succesfully', () => {
+    it('creates timeLog successfully', () => {
       cy.visit('/timelogs')
       cy.get('.timelogs-container-1').should('exist')
       cy.get('.input-container').should('exist')
