@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const getEmailTemplate = (name) =>
   cy.get(`.email-template[data-cy-template="${name}"]`)
 
@@ -208,33 +210,33 @@ describe('Email configuration page', () => {
         [
           'Topic proposal accepted',
           'finnish',
-          'Hei,\n\nProjekti "{{topicName}}" hyväksyttiin.'
+          'Hei,\n\nProjekti "{{topicName}}" hyväksyttiin.',
         ],
         [
           'Topic proposal accepted',
           'english',
-          'Hello,\n\nProject "{{topicName}}" was accepted.'
+          'Hello,\n\nProject "{{topicName}}" was accepted.',
         ],
         [
           'Topic proposal rejected',
           'finnish',
-          'Hei,\n\nProjektia "{{topicName}}" ei hyväksytty.'
+          'Hei,\n\nProjektia "{{topicName}}" ei hyväksytty.',
         ],
         [
           'Topic proposal rejected',
           'english',
-          'Hello,\n\nProject "{{topicName}}" was not accepted.'
+          'Hello,\n\nProject "{{topicName}}" was not accepted.',
         ],
         [
           'Customer review link',
           'finnish',
-          'Hei, vastaathan loppuarviointiin osoitteessa {{secretLink}}'
+          'Hei, vastaathan loppuarviointiin osoitteessa {{secretLink}}',
         ],
         [
           'Customer review link',
           'english',
-          'Hello, please answer the final review at {{secretLink}}'
-        ]
+          'Hello, please answer the final review at {{secretLink}}',
+        ],
       ]
 
       texts.forEach(([templateTitle, templateLanguage, text]) => {

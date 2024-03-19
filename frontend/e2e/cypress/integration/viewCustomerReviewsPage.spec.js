@@ -1,15 +1,17 @@
+/* eslint-disable */
+
 const mockAnswers = [
   {
     type: 'info',
     header: 'Ohje',
     description:
-      'Ohje: Anna avovastauksiin vapaamuotoiset perustelut arvosanaehdotuksille. Voit käyttääapuna vinkkeinä annettuna esimerkkejä asioista, joihin voi kiinnittää huomiota. Voit myöskertoa vapaasti muista mielestäsi olennaisista asioista. Arvioi jokainen ryhmäläinen. Kirjoitaitseäsi koskevat perustelut erityisen huolellisesti. Huomaa, että saadakseen kurssistaarvosanaksi 5 ei jokaisen osa alueen tarvitse olla täydellinen. On luontevaa, että ryhmässäkontribuutioden painopisteet jakautuvat eri tavoin ja tämä on täysin ok myös tällä kurssilla.'
+      'Ohje: Anna avovastauksiin vapaamuotoiset perustelut arvosanaehdotuksille. Voit käyttääapuna vinkkeinä annettuna esimerkkejä asioista, joihin voi kiinnittää huomiota. Voit myöskertoa vapaasti muista mielestäsi olennaisista asioista. Arvioi jokainen ryhmäläinen. Kirjoitaitseäsi koskevat perustelut erityisen huolellisesti. Huomaa, että saadakseen kurssistaarvosanaksi 5 ei jokaisen osa alueen tarvitse olla täydellinen. On luontevaa, että ryhmässäkontribuutioden painopisteet jakautuvat eri tavoin ja tämä on täysin ok myös tällä kurssilla.',
   },
   {
     id: 1,
     type: 'number',
     answer: 5,
-    questionHeader: 'Grade (scale 0-5)  '
+    questionHeader: 'Grade (scale 0-5)  ',
   },
   {
     id: 2,
@@ -17,14 +19,14 @@ const mockAnswers = [
     answer:
       'Your satisfaction to the resulting product compared to your intial expectations:Your satisfaction to the resulting product compared to your intial expectations:',
     questionHeader:
-      'Your satisfaction to the resulting product compared to your intial expectations:'
+      'Your satisfaction to the resulting product compared to your intial expectations:',
   },
   {
     id: 3,
     type: 'text',
     answer:
       'Your satisfaction to the resulting product compared to your intial expectations:Your satisfaction to the resulting product compared to your intial expectations:',
-    questionHeader: 'The quality of the product and fit for the purpose:'
+    questionHeader: 'The quality of the product and fit for the purpose:',
   },
   {
     id: 4,
@@ -32,14 +34,14 @@ const mockAnswers = [
     answer:
       'Your satisfaction to the resulting product compared to your intial expectations:Your satisfaction to the resulting product compared to your intial expectations:',
     questionHeader:
-      'What was the technical skill level of the team compared to your expectations?'
+      'What was the technical skill level of the team compared to your expectations?',
   },
   {
     id: 5,
     type: 'oneliner',
     answer: 'spammyspam@spam.sp',
-    questionHeader: 'Your email adderess?'
-  }
+    questionHeader: 'Your email adderess?',
+  },
 ]
 
 const getAll = (...aliases) => {
@@ -62,7 +64,7 @@ describe('Customer review is shown', () => {
       registration_question_set_id: null,
       review_question_set_1_id: null,
       review_question_set_2_id: null,
-      customer_review_question_set_id: null
+      customer_review_question_set_id: null,
     }).as('conf1')
 
     cy.createConfiguration({
@@ -71,7 +73,7 @@ describe('Customer review is shown', () => {
       registration_question_set_id: null,
       review_question_set_1_id: null,
       review_question_set_2_id: null,
-      customer_review_question_set_id: null
+      customer_review_question_set_id: null,
     }).as('conf2')
 
     cy.get('@conf1').then((configuration1) => {
@@ -83,7 +85,7 @@ describe('Customer review is shown', () => {
           description: 'Decription..',
           environment: 'Webbi',
           specialRequests: '',
-          additionalInfo: ''
+          additionalInfo: '',
         },
         configuration1.id
       ).as('conf1_topic1')
@@ -94,7 +96,7 @@ describe('Customer review is shown', () => {
           topicId: topic1.id,
           configurationId: configuration1.id,
           instructorId: null,
-          studentIds: ['012345678', '012345698']
+          studentIds: ['012345678', '012345698'],
         }).as('conf1_topic1_group')
       })
     })
@@ -108,7 +110,7 @@ describe('Customer review is shown', () => {
           description: 'Decription..',
           environment: 'Webbi',
           specialRequests: '',
-          additionalInfo: ''
+          additionalInfo: '',
         },
         configuration2.id
       ).as('conf2_topic1')
@@ -121,7 +123,7 @@ describe('Customer review is shown', () => {
           description: 'Decription..',
           environment: 'Webbi',
           specialRequests: '',
-          additionalInfo: ''
+          additionalInfo: '',
         },
         configuration2.id
       ).as('conf2_topic2')
@@ -132,7 +134,7 @@ describe('Customer review is shown', () => {
           topicId: topic1.id,
           configurationId: configuration2.id,
           instructorId: null,
-          studentIds: ['012345678', '012345698']
+          studentIds: ['012345678', '012345698'],
         }).as('conf2_topic1_group')
 
         cy.createGroupHack({
@@ -140,7 +142,7 @@ describe('Customer review is shown', () => {
           topicId: topic2.id,
           configurationId: configuration2.id,
           instructorId: null,
-          studentIds: ['012345678', '012345698']
+          studentIds: ['012345678', '012345698'],
         }).as('conf2_topic2_group')
       })
     })
@@ -151,7 +153,7 @@ describe('Customer review is shown', () => {
         answer_sheet: mockAnswers,
         group_id: group.id,
         topic_id: group.topicId,
-        configuration_id: group.configurationId
+        configuration_id: group.configurationId,
       })
     })
 
@@ -163,7 +165,7 @@ describe('Customer review is shown', () => {
       'conf2_topic1',
       'conf2_topic2',
       'conf2_topic1_group',
-      'conf2_topic2_group'
+      'conf2_topic2_group',
     ]
     for (const alias of aliases) {
       cy.get('@' + alias).then((value) => {
@@ -185,11 +187,8 @@ describe('Customer review is shown', () => {
     cy.get('[data-cy="customer-reviews-select"]').click()
     cy.get('[data-cy="all-configurations"]').click()
 
-    const {
-      conf1_topic1_group,
-      conf2_topic1_group,
-      conf2_topic2_group
-    } = locals
+    const { conf1_topic1_group, conf2_topic1_group, conf2_topic2_group } =
+      locals
 
     cy.contains(conf1_topic1_group.name)
     cy.contains(conf2_topic1_group.name)

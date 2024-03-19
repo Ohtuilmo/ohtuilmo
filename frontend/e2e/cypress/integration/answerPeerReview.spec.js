@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 describe('Answering peer review', () => {
   before(() => {
     cy.loginAsAdmin()
@@ -9,30 +11,37 @@ describe('Answering peer review', () => {
       topicId: 1,
       configurationId: 1,
       instructorId: null,
-      studentIds: ['012345678', '012345698']
+      studentIds: ['012345678', '012345698'],
     })
     cy.createReviewQuestionSet('Super nice review questions', [
       {
         type: 'info',
         header: 'This is info',
-        description: 'Just fill the form'
+        description: 'Just fill the form',
       },
       {
         header: 'Previous experiene in software developement',
         description: 'How many hours?',
-        type: 'number'
+        type: 'number',
       },
       {
         header: 'Without option?',
         description: '',
-        type: 'number'
+        type: 'number',
       },
       {
         header: 'Ok and with option',
         description: 'Choose a radio button you want',
         type: 'radio',
-        options: ['Cant say', 'Not at all', 'Little', 'Decent', 'Good', 'Super']
-      }
+        options: [
+          'Cant say',
+          'Not at all',
+          'Little',
+          'Decent',
+          'Good',
+          'Super',
+        ],
+      },
     ])
     cy.setPeerReviewOneActive(
       'Konfiguraatio 1',
@@ -98,9 +107,7 @@ describe('Answering peer review', () => {
     cy.get('[name="Ok and with optionTimo *Teppo Tellervo Testaaja"]')
       .eq(2)
       .click()
-    cy.get('[name="Ok and with optionDonald John Trump"]')
-      .eq(5)
-      .click()
+    cy.get('[name="Ok and with optionDonald John Trump"]').eq(5).click()
     cy.contains('Submit').click()
     cy.contains('Peer review saved!')
   })
