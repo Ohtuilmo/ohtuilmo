@@ -119,6 +119,11 @@ const adminItems = (history) => {
       text: 'Email Templates',
       handler: () => history.push('/administration/email-templates'),
     },
+    {
+      className: 'tags-menu-item',
+      text: 'Tag management',
+      handler: () => history.push('/administration/tags'),
+    },
   ]
 }
 

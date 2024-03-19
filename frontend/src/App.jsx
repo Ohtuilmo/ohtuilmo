@@ -32,6 +32,7 @@ import InstructorReviews from './components/InstructorReviews'
 import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
 import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
 import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
+import TagsDashboard from './components/TagManagementPage/TagsDashboard'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -204,6 +205,11 @@ const App = (props) => {
               exact
               path="/administration/reviews"
               render={renderWithLoadingCheck(<InstructorReviews />)}
+            />
+            <AdminRoute
+              exact
+              path="/administration/tags"
+              render={renderWithLoadingCheck(<TagsDashboard />)}
             />
             <Route
               exact
