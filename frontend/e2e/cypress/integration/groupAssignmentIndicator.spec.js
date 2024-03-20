@@ -13,6 +13,10 @@ describe('Group assignment indicator tests', () => {
         .and('be.visible')
         .and('have.text', 'No group assiged')
     })
+
+    afterEach(() => {
+      cy.logout()
+    })
   })
 
   describe('Indicator for registered user', () => {
@@ -23,11 +27,12 @@ describe('Group assignment indicator tests', () => {
         topicId: 1,
         configurationId: 1,
         instructorId: null,
-        studentIds: ['012345698'],
+        studentIds: ['0918273645'],
       })
+      cy.logout()
     })
     beforeEach(() => {
-      cy.loginAsRegisteredUser()
+      cy.loginAsRegisteredIndicatedUser()
       cy.visit('/')
     })
 
@@ -36,6 +41,10 @@ describe('Group assignment indicator tests', () => {
         .should('exist')
         .and('be.visible')
         .and('have.text', 'Indicator Test Group')
+    })
+
+    afterEach(() => {
+      cy.logout()
     })
   })
 
@@ -50,6 +59,10 @@ describe('Group assignment indicator tests', () => {
         .should('not.exist')
       cy.get('[data-cy=groupname_display_unassigned]')
         .should('not.exist')
+    })
+
+    afterEach(() => {
+      cy.logout()
     })
   })
 })

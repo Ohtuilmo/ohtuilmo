@@ -16,7 +16,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
-import { TEST_USER, TEST_USER2, TEST_ADMIN } from '../common'
+import { TEST_USER, TEST_USER2, TEST_ADMIN, TEST_USER3 } from '../common'
 
 const postLogin = (user) => {
   const { headers } = user
@@ -44,6 +44,14 @@ Cypress.Commands.add('loginAsRegisteredUser', () => {
 
 Cypress.Commands.add('loginAsAdmin', () => {
   loginAsUser(TEST_ADMIN)
+})
+
+Cypress.Commands.add('loginAsRegisteredIndicatedUser', () => {
+  loginAsUser(TEST_USER3)
+})
+
+Cypress.Commands.add('logout', () => {
+  window.localStorage.removeItem('loggedInUser')
 })
 
 const withLoggedAdminToken = (fn) => {
