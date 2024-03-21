@@ -8,7 +8,7 @@ const initialQuestionsWithAnswers = [
   },
   {
     type: 'text',
-    answer: 'En mutta olen nopea oppimaan!?!',
+    answer: 'En mutta olen nopea oppimaan :))))',
     question: 'Oletko varma, että osaat koodata?'
   }
 ]
@@ -85,18 +85,35 @@ const newUsers = [
   }
 ]
 
-const newConfiguration = [
+
+const newConfiguration1 = [
   {
-    name: 'Kevät 2024',
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    name: 'Syksy 2023',
+    name: 'Kevät 2023',
+    registration_question_set_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   }
 ]
+
+const newConfiguration2 = [
+  {
+    name: 'Syksy 2023',
+    registration_question_set_id: 1,
+    created_at: new Date(),
+    updated_at: new Date()
+  }
+]
+
+const newConfiguration3 = [
+  {
+    name: 'Kevät 2024',
+    registration_question_set_id: 1,
+    created_at: new Date(),
+    updated_at: new Date()
+  }
+]
+
+
 
 const newTopics = [
   {
@@ -132,7 +149,41 @@ const newTopics = [
     configuration_id: 1,
     created_at: new Date(),
     updated_at: new Date()
-  }
+  },
+  {
+    active: true,
+    acronym: '',
+    content: JSON.stringify({
+      email: 'topic123@gmail.com',
+      title: 'Optimization application for a logistics company',
+      description: 'Develop an application for a logistics company to optimize their operations.',
+      environment: 'React, Node.js, MongoDB',
+      customerName: 'Logistics Company',
+      additionalInfo: 'More information about the topic',
+      specialRequests: 'Special requests for the topic'
+    }),
+    secret_id: 'topic123secret',
+    configuration_id: 3,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    active: true,
+    acronym: '',
+    content: JSON.stringify({
+      email: 'topic897@gmail.com',
+      title: 'AI in a mobile application',
+      description: 'Develop an AI feature for a mobile application.',
+      environment: 'React Native, Node.js',
+      customerName: 'Mobile Application Company',
+      additionalInfo: 'More information about the topic',
+      specialRequests: 'Special requests for the topic'
+    }),
+    secret_id: 'topic897secret',
+    configuration_id: 3,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
 ]
 
 const initialPreferredTopics = [
@@ -238,7 +289,9 @@ const addTimeStamps = (arr) => {
 module.exports = {
   up: async (query) => {
     await query.bulkInsert('users', addTimeStamps(newUsers), {})
-    await query.bulkInsert('configurations', addTimeStamps(newConfiguration), {})
+    await query.bulkInsert('configurations', addTimeStamps(newConfiguration1), {})
+    await query.bulkInsert('configurations', addTimeStamps(newConfiguration2), {})
+    await query.bulkInsert('configurations', addTimeStamps(newConfiguration3), {})
     await query.bulkInsert('topics', addTimeStamps(newTopics), {})
     await query.bulkInsert('groups', addTimeStamps(newGroup), {})
     await query.bulkInsert('group_students', addTimeStamps(group_students), {})
@@ -250,11 +303,11 @@ module.exports = {
   },
 
   down: async (query) => {
-    await query.bulkDelete('topics', { secret_id: ['newtopic1secret', 'newtopic2secret'] }, {})
-    await query.bulkDelete('configurations', { name: ['Kevät 2024', 'Syksy 2023'] }, {})
-    await query.bulkDelete('users', { username: ['olliohj', 'newuser1'] }, {})
-    await query.bulkDelete('groups', { name: 'ohtuilmo-ryhmä' }, {})
+    await query.bulkDelete('topics', { secret_id: ['newtopic1secret', 'newtopic2secret', 'topic123secret', 'topic897secret'] }, {})
+    await query.bulkDelete('configurations', { name: ['Kevät 2024', 'Syksy 2023', 'Kevät 2023'] }, {})
+    await query.bulkDelete('users', { username: ['olliohj', 'newuser1', 'johnsmith', 'jane.madison', 'instruct1', 'timoTekoäly', 'johannakoodari'] }, {})
+    await query.bulkDelete('groups', { name: ['ohtuilmo-ryhmä', 'tekOäly-ryhmä'] }, {})
     await query.bulkDelete('group_students', { group_id: 1 }, {})
-    await query.bulkDelete('registrations', { student_student_number: ['112345700', '112345701'] }, {})
+    await query.bulkDelete('registrations', { student_student_number: ['112345700', '112345701', '112345702', '112345704', '112345705'] }, {})
   }
 }
