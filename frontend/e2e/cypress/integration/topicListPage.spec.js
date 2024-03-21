@@ -70,12 +70,12 @@ describe('Topic list page', () => {
         .children()
         .eq(1)
         .should('be.visible')
-        .and('include.text', '2')
+        .and('include.text', '2024 Spring')
       cy.get('ul')
         .children()
         .eq(2)
         .should('be.visible')
-        .and('include.text', '1')
+        .and('include.text', '2023 Autumn')
     })
   })
 
@@ -86,7 +86,7 @@ describe('Topic list page', () => {
     })
 
     it('after loading the topics page, latest configuration should be selected', () => {
-      cy.window().its('store').invoke('getState').its('topicListPage.filter').should('eq', 2)
+      cy.window().its('store').invoke('getState').its('topicListPage.filter').should('eq', 5)
     })
 
     it('after loading the topics page, message should be rendered without topics', () => {
@@ -154,7 +154,7 @@ describe('Topic list page', () => {
     it('renders correct number of topics', () => {
       cy.get('tbody')
         .children()
-        .should('have.length', 3)
+        .should('have.length', 5)
     })
 
     it('renders topics in correct order', () => {
@@ -172,7 +172,7 @@ describe('Topic list page', () => {
         .children()
         .eq(2)
         .invoke('attr','data-cy-topic-name')
-        .should('eq', 'Aihe C')
+        .should('eq', 'Ohjelmistotuotantoprojektin laajennus')
     })
   })
 
@@ -292,7 +292,7 @@ describe('Topic list page', () => {
     describe('filtering by acceptance status', () => {
       it('shows all topics after setting the filter to "All"', () => {
         cy.get('[data-cy="acceptance-filter-all"]').click()
-        cy.get('tbody').children().should('have.length', 3)
+        cy.get('tbody').children().should('have.length', 5)
       })
       it('shows message if no topics are found after filtering', () => {
         cy.wait(2500)
