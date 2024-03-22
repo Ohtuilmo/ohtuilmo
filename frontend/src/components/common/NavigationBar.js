@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import GroupIcon from '@material-ui/icons/Group'
 import NavigationMenu from './NavigationMenu'
 import {
   regularItems,
@@ -15,7 +16,7 @@ import {
 } from './MenuItemLists'
 import './NavigationBar.css'
 
-const NavigationBar = ({ user, history, logout }) => {
+const NavigationBar = ({ group, user, history, logout }) => {
   const getAppropriateMenuItemList = () => {
     if (user === null) {
       return { items: regularItems(history) }
@@ -40,15 +41,32 @@ const NavigationBar = ({ user, history, logout }) => {
     }
   }
 
-  let loggedIn = user && user.user ? <AccountCircle /> : ''
-  let username =
-    user && user.user ? (
+  let groupname =
+    group && group.groupName
+      ? (
+        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_assigned" >
+          {group.groupName}
+        </h4>
+      )
+      : (
+        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_unassigned" >
+          No group assigned
+        </h4>
+      )
+  let username = user.user
+    ? (
       <h4 className="navigation-bar-username tracking-in-expand">
         {user.user.username}
       </h4>
-    ) : (
-      ''
     )
+    : ('')
+
+  let loggedIn = user && user.user ? <Fragment>
+    {!user.user.admin && !user.user.instructor ? <GroupIcon /> : ''}
+    {!user.user.admin && !user.user.instructor ? groupname : ''}
+    <AccountCircle />
+    {username}
+  </Fragment> : ''
 
   return (
     <div className="navigation-bar-container">
@@ -64,7 +82,6 @@ const NavigationBar = ({ user, history, logout }) => {
             Software engineering project
           </Typography>
           {loggedIn}
-          {username}
           <Button
             className="navigation-bar-logout-button"
             style={{ marginLeft: '10px' }}
@@ -82,6 +99,7 @@ const NavigationBar = ({ user, history, logout }) => {
 const mapStateToProps = (state) => {
   return {
     user: state.login.user,
+    group: state.registrationDetails.myGroup
   }
 }
 

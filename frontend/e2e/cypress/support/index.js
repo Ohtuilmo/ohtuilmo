@@ -16,7 +16,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
-import { TEST_USER, TEST_USER2, TEST_ADMIN } from '../common'
+import { TEST_USER, TEST_USER2, TEST_ADMIN, TEST_USER3 } from '../common'
 
 const postLogin = (user) => {
   const { headers } = user
@@ -44,6 +44,14 @@ Cypress.Commands.add('loginAsRegisteredUser', () => {
 
 Cypress.Commands.add('loginAsAdmin', () => {
   loginAsUser(TEST_ADMIN)
+})
+
+Cypress.Commands.add('loginAsRegisteredIndicatedUser', () => {
+  loginAsUser(TEST_USER3)
+})
+
+Cypress.Commands.add('logout', () => {
+  window.localStorage.removeItem('loggedInUser')
 })
 
 const withLoggedAdminToken = (fn) => {
@@ -474,13 +482,13 @@ Cypress.Commands.add('deleteCustomerReviews', () => {
     }).then((res) => {
       const { reviews } = res.body
       if (reviews) {
-      }
-      for (const review of reviews) {
-        cy.request({
-          url: `/api/customerReview/${review.id}`,
-          method: 'DELETE',
-          headers: authHeaders
-        })
+        for (const review of reviews) {
+          cy.request({
+            url: `/api/customerReview/${review.id}`,
+            method: 'DELETE',
+            headers: authHeaders
+          })
+        }
       }
     })
   })
@@ -499,13 +507,13 @@ Cypress.Commands.add('deleteInstructorReviews', () => {
     }).then((res) => {
       const { reviews } = res.body
       if (reviews) {
-      }
-      for (const review of reviews) {
-        cy.request({
-          url: `/api/instructorReview/${review.id}`,
-          method: 'DELETE',
-          headers: authHeaders
-        })
+        for (const review of reviews) {
+          cy.request({
+            url: `/api/instructorReview/${review.id}`,
+            method: 'DELETE',
+            headers: authHeaders
+          })
+        }
       }
     })
   })

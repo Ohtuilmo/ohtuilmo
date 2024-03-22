@@ -22,6 +22,18 @@ export const TEST_USER2 = {
   }
 }
 
+export const TEST_USER3 = {
+  username: 'indicatortester',
+  password: 'indicatorTester321',
+  headers: {
+    uid: 'indicatortester',
+    givenname: 'Volodymyr',
+    mail: 'volodymy.testerskyy@fakemail.not',
+    hypersonstudentid: '0918273645',
+    sn: 'Testerskyy'
+  }
+}
+
 export const TEST_ADMIN = {
   username: 'testertester2',
   password: 'testertester123',

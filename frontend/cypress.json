@@ -6,8 +6,5 @@
   "supportFile": "e2e/cypress/support/index.js",
   "videosFolder": "e2e/cypress/videos",
   "projectId": "2e43ni",
-  "retries": {
-    "runMode": 3,
-    "openMode": 3
-  }
+  "retries": 3
 }

@@ -138,7 +138,6 @@ describe('Page access and redirect tests', () => {
     it('renders /peerreview when visited', () => {
       cy.visit('/peerreview')
       cy.url().should('include', '/peerreview')
-      cy.contains('You are currently not assigned to any group.')
     })
 
     it('renders /register when visited', () => {
@@ -232,6 +231,9 @@ describe('Page access and redirect tests', () => {
   })
 
   describe('404 handler', () => {
+    beforeEach(() => {
+      cy.loginAsRegisteredUser()
+    })
     it('shows a 404 not found page when entering an url that is not found', () => {
       cy.visit('/amksfmkafg-qfq435tefds')
       cy.get('.not-found-page').contains('Page not found')

@@ -41,6 +41,14 @@ const initialUsers = [
     last_name: 'Trump',
     email: '',
     admin: false
+  },
+  {
+    username: 'indicatortester',
+    first_names: 'Volodymyr',
+    email: 'volodymy.testerskyy@fakemail.not',
+    student_number: '0918273645',
+    last_name: 'Testerskyy',
+    admin: false
   }
 ]
 
@@ -123,6 +131,17 @@ const initialRegistration = [
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
     student_student_number: '012345698'
+  },
+  {
+    preferred_topics: JSON.stringify(initialPreferredTopics),
+    questions: JSON.stringify([
+      initialQuestionsWithAnswers[0],{
+        ...initialQuestionsWithAnswers[1],
+        answer: 'Koodannut useilla eri ohjelmointikielillä viimeiset kymmenen vuotta, eiköhän se suju.'
+      }
+    ]),
+    configuration_id: 1,
+    student_student_number: '0918273645'
   }
 ]
 
