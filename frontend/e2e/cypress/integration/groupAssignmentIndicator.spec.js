@@ -11,7 +11,7 @@ describe('Group assignment indicator tests', () => {
       cy.get('[data-cy=groupname_display_unassigned]')
         .should('exist')
         .and('be.visible')
-        .and('have.text', 'No group assiged')
+        .and('have.text', 'No group assigned')
     })
 
     afterEach(() => {

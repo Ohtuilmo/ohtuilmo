@@ -44,12 +44,12 @@ const NavigationBar = ({ group, user, history, logout }) => {
   let groupname =
     group && group.groupName
       ? (
-        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy='groupname_display_assigned' >
+        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_assigned" >
           {group.groupName}
         </h4>
       )
       : (
-        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy='groupname_display_unassigned' >
+        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_unassigned" >
           No group assiged
         </h4>
       )
