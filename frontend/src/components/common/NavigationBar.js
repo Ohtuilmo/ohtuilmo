@@ -50,7 +50,7 @@ const NavigationBar = ({ group, user, history, logout }) => {
       )
       : (
         <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_unassigned" >
-          No group assiged
+          No group assigned
         </h4>
       )
   let username = user.user
