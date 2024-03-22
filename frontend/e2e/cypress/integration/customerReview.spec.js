@@ -79,8 +79,9 @@ describe('Customer review page', () => {
   })
 
   beforeEach(() => {
+    cy.loginAsAdmin()
     cy.deleteCustomerReviews()
-    cy.visit('/customer-review/eec0neeT0jo0ae9F')
+    cy.visit('/customer-review/eec0neeT0jo0ae9F', {timeout: 3500})
   })
 
   it('requires text fields to be filled', () => {

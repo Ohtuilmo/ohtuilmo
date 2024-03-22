@@ -482,13 +482,13 @@ Cypress.Commands.add('deleteCustomerReviews', () => {
     }).then((res) => {
       const { reviews } = res.body
       if (reviews) {
-      }
-      for (const review of reviews) {
-        cy.request({
-          url: `/api/customerReview/${review.id}`,
-          method: 'DELETE',
-          headers: authHeaders
-        })
+        for (const review of reviews) {
+          cy.request({
+            url: `/api/customerReview/${review.id}`,
+            method: 'DELETE',
+            headers: authHeaders
+          })
+        }
       }
     })
   })
@@ -507,13 +507,13 @@ Cypress.Commands.add('deleteInstructorReviews', () => {
     }).then((res) => {
       const { reviews } = res.body
       if (reviews) {
-      }
-      for (const review of reviews) {
-        cy.request({
-          url: `/api/instructorReview/${review.id}`,
-          method: 'DELETE',
-          headers: authHeaders
-        })
+        for (const review of reviews) {
+          cy.request({
+            url: `/api/instructorReview/${review.id}`,
+            method: 'DELETE',
+            headers: authHeaders
+          })
+        }
       }
     })
   })
