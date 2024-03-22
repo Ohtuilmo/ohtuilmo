@@ -7,6 +7,8 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
   const [time, setTime] = useState('')
   const [description, setDescription] = useState('')
+  const [timeErrorMessage, setTimeErrorMessage] = useState('')
+  const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('')
 
   const handleDateChange = (event) => {
     setDate(event.target.value)
@@ -20,10 +22,28 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
     setDescription(event.target.value)
   }
 
+  const formIsInvalid = () => {
+    let error_exists = false
+    const timePattern = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/
+    if (!timePattern.test(time)) {
+      setTimeErrorMessage('Time must be in format HH:MM')
+      error_exists = true
+    }
+    if (description.length < 5) {
+      setDescriptionErrorMessage('Description must be at least 5 characters')
+      error_exists = true
+    }
+    return error_exists
+  }
+
   const handleFormSubmit = (event) => {
     event.preventDefault()
-    handleSubmit(date, time, description)
-    clearForm()
+    if (!formIsInvalid()) {
+      setTimeErrorMessage('')
+      setDescriptionErrorMessage('')
+      handleSubmit(date, time, description)
+      clearForm()
+    }
   }
 
   const clearForm = () => {
@@ -51,6 +71,8 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
         />
         <TextField
           disabled={disabled}
+          error={!!timeErrorMessage}
+          helperText={timeErrorMessage}
           className="time"
           id="time"
           label="Time (HH:MM)"
@@ -64,6 +86,8 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
         />
         <TextField
           disabled={disabled}
+          error={!!descriptionErrorMessage}
+          helperText={descriptionErrorMessage}
           className="description"
           id="description"
           label="Description"

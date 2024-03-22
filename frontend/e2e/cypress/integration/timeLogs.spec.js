@@ -98,23 +98,6 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').children().should('have.length', 2)
   })
 
-  // this test will fail when frontend validation is done properly, remove at that point
-  it('shows error from backend when creating timeLog fails too short description', () => {
-    cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container').should('exist')
-    cy.get('.date').type('2022-01-01')
-    cy.get('.time').type('01:00')
-    cy.get('.description').type('inv')
-    cy.get('.submit-button').click()
-
-    cy.get('.notification').should('exist')
-    cy.get('.notification').should(
-      'have.text',
-      'Description must be over 5 characters.'
-    )
-  })
-
   it('shows error from backend when creating timeLog fails with data outside sprint', () => {
     cy.visit('/timelogs')
     cy.get('.timelogs-container-1').should('exist')
@@ -168,31 +151,96 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').children().should('have.length', 1)
   })
 
-  it('remove sprints, should not display sprints or time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Sprint Dashboard').click()
-      })
+    it('displays error on time field of form when input is negative hours', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('-01:00')
+      cy.get('.description').type('negative time')
+      cy.get('.submit-button').click()
 
-    cy.get('.sprints-container')
-      .find('[id^="sprint-remove-button-"]')
-      .click({ multiple: true })
-      .then(() =>
-        cy.get('#app-content').should('not.contain', '.sprint-list-container')
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('#timelog-rows').should('not.contain', 'negative time')
+    })
+
+    it('displays error on time field of form when input is letters', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('aabee')
+      cy.get('.description').type('letters in time')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('#timelog-rows').should('not.contain', 'letters in time')
+    })
+
+    it('displays error on time field of form when input is missing a colon', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('0100')
+      cy.get('.description').type('missing colon')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('#timelog-rows').should('not.contain', 'missing colon')
+    })
+
+    it('displays error on time field of form when input has over 60 minutes', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('01:61')
+      cy.get('.description').type('over 60 minutes')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Time must be in format HH:MM')
+      cy.get('#timelog-rows').should('not.contain', 'over 60 minutes')
+    })
+
+    it('displays error on description field of form when input is under 5 characters long', () => {
+      cy.visit('/timelogs')
+      cy.get('.timelogs-container-1').should('exist')
+      cy.get('.input-container').should('exist')
+      cy.get('.date').type('2022-01-01')
+      cy.get('.time').type('01:00')
+      cy.get('.description').type('1234')
+      cy.get('.submit-button').click()
+
+      cy.get('.input-container').contains('Description must be at least 5 characters')
+      cy.get('#timelog-rows').should('not.contain', '1234')
+    })
+
+    it('remove sprints, should not display sprints or time logs', () => {
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Sprint Dashboard').click()
+        })
+
+      cy.get('.sprints-container')
+        .find('[id^="sprint-remove-button-"]')
+        .click({ multiple: true })
+        .then(() =>
+          cy.get('#app-content').should('not.contain', '.sprint-list-container')
+        )
+
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Time Log').click()
+        })
+
+      cy.get('#app-content').should(
+        'contain',
+        'Your group has no sprints. Add a sprint using Sprint Dashboard.'
       )
-
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
-    cy.get('#app-content').should(
-      'contain',
-      'Your group has no sprints. Add a sprint using Sprint Dashboard.'
-    )
-  })
+    })
 
   after(() => {
     cy.deleteAllGroups()
