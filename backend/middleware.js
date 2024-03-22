@@ -88,10 +88,10 @@ const fakeshibbo = (req, res, next) => {
   req.headers.employeenumber = ''
   req.headers.mail = ''
   req.headers.hypersonstudentid =
-    '8668e87f3f7cbff3067731ed4a181879949716608e4fa93a9ded969d1d2626f3'
-  req.headers.uid = 'yannabram840'
-  req.headers.givenname = 'Abram'
-  req.headers.sn = 'Yann'
+    '112345700'
+  req.headers.uid = 'newuser1'
+  req.headers.givenname = 'New'
+  req.headers.sn = 'User'
   next()
 }
 
