@@ -15,9 +15,7 @@
     "db:migrate": "sequelize db:migrate",
     "db:seed:all": "sequelize db:seed:all",
     "db:nuke": "npx npm-run-all -s db:drop db:create",
-    "db:recreate": "npx npm-run-all -s db:nuke db:migrate db:seed:all",
-    "import-sprints": "python3 scripts/importSprints.py",
-    "import-timelogs": "python3 scripts/importTimeLogs.py"
+    "db:recreate": "npx npm-run-all -s db:nuke db:migrate db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -36,7 +34,6 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
-    "csv-parser": "^3.0.0",
     "dotenv": "^5.0.1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
