@@ -149,8 +149,9 @@ const TimeLogsPage = (props) => {
 
   const handleClickPreviousSprint = () => {
     setSelectedSprintNumber(
-      existingSprintNumbers.find((sprint) => sprint < selectedSprintNumber) ||
-        selectedSprintNumber
+      [...existingSprintNumbers]
+        .reverse()
+        .find((sprint) => sprint < selectedSprintNumber) || selectedSprintNumber
     )
   }
 
