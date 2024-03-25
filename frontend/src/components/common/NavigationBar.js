@@ -42,31 +42,45 @@ const NavigationBar = ({ group, user, history, logout }) => {
   }
 
   let groupname =
-    group && group.groupName
-      ? (
-        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_assigned" >
-          {group.groupName}
-        </h4>
-      )
-      : (
-        <h4 className="navigation-bar-groupname tracking-in-expand" data-cy="groupname_display_unassigned" >
-          No group assigned
-        </h4>
-      )
-  let username = user.user
-    ? (
+    group && group.groupName ? (
+      <h4
+        className="navigation-bar-groupname tracking-in-expand"
+        data-cy="groupname_display_assigned"
+      >
+        {group.groupName}
+      </h4>
+    ) : (
+      <h4
+        className="navigation-bar-groupname tracking-in-expand"
+        data-cy="groupname_display_unassigned"
+      >
+        No group assigned
+      </h4>
+    )
+  let username =
+    user && user.user ? (
       <h4 className="navigation-bar-username tracking-in-expand">
         {user.user.username}
       </h4>
+    ) : (
+      ''
     )
-    : ('')
 
-  let loggedIn = user && user.user ? <Fragment>
-    {!user.user.admin && !user.user.instructor ? <GroupIcon /> : ''}
-    {!user.user.admin && !user.user.instructor ? groupname : ''}
-    <AccountCircle />
-    {username}
-  </Fragment> : ''
+  let loggedIn =
+    user && user.user ? (
+      <Fragment>
+        {!user.user.admin && !user.user.instructor ? (
+          <GroupIcon className="navigation-bar-groupicon" />
+        ) : (
+          ''
+        )}
+        {!user.user.admin && !user.user.instructor ? groupname : ''}
+        <AccountCircle />
+        {username}
+      </Fragment>
+    ) : (
+      ''
+    )
 
   return (
     <div className="navigation-bar-container">
@@ -99,7 +113,7 @@ const NavigationBar = ({ group, user, history, logout }) => {
 const mapStateToProps = (state) => {
   return {
     user: state.login.user,
-    group: state.registrationDetails.myGroup
+    group: state.registrationDetails.myGroup,
   }
 }
 
