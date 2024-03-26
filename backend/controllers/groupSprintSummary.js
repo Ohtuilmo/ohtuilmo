@@ -2,44 +2,6 @@ const groupSprintSummaryRouter = require('express').Router()
 const { checkLogin } = require('../middleware')
 const db = require('../models/index')
 
-
-const fakeData =
-  [
-    {
-      '1': [
-        { 'Joonatan Huang': 120 },
-        { 'Mikko Ahro': 150 },
-        { 'Ella Virtanen': 130 },
-        { 'Leo Niemi': 140 },
-        { 'Noora Laine': 110 },
-        { 'Sofia Heikkilä': 125 },
-        { 'Antti Korhonen': 135 }
-      ]
-    },
-    {
-      '2': [
-        { 'Joonatan Huang': 90 },
-        { 'Mikko Ahro': 180 },
-        { 'Ella Virtanen': 120 },
-        { 'Leo Niemi': 160 },
-        { 'Noora Laine': 105 },
-        { 'Sofia Heikkilä': 135 },
-        { 'Antti Korhonen': 140 }
-      ]
-    },
-    {
-      '3': [
-        { 'Joonatan Huang': 200 },
-        { 'Mikko Ahro': 160 },
-        { 'Ella Virtanen': 150 },
-        { 'Leo Niemi': 170 },
-        { 'Noora Laine': 120 },
-        { 'Sofia Heikkilä': 130 },
-        { 'Antti Korhonen': 125 }
-      ]
-    }
-  ]
-
 const validateAccess = async (groupId, userId) => {
   const group = await db.Group.findByPk(groupId)
   if (!group) {
@@ -110,22 +72,23 @@ groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
   const groupId = req.params.id
   const userId = req.user.id
   const isAdmin = req.user.admin
-  //console.log('groupId: ', groupId)
 
   const access = await validateAccess(groupId, userId) || isAdmin
-  //console.log(access)
 
-  if (access) {
-    //console.log('Access granted')
-    const result = await getGroupSprintSummary(groupId)
-    console.log('result: ', result)
-    return res.status(200).json(result)
+  if (!access) {
+    console.error('Group not found or user not authorized.')
+    return res.status(403).json({ error: 'Group not found or user not authorized.' })
   }
-  console.error('Group not found or user not authorized.')
-  return res.status(403).json({ error: 'Group not found or user not authorized.' })
 
+
+  const result = await getGroupSprintSummary(groupId)
+  if (result === undefined) {
+    console.error('Error in fetching group sprint summary.')
+    return res.status(500).json({ error: 'Error in fetching group sprint summary' })
+  }
+
+  console.log('result: ', result)
+  return res.status(200).json(result)
 })
-
-
 
 module.exports = groupSprintSummaryRouter
