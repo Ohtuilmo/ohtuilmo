@@ -126,6 +126,34 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').should('contain', 'No logs yet :(')
   })
 
+  it('asks for confirmation before deleting a time log and aborts deletion when canceled', () => {
+    cy.get('#hamburger-menu-button')
+    .click()
+    .then(() => {
+      cy.contains('Time Log').click()
+    })
+
+    cy.get(':nth-child(1) > .timelogs-description')
+      .invoke('text')
+      .as('testedLogDescription')
+
+    cy.get('#timelog-rows > :nth-child(1)')
+      .find('[id^="timelog-remove-button-"]')
+      .click()
+
+    cy.get('.confirmation-dialog').should(
+      'contain',
+      'Delete this time log? It cannot be restored.'
+    )
+    cy.get('.confirmation-dialog').find('#confirmation-dialog-no-button').click()
+    cy.get('@testedLogDescription').then((testedLogDescription) => {
+      cy.get('#timelog-rows > :nth-child(1) > .timelogs-description').contains(
+        testedLogDescription
+      )
+    })
+    cy.get('#timelog-rows').children().should('have.length', 2)
+  })
+
   it('remove a time log, should not display removed time log', () => {
     cy.get('#hamburger-menu-button')
       .click()
@@ -140,6 +168,12 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows > :nth-child(1)')
       .find('[id^="timelog-remove-button-"]')
       .click()
+
+    cy.get('.confirmation-dialog').should(
+      'contain',
+      'Delete this time log? It cannot be restored.'
+    )
+    cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
 
     cy.get('@removedLogDescription').then((removedLogDescription) => {
       cy.get('#timelog-rows > :nth-child(1) > .timelogs-description').should(
