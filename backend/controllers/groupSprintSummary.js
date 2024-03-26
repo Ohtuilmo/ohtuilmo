@@ -1,8 +1,6 @@
 const groupSprintSummaryRouter = require('express').Router()
 const { checkLogin } = require('../middleware')
-//const group = require('../models/group')
 const db = require('../models/index')
-const { Sequelize } = require('sequelize')
 
 
 const fakeData =
@@ -43,73 +41,94 @@ const fakeData =
   ]
 
 const validateAccess = async (groupId, userId) => {
-  const group = await db.Group.findOne({
-    where: { id: groupId },
-    include: [{
-      model: db.User,
-      as: 'students',
-      attributes: ['id'],
-    }],
-  })
-
+  console.log('validateAccess groupId:', groupId)
+  const group = await db.Group.findByPk(groupId)
   if (!group) {
+    console.log('Group not found')
     return false
   }
-
-  const isMember = group.students.some(student => student.id === userId)
+  const isMember = await group.hasStudent(userId)
   const isInstructor = group.instructorId === userId
+
+  console.log('isMember:', isMember)
+  console.log('isInstructor:', isInstructor)
+  console.log('isMember || isInstructor:', isMember || isInstructor)
 
   return isMember || isInstructor
 }
 
 const getGroupSprintSummary = async (groupId) => {
-  const result = await db.TimeLog.findAll({
+
+
+
+  const sprints = await db.Sprint.findAll({
+    where: { group_id: groupId },
     attributes: [
-      [Sequelize.fn('sum', Sequelize.col('minutes')), 'totalMinutes'],
-      [Sequelize.fn('split', Sequelize.col('user.first_names'), ' ')[0], 'firstName'],
-      Sequelize.col('user.last_name'),
-      Sequelize.col('sprint.sprint')
-    ],
-    include: [
-      {
-        model: db.User,
-        attributes: [],
-        where: { groupId: groupId }
-      },
-      {
-        model: db.Sprint,
-        attributes: []
-      }
-    ],
-    group: ['sprint.id', 'user.id'],
-    raw: true
+      'id',
+      'sprint'
+    ]
   })
 
-  const formattedResult = result.reduce((acc, row) => {
-    const fullName = row.firstName + ' ' + row['user.last_name']
-    if (!acc[row['sprint.sprint']]) {
-      acc[row['sprint.sprint']] = []
-    }
-    acc[row['sprint.sprint']].push({ [fullName]: row.totalMinutes })
-    return acc
+  const sprintIds = sprints.map(sprint => sprint.id)
+
+  const rawLogs = await db.TimeLog.findAll({
+    where: { sprint_id: { [db.Sequelize.Op.in]: sprintIds } },
+    attributes: [
+      'sprint_id',
+      'student_number',
+      [db.Sequelize.fn('sum', db.Sequelize.col('minutes')), 'total_minutes']
+    ],
+    group: ['sprint_id', 'student_number']
+  })
+
+  const studentNumbers = rawLogs.map(log => log.student_number)
+  const users = await db.User.findAll({
+    where: { student_number: { [db.Sequelize.Op.in]: studentNumbers } },
+    attributes: ['student_number', 'first_names', 'last_name']
+  })
+
+  const nameMap = users.reduce((map, user) => {
+    map[user.student_number] = `${user.first_names} ${user.last_name}`
+    return map
   }, {})
 
-  return Object.entries(formattedResult).map(([sprint, users]) => ({ [sprint]: users }))
+
+  const logsMap = rawLogs.reduce((map, log) => {
+    if (!map[log.sprint_id]) {
+      map[log.sprint_id] = {}
+    }
+    const name = nameMap[log.student_number]
+    map[log.sprint_id][name] = log.dataValues.total_minutes
+    return map
+  }, {})
+
+
+  const result = sprints.map(sprint => ({
+    [sprint.sprint]: Object.entries(logsMap[sprint.id] || {}).reduce((obj, [name, total_minutes]) => {
+      obj[name] = parseInt(total_minutes, 10) || 0
+      return obj
+    }, {})
+  }))
+  return result
 }
 
 
 groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
+  console.log('groupSprintSummary req.params:', req.params)
   const groupId = req.params.id
   console.log('groupSprintSummary id:', groupId)
   const userId = req.user.id
   console.log('groupSprintSummary userId:', userId)
   const isAdmin = req.user.admin
+  console.log('groupSprintSummary isAdmin:', isAdmin)
 
-  if (!validateAccess(groupId, userId) && !isAdmin) {
+
+  if (validateAccess(groupId, userId) || isAdmin) {
     return res.status(403).json({ error: 'Group not found or user not authorized.' })
   }
 
-  getGroupSprintSummary(1).then(console.log).catch(console.error)
+  const result = await getGroupSprintSummary(2)
+  console.log('result: ', result)
 
   return res.status(200).json(fakeData)
 })
