@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { minutesToFormattedHoursAndMinutes } from '../../utils/functions'
 import { DeleteOutlineRounded } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core'
+import ConfirmationDialog from '../common/ConfirmationDialog'
 
 import './TimeLogsPage.css'
 
 export const TimeLogRow = ({ log, handleDelete }) => {
   const { hours, minutes } = minutesToFormattedHoursAndMinutes(log.minutes)
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   return (
     <div className="timelogs-table-row">
@@ -24,10 +26,18 @@ export const TimeLogRow = ({ log, handleDelete }) => {
         className="timelogs-remove-button"
         style={{ padding: '0 12px' }}
         disableRipple
-        onClick={handleDelete}
+        onClick={() => setConfirmOpen(true)}
       >
         <DeleteOutlineRounded />
       </IconButton>
+      <ConfirmationDialog
+        title="Delete Time Log?"
+        open={confirmOpen}
+        setOpen={setConfirmOpen}
+        onConfirm={handleDelete}
+      >
+        Delete this time log? It cannot be restored.
+      </ConfirmationDialog>
     </div>
   )
 }
