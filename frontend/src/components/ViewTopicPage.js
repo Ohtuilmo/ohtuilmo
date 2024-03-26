@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import Topic from './Topic'
 import TopicEditPage from './TopicEditPage'
 import viewTopicPageActions from '../reducers/actions/viewTopicPageActions'
@@ -28,8 +29,7 @@ class ViewTopicPage extends React.Component {
   copyToConfiguration = async () => {
     // eslint-disable-next-line
     const ok = confirm('sure?')
-    console.log(this.props.topic.id )
-    if ( ok ) {
+    if (ok) {
       try {
         // eslint-disable-next-line
         const createdTopic = await topicService.copy(this.props.topic.id)
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
     topic: state.viewTopicPage.topic,
     isEditable: state.viewTopicPage.isEditable,
     isOnEditMode: state.viewTopicPage.isOnEditMode,
-    user: state.login.user
+    user: state.login.user,
   }
 }
 
@@ -81,9 +81,6 @@ const mapDispatchToProps = {
   setSuccess: notificationActions.setSuccess,
 }
 
-const ConnectedViewTopicPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ViewTopicPage)
-
-export default ConnectedViewTopicPage
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ViewTopicPage)
+)
