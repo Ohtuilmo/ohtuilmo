@@ -41,7 +41,6 @@ const fakeData =
   ]
 
 const validateAccess = async (groupId, userId) => {
-  console.log('validateAccess groupId:', groupId)
   const group = await db.Group.findByPk(groupId)
   if (!group) {
     console.log('Group not found')
@@ -50,16 +49,10 @@ const validateAccess = async (groupId, userId) => {
   const isMember = await group.hasStudent(userId)
   const isInstructor = group.instructorId === userId
 
-  console.log('isMember:', isMember)
-  console.log('isInstructor:', isInstructor)
-  console.log('isMember || isInstructor:', isMember || isInstructor)
-
   return isMember || isInstructor
 }
 
 const getGroupSprintSummary = async (groupId) => {
-
-
 
   const sprints = await db.Sprint.findAll({
     where: { group_id: groupId },
@@ -88,7 +81,8 @@ const getGroupSprintSummary = async (groupId) => {
   })
 
   const nameMap = users.reduce((map, user) => {
-    map[user.student_number] = `${user.first_names} ${user.last_name}`
+    const firstName = user.first_names.split(' ')[0]
+    map[user.student_number] = `${firstName} ${user.last_name}`
     return map
   }, {})
 
@@ -104,33 +98,32 @@ const getGroupSprintSummary = async (groupId) => {
 
 
   const result = sprints.map(sprint => ({
-    [sprint.sprint]: Object.entries(logsMap[sprint.id] || {}).reduce((obj, [name, total_minutes]) => {
-      obj[name] = parseInt(total_minutes, 10) || 0
-      return obj
-    }, {})
+    [sprint.sprint]: Object.entries(logsMap[sprint.id] || {}).map(([name, total_minutes]) => ({
+      [name]: parseInt(total_minutes, 10) || 0
+    }))
   }))
-  return result
+
+  return JSON.stringify(result, null, 2)
 }
 
-
 groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
-  console.log('groupSprintSummary req.params:', req.params)
   const groupId = req.params.id
-  console.log('groupSprintSummary id:', groupId)
   const userId = req.user.id
-  console.log('groupSprintSummary userId:', userId)
   const isAdmin = req.user.admin
-  console.log('groupSprintSummary isAdmin:', isAdmin)
+  //console.log('groupId: ', groupId)
 
+  const access = await validateAccess(groupId, userId) || isAdmin
+  //console.log(access)
 
-  if (validateAccess(groupId, userId) || isAdmin) {
-    return res.status(403).json({ error: 'Group not found or user not authorized.' })
+  if (access) {
+    //console.log('Access granted')
+    const result = await getGroupSprintSummary(groupId)
+    console.log('result: ', result)
+    return res.status(200).json(result)
   }
+  console.error('Group not found or user not authorized.')
+  return res.status(403).json({ error: 'Group not found or user not authorized.' })
 
-  const result = await getGroupSprintSummary(2)
-  console.log('result: ', result)
-
-  return res.status(200).json(fakeData)
 })
 
 
