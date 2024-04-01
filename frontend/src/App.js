@@ -65,6 +65,7 @@ const NotFound = () => (
 
 const App = (props) => {
   const {
+    appActions,
     updateIsLoading,
     loginUser,
     fetchRegistrationManagement,

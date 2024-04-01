@@ -52,3 +52,8 @@ export const addDaysToDate = (date, days) => {
   newDate.setDate(newDate.getDate() + days)
   return newDate
 }
+
+export const determineIfMobile = () => {
+  const state = store.getState()
+  return state.app.deviceViewportWidth < 768
+}
