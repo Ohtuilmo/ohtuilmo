@@ -1,5 +1,5 @@
 const initialState = {
-  isLoading: false
+  isLoading: false,
 }
 
 const appReducer = (state = initialState, action) => {
@@ -10,8 +10,8 @@ const appReducer = (state = initialState, action) => {
       isLoading: action.payload
     }
   default:
+    return state
   }
-  return state
 }
 
 export default appReducer

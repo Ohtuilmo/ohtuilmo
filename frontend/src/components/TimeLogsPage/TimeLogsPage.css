@@ -20,6 +20,33 @@
     flex-wrap: wrap;
 }
 
+.timelogs-container-4 {
+    max-width: 1080px;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    gap: 120px;
+}
+
+.timelogs-container-chart {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  max-height: 500px;
+  margin-bottom: 42px;
+  gap: 40px;
+  padding-left: 20px;
+}
+
+.timelogs-container-mobile-chart {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  max-height: 400px;
+  margin-bottom: 42px;
+  gap: 40px;
+}
+
 .timelogs-sprint-select {
     display: flex;
     align-items: center;
