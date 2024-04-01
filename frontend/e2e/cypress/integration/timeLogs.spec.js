@@ -418,9 +418,9 @@ describe('Time logs & sprints', () => {
         .and('contain', 'There are no time logs available for this sprint.')
         .and('contain', 'The chart cannot be generated.')
     })
-  })
 
-  after(() => {
-    cy.deleteAllGroups()
+    after(() => {
+      cy.deleteAllGroups()
+    })
   })
 })
