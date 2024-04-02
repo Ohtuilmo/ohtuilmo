@@ -23,8 +23,7 @@ import sprintService from '../../services/sprints'
 import myGroupActions from '../../reducers/actions/myGroupActions'
 import {
   minutesAndHoursFromString,
-  hoursAndMinutesToMinutes,
-  determineIfMobile
+  hoursAndMinutesToMinutes
 } from '../../utils/functions'
 import './TimeLogsPage.css'
 import * as notificationActions from '../../reducers/actions/notificationActions'
@@ -32,7 +31,6 @@ import timeLogsActions from '../../reducers/actions/timeLogsActions'
 
 const TimeLogsPage = (props) => {
   const {
-    deviceViewportWidth,
     currentSprintNumber,
     selectedSprintNumber,
     setCurrentSprintNumber,
@@ -265,7 +263,7 @@ const TimeLogsPage = (props) => {
             <p>No logs yet :&#40;</p>
           )}
         </div>
-        <div className='timelogs-container-mobile-chart' data-cy='timelogs-container-chart' >
+        <div className='timelogs-container-chart' data-cy='timelogs-container-chart' >
           <TimeLogChart mobileView={isMobileView} />
         </div>
       </div>
@@ -319,7 +317,6 @@ const TimeLogsPage = (props) => {
 
 const mapStateToProps = (state) => ({
   state: state,
-  viewportWidth: state.app.deviceViewportWidth,
   user: {
     studentNumber: state.login.user.user.student_number,
     admin: state.login.user.user.admin,
