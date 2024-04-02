@@ -22,6 +22,7 @@ export const NoneAvailable = () => (
 
 export const NoTimeLogsPlaceholder = () => (
   <div
+    id='timelogs-placeholder'
     style={{
       display: 'flex',
       flexDirection: 'column',
