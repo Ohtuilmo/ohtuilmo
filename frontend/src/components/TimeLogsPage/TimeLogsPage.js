@@ -263,7 +263,7 @@ const TimeLogsPage = (props) => {
             <p>No logs yet :&#40;</p>
           )}
         </div>
-        <div className='timelogs-container-chart' data-cy='timelogs-container-chart' >
+        <div className='timelogs-container-chart'>
           <TimeLogChart mobileView={isMobileView} />
         </div>
       </div>
@@ -293,7 +293,7 @@ const TimeLogsPage = (props) => {
               disabled={selectedSprintNumber !== currentSprintNumber}
             />
           </div>
-          <div className='timelogs-container-chart' data-cy='timelogs-chart-container' >
+          <div className='timelogs-container-chart'>
             <TimeLogChart />
           </div>
         </div>

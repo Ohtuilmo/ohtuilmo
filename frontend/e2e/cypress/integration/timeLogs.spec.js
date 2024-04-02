@@ -303,7 +303,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy=timelogs-container-chart]')
+        .get('.timelogs-container-chart')
         .should('exist')
         .and('be.visible')
       cy
