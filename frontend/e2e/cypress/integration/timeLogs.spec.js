@@ -349,6 +349,75 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
     })
+
+    it('should display time log chart for previous sprint', () => {
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Time Log').click()
+        })
+
+      cy
+        .get('.timelogs-container-1')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-container-2')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-container-3')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-sprint-select')
+        .should('exist')
+        .and('be.visible')
+      cy.get('#previous-sprint-button').click()
+      cy
+        .get('.timelogs-chart')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('[data-cy="timelogs-chart-tick-0"]')
+        .should('exist')
+        .and('be.visible')
+    })
+
+    it('should display placeholder message for next sprint', () => {
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Time Log').click()
+        })
+
+      cy
+        .get('.timelogs-container-1')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-container-2')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-container-3')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-sprint-select')
+        .should('exist')
+        .and('be.visible')
+      cy.get('#next-sprint-button').click()
+      cy
+        .get('.timelogs-chart')
+        .should('not.exist')
+      cy
+        .get('[data-cy="timelogs-placeholder"]')
+        .should('exist')
+        .and('be.visible')
+        .and('contain', 'There are no time logs available for this sprint.')
+        .and('contain', 'The chart cannot be generated.')
+    })
   })
 
   after(() => {
