@@ -38,15 +38,6 @@
   padding-left: 20px;
 }
 
-.timelogs-container-mobile-chart {
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  max-height: 400px;
-  margin-bottom: 42px;
-  gap: 40px;
-}
-
 .timelogs-sprint-select {
     display: flex;
     align-items: center;
