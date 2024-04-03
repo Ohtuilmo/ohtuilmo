@@ -298,6 +298,8 @@ describe('Time logs & sprints', () => {
       const dateToday = new Date()
       const dateYesterday = addDaysToDate(dateToday, -1)
 
+      cy.createSprint()
+
       cy.get('#sprintNumber').type('1')
       cy.get('#startDate').type(formatDate(addWeeksToDate(dateToday, -2)))
       cy.get('#endDate').type(formatDate(addWeeksToDate(dateYesterday, -1)))

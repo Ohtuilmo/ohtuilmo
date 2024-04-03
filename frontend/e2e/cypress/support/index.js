@@ -54,6 +54,13 @@ Cypress.Commands.add('logout', () => {
   window.localStorage.removeItem('loggedInUser')
 })
 
+const withLoggedRegisteredUserToken = (fn) => {
+  postLogin(TEST_USER2).then((res) => {
+    const { token } = res.body
+    fn(token)
+  })
+}
+
 const withLoggedAdminToken = (fn) => {
   postLogin(TEST_ADMIN).then((res) => {
     const { token } = res.body
@@ -712,6 +719,29 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
           configurationId,
           instructorId,
           studentIds
+        }
+      })
+      .then((res) => res.body)
+  })
+})
+
+Cypress.Commands.add('createSprint', (sprintData) => {
+  return withLoggedRegisteredUserToken().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const { sprint, start_date, end_date } = sprintData
+
+    return cy
+      .request({
+        url: '/api/sprints',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          start_date,
+          end_date,
+          sprint,
+          user_id: TEST_USER2.studentNumber
         }
       })
       .then((res) => res.body)
