@@ -61,6 +61,13 @@ const withLoggedRegisteredUserToken = (fn) => {
   })
 }
 
+const withLoggedRegisteredUserTokenAlt = (fn) => {
+  postLogin(TEST_USER3).then((res) => {
+    const { token } = res.body
+    fn(token)
+  })
+}
+
 const withLoggedAdminToken = (fn) => {
   postLogin(TEST_ADMIN).then((res) => {
     const { token } = res.body
@@ -151,34 +158,6 @@ Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
       body: {
         name,
         questions
-      }
-    })
-  })
-})
-
-Cypress.Commands.add('createGroup', (groupData) => {
-  withLoggedAdminToken((token) => {
-    const authHeaders = {
-      Authorization: 'Bearer ' + token
-    }
-    const {
-      name,
-      topicId,
-      configurationId,
-      instructorId,
-      studentIds
-    } = groupData
-
-    cy.request({
-      url: '/api/groups',
-      method: 'POST',
-      headers: authHeaders,
-      body: {
-        name,
-        topicId,
-        configurationId,
-        instructorId,
-        studentIds
       }
     })
   })
@@ -725,25 +704,76 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
   })
 })
 
+Cypress.Commands.add('createGroup', (groupData) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    cy.request({
+      url: '/api/groups',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        topicId,
+        configurationId,
+        instructorId,
+        studentIds
+      }
+    }).then((res) => cy.wrap(res.body).as('groupData'))
+  })
+})
+
 Cypress.Commands.add('createSprint', (sprintData) => {
-  return withLoggedRegisteredUserToken().then((token) => {
+  withLoggedRegisteredUserTokenAlt((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
     const { sprint, start_date, end_date } = sprintData
+    const user_id = TEST_USER3.headers.hypersonstudentid
 
-    return cy
-      .request({
-        url: '/api/sprints',
-        method: 'POST',
-        headers: authHeaders,
-        body: {
-          start_date,
-          end_date,
-          sprint,
-          user_id: TEST_USER2.studentNumber
-        }
-      })
-      .then((res) => res.body)
+    cy.request({
+      url: '/api/sprints',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        start_date,
+        end_date,
+        sprint,
+        user_id
+      }
+    }).then((res) => cy.wrap(res.body).as('sprintData'))
+  })
+})
+
+Cypress.Commands.add('addTimelogEntry', (timeLogEntryData) => {
+  withLoggedRegisteredUserTokenAlt((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const { studentNumber, sprint, date, minutes, description, tags, groupId } = timeLogEntryData
+
+    cy.request({
+      url: '/api/timelogs',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        studentNumber,
+        sprint,
+        date,
+        minutes,
+        description,
+        tags,
+        groupId
+      }
+    })
   })
 })

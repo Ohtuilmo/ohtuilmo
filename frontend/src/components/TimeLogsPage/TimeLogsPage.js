@@ -88,42 +88,6 @@ const TimeLogsPage = (props) => {
       }
     }
     const fetchGroupSprintSummary = async () => {
-      const groupSprintSummaryData = [
-        {
-          '1': [
-            { 'Joonatan Huang': 120 },
-            { 'Mikko Ahro': 150 },
-            { 'Ella Virtanen': 130 },
-            { 'Leo Niemi': 140 },
-            { 'Noora Laine': 110 },
-            { 'Sofia Heikkilä': 125 },
-            { 'Antti Korhonen': 135 }
-          ]
-        },
-        {
-          '2': [
-            { 'Joonatan Huang': 90 },
-            { 'Mikko Ahro': 180 },
-            { 'Ella Virtanen': 120 },
-            { 'Leo Niemi': 160 },
-            { 'Noora Laine': 105 },
-            { 'Sofia Heikkilä': 135 },
-            { 'Antti Korhonen': 140 }
-          ]
-        },
-        {
-          '3': [
-            { 'Joonatan Huang': 200 },
-            { 'Mikko Ahro': 160 },
-            { 'Ella Virtanen': 150 },
-            { 'Leo Niemi': 170 },
-            { 'Noora Laine': 120 },
-            { 'Sofia Heikkilä': 130 },
-            { 'Antti Korhonen': 125 }
-          ]
-        }
-      ]
-      /*
       try {
         const fetchedData = await timeLogsService.getGroupSprintSummary()
         setGroupSprintSummary(fetchedData)
@@ -136,8 +100,6 @@ const TimeLogsPage = (props) => {
         )
         notificationActions.setError(error.response.data.error)
       }
-      */
-      setGroupSprintSummary(groupSprintSummaryData)
     }
     const fetchData = async () => {
       setIsLoading(true)

@@ -1,7 +1,61 @@
 /* eslint-disable */
+import sprint from '../../../../backend/models/sprint'
 import { addWeeksToDate, addDaysToDate } from '../../../src/utils/functions'
 
 const formatDate = (date) => date.toISOString().slice(0, 10)
+
+const plethoraOfTimeLogs = (groupId, sprints) => {
+  const sprintsToUse = sprints.length >= 3 ? sprints.length : 3
+  let timeLogs = []
+  const dateToday = new Date()
+  const currentStart = addDaysToDate(dateToday, -3)
+  const currentSprint = sprintsToUse - 1
+  for (let s = 0; s <= sprintsToUse; s++) {
+    const entries = Math.floor(Math.random() * 6) + 1
+    if (s+1 === currentSprint) {
+      for (let e = 1; e <= entries; e++) {
+        const date = addDaysToDate(currentStart, e)
+        timeLogs.push({
+          sprint: sprints[s],
+          date: formatDate(date),
+          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1),
+          description: `Test description: ${s} - ${e}`,
+          tags: [],
+          groupId,
+        })
+      }
+    } else if (s+1 < currentSprint) {
+      const sprintStart = addWeeksToDate(currentStart, -1 * (sprintsToUse - s))
+      const entries = Math.floor(Math.random() * 6) + 1
+      for (let e = 1; e <= entries; e++) {
+        const date = addDaysToDate(sprintStart, e)
+        timeLogs.push({
+          sprint: sprints[s],
+          date: formatDate(date),
+          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1),
+          description: `Test description: ${s} - ${e}`,
+          tags: [],
+          groupId,
+        })
+      }
+    } else if (s+1 > currentSprint) {
+      const sprintStart = addWeeksToDate(currentStart, 1)
+      const entries = Math.floor(Math.random() * 6) + 1
+      for (let e = 1; e <= entries; e++) {
+        const date = addDaysToDate(sprintStart, e)
+        timeLogs.push({
+          sprint: sprints[s],
+          date: formatDate(date),
+          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1),
+          description: `Test description: ${s} - ${e}`,
+          tags: [],
+          groupId,
+        })
+      }
+    }
+  }
+  return timeLogs
+}
 
 describe('Time logs & sprints', () => {
   before(() => {
@@ -278,52 +332,71 @@ describe('Time logs & sprints', () => {
 
   describe('Time log chart', () => {
     before(() => {
-      cy.loginAsAdmin()
+      cy.deleteAllGroups()
+      cy.logout()
+      let groupData = null
       cy.createGroup({
         name: 'Chart testing group',
         topicId: 4,
         configurationId: 1,
         instructorId: '112345699',
-        studentIds: ['012345698'],
+        studentIds: ['0918273645'],
       })
-      cy.logout()
-      cy.loginAsRegisteredUser()
-      cy.visit('/')
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Sprint Dashboard').click()
-        })
+      cy.get('@groupData').then((group) => {
+        groupData = group
+      })
 
       const dateToday = new Date()
       const dateYesterday = addDaysToDate(dateToday, -1)
 
-      cy.createSprint()
+      const sprint1 = {
+        sprint: 1,
+        start_date: formatDate(addWeeksToDate(dateToday, -2)),
+        end_date: formatDate(addWeeksToDate(dateYesterday, -1)),
+      }
+      const sprint2 = {
+        sprint: 2,
+        start_date: formatDate(addWeeksToDate(dateToday, -1)),
+        end_date: formatDate(dateYesterday),
+      }
+      const sprint3 = {
+        sprint: 3,
+        start_date: formatDate(dateToday),
+        end_date: formatDate(addWeeksToDate(dateYesterday, 1)),
+      }
+      const sprint4 = {
+        sprint: 4,
+        start_date: formatDate(addWeeksToDate(dateToday, 1)),
+        end_date: formatDate(addWeeksToDate(dateYesterday, 2)),
+      }
 
-      cy.get('#sprintNumber').type('1')
-      cy.get('#startDate').type(formatDate(addWeeksToDate(dateToday, -2)))
-      cy.get('#endDate').type(formatDate(addWeeksToDate(dateYesterday, -1)))
-      cy.get('#add-sprint-button').click()
+      let sprintIds = []
 
-      cy.get('#sprintNumber').type('2')
-      cy.get('#startDate').type(formatDate(addWeeksToDate(dateToday, -1)))
-      cy.get('#endDate').type(formatDate(dateYesterday))
-      cy.get('#add-sprint-button').click()
+      cy.createSprint(sprint1)
+      cy.get('@sprintData').then((sprint) => {
+        sprintIds.push(sprint.id)
+      })
+      cy.createSprint(sprint2)
+      cy.get('@sprintData').then((sprint) => {
+        sprintIds.push(sprint.id)
+      })
+      cy.createSprint(sprint3)
+      cy.get('@sprintData').then((sprint) => {
+        sprintIds.push(sprint.id)
+      })
+      cy.createSprint(sprint4)
+      cy.get('@sprintData').then((sprint) => {
+        sprintIds.push(sprint.id)
+      })
 
-      cy.get('#sprintNumber').type('3')
-      cy.get('#startDate').type(formatDate(dateToday))
-      cy.get('#endDate').type(formatDate(addWeeksToDate(dateYesterday, 1)))
-      cy.get('#add-sprint-button').click()
-
-      cy.get('#sprintNumber').type('4')
-      cy.get('#startDate').type(formatDate(addWeeksToDate(dateToday, 1)))
-      cy.get('#endDate').type(formatDate(addWeeksToDate(dateYesterday, 2)))
-      cy.get('#add-sprint-button').click()
-      cy.logout()
+      cy.log('Group ID', groupData.id, 'Sprint IDs', sprintIds)
+      const generatedLogs = plethoraOfTimeLogs(groupData.id, sprintIds)
+      cy.log(generatedLogs)
+      generatedLogs.forEach((log) => cy.addTimelogEntry(log))
     })
 
     beforeEach(() => {
-      cy.loginAsRegisteredUser()
+      cy.loginAsRegisteredIndicatedUser()
       cy.visit('/')
     })
 
