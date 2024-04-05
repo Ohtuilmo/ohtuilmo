@@ -1,4 +1,5 @@
 /* eslint-disable */
+import sprint from '../../../../backend/models/sprint'
 import { addWeeksToDate, addDaysToDate } from '../../../src/utils/functions'
 
 const formatDate = (date) => date.toISOString().slice(0, 10)
