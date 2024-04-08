@@ -22,6 +22,7 @@ const getTimeLogs = async () => {
     const response = await axios.get(urlTimelogs, {
       headers: { Authorization: `Bearer ${getUserToken()}` }
     })
+    console.log(response.data)
     return response.data
   } catch (error) {
     throw error

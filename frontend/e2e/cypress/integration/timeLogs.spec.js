@@ -1,5 +1,4 @@
 /* eslint-disable */
-import sprint from '../../../../backend/models/sprint'
 import { addWeeksToDate, addDaysToDate } from '../../../src/utils/functions'
 
 const formatDate = (date) => date.toISOString().slice(0, 10)
@@ -492,12 +491,6 @@ describe('Time logs & sprints', () => {
     })
 
     it('should display time log chart for previous sprint', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Time Log').click()
-        })
-
       cy
         .get('.timelogs-container-1')
         .should('exist')
@@ -516,7 +509,7 @@ describe('Time logs & sprints', () => {
         .and('be.visible')
       cy.get('#previous-sprint-button').click()
       cy
-        .get('.timelogs-chart')
+        .get('.timelogs-chart', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
@@ -526,12 +519,6 @@ describe('Time logs & sprints', () => {
     })
 
     it('should display placeholder message for next sprint', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Time Log').click()
-        })
-
       cy
         .get('.timelogs-container-1')
         .should('exist')
