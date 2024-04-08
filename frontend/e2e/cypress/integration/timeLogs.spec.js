@@ -1,55 +1,84 @@
 /* eslint-disable */
-import sprint from '../../../../backend/models/sprint'
 import { addWeeksToDate, addDaysToDate } from '../../../src/utils/functions'
 
 const formatDate = (date) => date.toISOString().slice(0, 10)
 
+const generateSprints = (sprints) => {
+  let generated = []
+  const dateToday = new Date()
+  const currentStart = addDaysToDate(dateToday, -3)
+  const currentEnd = addDaysToDate(dateToday, 3)
+  const sprintsToUse = sprints >= 3 ? sprints : 3
+  const currentSprint = sprintsToUse - 1
+  for (let s = 1; s <= sprintsToUse; s++) {
+    if (s < currentSprint) {
+      const weekDiff = (currentSprint - s) * -1
+      generated.push({
+        sprint: s,
+        start_date: formatDate(addWeeksToDate(currentStart, weekDiff)),
+        end_date: formatDate(addWeeksToDate(currentEnd, weekDiff)),
+        user_id: '0918273645'
+      })
+    } else if (s > currentSprint) {
+      generated.push({
+        sprint: s,
+        start_date: formatDate(addWeeksToDate(currentStart, 1)),
+        end_date: formatDate(addWeeksToDate(currentEnd, 1)),
+        user_id: '0918273645'
+      })
+    } else {
+      generated.push({
+        sprint: s,
+        start_date: formatDate(currentStart),
+        end_date: formatDate(currentEnd),
+        user_id: '0918273645'
+      })
+    }
+  }
+  return generated
+}
+
 const plethoraOfTimeLogs = (groupId, sprints) => {
   const sprintsToUse = sprints.length >= 3 ? sprints.length : 3
   let timeLogs = []
-  const dateToday = new Date()
-  const currentStart = addDaysToDate(dateToday, -3)
   const currentSprint = sprintsToUse - 1
-  for (let s = 0; s <= sprintsToUse; s++) {
+  for (let s = 0; s < sprintsToUse-1; s++) {
+    const startDate = new Date(sprints[s].start_date)
     const entries = Math.floor(Math.random() * 6) + 1
     if (s+1 === currentSprint) {
       for (let e = 1; e <= entries; e++) {
-        const date = addDaysToDate(currentStart, e)
+        const date = addDaysToDate(startDate, e)
         timeLogs.push({
-          sprint: sprints[s],
+          sprint: sprints[s].sprint,
           date: formatDate(date),
-          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1),
+          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1) + 15,
           description: `Test description: ${s} - ${e}`,
           tags: [],
-          groupId,
+          groupId: groupId,
         })
       }
     } else if (s+1 < currentSprint) {
-      const sprintStart = addWeeksToDate(currentStart, -1 * (sprintsToUse - s))
-      const entries = Math.floor(Math.random() * 6) + 1
       for (let e = 1; e <= entries; e++) {
-        const date = addDaysToDate(sprintStart, e)
+        const date = addDaysToDate(startDate, e)
         timeLogs.push({
-          sprint: sprints[s],
+          sprint: sprints[s].sprint,
           date: formatDate(date),
-          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1),
+          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1) + 15,
           description: `Test description: ${s} - ${e}`,
           tags: [],
-          groupId,
+          groupId: groupId,
         })
       }
     } else if (s+1 > currentSprint) {
-      const sprintStart = addWeeksToDate(currentStart, 1)
-      const entries = Math.floor(Math.random() * 6) + 1
       for (let e = 1; e <= entries; e++) {
-        const date = addDaysToDate(sprintStart, e)
+        const date = addDaysToDate(startDate, e)
         timeLogs.push({
-          sprint: sprints[s],
+          sprint: sprints[s].sprint,
           date: formatDate(date),
-          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1),
+          minutes: Math.floor(Math.random() * 60) * (Math.floor(Math.random() * 16) + 1) + 15,
           description: `Test description: ${s} - ${e}`,
           tags: [],
-          groupId,
+          groupId: groupId,
         })
       }
     }
@@ -80,7 +109,6 @@ describe('Time logs & sprints', () => {
       .then(() => {
         cy.contains('Sprint Dashboard').click()
       })
-
     const dateToday = new Date()
     const dateYesterday = addDaysToDate(dateToday, -1)
 
@@ -96,22 +124,12 @@ describe('Time logs & sprints', () => {
   })
 
   it('renders current sprint by default', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
+    cy.visit('/timelogs')
     cy.get('.timelogs-sprint-select').contains('SPRINT 2')
   })
 
   it('time log form is disabled for previous sprint', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
+    cy.visit('/timelogs')
     cy.get('#previous-sprint-button').click()
     cy.get('#date').should('be.disabled')
     cy.get('#time').should('be.disabled')
@@ -120,12 +138,7 @@ describe('Time logs & sprints', () => {
   })
 
   it('add 2 time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
+    cy.visit('/timelogs')
     cy.get('#date').type(formatDate(new Date()))
     cy.get('#time').type('01:00')
     cy.get('#description').type('test description 1')
@@ -141,11 +154,7 @@ describe('Time logs & sprints', () => {
   })
 
   it('should display 2 time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
+    cy.visit('/timelogs')
     cy.get('.timelogs-container-1').should('contain', 'test description 1')
     cy.get('.timelogs-container-1').should('contain', 'test description 2')
 
@@ -169,11 +178,7 @@ describe('Time logs & sprints', () => {
   })
 
   it('previous week should not display time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
+    cy.visit('/timelogs')
     cy.get('.timelogs-container-1').should('contain', 'test description 2')
     cy.get('#previous-sprint-button').click()
     cy.get('#timelog-rows').children().should('have.length', 1)
@@ -181,12 +186,7 @@ describe('Time logs & sprints', () => {
   })
 
   it('asks for confirmation before deleting a time log and aborts deletion when canceled', () => {
-    cy.get('#hamburger-menu-button')
-    .click()
-    .then(() => {
-      cy.contains('Time Log').click()
-    })
-
+    cy.visit('/timelogs')
     cy.get(':nth-child(1) > .timelogs-description')
       .invoke('text')
       .as('testedLogDescription')
@@ -209,12 +209,7 @@ describe('Time logs & sprints', () => {
   })
 
   it('remove a time log, should not display removed time log', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
+    cy.visit('/timelogs')
     cy.get(':nth-child(1) > .timelogs-description')
       .invoke('text')
       .as('removedLogDescription')
@@ -318,13 +313,8 @@ describe('Time logs & sprints', () => {
         cy.get('#app-content').should('not.contain', '.sprint-list-container')
       )
 
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
-    cy.get('#app-content').should(
+      cy.visit('/timelogs')
+      cy.get('#app-content').should(
       'contain',
       'Your group has no sprints. Add a sprint using Sprint Dashboard.'
     )
@@ -333,8 +323,6 @@ describe('Time logs & sprints', () => {
   describe('Time log chart', () => {
     before(() => {
       cy.deleteAllGroups()
-      cy.logout()
-      let groupData = null
       cy.createGroup({
         name: 'Chart testing group',
         topicId: 4,
@@ -342,71 +330,24 @@ describe('Time logs & sprints', () => {
         instructorId: '112345699',
         studentIds: ['0918273645'],
       })
-      cy.get('@groupData').then((group) => {
-        groupData = group
-      })
+      cy.getGroups()
+        .then((body) => body.map((group) => group.id))
+        .then((groupId) => {
+          generateSprints(4).forEach((sprint) => cy.createSprint(sprint))
 
-      const dateToday = new Date()
-      const dateYesterday = addDaysToDate(dateToday, -1)
-
-      const sprint1 = {
-        sprint: 1,
-        start_date: formatDate(addWeeksToDate(dateToday, -2)),
-        end_date: formatDate(addWeeksToDate(dateYesterday, -1)),
-      }
-      const sprint2 = {
-        sprint: 2,
-        start_date: formatDate(addWeeksToDate(dateToday, -1)),
-        end_date: formatDate(dateYesterday),
-      }
-      const sprint3 = {
-        sprint: 3,
-        start_date: formatDate(dateToday),
-        end_date: formatDate(addWeeksToDate(dateYesterday, 1)),
-      }
-      const sprint4 = {
-        sprint: 4,
-        start_date: formatDate(addWeeksToDate(dateToday, 1)),
-        end_date: formatDate(addWeeksToDate(dateYesterday, 2)),
-      }
-
-      let sprintIds = []
-
-      cy.createSprint(sprint1)
-      cy.get('@sprintData').then((sprint) => {
-        sprintIds.push(sprint.id)
-      })
-      cy.createSprint(sprint2)
-      cy.get('@sprintData').then((sprint) => {
-        sprintIds.push(sprint.id)
-      })
-      cy.createSprint(sprint3)
-      cy.get('@sprintData').then((sprint) => {
-        sprintIds.push(sprint.id)
-      })
-      cy.createSprint(sprint4)
-      cy.get('@sprintData').then((sprint) => {
-        sprintIds.push(sprint.id)
-      })
-
-      cy.log('Group ID', groupData.id, 'Sprint IDs', sprintIds)
-      const generatedLogs = plethoraOfTimeLogs(groupData.id, sprintIds)
-      cy.log(generatedLogs)
-      generatedLogs.forEach((log) => cy.addTimelogEntry(log))
+          cy.getSprints()
+            .then((sprints) => plethoraOfTimeLogs(groupId[0], sprints))
+            .then((logs) => logs.forEach((log) => cy.addTimelogEntry(log)))
+        })
     })
 
     beforeEach(() => {
       cy.loginAsRegisteredIndicatedUser()
       cy.visit('/')
+      cy.visit('/timelogs')
     })
 
     it('should display time log chart for current sprint', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Time Log').click()
-        })
-
       cy
         .get('.timelogs-container-1')
         .should('exist')
@@ -416,7 +357,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('.timelogs-chart')
+        .get('.timelogs-chart', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
@@ -426,12 +367,6 @@ describe('Time logs & sprints', () => {
     })
 
     it('should display time log chart for previous sprint', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Time Log').click()
-        })
-
       cy
         .get('.timelogs-container-1')
         .should('exist')
@@ -450,7 +385,7 @@ describe('Time logs & sprints', () => {
         .and('be.visible')
       cy.get('#previous-sprint-button').click()
       cy
-        .get('.timelogs-chart')
+        .get('.timelogs-chart', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
@@ -460,12 +395,6 @@ describe('Time logs & sprints', () => {
     })
 
     it('should display placeholder message for next sprint', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Time Log').click()
-        })
-
       cy
         .get('.timelogs-container-1')
         .should('exist')
@@ -494,8 +423,10 @@ describe('Time logs & sprints', () => {
         .and('contain', 'The chart cannot be generated.')
     })
 
-    after(() => {
-      cy.deleteAllGroups()
-    })
+  })
+  after(() => {
+    cy.deleteAllTimelogs()
+    cy.deleteAllSprints()
+    cy.deleteAllGroups()
   })
 })

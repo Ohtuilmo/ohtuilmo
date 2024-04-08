@@ -6,9 +6,9 @@ import { getUserToken } from '../utils/functions'
 const urlTimelogs = `${BACKEND_API_BASE}/timelogs`
 const urlGroupSprintSummary = `${BACKEND_API_BASE}/groupSprintSummary`
 
-const getGroupSprintSummary = async () => {
+const getGroupSprintSummary = async (id) => {
   try {
-    const response = await axios.get(urlGroupSprintSummary, {
+    const response = await axios.get(`${urlGroupSprintSummary}/${id}`, {
       headers: { Authorization: `Bearer ${getUserToken()}` }
     })
     return response.data
@@ -22,6 +22,7 @@ const getTimeLogs = async () => {
     const response = await axios.get(urlTimelogs, {
       headers: { Authorization: `Bearer ${getUserToken()}` }
     })
+    console.log(response.data)
     return response.data
   } catch (error) {
     throw error

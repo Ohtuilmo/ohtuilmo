@@ -26,7 +26,6 @@ const barColourSet = [
 const CustomizedTick = (props) => {
   const { x, y, payload } = props
   const parts = payload.value.split(' ')
-  console.log(payload)
   return (
     <g transform={`translate(${x},${y})`} data-cy={`timelogs-chart-tick-${payload.index}`}>
       <text x={0} y={0} dy={-8} dx={-40} transform='rotate(270)' fill={barColourSet[payload.index % barColourSet.length]}>
@@ -51,16 +50,19 @@ const TimeLogChart = (props) => {
   const [sprints, setSprints] = useState([])
   const mapSprintSummaryData = () => {
     let mappedData = []
+    if (groupSprintSummary.length === 0) {
+      return null
+    }
     for (let sprintIndex = 0; sprintIndex < groupSprintSummary.length; sprintIndex++) {
       const sprint = Object.keys(groupSprintSummary[sprintIndex])[0]
       const sprintData = Object.values(groupSprintSummary[sprintIndex])[0]
       for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
         const name = Object.keys(sprintData[entryIndex])[0]
-        const hours = Object.values(sprintData[entryIndex])[0]
+        const minutes = Object.values(sprintData[entryIndex])[0]
         mappedData.push({
           sprint: Number(sprint),
           name: name,
-          hours: hours
+          minutes: minutes
         })
       }
     }
@@ -91,7 +93,7 @@ const TimeLogChart = (props) => {
           <YAxis />
           <Tooltip />
           <Bar
-            dataKey='hours'
+            dataKey='minutes'
             background={false}
           >
             {chartData.map((entry, index) => (

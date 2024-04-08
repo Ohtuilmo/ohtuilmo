@@ -704,6 +704,8 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
   })
 })
 
+/* GROUP CREATION FOR TESTING */
+
 Cypress.Commands.add('createGroup', (groupData) => {
   withLoggedAdminToken((token) => {
     const authHeaders = {
@@ -728,9 +730,29 @@ Cypress.Commands.add('createGroup', (groupData) => {
         instructorId,
         studentIds
       }
-    }).then((res) => cy.wrap(res.body).as('groupData'))
+    })
   })
 })
+
+/* GROUP DATA FETCHING FOR TESTING */
+
+Cypress.Commands.add('getGroups', () => {
+  return withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    return cy.request({
+      url: '/api/groups',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      return cy.wrap(res.body)
+    })
+  })
+})
+
+/* SPRINT CREATION FOR TESTING */
 
 Cypress.Commands.add('createSprint', (sprintData) => {
   withLoggedRegisteredUserTokenAlt((token) => {
@@ -750,9 +772,54 @@ Cypress.Commands.add('createSprint', (sprintData) => {
         sprint,
         user_id
       }
-    }).then((res) => cy.wrap(res.body).as('sprintData'))
+    })
   })
 })
+
+/* SPRINT DATA FETCHING FOR TESTING */
+
+Cypress.Commands.add('getSprints', () => {
+  return withLoggedRegisteredUserTokenAlt((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    return cy.request({
+      url: '/api/sprints',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      return cy.wrap(res.body)
+    })
+  })
+})
+
+/* DELETE ALL SPRINTS FOR TESTING */
+
+Cypress.Commands.add('deleteAllSprints', () => {
+  withLoggedRegisteredUserTokenAlt((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/sprints',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allSprints = res.body
+      for (const sprint of allSprints) {
+        cy.request({
+          url: `/api/sprints/${sprint.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+
+/* TIMELOGS ENTRY CREATION FOR TESTING */
 
 Cypress.Commands.add('addTimelogEntry', (timeLogEntryData) => {
   withLoggedRegisteredUserTokenAlt((token) => {
@@ -773,6 +840,30 @@ Cypress.Commands.add('addTimelogEntry', (timeLogEntryData) => {
         description,
         tags,
         groupId
+      }
+    })
+  })
+})
+
+/* DELETE ALL TIMELOGS FOR TESTING */
+
+Cypress.Commands.add('deleteAllTimelogs', () => {
+  withLoggedRegisteredUserTokenAlt((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/timelogs',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allTimelogs = res.body
+      for (const timelog of allTimelogs) {
+        cy.request({
+          url: `/api/timelogs/${timelog.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
       }
     })
   })

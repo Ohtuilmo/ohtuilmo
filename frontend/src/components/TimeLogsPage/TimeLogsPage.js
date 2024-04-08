@@ -35,14 +35,16 @@ const TimeLogsPage = (props) => {
     selectedSprintNumber,
     setCurrentSprintNumber,
     setSelectedSprintNumber,
-    setGroupSprintSummary
+    setGroupSprintSummary,
+    user,
+    group,
+    initializeMyGroup
   } = props
   const [allLogs, setAllLogs] = useState([])
   const [allSprints, setAllSprints] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const isMobileView = useCheckMobileView()
 
-  const { user, group, initializeMyGroup } = props
   const existingSprintNumbers = allSprints.map((sprint) => sprint.sprint).sort()
 
   useEffect(() => {
@@ -61,8 +63,8 @@ const TimeLogsPage = (props) => {
     }
     const fetchTimeLogs = async () => {
       try {
-        const fetchedData = await timeLogsService.getTimeLogs()
-        setAllLogs(fetchedData)
+        await timeLogsService.getTimeLogs().then((logs) => setAllLogs(logs))
+        console.log(allLogs)
       } catch (error) {
         console.error(
           'Error fetching timelogs:',
@@ -87,10 +89,9 @@ const TimeLogsPage = (props) => {
         notificationActions.setError(error.response.data.error)
       }
     }
-    const fetchGroupSprintSummary = async () => {
+    const fetchGroupSprintSummary = async (id) => {
       try {
-        const fetchedData = await timeLogsService.getGroupSprintSummary()
-        setGroupSprintSummary(fetchedData)
+        await timeLogsService.getGroupSprintSummary(id).then((summaryData) => setGroupSprintSummary(JSON.parse(summaryData)))
       } catch (error) {
         console.error(
           'Error fetching group sprint summary:',
@@ -104,9 +105,9 @@ const TimeLogsPage = (props) => {
     const fetchData = async () => {
       setIsLoading(true)
       await fetchGroup()
-      await fetchSprints()
-      await fetchTimeLogs()
-      await fetchGroupSprintSummary()
+      group && group.id && await fetchSprints()
+      group && group.id && allSprints && allSprints.length > 0 && await fetchTimeLogs()
+      group && group.id && await fetchGroupSprintSummary(group.id)
       setIsLoading(false)
     }
 
