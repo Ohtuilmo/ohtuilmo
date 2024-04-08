@@ -14,6 +14,7 @@ loginRouter.post('/', async (req, res) => {
   if (!req.headers.hypersonstudentid)
     return res
       .status(401)
+      .set('Cache-Control', 'no-store')
       .json({ error: 'Student number missing from headers.' })
       .end()
 
@@ -29,7 +30,7 @@ loginRouter.post('/', async (req, res) => {
           { id: foundUser.student_number, admin: foundUser.admin },
           config.secret
         )
-        return res.status(200).json({
+        return res.status(200).set('Cache-Control', 'no-store').json({
           token,
           user: foundUser,
         })
@@ -48,7 +49,7 @@ loginRouter.post('/', async (req, res) => {
               { id: savedUser.student_number, admin: savedUser.admin },
               config.secret
             )
-            return res.status(200).json({
+            return res.status(200).set('Cache-Control', 'no-store').json({
               token,
               user: savedUser,
             })
