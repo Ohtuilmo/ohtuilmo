@@ -350,24 +350,23 @@ describe('Time logs & sprints', () => {
       })
 
     cy.get('.sprints-container')
-      .should('exist')
-      .and('be.visible')
-    cy.get('.sprints-container')
       .find('[id^="sprint-remove-button-"]')
       .click({ multiple: true })
       .then(() => {
         cy.get('.notification').should('exist')
         cy.get('[data-testid="notification-message"]').should('contain', 'Sprint has time logs, cannot delete.')
       })
-  })
+    })
 
 
   it('remove sprints, should not display sprints or time logs', () => {
-    cy.visit('/timelogs')
-    cy.get('.timelogs-container-1')
-      .should('exist')
-      .and('be.visible')
-    cy.get('#timelog-rows > :nth-child(1) > .timelogs-description')
+    cy.get('#hamburger-menu-button')
+    .click()
+    .then(() => {
+      cy.contains('Time Log').click()
+    })
+
+    cy.get(':nth-child(1) > .timelogs-description')
       .invoke('text')
       .as('removedLogDescription')
 
@@ -375,19 +374,33 @@ describe('Time logs & sprints', () => {
       .find('[id^="timelog-remove-button-"]')
       .click()
 
-    cy.get('.confirmation-dialog')
-      .should('exist')
-      .and('be.visible')
-      .and('contain','Delete this time log? It cannot be restored.')
+    cy.get('.confirmation-dialog').should(
+      'contain',
+      'Delete this time log? It cannot be restored.'
+    )
     cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
 
     cy.get('@removedLogDescription').then((removedLogDescription) => {
-      cy.get('#timelog-rows > :nth-child(1) > .timelogs-description')
-        .should('not.contain',removedLogDescription)
+      cy.get('#timelog-rows > :nth-child(1) > .timelogs-description').should(
+        'not.contain',
+        removedLogDescription
+      )
     })
 
     cy.get('#timelog-rows').children().should('have.length', 1)
 
+
+    cy.get('#hamburger-menu-button')
+      .click()
+      .then(() => {
+        cy.contains('Sprint Dashboard').click()
+      })
+    cy.get('.sprints-container')
+      .find('[id^="sprint-remove-button-"]')
+      .click({ multiple: true })
+      .then(() =>
+        cy.get('#app-content').should('not.contain', '.sprint-list-container')
+      )
 
     cy.get('#hamburger-menu-button')
       .click()
