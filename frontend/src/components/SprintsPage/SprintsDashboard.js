@@ -8,6 +8,9 @@ import './SprintsDashboard.css'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import myGroupActions from '../../reducers/actions/myGroupActions'
+import * as notificationActions from '../../reducers/actions/notificationActions'
+
+
 
 const SprintsPage = (props) => {
   const [allSprints, setAllSprints] = useState([])
@@ -50,8 +53,10 @@ const SprintsPage = (props) => {
       const updatedSprints = await sprintService.createSprint(sprint)
       setAllSprints(updatedSprints)
       clearForm()
+      props.setSuccess('Sprint added successfully!')
     } catch (error) {
       console.error('Error creating sprint:', error)
+      props.setError(error.response.data.error)
     }
   }
 
@@ -65,8 +70,10 @@ const SprintsPage = (props) => {
     try {
       const updatedSprints = await sprintService.deleteSprint(sprintId)
       setAllSprints(updatedSprints)
+      props.setSuccess('Sprint deleted successfully!')
     } catch (error) {
-      console.error('Error deleting sprint:', error)
+      console.error('Error message:', error.response.data.error)
+      props.setError(error.response.data.error)
     }
   }
 
@@ -172,6 +179,8 @@ const SprintsPage = (props) => {
 
 const mapDispatchToProps = {
   initializeMyGroup: myGroupActions.initializeMyGroup,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess,
 }
 
 const mapStateToProps = (state) => ({

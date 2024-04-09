@@ -250,13 +250,60 @@ describe('Time logs & sprints', () => {
       cy.get('#timelog-rows').should('not.contain', '1234')
     })
 
-    it('remove sprints, should not display sprints or time logs', () => {
+    it('trying to remove sprint with existing time logs displays error', () => {
       cy.get('#hamburger-menu-button')
         .click()
         .then(() => {
           cy.contains('Sprint Dashboard').click()
         })
 
+      cy.get('.sprints-container')
+        .find('[id^="sprint-remove-button-"]')
+        .click({ multiple: true })
+        .then(() => {
+          cy.get('.notification').should('exist')
+          cy.get('[data-testid="notification-message"]').should('contain', 'Sprint has time logs, cannot delete.')
+        }
+        )
+    })
+
+
+    it('remove sprints, should not display sprints or time logs', () => {
+      cy.get('#hamburger-menu-button')
+      .click()
+      .then(() => {
+        cy.contains('Time Log').click()
+      })
+
+    cy.get(':nth-child(1) > .timelogs-description')
+      .invoke('text')
+      .as('removedLogDescription')
+
+    cy.get('#timelog-rows > :nth-child(1)')
+      .find('[id^="timelog-remove-button-"]')
+      .click()
+
+    cy.get('.confirmation-dialog').should(
+      'contain',
+      'Delete this time log? It cannot be restored.'
+    )
+    cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
+
+    cy.get('@removedLogDescription').then((removedLogDescription) => {
+      cy.get('#timelog-rows > :nth-child(1) > .timelogs-description').should(
+        'not.contain',
+        removedLogDescription
+      )
+    })
+
+    cy.get('#timelog-rows').children().should('have.length', 1)
+
+
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Sprint Dashboard').click()
+        })
       cy.get('.sprints-container')
         .find('[id^="sprint-remove-button-"]')
         .click({ multiple: true })
