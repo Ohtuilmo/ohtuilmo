@@ -328,12 +328,12 @@ describe('Time logs & sprints', () => {
       cy.get('#sprint-list-rows').children().should('have.length', 2)
     })
 
-  it('remove sprints, should not display sprints or time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Sprint Dashboard').click()
-      })
+    it('remove sprints, should not display sprints or time logs', () => {
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
+          cy.contains('Sprint Dashboard').click()
+        })
 
     cy.get('.sprints-container')
       .find('[id^="sprint-remove-button-"]')
