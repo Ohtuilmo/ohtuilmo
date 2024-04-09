@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BarChart, XAxis, YAxis, Tooltip, Bar, Cell } from 'recharts'
 
-import { NoTimeLogsPlaceholder } from '../common/Placeholders'
+import { NoTimeLogsPlaceholderSprint, NoTimeLogsPlaceholderProject } from '../common/Placeholders'
 
 // Used colours are based on University of Helsinki visual guidelines
 const barColourSet = [
@@ -24,10 +24,10 @@ const barColourSet = [
 ]
 
 const CustomizedTick = (props) => {
-  const { x, y, payload } = props
+  const { variant, x, y, payload } = props
   const parts = payload.value.split(' ')
   return (
-    <g transform={`translate(${x},${y})`} data-cy={`timelogs-chart-tick-${payload.index}`}>
+    <g transform={`translate(${x},${y})`} data-cy={`timelogs-chart-${variant}-tick-${payload.index}`}>
       <text x={0} y={0} dy={-8} dx={-40} transform='rotate(270)' fill={barColourSet[payload.index % barColourSet.length]}>
         <tspan textAnchor='middle' x='0' dx={-36}>
           {parts[0]}
@@ -44,7 +44,8 @@ const TimeLogChart = (props) => {
   const {
     groupSprintSummary,
     selectedSprintNumber,
-    mobileView
+    mobileView,
+    chartVariant
   } = props
   const [chartData, setChartData] = useState([])
   const [sprints, setSprints] = useState([])
@@ -75,10 +76,42 @@ const TimeLogChart = (props) => {
     setChartData(mappedData)
   }, [])
 
+  const reduceData = (data) => data.reduce((acc, cur) => {
+    const { sprint, name, minutes } = cur
+    const item = acc.find(it => it.name === name)
+    item ? item.minutes += minutes : acc.push({ sprint, name, minutes })
+    return acc
+  } , [])
+
   if (chartData && chartData.length > 0) {
-    if (sprints.includes(selectedSprintNumber)) {
-      return (
-        <BarChart
+    return chartVariant === 'total'
+      ? (<BarChart
+        id='timelogs-chart-total'
+        className='timelogs-chart'
+        width={mobileView ? 400 : 500}
+        height={mobileView ? 300 : 350}
+        data={reduceData(chartData)}
+        margin={{
+          top: 10,
+          left: 10,
+          right: 10,
+          bottom: 10
+        }} >
+        <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
+        <YAxis />
+        <Tooltip />
+        <Bar
+          dataKey='minutes'
+          background={false}
+        >
+          {chartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
+          ))}
+        </Bar>
+      </BarChart>)
+      : sprints.includes(selectedSprintNumber)
+        ? (<BarChart
+          id='timelogs-chart-sprint'
           className='timelogs-chart'
           width={mobileView ? 400 : 500}
           height={mobileView ? 300 : 350}
@@ -89,7 +122,7 @@ const TimeLogChart = (props) => {
             right: 10,
             bottom: 10
           }} >
-          <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick />} angle={270} tickLine={false} />
+          <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
           <YAxis />
           <Tooltip />
           <Bar
@@ -100,17 +133,12 @@ const TimeLogChart = (props) => {
               <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
             ))}
           </Bar>
-        </BarChart>
-      )
-    } else {
-      return (
-        <NoTimeLogsPlaceholder />
-      )
-    }
+        </BarChart>)
+        : (<NoTimeLogsPlaceholderSprint />)
   } else {
-    return (
-      <NoTimeLogsPlaceholder />
-    )
+    return chartVariant === 'total'
+      ? (<NoTimeLogsPlaceholderProject />)
+      : (<NoTimeLogsPlaceholderSprint />)
   }
 }
 

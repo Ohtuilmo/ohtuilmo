@@ -63,8 +63,8 @@ const TimeLogsPage = (props) => {
     }
     const fetchTimeLogs = async () => {
       try {
-        await timeLogsService.getTimeLogs().then((logs) => setAllLogs(logs))
-        console.log(allLogs)
+        const logs = await timeLogsService.getTimeLogs()
+        setAllLogs(logs)
       } catch (error) {
         console.error(
           'Error fetching timelogs:',
@@ -91,7 +91,8 @@ const TimeLogsPage = (props) => {
     }
     const fetchGroupSprintSummary = async (id) => {
       try {
-        await timeLogsService.getGroupSprintSummary(id).then((summaryData) => setGroupSprintSummary(JSON.parse(summaryData)))
+        const summaryData = await timeLogsService.getGroupSprintSummary(id)
+        setGroupSprintSummary(JSON.parse(summaryData))
       } catch (error) {
         console.error(
           'Error fetching group sprint summary:',
@@ -106,7 +107,7 @@ const TimeLogsPage = (props) => {
       setIsLoading(true)
       await fetchGroup()
       group && group.id && await fetchSprints()
-      group && group.id && allSprints && allSprints.length > 0 && await fetchTimeLogs()
+      await fetchTimeLogs()
       group && group.id && await fetchGroupSprintSummary(group.id)
       setIsLoading(false)
     }
@@ -226,22 +227,20 @@ const TimeLogsPage = (props) => {
             <p>No logs yet :&#40;</p>
           )}
         </div>
-        <div className='timelogs-container-chart'>
-          <TimeLogChart mobileView={isMobileView} />
+        <div className='timelogs-container-chart' style={{
+          marginTop: '1rem'
+        }}>
+          <Typography variant='h5'>Sprint</Typography>
+          <TimeLogChart chartVariant='sprint' mobileView={isMobileView} />
+          <Typography variant='h5'>Project</Typography>
+          <TimeLogChart chartVariant='total'  mobileView={isMobileView} />
         </div>
       </div>
     )
   } else {
     return (
-      <div className='timelogs-container-1'>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '1rem',
-          maxWidth: '100%'
-        }}>
+      <div className='timelogs-container-4'>
+        <div className='timelogs-container-1'>
           <div className='timelogs-container-2'>
             <div className='timelogs-container-3'>
               <Typography variant='h4'>Time Logs</Typography>
@@ -256,22 +255,25 @@ const TimeLogsPage = (props) => {
               disabled={selectedSprintNumber !== currentSprintNumber}
             />
           </div>
-          <div className='timelogs-container-chart'>
-            <TimeLogChart />
+          <div id='timelog-rows'>
+            {isLogs(logsBySprint) &&
+              logsBySprint.map((log) => (
+                <TimeLogRow
+                  key={log.id}
+                  log={log}
+                  handleDelete={() => handleDelete(log.id)}
+                />
+              ))}
+            {!isLogs(logsBySprint) && allSprints.length > 0 && (
+              <p>No logs yet :&#40;</p>
+            )}
           </div>
         </div>
-        <div id='timelog-rows'>
-          {isLogs(logsBySprint) &&
-            logsBySprint.map((log) => (
-              <TimeLogRow
-                key={log.id}
-                log={log}
-                handleDelete={() => handleDelete(log.id)}
-              />
-            ))}
-          {!isLogs(logsBySprint) && allSprints.length > 0 && (
-            <p>No logs yet :&#40;</p>
-          )}
+        <div className='timelogs-container-chart'>
+          <Typography variant='h5'>Sprint</Typography>
+          <TimeLogChart chartVariant='sprint' />
+          <Typography variant='h5'>Project</Typography>
+          <TimeLogChart chartVariant='total' />
         </div>
       </div>
     )

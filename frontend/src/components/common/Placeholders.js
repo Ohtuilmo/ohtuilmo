@@ -20,9 +20,9 @@ export const NoneAvailable = () => (
   <h1 style={{ textAlign: 'center' }}>None available</h1>
 )
 
-export const NoTimeLogsPlaceholder = () => (
+export const NoTimeLogsPlaceholderSprint = () => (
   <div
-    id='timelogs-placeholder'
+    id='timelogs-placeholder-sprint'
     style={{
       display: 'flex',
       flexDirection: 'column',
@@ -31,11 +31,36 @@ export const NoTimeLogsPlaceholder = () => (
       width: '600px',
       marginTop: '1rem'
     }}
-    data-cy='timelogs-placeholder' >
+    data-cy='timelogs-placeholder-sprint' >
     <h1
       style={{ textAlign: 'center', width: '360px' }}
       data-cy='timelogs-not-available' >
       There are no time logs available for this sprint.
+    </h1>
+    <h2
+      style={{ textAlign: 'center', width: '360px' }}
+      data-cy='timelogs-chart-cannot-generate' >
+      The chart cannot be generated.
+    </h2>
+  </div>
+)
+
+export const NoTimeLogsPlaceholderProject = () => (
+  <div
+    id='timelogs-placeholder-total'
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '600px',
+      marginTop: '1rem'
+    }}
+    data-cy='timelogs-placeholder-total' >
+    <h1
+      style={{ textAlign: 'center', width: '360px' }}
+      data-cy='timelogs-not-available' >
+      There are no time logs available for this project.
     </h1>
     <h2
       style={{ textAlign: 'center', width: '360px' }}

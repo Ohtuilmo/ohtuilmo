@@ -342,85 +342,103 @@ describe('Time logs & sprints', () => {
     })
 
     beforeEach(() => {
+      cy.viewport(1200,800)
       cy.loginAsRegisteredIndicatedUser()
       cy.visit('/')
       cy.visit('/timelogs')
     })
 
-    it('should display time log chart for current sprint', () => {
+    it('should have layout elements', () => {
+      cy
+        .get('.timelogs-container-4')
+        .should('exist')
+        .and('be.visible')
       cy
         .get('.timelogs-container-1')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-container-2')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('.timelogs-container-3')
         .should('exist')
         .and('be.visible')
       cy
         .get('.timelogs-container-chart')
         .should('exist')
         .and('be.visible')
+    })
+    it('should display chart for current sprint', () => {
       cy
-        .get('.timelogs-chart', { timeout: 5000 })
+        .get('#timelogs-chart-sprint', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-tick-0"]')
+        .get('[data-cy="timelogs-chart-sprint-tick-0"]')
         .should('exist')
         .and('be.visible')
     })
 
-    it('should display time log chart for previous sprint', () => {
+    it('should display chart for the total work time', () => {
       cy
-        .get('.timelogs-container-1')
+        .get('#timelogs-chart-total', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('.timelogs-container-2')
+        .get('[data-cy="timelogs-chart-total-tick-0"]')
         .should('exist')
         .and('be.visible')
-      cy
-        .get('.timelogs-container-3')
-        .should('exist')
-        .and('be.visible')
+    })    
+
+    it('should display chart for the previous sprint and the total work time', () => {
       cy
         .get('.timelogs-sprint-select')
         .should('exist')
         .and('be.visible')
       cy.get('#previous-sprint-button').click()
       cy
-        .get('.timelogs-chart', { timeout: 5000 })
+        .get('#timelogs-chart-sprint', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-tick-0"]')
+        .get('[data-cy="timelogs-chart-sprint-tick-0"]')
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('#timelogs-chart-total', { timeout: 5000 })
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('[data-cy="timelogs-chart-total-tick-0"]')
         .should('exist')
         .and('be.visible')
     })
 
-    it('should display placeholder message for next sprint', () => {
-      cy
-        .get('.timelogs-container-1')
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('.timelogs-container-2')
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('.timelogs-container-3')
-        .should('exist')
-        .and('be.visible')
+    it('should display placeholder for the next sprint and chart for the total work time', () => {
       cy
         .get('.timelogs-sprint-select')
         .should('exist')
         .and('be.visible')
       cy.get('#next-sprint-button').click()
       cy
-        .get('.timelogs-chart')
+        .get('#timelogs-chart-sprint')
         .should('not.exist')
       cy
-        .get('[data-cy="timelogs-placeholder"]')
+        .get('#timelogs-placeholder-sprint')
         .should('exist')
         .and('be.visible')
         .and('contain', 'There are no time logs available for this sprint.')
         .and('contain', 'The chart cannot be generated.')
+        cy
+        .get('#timelogs-chart-total', { timeout: 5000 })
+        .should('exist')
+        .and('be.visible')
+      cy
+        .get('[data-cy="timelogs-chart-total-tick-0"]')
+        .should('exist')
+        .and('be.visible')
     })
 
   })
