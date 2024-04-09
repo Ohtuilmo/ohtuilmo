@@ -36,43 +36,43 @@ const initialReviewQuestionSet = [
 
 const initialPeerReviewAnswers1 =[
   {
-    "id": 0,
-    "type": "number",
-    "answer": "20",
-    "questionHeader": "Kuinka monta tuntia käytit projektin parissa?"
+    'id': 0,
+    'type': 'number',
+    'answer': '20',
+    'questionHeader': 'Kuinka monta tuntia käytit projektin parissa?'
   },
   {
-    "id": 1,
-    "type": "radio",
-    "peers": {"New User": 2, "John Smith": 3, "Jane Madison": 4},
-    "questionHeader": "Tiimin jäsenten tekninen kontribuutio"
+    'id': 1,
+    'type': 'radio',
+    'peers': {'New User': 2, 'John Smith': 3, 'Jane Madison': 4},
+    'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
   },
   {
-    "id": 2,
-    "type": "text",
-    "answer": "Hyvä tiimi, mutta kommunikaatio voisi olla selkeämpää. Tiimin jäsenet olivat kuitenkin aktiivisia ja osallistuivat.",
-    "questionHeader": "Tiimin yhteistyön arviointi"
+    'id': 2,
+    'type': 'text',
+    'answer': 'Hyvä tiimi, mutta kommunikaatio voisi olla selkeämpää. Tiimin jäsenet olivat kuitenkin aktiivisia ja osallistuivat.',
+    'questionHeader': 'Tiimin yhteistyön arviointi'
   }
 ]
 
 const initialPeerReviewAnswers2 =[
   {
-    "id": 0,
-    "type": "number",
-    "answer": "35",
-    "questionHeader": "Kuinka monta tuntia käytit projektin parissa?"
+    'id': 0,
+    'type': 'number',
+    'answer': '35',
+    'questionHeader': 'Kuinka monta tuntia käytit projektin parissa?'
   },
   {
-    "id": 1,
-    "type": "radio",
-    "peers": {"New User": 5, "John Smith": 4, "Jane Madison": 1},
-    "questionHeader": "Tiimin jäsenten tekninen kontribuutio"
+    'id': 1,
+    'type': 'radio',
+    'peers': {'New User': 5, 'John Smith': 4, 'Jane Madison': 1},
+    'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
   },
   {
-    "id": 2,
-    "type": "text",
-    "answer": "En osaa sanoa, kirjoittamminen on minulle välillä vaikeaa. Ihan kivat tyypit, jaksoin tulla paikalle.",
-    "questionHeader": "Tiimin yhteistyön arviointi"
+    'id': 2,
+    'type': 'text',
+    'answer': 'En osaa sanoa, kirjoittamminen on minulle välillä vaikeaa. Ihan kivat tyypit, jaksoin tulla paikalle.',
+    'questionHeader': 'Tiimin yhteistyön arviointi'
   }
 ]
 
