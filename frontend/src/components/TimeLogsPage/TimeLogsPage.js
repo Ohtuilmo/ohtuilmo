@@ -133,7 +133,7 @@ const TimeLogsPage = (props) => {
     currentSprintObject && setSelectedSprintNumber(currentSprintObject.sprint)
     !currentSprintObject &&
       setSelectedSprintNumber(
-        existingSprintNumbers.length > 0 ? existingSprintNumbers[0] : null
+        existingSprintNumbers.length > 0 ? existingSprintNumbers.at(-1) : null
       )
   }, [allSprints])
 
