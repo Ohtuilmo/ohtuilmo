@@ -48,6 +48,7 @@ const getGroupSprintSummary = async (groupId) => {
     return map
   }, {})
 
+  const totalMap = {}
 
   const logsMap = rawLogs.reduce((map, log) => {
     if (!map[log.sprint_id]) {
@@ -55,15 +56,26 @@ const getGroupSprintSummary = async (groupId) => {
     }
     const name = nameMap[log.student_number]
     map[log.sprint_id][name] = log.dataValues.total_minutes
+
+    if (!totalMap[name]) {
+      totalMap[name] = 0
+    }
+    totalMap[name] += parseInt(log.dataValues.total_minutes, 10)
+
     return map
   }, {})
-
 
   const result = sprints.map(sprint => ({
     [sprint.sprint]: Object.entries(logsMap[sprint.id] || {}).map(([name, total_minutes]) => ({
       [name]: parseInt(total_minutes, 10) || 0
     }))
   }))
+
+  result.push({
+    'Total': Object.entries(totalMap).map(([name, total_minutes]) => ({
+      [name]: total_minutes
+    }))
+  })
 
   return JSON.stringify(result, null, 2)
 }
@@ -72,6 +84,8 @@ groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
   const groupId = req.params.id
   const userId = req.user.id
   const isAdmin = req.user.admin
+
+  //console.log('Group sprint summary request for group: ', groupId, ' by user: ', userId)
 
   const access = await validateAccess(groupId, userId) || isAdmin
 
@@ -87,7 +101,7 @@ groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
     return res.status(500).json({ error: 'Error in fetching group sprint summary' })
   }
 
-  console.log('result: ', result)
+  //console.log('result: ', result)
   return res.status(200).json(result)
 })
 
