@@ -86,7 +86,7 @@ const adminItems = (history) => {
     },
     {
       className: 'customer-review-menu-item',
-      text: 'Current regstrations',
+      text: 'Current registrations',
       handler: () => history.push('/administration/registrations'),
     },
     {
