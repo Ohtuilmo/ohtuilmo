@@ -118,9 +118,15 @@ const TimeLogsPage = (props) => {
   useEffect(() => {
     const today = new Date()
     const currentSprintObject = allSprints.find(
-      (sprint) =>
-        today >= new Date(sprint.start_date) &&
-        today <= new Date(sprint.end_date)
+      (sprint) => {
+        const start = new Date(sprint.start_date)
+        const end = new Date(sprint.end_date)
+
+        start.setHours(0, 0, 0, 0)
+        end.setHours(23, 59, 59, 999)
+
+        return today >= start && today <= end
+      }
     )
 
     currentSprintObject && setCurrentSprintNumber(currentSprintObject.sprint)
