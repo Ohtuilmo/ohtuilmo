@@ -44,7 +44,7 @@ const initialPeerReviewAnswers1 =[
   {
     'id': 1,
     'type': 'radio',
-    'peers': {'New User': 2, 'John Smith': 3, 'Jane Madison': 4},
+    'peers': { 'New User': 2, 'John Smith': 3, 'Jane Madison': 4 },
     'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
   },
   {
@@ -65,7 +65,7 @@ const initialPeerReviewAnswers2 =[
   {
     'id': 1,
     'type': 'radio',
-    'peers': {'New User': 5, 'John Smith': 4, 'Jane Madison': 1},
+    'peers': { 'New User': 5, 'John Smith': 4, 'Jane Madison': 1 },
     'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
   },
   {
