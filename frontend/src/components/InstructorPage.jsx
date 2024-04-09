@@ -290,6 +290,35 @@ const ConfigurationSelect = ({
   )
 }
 
+const GroupSelectWrapper = ({ label, children }) => (
+  <div style={{ padding: 20 }}>
+    <Typography variant='caption'>{label}</Typography>
+    {children}
+  </div>
+)
+
+const GroupSelect = ({ currentGroup, setCurrentGroup, allGroups }) => {
+  console.log('groups', allGroups)
+  console.log('groupselect:', currentGroup)
+  return (
+    <Select
+      data-cy='group-selector'
+      value={currentGroup}
+      onChange={(e) => setCurrentGroup(e.target.value)}
+    >
+      {allGroups.map((group) => (
+        <MenuItem
+          key={group.id}
+          className='specified-group-menu-item'
+          value={group.id}
+        >
+          {group.name}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
+
 const getUniqueConfigurations = (groups) => {
   const uniqueLookup = groups.reduce((configurations, group) => {
     return {
@@ -309,9 +338,13 @@ const InstructorPage = (props) => {
     answers,
     currentConfiguration,
     configurations,
+    currentGroup,
+    groups,
     setAnswers,
     setConfigurations,
     setCurrentConfiguration,
+    setGroups,
+    setCurrentGroup,
     setError,
   } = props
 
@@ -319,13 +352,14 @@ const InstructorPage = (props) => {
     const fetchData = async () => {
       try {
         const peerReviewData = await peerReviewService.getAnswersByInstructor()
-        const uniqueConfigurations = getUniqueConfigurations(
-          peerReviewData.map((data) => data.group)
-        )
+        const groupsData = peerReviewData.map((data) => data.group)
+        const uniqueConfigurations = getUniqueConfigurations(groupsData)
 
         setAnswers(peerReviewData)
         setConfigurations(uniqueConfigurations.reverse())
         setCurrentConfiguration(uniqueConfigurations[0].id)
+        setGroups(groupsData)
+        setCurrentGroup(groupsData[0].name)
       } catch (err) {
         console.error('error happened', err, err.response)
         setError('Something is wrong... try reloading the page')
@@ -333,9 +367,9 @@ const InstructorPage = (props) => {
     }
 
     fetchData()
-  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError])
+  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError, setGroups, setCurrentGroup])
 
-  if (!answers || !currentConfiguration) {
+  if (!answers || !currentConfiguration || !groups || !currentGroup) {
     return <div className="instructor-container">Loading</div>
   }
 
@@ -352,6 +386,13 @@ const InstructorPage = (props) => {
           configurations={configurations}
         />
       </ConfigurationSelectWrapper>
+      <GroupSelectWrapper label="Select displayed group">
+        <GroupSelect
+          currentGroup={currentGroup}
+          setCurrentGroup={setCurrentGroup}
+          allGroups={groups}
+        />
+      </GroupSelectWrapper>
       <Answers answers={answers} currentConfiguration={currentConfiguration} />
     </div>
   )
@@ -362,6 +403,8 @@ const mapStateToProps = (state) => {
     configurations: state.instructorPage.configurations,
     currentConfiguration: state.instructorPage.currentConfiguration,
     answers: state.instructorPage.answers,
+    groups: state.instructorPage.groups,
+    currentGroup: state.instructorPage.currentGroup
   }
 }
 
@@ -370,6 +413,8 @@ const mapDispatchToProps = {
   setCurrentConfiguration: instructorPageActions.setCurrentConfiguration,
   setAnswers: instructorPageActions.setAnswers,
   setError: notificationActions.setError,
+  setGroups: instructorPageActions.setGroups,
+  setCurrentGroup: instructorPageActions.setCurrentGroup
 }
 
 const ConnectedInstructorPage = connect(
