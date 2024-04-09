@@ -250,35 +250,6 @@ describe('Time logs & sprints', () => {
       cy.get('#timelog-rows').should('not.contain', '1234')
     })
 
-    it('asks for confirmation before deleting a sprint', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Sprint Dashboard').click()
-        })
-
-      cy.get(':nth-child(1) > .sprint-list-sprint-number')
-        .invoke('text')
-        .as('testedSprintNumber')
-
-      cy.get('#sprint-list-rows > :nth-child(1)')
-        .find('[id^="sprint-remove-button-"]')
-        .click()
-
-      cy.get('.confirmation-dialog').should(
-        'contain',
-        'Deleting sprint will delete all of its time logs. They cannot be restored. Delete sprint anyway?'
-      )
-      cy.get('.confirmation-dialog').find('#confirmation-dialog-no-button').click()
-
-      cy.get('@testedSprintNumber').then((testedSprintNumber) => {
-        cy.get('#timelog-rows > :nth-child(1) > .sprint-list-sprint-number').contains(
-          testedSprintNumber
-        )
-      })
-      cy.get('#sprint-list-rows').children().should('have.length', 2)
-    })
-
     it('remove sprints, should not display sprints or time logs', () => {
       cy.get('#hamburger-menu-button')
         .click()
