@@ -52,7 +52,7 @@ const validateSprint = ({ start_date, end_date, sprint }, latest) => {
   if (typeof sprint !== 'number' || isNaN(sprint) || parseInt(sprint, 10) !== sprint) {
     throw new Error('Sprint must be a valid number.')
   }
-  if (!!latest.sprint && sprint <= latest.sprint) {
+  if (!!latest.sprint && sprint !== latest.sprint+1) {
     throw new Error('New sprint must be the successor for the latest sprint.')
   }
 }
