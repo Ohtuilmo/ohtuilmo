@@ -143,10 +143,10 @@ const SprintsPage = (props) => {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="sprint-list-rows">
               {allSprints.map((sprint) => (
                 <tr key={sprint.id}>
-                  <td>{sprint.sprint}</td>
+                  <td className="sprint-list-sprint-number">{sprint.sprint}</td>
                   <td>{sprint.start_date}</td>
                   <td>{sprint.end_date}</td>
                   <td>
