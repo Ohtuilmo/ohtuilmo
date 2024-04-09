@@ -59,6 +59,10 @@ const fetchFromDb = async (studentNumber) => {
         },
       ],
       raw: true,
+      order: [
+        ['date', 'DESC'],
+        ['created_at', 'DESC'],
+      ],
     })
 
     const timeLogMap = new Map()
