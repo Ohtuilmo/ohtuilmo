@@ -40,7 +40,6 @@ const Notification = ({
       >
         <SnackbarContent
           style={style}
-          //message={message}
           message={<span data-testid="notification-message">{message}</span>}
           headlineMapping={{
             body1: 'div',
