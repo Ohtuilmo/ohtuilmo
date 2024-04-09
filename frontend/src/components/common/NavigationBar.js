@@ -25,14 +25,17 @@ const NavigationBar = ({ group, user, history, logout }) => {
     if (user.user.admin) {
       return {
         items: [
-          { title: 'Student', items: loggedInItems(history) },
-          { title: 'Instructor', items: instructorItems(history) },
           { title: 'Admin', items: adminItems(history) },
+          { title: 'Instructor', items: instructorItems(history) },
+          { title: 'Student', items: loggedInItems(history) },
         ],
       }
     } else if (user.user.instructor) {
       return {
-        items: [{ title: 'Instructor', items: instructorItems(history) }],
+        items: [
+          { title: 'Instructor', items: instructorItems(history) },
+          { title: 'Student', items: loggedInItems(history) }
+        ],
       }
     } else {
       return {
