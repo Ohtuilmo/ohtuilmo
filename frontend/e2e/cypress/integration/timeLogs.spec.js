@@ -166,8 +166,8 @@ describe('Time logs & sprints', () => {
 
   it('shows error from backend when creating timeLog fails with data outside sprint', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
-    cy.get('.input-container').should('exist')
+    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.input-container', { timeout: 10000 }).should('exist')
     cy.get('.date').type('2022-02-01')
     cy.get('.time').type('01:00')
     cy.get('.description').type('valid description')
@@ -182,8 +182,8 @@ describe('Time logs & sprints', () => {
 
   it('previous week should not display time logs', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1', { timeout: 10000 }).should('contain', 'test description 2')
-    cy.get('#previous-sprint-button').click()
+    cy.get('.timelogs-container-1').should('contain', 'test description 2')
+    cy.get('#previous-sprint-button', { timeout: 10000 }).click()
     cy.get('#timelog-rows').children().should('have.length', 1)
     cy.get('#timelog-rows').should('contain', 'No logs yet :(')
   })
@@ -239,11 +239,11 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is negative hours', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
-    cy.get('.input-container').should('exist')
+    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.input-container', { timeout: 10000 }).should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('-01:00')
-    cy.get('.description').type('negative time')
+    cy.get('.description', { timeout: 5000 }).type('negative time')
     cy.get('.submit-button').click()
 
     cy.get('.input-container').contains('Time must be in format HH:MM')
@@ -252,11 +252,11 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is letters', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
-    cy.get('.input-container').should('exist')
+    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.input-container', { timeout: 10000 }).should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('aabee')
-    cy.get('.description').type('letters in time')
+    cy.get('.description', { timeout: 5000 }).type('letters in time')
     cy.get('.submit-button').click()
 
     cy.get('.input-container').contains('Time must be in format HH:MM')
@@ -265,11 +265,11 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is missing a colon', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
-    cy.get('.input-container').should('exist')
+    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.input-container', { timeout: 10000 }).should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('0100')
-    cy.get('.description').type('missing colon')
+    cy.get('.description', { timeout: 5000 }).type('missing colon')
     cy.get('.submit-button').click()
 
     cy.get('.input-container').contains('Time must be in format HH:MM')
@@ -278,11 +278,11 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input has over 60 minutes', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
-    cy.get('.input-container').should('exist')
+    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.input-container', { timeout: 10000 }).should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('01:61')
-    cy.get('.description').type('over 60 minutes')
+    cy.get('.description', { timeout: 5000 }).type('over 60 minutes')
     cy.get('.submit-button').click()
 
     cy.get('.input-container').contains('Time must be in format HH:MM')
@@ -295,7 +295,7 @@ describe('Time logs & sprints', () => {
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('01:00')
-    cy.get('.description').type('1234')
+    cy.get('.description', { timeout: 5000 }).type('1234')
     cy.get('.submit-button').click()
 
     cy.get('.input-container').contains('Description must be at least 5 characters')
@@ -397,7 +397,7 @@ describe('Time logs & sprints', () => {
 
     it('should have layout elements', () => {
       cy
-        .get('.timelogs-container-4', { timeout: 10000 })
+        .get('.timelogs-container-4')
         .should('exist')
         .and('be.visible')
       cy
