@@ -57,14 +57,26 @@ const TimeLogChart = (props) => {
     for (let sprintIndex = 0; sprintIndex < groupSprintSummary.length; sprintIndex++) {
       const sprint = Object.keys(groupSprintSummary[sprintIndex])[0]
       const sprintData = Object.values(groupSprintSummary[sprintIndex])[0]
-      for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
-        const name = Object.keys(sprintData[entryIndex])[0]
-        const minutes = Object.values(sprintData[entryIndex])[0]
-        mappedData.push({
-          sprint: Number(sprint),
-          name: name,
-          minutes: minutes
-        })
+      if (sprint === 'Total') {
+        for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
+          const name = Object.keys(sprintData[entryIndex])[0]
+          const minutes = Object.values(sprintData[entryIndex])[0]
+          mappedData.push({
+            sprint: -1,
+            name: name,
+            minutes: minutes
+          })
+        }
+      } else {
+        for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
+          const name = Object.keys(sprintData[entryIndex])[0]
+          const minutes = Object.values(sprintData[entryIndex])[0]
+          mappedData.push({
+            sprint: Number(sprint),
+            name: name,
+            minutes: minutes
+          })
+        }
       }
     }
     return mappedData
@@ -72,16 +84,18 @@ const TimeLogChart = (props) => {
 
   useEffect(() => {
     const mappedData = mapSprintSummaryData()
-    setSprints([...new Set(mappedData.map((entry) => entry.sprint))])
+    setSprints([...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1))])
     setChartData(mappedData)
   }, [])
 
+  /*
   const reduceData = (data) => data.reduce((acc, cur) => {
     const { sprint, name, minutes } = cur
     const item = acc.find(it => it.name === name)
     item ? item.minutes += minutes : acc.push({ sprint, name, minutes })
     return acc
   } , [])
+  */
 
   if (chartData && chartData.length > 0) {
     return chartVariant === 'total'
@@ -90,7 +104,7 @@ const TimeLogChart = (props) => {
         className='timelogs-chart'
         width={mobileView ? 400 : 500}
         height={mobileView ? 300 : 350}
-        data={reduceData(chartData)}
+        data={chartData.filter((entry) => entry.sprint === -1)}
         margin={{
           top: 10,
           left: 10,
