@@ -299,7 +299,7 @@ describe('Time logs & sprints', () => {
       cy.get('#timelog-rows').should('not.contain', '1234')
     })
 
-    it('remove sprints, should not display sprints or time logs', () => {
+    it('trying to remove sprint with existing time logs displays error', () => {
       cy.get('#hamburger-menu-button')
         .click()
         .then(() => {
@@ -312,8 +312,7 @@ describe('Time logs & sprints', () => {
         .then(() => {
           cy.get('.notification').should('exist')
           cy.get('[data-testid="notification-message"]').should('contain', 'Sprint has time logs, cannot delete.')
-        }
-        )
+        })
     })
 
 
