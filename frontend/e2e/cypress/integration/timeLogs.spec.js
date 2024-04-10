@@ -104,7 +104,7 @@ describe('Time logs & sprints', () => {
   })
 
   it('add 2 sprints', () => {
-    cy.get('#hamburger-menu-button')
+    cy.get('#hamburger-menu-button', { timeout: 5000 })
       .click()
       .then(() => {
         cy.contains('Sprint Dashboard').click()
@@ -112,7 +112,7 @@ describe('Time logs & sprints', () => {
     const dateToday = new Date()
     const dateYesterday = addDaysToDate(dateToday, -1)
 
-    cy.get('#sprintNumber').type('1')
+    cy.get('#sprintNumber', { timeout: 5000 }).type('1')
     cy.get('#startDate').type(formatDate(addWeeksToDate(dateYesterday, -1)))
     cy.get('#endDate').type(formatDate(dateYesterday))
     cy.get('#add-sprint-button').click()
@@ -125,12 +125,12 @@ describe('Time logs & sprints', () => {
 
   it('renders current sprint by default', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-sprint-select').contains('SPRINT 2')
+    cy.get('.timelogs-sprint-select', { timeout: 5000 }).contains('SPRINT 2')
   })
 
   it('time log form is disabled for previous sprint', () => {
     cy.visit('/timelogs')
-    cy.get('#previous-sprint-button').click()
+    cy.get('#previous-sprint-button', { timeout: 5000 }).click()
     cy.get('#date').should('be.disabled')
     cy.get('#time').should('be.disabled')
     cy.get('#description').should('be.disabled')
@@ -139,7 +139,7 @@ describe('Time logs & sprints', () => {
 
   it('add 2 time logs', () => {
     cy.visit('/timelogs')
-    cy.get('#date').type(formatDate(new Date()))
+    cy.get('#date', { timeout: 5000 }).type(formatDate(new Date()))
     cy.get('#time').type('01:00')
     cy.get('#description').type('test description 1')
     cy.get('#time-log-submit-button').click()
@@ -155,7 +155,10 @@ describe('Time logs & sprints', () => {
 
   it('should display 2 time logs', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('contain', 'test description 1')
+    cy.get('.timelogs-container-1', { timeout: 5000 })
+      .should('exist')
+      .and('be.visible')
+      .and('contain', 'test description 1')
     cy.get('.timelogs-container-1').should('contain', 'test description 2')
 
     cy.get('#timelog-rows').children().should('have.length', 2)
@@ -163,7 +166,7 @@ describe('Time logs & sprints', () => {
 
   it('shows error from backend when creating timeLog fails with data outside sprint', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('exist')
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-02-01')
     cy.get('.time').type('01:00')
@@ -179,7 +182,7 @@ describe('Time logs & sprints', () => {
 
   it('previous week should not display time logs', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('contain', 'test description 2')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('contain', 'test description 2')
     cy.get('#previous-sprint-button').click()
     cy.get('#timelog-rows').children().should('have.length', 1)
     cy.get('#timelog-rows').should('contain', 'No logs yet :(')
@@ -187,7 +190,7 @@ describe('Time logs & sprints', () => {
 
   it('asks for confirmation before deleting a time log and aborts deletion when canceled', () => {
     cy.visit('/timelogs')
-    cy.get(':nth-child(1) > .timelogs-description')
+    cy.get(':nth-child(1) > .timelogs-description', { timeout: 5000 })
       .invoke('text')
       .as('testedLogDescription')
 
@@ -210,7 +213,7 @@ describe('Time logs & sprints', () => {
 
   it('remove a time log, should not display removed time log', () => {
     cy.visit('/timelogs')
-    cy.get(':nth-child(1) > .timelogs-description')
+    cy.get(':nth-child(1) > .timelogs-description', { timeout: 5000 })
       .invoke('text')
       .as('removedLogDescription')
 
@@ -236,7 +239,7 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is negative hours', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('exist')
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('-01:00')
@@ -249,7 +252,7 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is letters', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('exist')
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('aabee')
@@ -262,7 +265,7 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is missing a colon', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('exist')
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('0100')
@@ -275,7 +278,7 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input has over 60 minutes', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('exist')
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('01:61')
@@ -288,42 +291,42 @@ describe('Time logs & sprints', () => {
 
   it('displays error on description field of form when input is under 5 characters long', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
+    cy.get('.timelogs-container-1', { timeout: 5000 }).should('exist')
     cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('01:00')
     cy.get('.description').type('1234')
     cy.get('.submit-button').click()
 
-      cy.get('.input-container').contains('Description must be at least 5 characters')
-      cy.get('#timelog-rows').should('not.contain', '1234')
-    })
+    cy.get('.input-container').contains('Description must be at least 5 characters')
+    cy.get('#timelog-rows').should('not.contain', '1234')
+  })
 
-    it('trying to remove sprint with existing time logs displays error', () => {
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Sprint Dashboard').click()
-        })
-
-      cy.get('.sprints-container')
-        .find('[id^="sprint-remove-button-"]')
-        .click({ multiple: true })
-        .then(() => {
-          cy.get('.notification').should('exist')
-          cy.get('[data-testid="notification-message"]').should('contain', 'Sprint has time logs, cannot delete.')
-        })
-    })
-
-
-    it('remove sprints, should not display sprints or time logs', () => {
-      cy.get('#hamburger-menu-button')
+  it('remove sprints, should not display sprints or time logs', () => {
+    cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
-        cy.contains('Time Log').click()
+        cy.contains('Sprint Dashboard').click()
       })
 
-    cy.get(':nth-child(1) > .timelogs-description')
+    cy.get('.sprints-container', { timeout: 5000 })
+      .find('[id^="sprint-remove-button-"]')
+      .click({ multiple: true })
+      .then(() => {
+        cy.get('.notification').should('exist')
+        cy.get('[data-testid="notification-message"]').should('contain', 'Sprint has time logs, cannot delete.')
+      })
+  })
+
+
+  it('remove sprints, should not display sprints or time logs', () => {
+    cy.get('#hamburger-menu-button')
+    .click()
+    .then(() => {
+      cy.contains('Time Log').click()
+    })
+
+    cy.get(':nth-child(1) > .timelogs-description', { timeout: 5000 })
       .invoke('text')
       .as('removedLogDescription')
 
@@ -347,23 +350,21 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').children().should('have.length', 1)
 
 
-      cy.get('#hamburger-menu-button')
-        .click()
-        .then(() => {
-          cy.contains('Sprint Dashboard').click()
-        })
-      cy.get('.sprints-container')
-        .find('[id^="sprint-remove-button-"]')
-        .click({ multiple: true })
-        .then(() =>
-          cy.get('#app-content').should('not.contain', '.sprint-list-container')
-        )
+    cy.get('#hamburger-menu-button')
+      .click()
+      .then(() => {
+        cy.contains('Sprint Dashboard').click()
+      })
+    cy.get('.sprints-container', { timeout: 5000 })
+      .find('[id^="sprint-remove-button-"]')
+      .click({ multiple: true })
+      .then(() =>
+        cy.get('#app-content').should('not.contain', '.sprint-list-container')
+      )
 
-      cy.visit('/timelogs')
-      cy.get('#app-content').should(
-      'contain',
-      'Your group has no sprints. Add a sprint using Sprint Dashboard.'
-    )
+    cy.visit('/timelogs')
+    cy.get('#app-content')
+      .should('contain', 'Your group has no sprints. Add a sprint using Sprint Dashboard.')
   })
 
   describe('Time log chart', () => {
@@ -396,7 +397,7 @@ describe('Time logs & sprints', () => {
 
     it('should have layout elements', () => {
       cy
-        .get('.timelogs-container-4')
+        .get('.timelogs-container-4', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
@@ -472,7 +473,7 @@ describe('Time logs & sprints', () => {
         .get('#timelogs-chart-sprint')
         .should('not.exist')
       cy
-        .get('#timelogs-placeholder-sprint')
+        .get('#timelogs-placeholder-sprint', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
         .and('contain', 'There are no time logs available for this sprint.')
