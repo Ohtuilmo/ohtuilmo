@@ -68,7 +68,7 @@ const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) =>
                 </div>
               ) : (
                 <h2>
-                  This group hasn't answered to the first peer review round yet.
+                  This group has not answered to the first peer review round yet.
                 </h2>
               )}
 
@@ -86,7 +86,7 @@ const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) =>
                 </div>
               ) : (
                 <h2>
-                  This group hasn't answered to the second peer review round yet.
+                  This group has not answered to the second peer review round yet.
                 </h2>
               )}
 
@@ -94,7 +94,7 @@ const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) =>
             </div>
           )}
         else {
-          return (<div></div>)
+          return (<div key='empty-div'></div>)
         }
       })}
     </div>
@@ -129,6 +129,12 @@ const GroupAnswers = ({ answers, students }) => {
               <TextNumberAnswer answers={answers} questionNumber={index} />
             </Question>
           )
+        } else if (question.type === 'peerReview') {
+          return (
+            <Question key={index} title={question.questionHeader}>
+              <PeerReviewAnswer answers={answers} questionNumber={index} />
+            </Question>
+          )
         } else if (question.type === 'radio') {
           return (
             <Question key={index} title={question.questionHeader}>
@@ -142,6 +148,28 @@ const GroupAnswers = ({ answers, students }) => {
         } else {
           return null
         }
+      })}
+    </div>
+  )
+}
+
+const PeerReviewAnswer = ({ answers, questionNumber }) => {
+  return (
+    <div>
+      {answers.map((member, index) => {
+        const peers = member && member.answer_sheet && member.answer_sheet[questionNumber] ? member.answer_sheet[questionNumber].peers : null
+        return (
+          <div key={`${member}-${index}`}>
+            <p>{member.student.last_name}</p>
+            {peers && Object.entries(peers).map(
+              ([peer, review]) => (
+                <p key={peer}>
+                  {peer}: {review}
+                </p>
+              )
+            )}
+          </div>
+        )
       })}
     </div>
   )
@@ -275,7 +303,7 @@ const DownloadButton = ({ jsonData, fileName }) => {
 
 const SelectViewButton = ({ viewMode, setViewMode }) => {
   const toggleView = () => {
-    setViewMode(viewMode === 'questions' ? 'students' : 'questions');
+    setViewMode(viewMode === 'questions' ? 'students' : 'questions')
   }
 
   return (
