@@ -193,7 +193,7 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows', { timeOut: 10000 })
       .should('exist')
       .and('be.visible')
-      .and('have.length', 2)
+    cy.get('#timelog-rows').children().should('have.length', 2)
     cy.get('#timelog-rows > :nth-child(1) > .timelogs-description', { timeout: 10000 })
       .invoke('text')
       .as('testedLogDescription')
@@ -323,28 +323,6 @@ describe('Time logs & sprints', () => {
     cy.get('.input-container').contains('Description must be at least 5 characters')
     cy.get('#timelog-rows').should('not.contain', '1234')
   })
-
-  it('remove sprints, should not display sprints or time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Sprint Dashboard').click()
-      })
-
-    cy.get('.sprints-container', { timeout: 10000 })
-      .find('[id^="sprint-remove-button-"]')
-      .click({ multiple: true })
-      .then(() => {
-        cy.get('.notification')
-          .should('exist')
-          .and('be.visible')
-        cy.get('[data-testid="notification-message"]')
-          .should('exist')
-          .and('be.visible')
-          .and('contain', 'Sprint has time logs, cannot delete.')
-      })
-  })
-
 
   it('remove sprints, should not display sprints or time logs', () => {
     cy.visit('/timelogs')
@@ -508,7 +486,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('[id^="timelogs-chart-sprint-tick-"]')
+        .get('[id^="timelogs-chart-total-tick-"]')
         .should('exist')
         .and('be.visible')
     })
