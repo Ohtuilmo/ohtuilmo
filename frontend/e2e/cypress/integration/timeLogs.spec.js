@@ -392,7 +392,6 @@ describe('Time logs & sprints', () => {
     })
 
     beforeEach(() => {
-      cy.viewport(1200,800)
       cy.loginAsRegisteredIndicatedUser()
       cy.visit('/')
       cy.visit('/timelogs')
