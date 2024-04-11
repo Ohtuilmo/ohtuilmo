@@ -27,7 +27,7 @@ const CustomizedTick = (props) => {
   const { variant, x, y, payload } = props
   const parts = payload.value.split(' ')
   return (
-    <g transform={`translate(${x},${y})`} data-cy={`timelogs-chart-${variant}-tick-${payload.index}`}>
+    <g transform={`translate(${x},${y})`} id={`timelogs-chart-${variant}-tick-${payload.index}`}>
       <text x={0} y={0} dy={-8} dx={-40} transform='rotate(270)' fill={barColourSet[payload.index % barColourSet.length]}>
         <tspan textAnchor='middle' x='0' dx={-36}>
           {parts[0]}
