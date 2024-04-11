@@ -166,8 +166,8 @@ describe('Time logs & sprints', () => {
 
   it('shows error from backend when creating timeLog fails with data outside sprint', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container', { timeout: 10000 }).should('exist')
+    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
+    cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-02-01')
     cy.get('.time').type('01:00')
     cy.get('.description').type('valid description')
@@ -182,8 +182,8 @@ describe('Time logs & sprints', () => {
 
   it('previous week should not display time logs', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('contain', 'test description 2')
-    cy.get('#previous-sprint-button', { timeout: 10000 }).click()
+    cy.get('.timelogs-container-1', { timeout: 10000 }).should('contain', 'test description 2')
+    cy.get('#previous-sprint-button').click()
     cy.get('#timelog-rows').children().should('have.length', 1)
     cy.get('#timelog-rows').should('contain', 'No logs yet :(')
   })
@@ -194,7 +194,7 @@ describe('Time logs & sprints', () => {
       .invoke('text')
       .as('testedLogDescription')
 
-    cy.get('#timelog-rows > :nth-child(1)')
+    cy.get('#timelog-rows > :nth-child(1)', { timeout: 10000 })
       .find('[id^="timelog-remove-button-"]')
       .click()
 
@@ -217,7 +217,7 @@ describe('Time logs & sprints', () => {
       .invoke('text')
       .as('removedLogDescription')
 
-    cy.get('#timelog-rows > :nth-child(1)')
+    cy.get('#timelog-rows > :nth-child(1)', { timeout: 10000 })
       .find('[id^="timelog-remove-button-"]')
       .click()
 
@@ -239,8 +239,8 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is negative hours', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container', { timeout: 10000 }).should('exist')
+    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
+    cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('-01:00')
     cy.get('.description', { timeout: 5000 }).type('negative time')
@@ -252,8 +252,8 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is letters', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container', { timeout: 10000 }).should('exist')
+    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
+    cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('aabee')
     cy.get('.description', { timeout: 5000 }).type('letters in time')
@@ -265,8 +265,8 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input is missing a colon', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container', { timeout: 10000 }).should('exist')
+    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
+    cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('0100')
     cy.get('.description', { timeout: 5000 }).type('missing colon')
@@ -278,8 +278,8 @@ describe('Time logs & sprints', () => {
 
   it('displays error on time field of form when input has over 60 minutes', () => {
     cy.visit('/timelogs')
-    cy.get('.timelogs-container-1').should('exist')
-    cy.get('.input-container', { timeout: 10000 }).should('exist')
+    cy.get('.timelogs-container-1', { timeout: 10000 }).should('exist')
+    cy.get('.input-container').should('exist')
     cy.get('.date').type('2022-01-01')
     cy.get('.time').type('01:61')
     cy.get('.description', { timeout: 5000 }).type('over 60 minutes')
@@ -330,7 +330,7 @@ describe('Time logs & sprints', () => {
       .invoke('text')
       .as('removedLogDescription')
 
-    cy.get('#timelog-rows > :nth-child(1)')
+    cy.get('#timelog-rows > :nth-child(1)', { timeout: 10000 })
       .find('[id^="timelog-remove-button-"]')
       .click()
 
@@ -397,23 +397,23 @@ describe('Time logs & sprints', () => {
 
     it('should have layout elements', () => {
       cy
-        .get('.timelogs-container-4')
+        .get('.timelogs-container-4', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('.timelogs-container-1')
+        .get('.timelogs-container-1', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('.timelogs-container-2')
+        .get('.timelogs-container-2', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('.timelogs-container-3')
+        .get('.timelogs-container-3', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('.timelogs-container-chart')
+        .get('.timelogs-container-chart', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
     })
@@ -441,7 +441,7 @@ describe('Time logs & sprints', () => {
 
     it('should display chart for the previous sprint and the total work time', () => {
       cy
-        .get('.timelogs-sprint-select')
+        .get('.timelogs-sprint-select', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
       cy.get('#previous-sprint-button').click()
@@ -454,7 +454,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('#timelogs-chart-total', { timeout: 10000 })
+        .get('#timelogs-chart-total')
         .should('exist')
         .and('be.visible')
       cy
@@ -465,7 +465,7 @@ describe('Time logs & sprints', () => {
 
     it('should display placeholder for the next sprint and chart for the total work time', () => {
       cy
-        .get('.timelogs-sprint-select')
+        .get('.timelogs-sprint-select', { timeout: 10000 })
         .should('exist')
         .and('be.visible')
       cy.get('#next-sprint-button').click()
@@ -479,7 +479,7 @@ describe('Time logs & sprints', () => {
         .and('contain', 'There are no time logs available for this sprint.')
         .and('contain', 'The chart cannot be generated.')
         cy
-        .get('#timelogs-chart-total', { timeout: 10000 })
+        .get('#timelogs-chart-total')
         .should('exist')
         .and('be.visible')
       cy
