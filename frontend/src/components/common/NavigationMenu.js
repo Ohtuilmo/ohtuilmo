@@ -77,6 +77,7 @@ class NavigationMenu extends React.Component {
             <MenuIcon />
           </IconButton>
           <Popper
+            id="hamburger-menu-popper"
             style={{ zIndex: 1 }}
             open={open}
             anchorEl={this.anchorEl}
