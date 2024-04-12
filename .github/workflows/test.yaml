@@ -17,7 +17,7 @@ jobs:
       - name: Read backend node version from package.json
         uses: skjnldsv/read-package-engines-version-actions@v2
         with:
-          path: ./backend/package.json
+          path: ./backend/
         id: backend-engines
 
       - name: Setup Node.js for backend
@@ -34,7 +34,7 @@ jobs:
       - name: Read frontend node version from package.json
         uses: skjnldsv/read-package-engines-version-actions@v2
         with:
-          path: ./frontend/package.json
+          path: ./frontend/
         id: frontend-engines
 
       - name: Setup Node.js for frontend
@@ -56,7 +56,7 @@ jobs:
       - name: Read backend node version from package.json
         uses: skjnldsv/read-package-engines-version-actions@v2
         with:
-          path: ./backend/package.json
+          path: ./backend/
         id: backend-engines
 
       - name: Setup Node.js for initializing db with backend's npm scripts
