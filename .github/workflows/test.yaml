@@ -14,16 +14,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Read backend node version from package.json
+        uses: skjnldsv/read-package-engines-version-actions@v2
+        with:
+          path: ./backend/package.json
+        id: backend-engines
+
+      - name: Setup Node.js for backend
         uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
 
       - name: Install backend dependencies & run linter
         working-directory: ./backend
         run: |
           npm install
           npm run lint
+
+      - name: Read frontend node version from package.json
+        uses: skjnldsv/read-package-engines-version-actions@v2
+        with:
+          path: ./frontend/package.json
+        id: frontend-engines
+
+      - name: Setup Node.js for frontend
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.frontend-engines.outputs.nodeVersion }}
 
       - name: Install frontend dependencies & run linter
         working-directory: ./frontend
@@ -36,10 +53,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Read backend node version from package.json
+        uses: skjnldsv/read-package-engines-version-actions@v2
+        with:
+          path: ./backend/package.json
+        id: backend-engines
+
+      - name: Setup Node.js for initializing db with backend's npm scripts
         uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
 
       - name: Start db container
         run: docker compose -f compose.ci.yaml up db -d
