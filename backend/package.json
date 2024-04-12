@@ -57,5 +57,8 @@
     "hooks": {
       "pre-commit": "npm test"
     }
+  },
+  "engines": {
+    "node": "12"
   }
 }
