@@ -298,8 +298,6 @@ const GroupSelectWrapper = ({ label, children }) => (
 )
 
 const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroups }) => {
-  console.log('groups', allGroups)
-  console.log('groupselect:', currentGroupID)
   return (
     <Select
       data-cy='group-selector'
