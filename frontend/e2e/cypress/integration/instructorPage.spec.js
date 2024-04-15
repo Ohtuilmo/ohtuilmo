@@ -289,6 +289,29 @@ describe('Instructor page', () => {
     cy.contains('4.50')
   })
 
+  it('is loaded displaying all groups of a configuration', () => {
+    cy.get('[data-cy=configuration-selector]').click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
+    cy.contains('Tykittelijät')
+    cy.contains('Kakkostykitys')
+  })
+
+  it('can filter and display only one group at a time', () => {
+    cy.get('[data-cy=configuration-selector]').click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
+
+    cy.get('[data-cy=group-selector]').click()
+    cy.get('.specified-group-menu-item').contains('Tykittelijät').click()
+    cy.contains('Tykittelijät')
+    cy.should('not.contain', 'Kakkostykitys')
+
+    cy.get('[data-cy=group-selector]').click()
+    cy.get('.specified-group-menu-item').contains('Kakkostykitys').click()
+    cy.contains('Kakkostykitys')
+    cy.should('not.contain', 'Tykittelijät')
+  })
+
+
   after(() => {
     cy.deleteAllGroups()
     cy.deleteAllPeerReviews()
