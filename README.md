@@ -7,8 +7,9 @@
 
 ### Documentation
 
-- [Work schedule](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/work_schedule.md)
-- [Team practices](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/team_practices.md)
+- [Work schedule](/documentation/work_schedule.md)
+- [Definition of Done](/documentation/definition_of_done.md)
+- [Team practices](/documentation/team_practices.md)
 
 ### Project progress
 
@@ -23,7 +24,7 @@
 
 ### Workflow
 
-- [Developer workflow instructions](https://github.com/Ohtuilmo/ohtuilmo/blob/main/documentation/developer_workflow.md)
+- [Developer workflow instructions](/documentation/developer_workflow.md)
 - [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Original ohtuilmo-repositories
