@@ -32,7 +32,10 @@ const mapSemesterField = (content) => {
       break
     }
   }
-  parts[1] = content.match(yearPattern)[0]
+
+  const matchedYear = content.match(yearPattern)
+  parts[1] = matchedYear ? matchedYear[0] : ''
+
   return `${parts[1]} ${parts[0]}`
 }
 
