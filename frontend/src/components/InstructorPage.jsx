@@ -297,14 +297,14 @@ const GroupSelectWrapper = ({ label, children }) => (
   </div>
 )
 
-const GroupSelect = ({ currentGroup, setCurrentGroup, allGroups }) => {
+const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroups }) => {
   console.log('groups', allGroups)
-  console.log('groupselect:', currentGroup)
+  console.log('groupselect:', currentGroupID)
   return (
     <Select
       data-cy='group-selector'
-      value={currentGroup}
-      onChange={(e) => setCurrentGroup(e.target.value)}
+      value={currentGroupID}
+      onChange={(e) => setCurrentGroupID(e.target.value)}
     >
       {allGroups.map((group) => (
         <MenuItem
@@ -338,13 +338,13 @@ const InstructorPage = (props) => {
     answers,
     currentConfiguration,
     configurations,
-    currentGroup,
+    currentGroupID,
     groups,
     setAnswers,
     setConfigurations,
     setCurrentConfiguration,
     setGroups,
-    setCurrentGroup,
+    setCurrentGroupID,
     setError,
   } = props
 
@@ -359,7 +359,7 @@ const InstructorPage = (props) => {
         setConfigurations(uniqueConfigurations.reverse())
         setCurrentConfiguration(uniqueConfigurations[0].id)
         setGroups(groupsData)
-        setCurrentGroup(groupsData[0].name)
+        setCurrentGroupID('0')
       } catch (err) {
         console.error('error happened', err, err.response)
         setError('Something is wrong... try reloading the page')
@@ -367,9 +367,9 @@ const InstructorPage = (props) => {
     }
 
     fetchData()
-  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError, setGroups, setCurrentGroup])
+  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError, setGroups, setCurrentGroupID])
 
-  if (!answers || !currentConfiguration || !groups || !currentGroup) {
+  if (!answers || !currentConfiguration || !groups || !currentGroupID) {
     return <div className="instructor-container">Loading</div>
   }
 
@@ -404,7 +404,7 @@ const mapStateToProps = (state) => {
     currentConfiguration: state.instructorPage.currentConfiguration,
     answers: state.instructorPage.answers,
     groups: state.instructorPage.groups,
-    currentGroup: state.instructorPage.currentGroup
+    currentGroupID: state.instructorPage.currentGroupID
   }
 }
 
@@ -414,7 +414,7 @@ const mapDispatchToProps = {
   setAnswers: instructorPageActions.setAnswers,
   setError: notificationActions.setError,
   setGroups: instructorPageActions.setGroups,
-  setCurrentGroup: instructorPageActions.setCurrentGroup
+  setCurrentGroupID: instructorPageActions.setCurrentGroupID
 }
 
 const ConnectedInstructorPage = connect(

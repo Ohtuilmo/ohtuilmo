@@ -27,10 +27,10 @@ const instructorPageReducer = (state = initialState, action) => {
       ...state,
       groups: action.payload
     }
-  case 'SET_INSTRUCTORPAGE_CURRENT_GROUP':
+  case 'SET_INSTRUCTORPAGE_CURRENT_GROUP_ID':
     return {
       ...state,
-      currentGroup: action.payload
+      currentGroupID: action.payload
     }
   default:
     return state

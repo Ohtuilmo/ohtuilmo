@@ -26,11 +26,11 @@ const setGroups = (groups) => {
   }
 }
 
-const setCurrentGroup = (groupName) => {
+const setCurrentGroupID = (groupId) => {
   return {
-    type: 'SET_INSTRUCTORPAGE_CURRENT_GROUP',
-    payload: groupName
+    type: 'SET_INSTRUCTORPAGE_CURRENT_GROUP_ID',
+    payload: groupId
   }
 }
 
-export default { setCurrentConfiguration, setConfigurations, setAnswers, setCurrentGroup, setGroups }
+export default { setCurrentConfiguration, setConfigurations, setAnswers, setCurrentGroupID, setGroups }
