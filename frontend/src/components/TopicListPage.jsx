@@ -69,7 +69,7 @@ const FinnishFlag = (props) => (
   <img
     alt="Flag of Finland"
     {...props}
-    src={`${process.env.PUBLIC_URL}/img/fi.svg`}
+    src={'/img/fi.svg'}
   />
 )
 
@@ -77,7 +77,7 @@ const BritishFlag = (props) => (
   <img
     alt="Flag of Great Britain"
     {...props}
-    src={`${process.env.PUBLIC_URL}/img/gb.svg`}
+    src={'/img/gb.svg'}
   />
 )
 
