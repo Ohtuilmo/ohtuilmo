@@ -313,7 +313,7 @@ module.exports = {
     await query.bulkDelete('configurations', { name: ['Kevät 2024', 'Syksy 2023', 'Kevät 2023'] }, {})
     await query.bulkDelete('users', { username: ['olliohj', 'newuser1', 'johnsmith', 'jane.madison', 'instruct1', 'timoTekoäly', 'johannakoodari'] }, {})
     await query.bulkDelete('groups', { name: ['ohtuilmo-ryhmä', 'tekOäly-ryhmä'] }, {})
-    await query.bulkDelete('group_students', { group_id: 1 }, {})
+    await query.bulkDelete('group_students', { group_id: [1, 2] }, {})
     await query.bulkDelete('registrations', { student_student_number: ['112345700', '112345701', '112345702', '112345704', '112345705'] }, {})
   }
 }
