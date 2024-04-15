@@ -1,4 +1,4 @@
-## Definition of Done
+# Definition of Done
 
 - Cypress tests are passing and new tests have been added, if applicable
 
