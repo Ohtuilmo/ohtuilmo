@@ -36,7 +36,7 @@ const GroupDetails = ({ myGroup }) => {
   }
 }
 
-const Answers = ({ answers, currentConfiguration }) => {
+const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
   answers = answers.filter(
     (group) => group.group.configurationId === currentConfiguration
   )
@@ -270,12 +270,16 @@ const ConfigurationSelect = ({
   currentConfiguration,
   setCurrentConfiguration,
   configurations,
+  setCurrentGroupID
 }) => {
   return (
     <Select
       data-cy="configuration-selector"
       value={currentConfiguration}
-      onChange={(e) => setCurrentConfiguration(e.target.value)}
+      onChange={(e) => {
+        setCurrentConfiguration(e.target.value)
+        setCurrentGroupID('0')
+      }}
     >
       {configurations.map((configuration) => (
         <MenuItem
@@ -297,14 +301,21 @@ const GroupSelectWrapper = ({ label, children }) => (
   </div>
 )
 
-const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroups }) => {
+const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroupsInConfig }) => {
   return (
     <Select
       data-cy='group-selector'
       value={currentGroupID}
       onChange={(e) => setCurrentGroupID(e.target.value)}
     >
-      {allGroups.map((group) => (
+      <MenuItem
+        key={0}
+        className='all-groups-menu-item'
+        value={'0'}
+      >
+        All groups
+      </MenuItem>
+      {allGroupsInConfig.map((group) => (
         <MenuItem
           key={group.id}
           className='specified-group-menu-item'
@@ -377,21 +388,24 @@ const InstructorPage = (props) => {
         jsonData={JSON.stringify(answers)}
         fileName="peerReviews.json"
       />
-      <ConfigurationSelectWrapper label="Select configuration">
-        <ConfigurationSelect
-          currentConfiguration={currentConfiguration}
-          setCurrentConfiguration={setCurrentConfiguration}
-          configurations={configurations}
-        />
-      </ConfigurationSelectWrapper>
-      <GroupSelectWrapper label="Select displayed group">
-        <GroupSelect
-          currentGroup={currentGroup}
-          setCurrentGroup={setCurrentGroup}
-          allGroups={groups}
-        />
-      </GroupSelectWrapper>
-      <Answers answers={answers} currentConfiguration={currentConfiguration} />
+      <div className="selector-container">
+        <ConfigurationSelectWrapper label="Select configuration">
+          <ConfigurationSelect
+            currentConfiguration={currentConfiguration}
+            setCurrentConfiguration={setCurrentConfiguration}
+            configurations={configurations}
+            setCurrentGroupID={setCurrentGroupID}
+          />
+        </ConfigurationSelectWrapper>
+        <GroupSelectWrapper label="Select displayed group">
+          <GroupSelect
+            currentGroupID={currentGroupID}
+            setCurrentGroupID={setCurrentGroupID}
+            allGroupsInConfig={groups.filter(group => group.configurationId === currentConfiguration)}
+          />
+        </GroupSelectWrapper>
+      </div>
+      <Answers answers={answers} currentConfiguration={currentConfiguration} currentGroupID={currentGroupID}/>
     </div>
   )
 }
