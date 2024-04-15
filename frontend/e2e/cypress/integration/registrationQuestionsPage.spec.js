@@ -45,12 +45,8 @@ const replaceEditingQuestionSet = (questionSetItemSelector, newQuestions) => {
 }
 
 const clearEditingQuestionSetInputs = (selector) => {
-  cy.get(selector)
-    .find('.question-set-form__name')
-    .clear()
-  cy.get(selector)
-    .find('.question-set-form__questions')
-    .clear()
+  cy.get(selector).find('.question-set-form__name').clear()
+  cy.get(selector).find('.question-set-form__questions').clear()
 }
 
 const saveEditingQuestionSet = (questionSetItemSelector) => {
@@ -60,9 +56,7 @@ const saveEditingQuestionSet = (questionSetItemSelector) => {
 }
 
 const cancelEditingQuestionSet = (selector) => {
-  cy.get(selector)
-    .find('.question-set-item-editor__cancel-button')
-    .click()
+  cy.get(selector).find('.question-set-item-editor__cancel-button').click()
 }
 
 describe('Registration-questions page', () => {
@@ -96,16 +90,16 @@ describe('Registration-questions page', () => {
         .should('have.length', 1)
     })
 
-    it.skip('creates questions of type scale, text and <empty>', () => {
+    it('creates questions of type scale, text and <empty>', () => {
       createQuestionSet('k2000', [
         {
-          question: 'This is a title'
+          question: 'This is a title',
         },
         {
           question: 'Rate your yeet 1-5',
-          type: 'scale'
+          type: 'scale',
         },
-        { question: 'Your life story plz', type: 'text' }
+        { question: 'Your life story plz', type: 'text' },
       ])
 
       cy.get(
@@ -141,7 +135,7 @@ describe('Registration-questions page', () => {
   describe('Registration question set editing', () => {
     beforeEach(() => {
       cy.createRegistrationQuestionSet('k2000', [
-        { question: 'foo?', type: 'text' }
+        { question: 'foo?', type: 'text' },
       ])
       cy.visit('/administration/registration-questions')
     })
@@ -188,7 +182,7 @@ describe('Registration-questions page', () => {
     it('edits questions without changing name', () => {
       editQuestionSet('.question-set-item')
       replaceEditingQuestionSet('.question-set-item-editor', [
-        { question: 'foo!', type: 'text' }
+        { question: 'foo!', type: 'text' },
       ])
       saveEditingQuestionSet('.question-set-item-editor')
 
@@ -204,7 +198,7 @@ describe('Registration-questions page', () => {
       editQuestionSet('.question-set-item')
       replaceEditingQuestionSetName('.question-set-item-editor', 'foobar')
       replaceEditingQuestionSet('.question-set-item-editor', [
-        { question: 'foo!', type: 'text' }
+        { question: 'foo!', type: 'text' },
       ])
       cancelEditingQuestionSet('.question-set-item-editor')
 
@@ -221,7 +215,7 @@ describe('Registration-questions page', () => {
       replaceEditingQuestionSetName('.question-set-item-editor', 'k5555')
       replaceEditingQuestionSet('.question-set-item-editor', [
         { question: 'this is a title' },
-        { question: 'this is a scale', type: 'scale' }
+        { question: 'this is a scale', type: 'scale' },
       ])
       saveEditingQuestionSet('.question-set-item-editor')
 
