@@ -25,6 +25,7 @@ const getTimeLogs = async () => {
     })
     return response.data
   } catch (error) {
+    console.error('error in getTimeLogs', error.response.data.error)
     throw error
   }
 }
@@ -36,6 +37,7 @@ const createTimeLog = async (timeEntry) => {
     })
     return response.data
   } catch (error) {
+    console.error('error in createTimeLog', error.response.data.error)
     throw error
   }
 }
