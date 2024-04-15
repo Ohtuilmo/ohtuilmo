@@ -255,8 +255,10 @@ const initTests = () => {
   cy.createPeerReviews(konf2vastaukset1)
 }
 
-describe('Instructor review page', () => {
+describe('Instructor page', () => {
   before(() => {
+    cy.deleteAllGroups()
+    cy.deleteAllPeerReviews()
     initTests()
   })
 
@@ -265,7 +267,7 @@ describe('Instructor review page', () => {
     cy.visit('/instructorpage')
   })
 
-  it('Starting testing', () => {
+  it('shows correct url, contains configuration selector and displays its group', () => {
     // submit not successfull, still on same page
     cy.url().should('contain', '/instructorpage')
     cy.get('[data-cy=configuration-selector]').click()
@@ -274,7 +276,7 @@ describe('Instructor review page', () => {
     cy.contains('2.50')
   })
 
-  it('Change configuration twice', () => {
+  it('displays the corresponding groups of each configuration', () => {
     // submit not successfull, still on same page
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 2').click()
