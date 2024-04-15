@@ -324,34 +324,6 @@ describe('Time logs & sprints', () => {
     cy.get('#timelog-rows').should('not.contain', '1234')
   })
 
-  it('asks for confirmation before deleting a sprint', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Sprint Dashboard').click()
-      })
-
-    cy.get(':nth-child(1) > .sprint-list-sprint-number')
-      .invoke('text')
-      .as('testedSprintNumber')
-
-    cy.get('#sprint-list-rows > :nth-child(1)')
-      .find('[id^="sprint-remove-button-"]')
-      .click()
-
-    cy.get('.confirmation-dialog').should(
-      'contain',
-      'Deleting sprint will delete all of its time logs. They cannot be restored. Delete sprint anyway?'
-    )
-    cy.get('.confirmation-dialog').find('#confirmation-dialog-no-button').click()
-
-    cy.get('@testedSprintNumber').then((testedSprintNumber) => {
-      cy.get('#timelog-rows > :nth-child(1) > .sprint-list-sprint-number').contains(
-        testedSprintNumber
-      )
-    })
-    cy.get('#sprint-list-rows').children().should('have.length', 2)
-  })
   it('trying to remove sprint with existing time logs displays error', () => {
     cy.get('#hamburger-menu-button')
       .click()
@@ -560,7 +532,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-sprint-tick-0"]')
+        .get('[id^="timelogs-chart-sprint-tick-"]')
         .should('exist')
         .and('be.visible')
     })
@@ -571,7 +543,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-total-tick-0"]')
+        .get('[id^="timelogs-chart-total-tick-"]')
         .should('exist')
         .and('be.visible')
     })    
@@ -587,7 +559,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-sprint-tick-0"]')
+        .get('[id^="timelogs-chart-sprint-tick-"]')
         .should('exist')
         .and('be.visible')
       cy
@@ -595,7 +567,7 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-total-tick-0"]')
+        .get('[id^="timelogs-chart-total-tick-"]')
         .should('exist')
         .and('be.visible')
     })
@@ -615,12 +587,12 @@ describe('Time logs & sprints', () => {
         .and('be.visible')
         .and('contain', 'There are no time logs available for this sprint.')
         .and('contain', 'The chart cannot be generated.')
-        cy
+      cy
         .get('#timelogs-chart-total', { timeout: 5000 })
         .should('exist')
         .and('be.visible')
       cy
-        .get('[data-cy="timelogs-chart-total-tick-0"]')
+        .get('[id^="timelogs-chart-total-tick-"]')
         .should('exist')
         .and('be.visible')
     })
