@@ -45,6 +45,24 @@ const TimeLogsPage = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const isMobileView = useCheckMobileView()
 
+import timeLogsService from '../../services/timeLogs'
+import sprintService from '../../services/sprints'
+import myGroupActions from '../../reducers/actions/myGroupActions'
+import {
+  minutesAndHoursFromString,
+  hoursAndMinutesToMinutes,
+} from '../../utils/functions'
+import './TimeLogsPage.css'
+import * as notificationActions from '../../reducers/actions/notificationActions'
+
+const TimeLogsPage = (props) => {
+  const [allLogs, setAllLogs] = useState([])
+  const [allSprints, setAllSprints] = useState([])
+  const [currentSprintNumber, setCurrentSprintNumber] = useState(null)
+  const [selectedSprintNumber, setSelectedSprintNumber] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const { studentNumber, group, initializeMyGroup } = props
   const existingSprintNumbers = allSprints.map((sprint) => sprint.sprint).sort()
 
   useEffect(() => {
