@@ -79,6 +79,8 @@ app.use('/api/autocomplete', autoCompleteRouter)
 app.use('/api/instructorreview', instructorReviewRouter)
 app.use('/api/timelogs', timeLogsRouter)
 app.use('/api/sprints', sprintRouter)
+app.use('/api/groupSprintSummary', groupSprintSummaryRouter)
+app.use('/api/tags', tagsRouter)
 
 // Database connection
 const db = require('./models')
