@@ -44,45 +44,50 @@ const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
   return (
     <div>
       {answers.map((projectGroup, index) => {
-        return (
-          <div key={index}>
-            <hr />
-            <br />
-            <h1>{projectGroup.group.name}</h1>
-            <h3>Instructor: {projectGroup.group.instructorName}</h3>
-            <GroupDetails myGroup={projectGroup.group.studentNames} />
+        if (currentGroupID === projectGroup.group.id || currentGroupID === '0') {
+          return (
+            <div key={index}>
+              <hr />
+              <br />
+              <h1>{projectGroup.group.name}</h1>
+              <h3>Instructor: {projectGroup.group.instructorName}</h3>
+              <GroupDetails myGroup={projectGroup.group.studentNames} />
 
-            {projectGroup.round1Answers.length > 0 ? (
-              <div>
-                <h2>Peer review answers from the first round.</h2>
-                <GroupAnswers
-                  answers={projectGroup.round1Answers}
-                  students={projectGroup.group.studentNames}
-                />
-              </div>
-            ) : (
-              <h2>
-                This group hasn't answered to the first peer review round yet.
-              </h2>
-            )}
+              {projectGroup.round1Answers.length > 0 ? (
+                <div>
+                  <h2>Peer review answers from the first round.</h2>
+                  <GroupAnswers
+                    answers={projectGroup.round1Answers}
+                    students={projectGroup.group.studentNames}
+                  />
+                </div>
+              ) : (
+                <h2>
+                  This group hasn't answered to the first peer review round yet.
+                </h2>
+              )}
 
-            {projectGroup.round2Answers.length > 0 ? (
-              <div>
-                <h2>Peer review answers from the second round.</h2>
-                <GroupAnswers
-                  answers={projectGroup.round2Answers}
-                  students={projectGroup.group.studentNames}
-                />
-              </div>
-            ) : (
-              <h2>
-                This group hasn't answered to the second peer review round yet.
-              </h2>
-            )}
+              {projectGroup.round2Answers.length > 0 ? (
+                <div>
+                  <h2>Peer review answers from the second round.</h2>
+                  <GroupAnswers
+                    answers={projectGroup.round2Answers}
+                    students={projectGroup.group.studentNames}
+                  />
+                </div>
+              ) : (
+                <h2>
+                  This group hasn't answered to the second peer review round yet.
+                </h2>
+              )}
 
-            <br />
-          </div>
-        )
+              <br />
+            </div>
+          )
+          }
+          else {
+            return (<div></div>)
+          }
       })}
     </div>
   )
