@@ -5,27 +5,27 @@ module.exports = (sequelize, Sequelize) => {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       content: {
-        type: Sequelize.JSONB
-      }
+        type: Sequelize.JSONB,
+      },
     },
     {
-      underscored: true
+      underscored: true,
     }
   )
 
   Configuration.associate = (models) => {
     Configuration.hasMany(models.Registration) // used only for creating the foreign key in registrations, should be removed and implemented from registration side
     Configuration.belongsTo(models.ReviewQuestionSet, {
-      as: 'review_question_set1'
+      as: 'review_question_set1',
     })
     Configuration.belongsTo(models.ReviewQuestionSet, {
-      as: 'review_question_set2'
+      as: 'review_question_set2',
     })
     Configuration.belongsTo(models.RegistrationQuestionSet)
     Configuration.belongsTo(models.CustomerReviewQuestionSet)
