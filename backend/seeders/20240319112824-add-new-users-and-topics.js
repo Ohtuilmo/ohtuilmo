@@ -250,7 +250,13 @@ const newGroup = [
     topic_id: 5,
     configuration_id: 1,
     instructor_id: 112345703 ,
-  }
+  },
+  {
+    name: 'ohtuilmo-ryhmä2',
+    topic_id: 6,
+    configuration_id: 2,
+    instructor_id: 112345699,
+  },
 ]
 
 const group_students = [
