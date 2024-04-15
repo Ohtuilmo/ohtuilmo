@@ -10,6 +10,14 @@ const initTests = () => {
   })
 
   cy.createGroup({
+    name: 'Kakkostykitys',
+    topicId: 3,
+    configurationId: 1,
+    instructorId: '012345688',
+    studentIds: ['012345678', '012345698'],
+  })
+
+  cy.createGroup({
     name: 'Kämmäilijät',
     topicId: 2,
     configurationId: 2,
