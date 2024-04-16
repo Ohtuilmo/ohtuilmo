@@ -7,6 +7,8 @@
 !.eslintignore
 !.eslintrc.js
 !package*.json
+!index.html
+!vite.config.js
 # nice-to-haves I guess?
 !LICENCE
 !README.md

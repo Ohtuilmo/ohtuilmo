@@ -1,5 +1,5 @@
 # specify base image
-FROM registry.access.redhat.com/ubi8/nodejs-10
+FROM registry.access.redhat.com/ubi9/nodejs-20
 
 ENV TZ="Europe/Helsinki"
 
@@ -18,7 +18,7 @@ COPY package*.json .
 # Run "ci" instead of "install" to make sure we get exact deps we think we're
 # getting. Downside is that dev deps are downloaded as well.
 # As "ci" uses the $HOME/.npm package cache, we can tell Travis to cache that.
-RUN npm ci --production
+RUN npm ci
 
 COPY . .
 
@@ -27,4 +27,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Set entrypoint to serve the app we just built
-CMD serve -s build -p 3000
+CMD serve -s dist -p 3000

@@ -48,11 +48,11 @@ import {
   AdminRoute,
   LoginRoute,
   InstructorRoute,
-} from '../src/utils/protectedRoutes'
+} from './utils/protectedRoutes'
 
 import loginService from './services/login'
 
-const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
+const history = createBrowserHistory({ basename: import.meta.env.BASE_URL })
 
 const NotFound = () => (
   <div className="not-found-page">
