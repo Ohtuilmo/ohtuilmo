@@ -16,11 +16,11 @@ describe('Time logs & sprints', () => {
   })
 
   beforeEach(() => {
+    cy.loginAsAdmin()
+    cy.deleteAllSprints()
+
     cy.loginAsRegisteredUser()
     cy.visit('/')
-  })
-
-  it('add 2 sprints', () => {
     cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
@@ -65,7 +65,7 @@ describe('Time logs & sprints', () => {
     cy.get('#time-log-submit-button').should('be.disabled')
   })
 
-  it('add 2 time logs', () => {
+  it('adds 2 time logs and displays them successfully', () => {
     cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
@@ -84,14 +84,7 @@ describe('Time logs & sprints', () => {
 
     cy.get('.notification').should('exist')
     cy.get('.notification').should('have.text', 'Time log created successfully')
-  })
 
-  it('should display 2 time logs', () => {
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
     cy.get('.timelogs-container-1').should('contain', 'test description 1')
     cy.get('.timelogs-container-1').should('contain', 'test description 2')
 
@@ -114,13 +107,13 @@ describe('Time logs & sprints', () => {
     )
   })
 
-  it('previous week should not display time logs', () => {
+  it('new sprints should not display time logs', () => {
     cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
         cy.contains('Time Log').click()
       })
-    cy.get('.timelogs-container-1').should('contain', 'test description 2')
+    cy.get('#timelog-rows').children().should('have.length', 1)
     cy.get('#previous-sprint-button').click()
     cy.get('#timelog-rows').children().should('have.length', 1)
     cy.get('#timelog-rows').should('contain', 'No logs yet :(')
@@ -132,6 +125,11 @@ describe('Time logs & sprints', () => {
     .then(() => {
       cy.contains('Time Log').click()
     })
+
+    cy.get('#date').type(formatDate(new Date()))
+    cy.get('#time').type('01:00')
+    cy.get('#description').type('test description 1')
+    cy.get('#time-log-submit-button').click()
 
     cy.get(':nth-child(1) > .timelogs-description')
       .invoke('text')
@@ -151,7 +149,7 @@ describe('Time logs & sprints', () => {
         testedLogDescription
       )
     })
-    cy.get('#timelog-rows').children().should('have.length', 2)
+    cy.get('#timelog-rows').children().should('have.length', 1)
   })
 
   it('remove a time log, should not display removed time log', () => {
@@ -160,6 +158,16 @@ describe('Time logs & sprints', () => {
       .then(() => {
         cy.contains('Time Log').click()
       })
+
+    cy.get('#date').type(formatDate(new Date()))
+    cy.get('#time').type('01:00')
+    cy.get('#description').type('test description 1')
+    cy.get('#time-log-submit-button').click()
+
+    cy.get('.notification').should('exist')
+    cy.get('.notification').should('have.text', 'Time log created successfully')
+
+    cy.get('.timelogs-container-1').should('contain', 'test description 1')
 
     cy.get(':nth-child(1) > .timelogs-description')
       .invoke('text')
@@ -254,6 +262,22 @@ describe('Time logs & sprints', () => {
       cy.get('#hamburger-menu-button')
         .click()
         .then(() => {
+          cy.contains('Time Log').click()
+        })
+
+      cy.get('#date').type(formatDate(new Date()))
+      cy.get('#time').type('01:00')
+      cy.get('#description').type('test description 1')
+      cy.get('#time-log-submit-button').click()
+
+      cy.get('.notification').should('exist')
+      cy.get('.notification').should('have.text', 'Time log created successfully')
+
+      cy.get('.timelogs-container-1').should('contain', 'test description 1')
+
+      cy.get('#hamburger-menu-button')
+        .click()
+        .then(() => {
           cy.contains('Sprint Dashboard').click()
         })
 
@@ -267,38 +291,7 @@ describe('Time logs & sprints', () => {
         )
     })
 
-
     it('remove sprints, should not display sprints or time logs', () => {
-      cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Time Log').click()
-      })
-
-    cy.get(':nth-child(1) > .timelogs-description')
-      .invoke('text')
-      .as('removedLogDescription')
-
-    cy.get('#timelog-rows > :nth-child(1)')
-      .find('[id^="timelog-remove-button-"]')
-      .click()
-
-    cy.get('.confirmation-dialog').should(
-      'contain',
-      'Delete this time log? It cannot be restored.'
-    )
-    cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
-
-    cy.get('@removedLogDescription').then((removedLogDescription) => {
-      cy.get('#timelog-rows > :nth-child(1) > .timelogs-description').should(
-        'not.contain',
-        removedLogDescription
-      )
-    })
-
-    cy.get('#timelog-rows').children().should('have.length', 1)
-
-
       cy.get('#hamburger-menu-button')
         .click()
         .then(() => {
