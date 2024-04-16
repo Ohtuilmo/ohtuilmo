@@ -311,7 +311,21 @@ describe('Instructor page', () => {
     cy.should('not.contain', 'Tykittelijät')
   })
 
-
+  it('can toggle between student and question views', () => {
+    cy.get('[data-cy=configuration-selector]').click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
+    cy.get('[data-cy=group-selector]').click()
+    cy.get('.specified-group-menu-item').contains('Tykittelijät').click()
+  
+    cy.contains('View answers by Students').click()
+    cy.contains('View answers by Questions') 
+    cy.contains('Peer review answers from the first round.')
+    cy.contains('Tykittelijät')
+  
+    cy.contains('View answers by Questions').click()
+    cy.contains('View answers by Students')
+  })
+  
   after(() => {
     cy.deleteAllGroups()
     cy.deleteAllPeerReviews()
