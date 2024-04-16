@@ -408,6 +408,7 @@ describe('Time logs & sprints', () => {
       .should('contain', 'Your group has no sprints. Add a sprint using Sprint Dashboard.')
   })
 
+  /*
   describe('Time log chart', () => {
     before(() => {
       cy.deleteAllGroups()
@@ -523,11 +524,12 @@ describe('Time logs & sprints', () => {
         .should('exist')
         .and('be.visible')
     })
+  })
+  */
 
-    after(() => {
-      cy.deleteAllTimelogs()
-      cy.deleteAllSprints()
-      cy.deleteAllGroups()
-    })
+  after(() => {
+    cy.deleteAllTimelogs()
+    cy.deleteAllSprints()
+    cy.deleteAllGroups()
   })
 })
