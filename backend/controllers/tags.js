@@ -29,7 +29,6 @@ const fetchFromDb = async () => {
 }
 
 tagsRouter.get('/', checkAdmin, async (req, res) => {
-  console.log('Fetching tags')
   try {
     const tags = await fetchFromDb()
     console.log('tags: ', tags)

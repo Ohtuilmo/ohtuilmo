@@ -137,9 +137,6 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => ({
   state: state,
-  //user: state.login.user,
-  //studentNumber: state.login.user.user.student_number,
-  //group: state.registrationDetails.myGroup,
 })
 
 export default withRouter(
