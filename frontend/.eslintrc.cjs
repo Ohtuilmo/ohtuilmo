@@ -4,16 +4,18 @@ module.exports = {
     node: true,
     browser: true,
   },
-  extends: 'eslint:recommended',
-  parser: 'babel-eslint',
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+  ],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react'],
+  settings: { react: { version: '16.8' } },
+  plugins: ['react', 'react-refresh'],
   rules: {
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
@@ -25,5 +27,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'arrow-spacing': ['error', { before: true, after: true }],
     'no-console': 0,
+    'react/prop-types': 0,
+    'no-unused-vars': 0
   }
 }
