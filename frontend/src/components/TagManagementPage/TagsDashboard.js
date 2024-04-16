@@ -22,7 +22,7 @@ const TagsPage = (props) => {
           setAllTags(fetchedData)
         }
       } catch (error) {
-        console.error('Error fethcing tags:', error.message, ' / ' , error.response.data.error)
+        console.error('Error fetching tags:', error.message, ' / ' , error.response.data.error)
         if (error.response && error.response.data && error.response.data.error) {
           props.setError(error.response.data.error)
         } else {
@@ -47,7 +47,7 @@ const TagsPage = (props) => {
       clearForm()
       props.setSuccess('Tag created successfully.')
     } catch (error) {
-      console.error('Error fethcing tags:', error.message, ' / ' , error.response.data.error)
+      console.error('Error fetching tags:', error.message, ' / ' , error.response.data.error)
       props.setError(error.response.data.error, 3000)
     }
   }
@@ -62,7 +62,7 @@ const TagsPage = (props) => {
       setAllTags(updatedTags)
       props.setSuccess('Tag deleted successfully.')
     } catch (error) {
-      console.error('Error fethcing tags:', error.message, ' / ' , error.response.data.error)
+      console.error('Error fetching tags:', error.message, ' / ' , error.response.data.error)
       props.setError(error.response.data.error)
     }
   }
