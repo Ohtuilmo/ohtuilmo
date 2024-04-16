@@ -11,7 +11,7 @@ describe('Time logs & sprints', () => {
       topicId: 1,
       configurationId: 1,
       instructorId: null,
-      studentIds: ['012345698'],
+      studentIds: ['012345698', '012345688'],
     })
   })
 
