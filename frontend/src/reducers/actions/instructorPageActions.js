@@ -11,6 +11,7 @@ const setCurrentConfiguration = (configurationNumber) => {
     payload: configurationNumber
   }
 }
+
 const setAnswers = (answers) => {
   return {
     type: 'SET_INSTRUCTORPAGE_CURRENT_ANSWERS',
@@ -18,4 +19,18 @@ const setAnswers = (answers) => {
   }
 }
 
-export default { setCurrentConfiguration, setConfigurations, setAnswers }
+const setGroups = (groups) => {
+  return {
+    type: 'SET_INSTRUCTORPAGE_GROUPS',
+    payload: groups
+  }
+}
+
+const setCurrentGroupID = (groupId) => {
+  return {
+    type: 'SET_INSTRUCTORPAGE_CURRENT_GROUP_ID',
+    payload: groupId
+  }
+}
+
+export default { setCurrentConfiguration, setConfigurations, setAnswers, setCurrentGroupID, setGroups }

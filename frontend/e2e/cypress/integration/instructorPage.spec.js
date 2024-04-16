@@ -10,6 +10,14 @@ const initTests = () => {
   })
 
   cy.createGroup({
+    name: 'Kakkostykitys',
+    topicId: 3,
+    configurationId: 1,
+    instructorId: '012345688',
+    studentIds: ['012345678', '012345698'],
+  })
+
+  cy.createGroup({
     name: 'Kämmäilijät',
     topicId: 2,
     configurationId: 2,
@@ -247,8 +255,10 @@ const initTests = () => {
   cy.createPeerReviews(konf2vastaukset1)
 }
 
-describe('Instructor review page', () => {
+describe('Instructor page', () => {
   before(() => {
+    cy.deleteAllGroups()
+    cy.deleteAllPeerReviews()
     initTests()
   })
 
@@ -257,7 +267,7 @@ describe('Instructor review page', () => {
     cy.visit('/instructorpage')
   })
 
-  it('Starting testing', () => {
+  it('shows correct url, contains configuration selector and displays its group', () => {
     // submit not successfull, still on same page
     cy.url().should('contain', '/instructorpage')
     cy.get('[data-cy=configuration-selector]').click()
@@ -266,7 +276,7 @@ describe('Instructor review page', () => {
     cy.contains('2.50')
   })
 
-  it('Change configuration twice', () => {
+  it('displays the corresponding groups of each configuration', () => {
     // submit not successfull, still on same page
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 2').click()
@@ -278,6 +288,29 @@ describe('Instructor review page', () => {
     cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
     cy.contains('4.50')
   })
+
+  it('is loaded displaying all groups of a configuration', () => {
+    cy.get('[data-cy=configuration-selector]').click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
+    cy.contains('Tykittelijät')
+    cy.contains('Kakkostykitys')
+  })
+
+  it('can filter and display only one group at a time', () => {
+    cy.get('[data-cy=configuration-selector]').click()
+    cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
+
+    cy.get('[data-cy=group-selector]').click()
+    cy.get('.specified-group-menu-item').contains('Tykittelijät').click()
+    cy.contains('Tykittelijät')
+    cy.should('not.contain', 'Kakkostykitys')
+
+    cy.get('[data-cy=group-selector]').click()
+    cy.get('.specified-group-menu-item').contains('Kakkostykitys').click()
+    cy.contains('Kakkostykitys')
+    cy.should('not.contain', 'Tykittelijät')
+  })
+
 
   after(() => {
     cy.deleteAllGroups()

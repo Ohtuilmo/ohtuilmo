@@ -36,7 +36,7 @@ const GroupDetails = ({ myGroup }) => {
   }
 }
 
-const Answers = ({ answers, currentConfiguration }) => {
+const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
   answers = answers.filter(
     (group) => group.group.configurationId === currentConfiguration
   )
@@ -44,45 +44,50 @@ const Answers = ({ answers, currentConfiguration }) => {
   return (
     <div>
       {answers.map((projectGroup, index) => {
-        return (
-          <div key={index}>
-            <hr />
-            <br />
-            <h1>{projectGroup.group.name}</h1>
-            <h3>Instructor: {projectGroup.group.instructorName}</h3>
-            <GroupDetails myGroup={projectGroup.group.studentNames} />
+        if (currentGroupID === projectGroup.group.id || currentGroupID === '0') {
+          return (
+            <div key={index}>
+              <hr />
+              <br />
+              <h1>{projectGroup.group.name}</h1>
+              <h3>Instructor: {projectGroup.group.instructorName}</h3>
+              <GroupDetails myGroup={projectGroup.group.studentNames} />
 
-            {projectGroup.round1Answers.length > 0 ? (
-              <div>
-                <h2>Peer review answers from the first round.</h2>
-                <GroupAnswers
-                  answers={projectGroup.round1Answers}
-                  students={projectGroup.group.studentNames}
-                />
-              </div>
-            ) : (
-              <h2>
-                This group hasn't answered to the first peer review round yet.
-              </h2>
-            )}
+              {projectGroup.round1Answers.length > 0 ? (
+                <div>
+                  <h2>Peer review answers from the first round.</h2>
+                  <GroupAnswers
+                    answers={projectGroup.round1Answers}
+                    students={projectGroup.group.studentNames}
+                  />
+                </div>
+              ) : (
+                <h2>
+                  This group hasn't answered to the first peer review round yet.
+                </h2>
+              )}
 
-            {projectGroup.round2Answers.length > 0 ? (
-              <div>
-                <h2>Peer review answers from the second round.</h2>
-                <GroupAnswers
-                  answers={projectGroup.round2Answers}
-                  students={projectGroup.group.studentNames}
-                />
-              </div>
-            ) : (
-              <h2>
-                This group hasn't answered to the second peer review round yet.
-              </h2>
-            )}
+              {projectGroup.round2Answers.length > 0 ? (
+                <div>
+                  <h2>Peer review answers from the second round.</h2>
+                  <GroupAnswers
+                    answers={projectGroup.round2Answers}
+                    students={projectGroup.group.studentNames}
+                  />
+                </div>
+              ) : (
+                <h2>
+                  This group hasn't answered to the second peer review round yet.
+                </h2>
+              )}
 
-            <br />
-          </div>
-        )
+              <br />
+            </div>
+          )
+          }
+          else {
+            return (<div></div>)
+          }
       })}
     </div>
   )
@@ -165,7 +170,7 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
         <thead>
           <tr className="radio-inforow">
             <th />
-            <th colspan={peers.length} className="radio-infoheader">
+            <th colSpan={peers.length} className="radio-infoheader">
               Reviewers
             </th>
             <th />
@@ -270,12 +275,16 @@ const ConfigurationSelect = ({
   currentConfiguration,
   setCurrentConfiguration,
   configurations,
+  setCurrentGroupID
 }) => {
   return (
     <Select
       data-cy="configuration-selector"
       value={currentConfiguration}
-      onChange={(e) => setCurrentConfiguration(e.target.value)}
+      onChange={(e) => {
+        setCurrentConfiguration(e.target.value)
+        setCurrentGroupID('0')
+      }}
     >
       {configurations.map((configuration) => (
         <MenuItem
@@ -284,6 +293,40 @@ const ConfigurationSelect = ({
           value={configuration.id}
         >
           {configuration.name}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
+
+const GroupSelectWrapper = ({ label, children }) => (
+  <div style={{ padding: 20 }}>
+    <Typography variant='caption'>{label}</Typography>
+    {children}
+  </div>
+)
+
+const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroupsInConfig }) => {
+  return (
+    <Select
+      data-cy='group-selector'
+      value={currentGroupID}
+      onChange={(e) => setCurrentGroupID(e.target.value)}
+    >
+      <MenuItem
+        key={0}
+        className='all-groups-menu-item'
+        value={'0'}
+      >
+        All groups
+      </MenuItem>
+      {allGroupsInConfig.map((group) => (
+        <MenuItem
+          key={group.id}
+          className='specified-group-menu-item'
+          value={group.id}
+        >
+          {group.name}
         </MenuItem>
       ))}
     </Select>
@@ -309,9 +352,13 @@ const InstructorPage = (props) => {
     answers,
     currentConfiguration,
     configurations,
+    currentGroupID,
+    groups,
     setAnswers,
     setConfigurations,
     setCurrentConfiguration,
+    setGroups,
+    setCurrentGroupID,
     setError,
   } = props
 
@@ -319,13 +366,14 @@ const InstructorPage = (props) => {
     const fetchData = async () => {
       try {
         const peerReviewData = await peerReviewService.getAnswersByInstructor()
-        const uniqueConfigurations = getUniqueConfigurations(
-          peerReviewData.map((data) => data.group)
-        )
+        const groupsData = peerReviewData.map((data) => data.group)
+        const uniqueConfigurations = getUniqueConfigurations(groupsData)
 
         setAnswers(peerReviewData)
         setConfigurations(uniqueConfigurations.reverse())
         setCurrentConfiguration(uniqueConfigurations[0].id)
+        setGroups(groupsData)
+        setCurrentGroupID('0')
       } catch (err) {
         console.error('error happened', err, err.response)
         setError('Something is wrong... try reloading the page')
@@ -333,9 +381,9 @@ const InstructorPage = (props) => {
     }
 
     fetchData()
-  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError])
+  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError, setGroups, setCurrentGroupID])
 
-  if (!answers || !currentConfiguration) {
+  if (!answers || !currentConfiguration || !groups || !currentGroupID) {
     return <div className="instructor-container">Loading</div>
   }
 
@@ -345,14 +393,24 @@ const InstructorPage = (props) => {
         jsonData={JSON.stringify(answers)}
         fileName="peerReviews.json"
       />
-      <ConfigurationSelectWrapper label="Select configuration">
-        <ConfigurationSelect
-          currentConfiguration={currentConfiguration}
-          setCurrentConfiguration={setCurrentConfiguration}
-          configurations={configurations}
-        />
-      </ConfigurationSelectWrapper>
-      <Answers answers={answers} currentConfiguration={currentConfiguration} />
+      <div className="selector-container">
+        <ConfigurationSelectWrapper label="Select configuration">
+          <ConfigurationSelect
+            currentConfiguration={currentConfiguration}
+            setCurrentConfiguration={setCurrentConfiguration}
+            configurations={configurations}
+            setCurrentGroupID={setCurrentGroupID}
+          />
+        </ConfigurationSelectWrapper>
+        <GroupSelectWrapper label="Select displayed group">
+          <GroupSelect
+            currentGroupID={currentGroupID}
+            setCurrentGroupID={setCurrentGroupID}
+            allGroupsInConfig={groups.filter(group => group.configurationId === currentConfiguration)}
+          />
+        </GroupSelectWrapper>
+      </div>
+      <Answers answers={answers} currentConfiguration={currentConfiguration} currentGroupID={currentGroupID}/>
     </div>
   )
 }
@@ -362,6 +420,8 @@ const mapStateToProps = (state) => {
     configurations: state.instructorPage.configurations,
     currentConfiguration: state.instructorPage.currentConfiguration,
     answers: state.instructorPage.answers,
+    groups: state.instructorPage.groups,
+    currentGroupID: state.instructorPage.currentGroupID
   }
 }
 
@@ -370,6 +430,8 @@ const mapDispatchToProps = {
   setCurrentConfiguration: instructorPageActions.setCurrentConfiguration,
   setAnswers: instructorPageActions.setAnswers,
   setError: notificationActions.setError,
+  setGroups: instructorPageActions.setGroups,
+  setCurrentGroupID: instructorPageActions.setCurrentGroupID
 }
 
 const ConnectedInstructorPage = connect(
