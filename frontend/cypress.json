@@ -8,6 +8,5 @@
   "projectId": "2e43ni",
   "retries": 8,
   "viewportWidth": 1280,
-  "viewportHeight": 720,
-  "baseUrl": "http://localhost:3000/projekti"
+  "viewportHeight": 720
 }
