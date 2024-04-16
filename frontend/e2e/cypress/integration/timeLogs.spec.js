@@ -131,7 +131,7 @@ describe('Time logs & sprints', () => {
     cy.get('.timelogs-sprint-select')
       .should('exist')
       .and('be.visible')
-      .and('contains','SPRINT 2')
+    cy.get('.timelogs-sprint-select').should('have.text','SPRINT 2')
   })
 
   it('time log form is disabled for previous sprint', () => {
@@ -161,8 +161,9 @@ describe('Time logs & sprints', () => {
     cy.get('#description').type('test description 2')
     cy.get('#time-log-submit-button').click()
 
-    cy.get('.notification').should('exist')
-    cy.get('.notification').should('have.text', 'Time log created successfully')
+    cy.get('.notification')
+      .should('exist')
+    cy.get('[data-testid="notification-message"]').should('contain', 'Time log created successfully')
   })
 
   it('should display 2 time logs', () => {
@@ -191,8 +192,7 @@ describe('Time logs & sprints', () => {
 
     cy.get('.notification')
       .should('exist')
-      .and('be.visible')
-      .and('have.text', 'The log date is not within sprint start and end date.')
+    cy.get('[data-testid="notification-message"]').should('contain', 'The log date is not within sprint start and end date.')
   })
 
   it('previous week should not display time logs', () => {
