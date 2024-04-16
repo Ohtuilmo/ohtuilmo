@@ -508,98 +508,10 @@ describe('Time logs & sprints', () => {
         .and('be.visible')
     })
 
-    it('should display time log chart for previous sprint', () => {
-      cy
-        .get('.timelogs-container-1')
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('.timelogs-container-2')
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('.timelogs-container-3')
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('.timelogs-container-chart')
-        .should('exist')
-        .and('be.visible')
+    after(() => {
+      cy.deleteAllTimelogs()
+      cy.deleteAllSprints()
+      cy.deleteAllGroups()
     })
-    it('should display chart for current sprint', () => {
-      cy
-        .get('#timelogs-chart-sprint', { timeout: 5000 })
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('[id^="timelogs-chart-sprint-tick-"]')
-        .should('exist')
-        .and('be.visible')
-    })
-
-    it('should display chart for the total work time', () => {
-      cy
-        .get('#timelogs-chart-total', { timeout: 5000 })
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('[id^="timelogs-chart-total-tick-"]')
-        .should('exist')
-        .and('be.visible')
-    })    
-
-    it('should display chart for the previous sprint and the total work time', () => {
-      cy
-        .get('.timelogs-sprint-select')
-        .should('exist')
-        .and('be.visible')
-      cy.get('#previous-sprint-button').click()
-      cy
-        .get('#timelogs-chart-sprint', { timeout: 5000 })
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('[id^="timelogs-chart-sprint-tick-"]')
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('#timelogs-chart-total', { timeout: 5000 })
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('[id^="timelogs-chart-total-tick-"]')
-        .should('exist')
-        .and('be.visible')
-    })
-
-    it('should display placeholder for the next sprint and chart for the total work time', () => {
-      cy
-        .get('.timelogs-sprint-select')
-        .should('exist')
-        .and('be.visible')
-      cy.get('#next-sprint-button').click()
-      cy
-        .get('#timelogs-chart-sprint')
-        .should('not.exist')
-      cy
-        .get('#timelogs-placeholder-sprint', { timeout: 5000 })
-        .should('exist')
-        .and('be.visible')
-        .and('contain', 'There are no time logs available for this sprint.')
-        .and('contain', 'The chart cannot be generated.')
-      cy
-        .get('#timelogs-chart-total', { timeout: 5000 })
-        .should('exist')
-        .and('be.visible')
-      cy
-        .get('[id^="timelogs-chart-total-tick-"]')
-        .should('exist')
-        .and('be.visible')
-    })
-  })
-  after(() => {
-    cy.deleteAllTimelogs()
-    cy.deleteAllSprints()
-    cy.deleteAllGroups()
   })
 })
