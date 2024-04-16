@@ -170,7 +170,7 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
         <thead>
           <tr className="radio-inforow">
             <th />
-            <th colspan={peers.length} className="radio-infoheader">
+            <th colSpan={peers.length} className="radio-infoheader">
               Reviewers
             </th>
             <th />
