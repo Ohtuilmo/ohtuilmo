@@ -144,7 +144,7 @@ sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
       return res.status(403).json({ error: 'User is not a member of the group.' })
     }
     const timeLogs = await db.TimeLog.findAll({ where: { sprint_id: id } })
-    if (timeLogs.length > 0 && !req.user.admin) {
+    if (timeLogs.length > 0) {
       return res.status(403).json({ error: 'Sprint has time logs, cannot delete.' })
     }
 

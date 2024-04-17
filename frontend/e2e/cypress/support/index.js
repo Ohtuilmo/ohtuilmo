@@ -717,26 +717,3 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
       .then((res) => res.body)
   })
 })
-
-Cypress.Commands.add('deleteAllSprints', () => {
-  withLoggedAdminToken((token) => {
-    const authHeaders = {
-      Authorization: 'Bearer ' + token
-    }
-    cy.request({
-      url: '/api/sprints',
-      method: 'GET',
-      headers: authHeaders
-    }).then((res) => {
-      const allSprints = res.body
-      for (const sprint of allSprints) {
-        cy.request({
-          url: `/api/sprints/${sprint.id}`,
-          method: 'DELETE',
-          failOnStatusCode: false,
-          headers: authHeaders
-        })
-      }
-    })
-  })
-})
