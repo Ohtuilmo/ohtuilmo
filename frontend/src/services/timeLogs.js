@@ -13,6 +13,7 @@ const getGroupSprintSummary = async () => {
     })
     return response.data
   } catch (error) {
+    console.error('error in getGroupSprintSummary', error.response.data.error)
     throw error
   }
 }
