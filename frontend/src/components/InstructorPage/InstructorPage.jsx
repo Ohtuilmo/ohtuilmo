@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -6,13 +6,14 @@ import Button from '@material-ui/core/Button'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
-import * as notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../../reducers/actions/notificationActions'
 
 import './InstructorPage.css'
+import StudentViewGroupAnswers from './StudentViewGroupAnswers'
 
 //Services
-import peerReviewService from '../services/peerReview'
-import instructorPageActions from '../reducers/actions/instructorPageActions'
+import peerReviewService from '../../services/peerReview'
+import instructorPageActions from '../../reducers/actions/instructorPageActions'
 
 const GroupDetails = ({ myGroup }) => {
   if (!myGroup) {
@@ -36,7 +37,7 @@ const GroupDetails = ({ myGroup }) => {
   }
 }
 
-const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
+const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) => {
   answers = answers.filter(
     (group) => group.group.configurationId === currentConfiguration
   )
@@ -56,10 +57,14 @@ const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
               {projectGroup.round1Answers.length > 0 ? (
                 <div>
                   <h2>Peer review answers from the first round.</h2>
-                  <GroupAnswers
-                    answers={projectGroup.round1Answers}
-                    students={projectGroup.group.studentNames}
-                  />
+                  {viewMode === 'students' ? (
+                    <StudentViewGroupAnswers answers={projectGroup.round1Answers} />
+                  ) : (
+                    <GroupAnswers
+                      answers={projectGroup.round1Answers}
+                      students={projectGroup.group.studentNames}
+                    />
+                  )}
                 </div>
               ) : (
                 <h2>
@@ -70,10 +75,14 @@ const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
               {projectGroup.round2Answers.length > 0 ? (
                 <div>
                   <h2>Peer review answers from the second round.</h2>
-                  <GroupAnswers
-                    answers={projectGroup.round2Answers}
-                    students={projectGroup.group.studentNames}
-                  />
+                  {viewMode === 'students' ? (
+                    <StudentViewGroupAnswers answers={projectGroup.round2Answers} />
+                  ) : (
+                    <GroupAnswers
+                      answers={projectGroup.round2Answers}
+                      students={projectGroup.group.studentNames}
+                    />
+                  )}
                 </div>
               ) : (
                 <h2>
@@ -83,11 +92,10 @@ const Answers = ({ answers, currentConfiguration, currentGroupID }) => {
 
               <br />
             </div>
-          )
-          }
-          else {
-            return (<div></div>)
-          }
+          )}
+        else {
+          return (<div></div>)
+        }
       })}
     </div>
   )
@@ -258,8 +266,25 @@ const DownloadButton = ({ jsonData, fileName }) => {
       download={fileName}
       variant="contained"
       color="primary"
+      style= {{ margin: 20 }}
     >
       Download as JSON
+    </Button>
+  )
+}
+
+const SelectViewButton = ({ viewMode, setViewMode }) => {
+  const toggleView = () => {
+    setViewMode(viewMode === 'questions' ? 'students' : 'questions');
+  }
+
+  return (
+    <Button
+      onClick={toggleView}
+      variant="contained"
+      color="primary"
+    >
+      View answers by {viewMode === 'questions' ? 'Students' : 'Questions'}
     </Button>
   )
 }
@@ -362,6 +387,8 @@ const InstructorPage = (props) => {
     setError,
   } = props
 
+  const [viewMode, setViewMode] = useState('questions')
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -393,6 +420,10 @@ const InstructorPage = (props) => {
         jsonData={JSON.stringify(answers)}
         fileName="peerReviews.json"
       />
+      <SelectViewButton
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+      />
       <div className="selector-container">
         <ConfigurationSelectWrapper label="Select configuration">
           <ConfigurationSelect
@@ -410,7 +441,7 @@ const InstructorPage = (props) => {
           />
         </GroupSelectWrapper>
       </div>
-      <Answers answers={answers} currentConfiguration={currentConfiguration} currentGroupID={currentGroupID}/>
+      <Answers answers={answers} currentConfiguration={currentConfiguration} currentGroupID={currentGroupID} viewMode={viewMode}/>
     </div>
   )
 }
