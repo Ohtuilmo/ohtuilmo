@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { minutesToFormattedHoursAndMinutes } from '../../utils/functions'
 import { DeleteOutlineRounded } from '@material-ui/icons'
-import { IconButton } from '@material-ui/core'
+import { IconButton, Chip } from '@material-ui/core'
 import ConfirmationDialog from '../common/ConfirmationDialog'
 
 import './TimeLogsPage.css'
@@ -21,6 +21,18 @@ export const TimeLogRow = ({ log, handleDelete }) => {
       <div className="timelogs-description">
         <p>{log.description}</p>
       </div>
+      <div className="timelogs-tags-row">
+        {log.tags.map((tag) => (
+          <Chip key={tag} label={tag} className="timelogs-tag" size="small" />
+        ))}
+      </div>
+      {/* <div className="timelogs-tags">
+        {log.tags.map((tag) => (
+          <p key={tag} className="timelogs-tag">
+            {tag}
+          </p>
+        ))}
+      </div> */}
       <IconButton
         id={`timelog-remove-button-${log.id}`}
         className="timelogs-remove-button"
