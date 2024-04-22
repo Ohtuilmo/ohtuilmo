@@ -18,7 +18,7 @@ const QuestionSetForm = ({
   initialName,
   initialQuestionsJson,
   onSubmit,
-  controls
+  controls,
 }) => {
   const [name, setName] = useState(initialName || '')
   const [questionsJson, setQuestionsJson] = useState(initialQuestionsJson || '')
@@ -55,7 +55,7 @@ const QuestionSetForm = ({
     <form className="question-set-form" onSubmit={handleFormSubmit}>
       <TextField
         inputProps={{
-          className: 'question-set-form__name'
+          className: 'question-set-form__name',
         }}
         fullWidth
         required
@@ -70,9 +70,9 @@ const QuestionSetForm = ({
           style: {
             fontFamily:
               'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
-            fontSize: '0.9em'
+            fontSize: '0.9em',
           },
-          className: 'question-set-form__questions'
+          className: 'question-set-form__questions',
         }}
         fullWidth
         required
@@ -80,9 +80,40 @@ const QuestionSetForm = ({
         helperText={questionsError || ''}
         margin="normal"
         multiline
-        rows={10}
+        rows={28}
         value={questionsJson}
         onChange={handleQuestionsChange}
+        placeholder={`
+        Available question types:
+        
+        - number
+        - radio
+        - peerReview (individual text fields for each team member)
+        - text (single text field)
+        
+        For example:
+
+        [
+          {
+            "type": "number",
+            "header": "Kuinka monta tuntia käytit projektin parissa?",
+            "description": "Arvioi käyttämäsi aika tunteina."
+          },
+          {
+            "type": "radio",
+            "header": "Tiimin jäsenten tekninen kontribuutio",
+            "options": [1, 2, 3, 4, 5]
+          },
+          {
+            "type": "peerReview",
+            "header": "Teknisen kontribuution arviointi",
+            "description": "Arvioi sanallisesti tiimin jäsenten teknistä kontribuutiota."
+          }
+        ]
+      `}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
       {controls}
     </form>

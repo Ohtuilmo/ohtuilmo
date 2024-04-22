@@ -80,10 +80,29 @@ class PeerReview extends React.Component {
       }
     }
 
+    const initializePeerReview = (question, questionId) => {
+      let peerTextAnswers = {
+        type: 'peerReview',
+        questionHeader: question.header,
+        id: questionId,
+        peers: {},
+      }
+
+      peers.forEach(
+        (peer) =>
+          (peerTextAnswers.peers[peer.first_names + ' ' + peer.last_name] =
+            null)
+      )
+
+      return peerTextAnswers
+    }
+
     const tempAnswerSheet = questionObject.questions.map(
       (question, questionID) => {
         if (question.type === 'radio') {
           return initializeRadioAnswer(question, questionID)
+        } else if (question.type === 'peerReview') {
+          return initializePeerReview(question, questionID)
         } else if (question.type === 'text') {
           return initializeTextAnswer(question, questionID)
         } else if (question.type === 'number') {
@@ -128,6 +147,7 @@ class PeerReview extends React.Component {
     const {
       answerSheet,
       updateAnswer,
+      updatePeerReview,
       peers,
       groupsLoading,
       submittedReviews,
@@ -167,6 +187,7 @@ class PeerReview extends React.Component {
             questions={questionObject.questions}
             answerSheet={answerSheet}
             updateAnswer={updateAnswer}
+            updatePeerReview={updatePeerReview}
           />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
@@ -185,7 +206,13 @@ class PeerReview extends React.Component {
   }
 }
 
-const Questions = ({ questions, peers, answerSheet, updateAnswer }) => {
+const Questions = ({
+  questions,
+  peers,
+  answerSheet,
+  updateAnswer,
+  updatePeerReview,
+}) => {
   return (
     <div>
       {questions.map((question, questionId) => {
@@ -197,6 +224,7 @@ const Questions = ({ questions, peers, answerSheet, updateAnswer }) => {
             questionId={questionId}
             answerSheet={answerSheet}
             updateAnswer={updateAnswer}
+            updatePeerReview={updatePeerReview}
           />
         )
       })}
@@ -210,6 +238,7 @@ const Question = ({
   questionId,
   answerSheet,
   updateAnswer,
+  updatePeerReview,
 }) => {
   if (question.type === 'radio') {
     let temp = question.options
@@ -238,22 +267,40 @@ const Question = ({
         </table>
       </div>
     )
-  } else if (question.type === 'text') {
+  } else if (question.type === 'peerReview') {
     return (
       <div className="peer-review-box">
         <h3 className="peer-review-box__h3">{question.header}</h3>
         <p>{question.description}</p>
 
-        <TextField
-          value={answerSheet[questionId].answer}
-          rows="4"
-          style={{ width: 400 }}
-          multiline
-          variant="outlined"
-          onChange={(e) =>
-            textFieldHandler(e.target.value, questionId, updateAnswer)
-          }
+        <PeerReviewTextFields
+          peers={peers}
+          questionId={questionId}
+          answerSheet={answerSheet}
+          updatePeerReview={updatePeerReview}
         />
+      </div>
+    )
+  } else if (question.type === 'text') {
+    return (
+      <div className="peer-review-box">
+        <div className="peer-review-box__text-question-container">
+          <div>
+            <h3 className="peer-review-box__h3">{question.header}</h3>
+            <p>{question.description}</p>
+
+            <TextField
+              value={answerSheet[questionId].answer}
+              rows="4"
+              style={{ width: 400 }}
+              multiline
+              variant="outlined"
+              onChange={(e) =>
+                textFieldHandler(e.target.value, questionId, updateAnswer)
+              }
+            />
+          </div>
+        </div>
       </div>
     )
   } else if (question.type === 'number') {
@@ -276,7 +323,7 @@ const Question = ({
     return (
       <div className="peer-review-box">
         <h3>{question.header}</h3>
-        <p>{question.description}</p>
+        <p className="peer-review__description">{question.description}</p>
       </div>
     )
   } else {
@@ -286,10 +333,6 @@ const Question = ({
       </div>
     )
   }
-}
-
-const textFieldHandler = (value, questionId, updateAnswer) => {
-  updateAnswer(value, questionId)
 }
 
 const OptionHeaders = ({ options }) => {
@@ -324,6 +367,40 @@ const QuestionRows = ({ peers, options, questionId, answerSheet }) => (
   </React.Fragment>
 )
 
+const PeerReviewTextFields = ({
+  peers,
+  questionId,
+  answerSheet,
+  updatePeerReview,
+}) => {
+  return (
+    <div className="peer-review-box__text-field-rows">
+      {peers.map((peer, key) => (
+        <div key={key} className="peer-review-box__text-field-container">
+          <p className="peer-review-box__name-text">
+            {extractCallingName(peer.first_names) + ' ' + peer.last_name}:{' '}
+          </p>
+          <TextField
+            className="peer-review-box__text-field"
+            value={answerSheet[questionId].answer}
+            rows="2"
+            multiline
+            variant="outlined"
+            onChange={(e) =>
+              peerReviewHandler(
+                `${peer.first_names} ${peer.last_name}`,
+                e.target.value,
+                questionId,
+                updatePeerReview
+              )
+            }
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const QuestionRow = ({
   peerName,
   options,
@@ -349,6 +426,14 @@ const QuestionRow = ({
       })}
     </tr>
   )
+}
+
+const peerReviewHandler = (peerId, value, questionId, updatePeerReview) => {
+  updatePeerReview(peerId, value, questionId)
+}
+
+const textFieldHandler = (value, questionId, updateAnswer) => {
+  updateAnswer(value, questionId)
 }
 
 const radioSelectHandler = (peerId, buttonId, answerSheet) => {

@@ -28,6 +28,21 @@ const peerReviewReducer = (state = initialState, action) => {
         ...state.answerSheet.slice(action.questionId + 1)
       ]
     }
+  case 'UPDATE_PEER_REVIEW':
+    return {
+      ...state,
+      answerSheet: [
+        ...state.answerSheet.slice(0, action.questionId),
+        {
+          ...state.answerSheet[action.questionId],
+          peers: {
+            ...state.answerSheet[action.questionId].peers,
+            [action.peerId]: action.answer
+          },
+        },
+        ...state.answerSheet.slice(action.questionId + 1),
+      ],
+    }
   case 'CREATE_PEERS':
     return {
       ...state,

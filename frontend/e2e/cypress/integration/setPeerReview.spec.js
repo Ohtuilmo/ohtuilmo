@@ -21,6 +21,11 @@ describe('Review-questions page', () => {
         type: 'number',
       },
       {
+        header: 'Peer review for group members',
+        description: 'Separate review for each member of the group',
+        type: 'peerReview',
+      },
+      {
         header: 'Ok and with option',
         description: 'Choose a radio button you want',
         type: 'radio',

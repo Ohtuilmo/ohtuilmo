@@ -66,10 +66,22 @@ const StudentViewGroupAnswers = ({ answers }) => {
                   student={studentAnswer.student}
                 />
               )
+            } else if (question.type === 'peerReview') {
+              return (
+                <div key={questionIndex}>
+                  <h3>{question.questionHeader}</h3>
+                  {question &&
+                    Object.entries(question.peers).map(([peer, review]) => (
+                      <p key={peer}>
+                        {peer}: {review}
+                      </p>
+                    ))}
+                </div>
+              )
             } else {
               return (
                 <div key={questionIndex}>
-                  <h4>{question.questionHeader}</h4>
+                  <h3>{question.questionHeader}</h3>
                   <p>{question.answer}</p>
                 </div>
               )

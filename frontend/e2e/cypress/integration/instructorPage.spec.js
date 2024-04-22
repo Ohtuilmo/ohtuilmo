@@ -60,6 +60,15 @@ const initTests = () => {
             },
             questionHeader: 'Miten perustelet tämän arvosanan?',
           },
+          {
+            id: 5,
+            type: 'peerReview',
+            peers: {
+              'Donald John Trump': 'Lorem ipsum dolor sit amet',
+              'Timo *Teppo Tellervo Testaaja': '...consectetur adipiscing elit. Fusce at.',
+            },
+            questionHeader: 'Arviot erikseen ryhmän jäsenistä',
+          },
         ],
       },
       {
@@ -94,6 +103,15 @@ const initTests = () => {
               'Timo *Teppo Tellervo Testaaja': 1,
             },
             questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+          {
+            id: 5,
+            type: 'peerReview',
+            peers: {
+              'Donald John Trump': 'Lorem ipsum dolor sit amet',
+              'Timo *Teppo Tellervo Testaaja': '...consectetur adipiscing elit. Fusce at.',
+            },
+            questionHeader: 'Arviot erikseen ryhmän jäsenistä',
           },
         ],
       },
@@ -135,6 +153,15 @@ const initTests = () => {
             },
             questionHeader: 'Miten perustelet tämän arvosanan?',
           },
+          {
+            id: 5,
+            type: 'peerReview',
+            peers: {
+              'Donald John Trump': 'Lorem ipsum dolor sit amet',
+              'Timo *Teppo Tellervo Testaaja': '...consectetur adipiscing elit. Fusce at.',
+            },
+            questionHeader: 'Arviot erikseen ryhmän jäsenistä',
+          },
         ],
       },
       {
@@ -169,6 +196,15 @@ const initTests = () => {
               'Timo *Teppo Tellervo Testaaja': 5,
             },
             questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+          {
+            id: 5,
+            type: 'peerReview',
+            peers: {
+              'Donald John Trump': 'Lorem ipsum dolor sit amet',
+              'Timo *Teppo Tellervo Testaaja': '...consectetur adipiscing elit. Fusce at.',
+            },
+            questionHeader: 'Arviot erikseen ryhmän jäsenistä',
           },
         ],
       },
@@ -210,6 +246,15 @@ const initTests = () => {
             },
             questionHeader: 'Miten perustelet tämän arvosanan?',
           },
+          {
+            id: 5,
+            type: 'peerReview',
+            peers: {
+              'Donald John Trump': 'Lorem ipsum dolor sit amet',
+              'Timo *Teppo Tellervo Testaaja': '...consectetur adipiscing elit. Fusce at.',
+            },
+            questionHeader: 'Arviot erikseen ryhmän jäsenistä',
+          },
         ],
       },
       {
@@ -244,6 +289,15 @@ const initTests = () => {
               'Timo *Teppo Tellervo Testaaja': 0,
             },
             questionHeader: 'Miten perustelet tämän arvosanan?',
+          },
+          {
+            id: 5,
+            type: 'peerReview',
+            peers: {
+              'Donald John Trump': 'Lorem ipsum dolor sit amet',
+              'Timo *Teppo Tellervo Testaaja': '...consectetur adipiscing elit. Fusce at.',
+            },
+            questionHeader: 'Arviot erikseen ryhmän jäsenistä',
           },
         ],
       },
@@ -282,7 +336,7 @@ describe('Instructor page', () => {
     cy.get('.configuration-menu-item').contains('Konfiguraatio 2').click()
     cy.contains('Kämmäilijät')
     cy.contains(
-      "This group hasn't answered to the second peer review round yet."
+      "This group has not answered to the second peer review round yet."
     )
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()

@@ -1,7 +1,7 @@
 const initializeAnswerSheet = (answerSheet) => {
   return {
     type: 'INITIALIZE_ANSWER_SHEET',
-    payload: answerSheet
+    payload: answerSheet,
   }
 }
 
@@ -9,48 +9,57 @@ const updateAnswer = (answer, questionId) => {
   return {
     type: 'UPDATE_ANSWER',
     answer: answer,
-    questionId: questionId
+    questionId: questionId,
+  }
+}
+const updatePeerReview = (peerId, answer, questionId) => {
+  return {
+    type: 'UPDATE_PEER_REVIEW',
+    answer: answer,
+    peerId: peerId,
+    questionId: questionId,
   }
 }
 const createPeers = (peers) => {
   return {
     type: 'CREATE_PEERS',
-    payload: peers
+    payload: peers,
   }
 }
 const setSubmittedReviews = (submittedReviews) => {
   return {
     type: 'SET_SUBMITTED_REVIEWS',
-    payload: submittedReviews
+    payload: submittedReviews,
   }
 }
 const setLoading = (loading) => {
   return {
     type: 'LOADING',
-    payload: loading
+    payload: loading,
   }
 }
 
 const setQuestions = (questions) => {
   return {
     type: 'SET_QUESTIONS',
-    payload: questions
+    payload: questions,
   }
 }
 
 const setConfiguration = (configurationId) => {
   return {
     type: 'SET_CONFIGURATION',
-    payload: configurationId
+    payload: configurationId,
   }
 }
 
 export default {
   updateAnswer,
+  updatePeerReview,
   initializeAnswerSheet,
   createPeers,
   setSubmittedReviews,
   setLoading,
   setQuestions,
-  setConfiguration
+  setConfiguration,
 }
