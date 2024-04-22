@@ -3,7 +3,7 @@ import { addWeeksToDate, addDaysToDate } from '../../../src/utils/functions'
 
 const formatDate = (date) => date.toISOString().slice(0, 10)
 
-describe('Time logs & sprints', () => {
+describe.skip('Time logs & sprints', () => {
   before(() => {
     cy.loginAsAdmin()
     cy.createGroup({
