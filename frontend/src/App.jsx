@@ -23,7 +23,7 @@ import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 import GroupManagementPage from './components/GroupManagementPage'
 import PeerReviewPage from './components/PeerReviewPage'
 import EmailTemplatesPage from './components/EmailTemplatesPage'
-import InstructorPage from './components/InstructorPage'
+import InstructorPage from './components/InstructorPage/InstructorPage'
 import CustomerReviewPage from './components/CustomerReviewPage'
 import InstructorReviewPage from './components/InstructorReviewPage'
 import ViewCustomerReviewsPage from './components/ViewCustomerReviewsPage'
@@ -32,6 +32,7 @@ import InstructorReviews from './components/InstructorReviews'
 import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
 import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
 import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
+import TagsDashboard from './components/TagManagementPage/TagsDashboard'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -203,6 +204,11 @@ const App = (props) => {
               exact
               path="/administration/reviews"
               render={renderWithLoadingCheck(<InstructorReviews />)}
+            />
+            <AdminRoute
+              exact
+              path="/administration/tags"
+              render={renderWithLoadingCheck(<TagsDashboard />)}
             />
             <Route
               exact
