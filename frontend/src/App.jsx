@@ -76,9 +76,17 @@ const App = (props) => {
     user,
   } = props
 
-  const isCustomerReviewPage = window.location.href.includes('customer-review/')
-
   useEffect(() => {
+    const isCustomerReviewPage = window.location.href.includes('customer-review/')
+    const fetchRegistrationManagementData = async () => {
+      try {
+        await fetchRegistrationManagement()
+      } catch (e) {
+        console.log('error happened', e)
+        setError('Error fetching registration management configuration', 5000)
+      }
+    }
+
     const handleLogin = async () => {
       try {
         await loginUser()
@@ -107,16 +115,7 @@ const App = (props) => {
     }, 60 * 1000)
 
     return () => clearInterval(loginInterval)
-  }, [])
-
-  const fetchRegistrationManagementData = async () => {
-    try {
-      await fetchRegistrationManagement()
-    } catch (e) {
-      console.log('error happened', e)
-      setError('Error fetching registration management configuration', 5000)
-    }
-  }
+  }, [fetchRegistrationManagement, loginUser, setError, updateIsLoading])
 
   const logout = () => {
     updateIsLoading(true)

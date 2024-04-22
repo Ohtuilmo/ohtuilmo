@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Read backend node version from package.json
-        uses: skjnldsv/read-package-engines-version-actions@v2
+        uses: skjnldsv/read-package-engines-version-actions@v3
         with:
           path: ./backend/
         id: backend-engines
@@ -32,7 +32,7 @@ jobs:
           npm run lint
 
       - name: Read frontend node version from package.json
-        uses: skjnldsv/read-package-engines-version-actions@v2
+        uses: skjnldsv/read-package-engines-version-actions@v3
         with:
           path: ./frontend/
         id: frontend-engines
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Read backend node version from package.json
-        uses: skjnldsv/read-package-engines-version-actions@v2
+        uses: skjnldsv/read-package-engines-version-actions@v3
         with:
           path: ./backend/
         id: backend-engines
