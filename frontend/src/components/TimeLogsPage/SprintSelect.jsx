@@ -10,7 +10,7 @@ export const SprintSelect = ({
   handleClickNextSprint,
   handleClickPreviousSprint,
 }) => {
-  if (!sprintNumber) {
+  if (sprintNumber === undefined) {
     return <></>
   } else {
     return (

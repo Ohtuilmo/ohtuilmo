@@ -47,7 +47,9 @@ const TimeLogsPage = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [availableTags, setAvailableTags] = useState([])
 
-  const existingSprintNumbers = allSprints.map((sprint) => sprint.sprint).sort()
+  const existingSprintNumbers = allSprints
+    .map((sprint) => sprint.sprint)
+    .sort((a, b) => a - b)
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -204,10 +206,12 @@ const TimeLogsPage = (props) => {
   }
 
   const handleClickPreviousSprint = () => {
+    const previousSprint = [...existingSprintNumbers]
+      .reverse()
+      .find((sprint) => sprint < selectedSprintNumber)
+
     setSelectedSprintNumber(
-      [...existingSprintNumbers]
-        .reverse()
-        .find((sprint) => sprint < selectedSprintNumber) || selectedSprintNumber
+      previousSprint !== undefined ? previousSprint : selectedSprintNumber
     )
   }
 
