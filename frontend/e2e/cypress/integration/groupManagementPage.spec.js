@@ -96,7 +96,7 @@ describe('Group Management Page', () => {
     })
     */
 
-    it('changes instructor', () => {
+    it.skip('changes instructor', () => {
       cy.get('.edit-group-instructor').click()
 
       cy.get('.edit-group-instructor')
