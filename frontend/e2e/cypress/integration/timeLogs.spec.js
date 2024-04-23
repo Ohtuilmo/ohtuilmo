@@ -123,7 +123,7 @@ describe.skip('Time logs & sprints', () => {
     cy.get('.timelogs-container-1').should('contain', 'test description 2')
     cy.get('#previous-sprint-button').click()
     cy.get('#timelog-rows').children().should('have.length', 1)
-    cy.get('#timelog-rows').should('contain', 'No logs yet :(')
+    cy.get('#timelog-rows').should('contain', 'There are no time logs for this sprint.')
   })
 
   it('asks for confirmation before deleting a time log and aborts deletion when canceled', () => {

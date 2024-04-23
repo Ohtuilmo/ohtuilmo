@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { BarChart, XAxis, YAxis, Tooltip, Bar, Cell } from 'recharts'
-
+import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, Bar, Cell } from 'recharts'
 import { NoTimeLogsPlaceholderSprint, NoTimeLogsPlaceholderProject } from '../common/Placeholders'
+import Error from '@material-ui/icons/Error'
+
+import './TimeLogsPage.css'
 
 // Used colours are based on University of Helsinki visual guidelines
 const barColourSet = [
@@ -101,60 +103,54 @@ const TimeLogChart = (props) => {
 
   if (chartData && chartData.length > 0) {
     return chartVariant === 'total'
-      ? (<BarChart
-        id='timelogs-chart-total'
-        className='timelogs-chart'
-        width={mobileView ? 400 : 500}
-        height={mobileView ? 300 : 350}
-        data={chartData.filter((entry) => entry.sprint === -1)}
-        margin={{
-          top: 10,
-          left: 10,
-          right: 10,
-          bottom: 10
-        }} >
-        <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-        <YAxis />
-        <Tooltip />
-        <Bar
-          dataKey='hours'
-          background={false}
-        >
-          {chartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-          ))}
-        </Bar>
-      </BarChart>)
-      : sprints.includes(selectedSprintNumber)
-        ? (<BarChart
-          id='timelogs-chart-sprint'
-          className='timelogs-chart'
-          width={mobileView ? 400 : 500}
-          height={mobileView ? 300 : 350}
-          data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
-          margin={{
-            top: 10,
-            left: 10,
-            right: 10,
-            bottom: 10
-          }} >
-          <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-          <YAxis />
-          <Tooltip />
-          <Bar
-            dataKey='hours'
-            background={false}
+      ? (<div className='timelogs-chart-container'>
+        <ResponsiveContainer>
+          <BarChart
+            id='timelogs-chart-total'
+            className='timelogs-chart'
+            data={chartData.filter((entry) => entry.sprint === -1)}
           >
-            {chartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-            ))}
-          </Bar>
-        </BarChart>)
-        : (<NoTimeLogsPlaceholderSprint />)
+            <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
+            <YAxis />
+            <Tooltip cursor={{ fill: 'transparent' }} />
+            <Bar
+              dataKey='hours'
+              background={false}
+            >
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>)
+      : sprints.includes(selectedSprintNumber)
+        ? (<div className='timelogs-chart-container'>
+          <ResponsiveContainer>
+            <BarChart
+              id='timelogs-chart-sprint'
+              className='timelogs-chart'
+              data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
+            >
+              <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
+              <YAxis />
+              <Tooltip cursor={{ fill: 'transparent' }} />
+              <Bar
+                dataKey='hours'
+                background={false}
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>)
+        : (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderSprint /></div>)
   } else {
     return chartVariant === 'total'
-      ? (<NoTimeLogsPlaceholderProject />)
-      : (<NoTimeLogsPlaceholderSprint />)
+      ? (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderProject /></div>)
+      : (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderSprint /></div>)
   }
 }
 
