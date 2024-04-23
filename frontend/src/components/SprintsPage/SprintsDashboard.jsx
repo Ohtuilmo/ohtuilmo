@@ -151,24 +151,33 @@ const SprintsPage = (props) => {
               </tr>
             </thead>
             <tbody id="sprint-list-rows">
-              {allSprints.map((sprint) => (
-                <tr key={sprint.id}>
-                  <td className="sprint-list-sprint-number">{sprint.sprint}</td>
-                  <td>{sprint.start_date}</td>
-                  <td>{sprint.end_date}</td>
-                  <td>
-                    <Button
-                      id={`sprint-remove-button-${sprint.id}`}
-                      onClick={() => handleDeleteSprint(sprint.id)}
-                      className="delete-sprint-button"
-                      variant="contained"
-                      color="secondary"
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+              {allSprints.sort((a, b) => b.sprint - a.sprint).map((sprint) => {
+
+                const startDateObj = new Date(sprint.start_date)
+                const endDateObj = new Date(sprint.end_date)
+
+                const formattedStartDate = `${startDateObj.getDate().toString().padStart(2, '0')}/${(startDateObj.getMonth() + 1).toString().padStart(2, '0')}/${startDateObj.getFullYear()}`
+                const formattedEndDate = `${endDateObj.getDate().toString().padStart(2, '0')}/${(endDateObj.getMonth() + 1).toString().padStart(2, '0')}/${endDateObj.getFullYear()}`
+
+                return (
+                  <tr key={sprint.id}>
+                    <td className="sprint-list-sprint-number">{sprint.sprint}</td>
+                    <td>{formattedStartDate}</td>
+                    <td>{formattedEndDate}</td>
+                    <td>
+                      <Button
+                        id={`sprint-remove-button-${sprint.id}`}
+                        onClick={() => handleDeleteSprint(sprint.id)}
+                        className="delete-sprint-button"
+                        variant="contained"
+                        color="secondary"
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
