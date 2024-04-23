@@ -23,8 +23,12 @@
 .timelogs-responsive-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 48px;
+
+    @media (min-width: 1160px) {
+        grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+    }
 }
 
 .timelogs-charts-container {
@@ -98,6 +102,7 @@
 
 .timelogs-row-container:not(:last-child) {
     border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 16px;
 }
 
 
@@ -146,5 +151,4 @@
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    margin-bottom: 10px;
 }

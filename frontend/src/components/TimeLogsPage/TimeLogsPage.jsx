@@ -13,9 +13,6 @@ import { SprintSelect } from './SprintSelect'
 import { Typography } from '@material-ui/core'
 import Error from '@material-ui/icons/Error'
 
-// hooks
-import useCheckMobileView from '../../hooks/useCheckMobileView'
-
 // services
 import timeLogsService from '../../services/timeLogs'
 import sprintService from '../../services/sprints'
@@ -199,18 +196,21 @@ const TimeLogsPage = (props) => {
     }
   }
 
+  const previousSprint = [...existingSprintNumbers]
+    .reverse()
+    .find((sprint) => sprint < selectedSprintNumber)
+
+  const nextSprint = existingSprintNumbers.find(
+    (sprint) => sprint > selectedSprintNumber
+  )
+
   const handleClickNextSprint = () => {
     setSelectedSprintNumber(
-      existingSprintNumbers.find((sprint) => sprint > selectedSprintNumber) ||
-      selectedSprintNumber
+      nextSprint !== undefined ? nextSprint : selectedSprintNumber
     )
   }
 
   const handleClickPreviousSprint = () => {
-    const previousSprint = [...existingSprintNumbers]
-      .reverse()
-      .find((sprint) => sprint < selectedSprintNumber)
-
     setSelectedSprintNumber(
       previousSprint !== undefined ? previousSprint : selectedSprintNumber
     )
@@ -236,11 +236,14 @@ const TimeLogsPage = (props) => {
               sprintNumber={selectedSprintNumber}
               handleClickNextSprint={handleClickNextSprint}
               handleClickPreviousSprint={handleClickPreviousSprint}
+              nextSprintButtonDisabled={nextSprint === undefined}
+              previousSprintButtonDisabled={previousSprint === undefined}
             />
           </div>
           <TimeLogForm
             handleSubmit={handleSubmit}
             disabled={selectedSprintNumber !== currentSprintNumber}
+            availableTags={availableTags}
           />
           <div id='timelog-rows'>
             {isLogs(logsBySprint) &&
@@ -252,7 +255,10 @@ const TimeLogsPage = (props) => {
                 />
               ))}
             {!isLogs(logsBySprint) && allSprints.length > 0 && (
-              <p className='timelogs-not-available-message-and-icon'><Error />There are no time logs for this sprint.</p>
+              <p className="timelogs-not-available-message-and-icon">
+                <Error />
+                There are no time logs for this sprint.
+              </p>
             )}
           </div>
         </div>
