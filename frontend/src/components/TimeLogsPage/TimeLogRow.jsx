@@ -10,6 +10,9 @@ export const TimeLogRow = ({ log, handleDelete }) => {
   const { hours, minutes } = minutesToFormattedHoursAndMinutes(log.minutes)
   const [confirmOpen, setConfirmOpen] = useState(false)
 
+  const dateObj = new Date(log.date)
+  const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`
+
   return (
     <div className="timelogs-row-container">
       <div className="timelogs-table-row">
@@ -17,7 +20,7 @@ export const TimeLogRow = ({ log, handleDelete }) => {
           <p>
             {hours}:{minutes}
           </p>
-          <p>{log.date}</p>
+          <p>{formattedDate}</p>
         </div>
         <div className="timelogs-description">
           <p>{log.description}</p>

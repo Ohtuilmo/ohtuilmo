@@ -1,5 +1,5 @@
 const express = require('express')
-const { checkAdmin } = require('../middleware')
+const { checkAdmin, checkLogin } = require('../middleware')
 
 const tagsRouter = express.Router()
 const db = require('../models/index')
@@ -28,7 +28,7 @@ const fetchFromDb = async () => {
   return tags
 }
 
-tagsRouter.get('/', checkAdmin, async (req, res) => {
+tagsRouter.get('/', checkLogin, async (req, res) => {
   try {
     const tags = await fetchFromDb()
     console.log('tags: ', tags)

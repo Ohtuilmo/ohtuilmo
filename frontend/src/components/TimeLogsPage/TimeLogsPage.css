@@ -88,10 +88,6 @@
     margin-top: 4px;
 }
 
-/* .timelogs-table-row:not(:last-child) {
-    border-bottom: 1px solid #e0e0e0;
-} */
-
 .timelogs-row-container:not(:last-child) {
     border-bottom: 1px solid #e0e0e0;
 }
