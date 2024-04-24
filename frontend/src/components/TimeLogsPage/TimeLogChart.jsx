@@ -46,7 +46,6 @@ const TimeLogChart = (props) => {
   const {
     groupSprintSummary,
     selectedSprintNumber,
-    mobileView,
     chartVariant
   } = props
   const [chartData, setChartData] = useState([])
@@ -91,15 +90,6 @@ const TimeLogChart = (props) => {
     setSprints([...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1))])
     setChartData(mappedData)
   }, [])
-
-  /*
-  const reduceData = (data) => data.reduce((acc, cur) => {
-    const { sprint, name, minutes } = cur
-    const item = acc.find(it => it.name === name)
-    item ? item.minutes += minutes : acc.push({ sprint, name, minutes })
-    return acc
-  } , [])
-  */
 
   if (chartData && chartData.length > 0) {
     return chartVariant === 'total'
