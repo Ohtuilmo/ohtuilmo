@@ -18,6 +18,7 @@ import useCheckMobileView from '../../hooks/useCheckMobileView'
 // services
 import timeLogsService from '../../services/timeLogs'
 import sprintService from '../../services/sprints'
+import tagService from '../../services/tags'
 
 // actions
 import myGroupActions from '../../reducers/actions/myGroupActions'
@@ -44,6 +45,7 @@ const TimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState([])
   const [allSprints, setAllSprints] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [availableTags, setAvailableTags] = useState([])
 
   const existingSprintNumbers = allSprints.map((sprint) => sprint.sprint).sort()
 
@@ -103,12 +105,28 @@ const TimeLogsPage = (props) => {
         notificationActions.setError(error.response.data.error)
       }
     }
+    const fetchTags = async () => {
+      try {
+        const rawTagData = await tagService.getTags()
+        const availableTagData = rawTagData.map((tag) => tag.title)
+        setAvailableTags(availableTagData)
+      } catch (error) {
+        console.error(
+          'Error fetching tags:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
+      }
+    }
     const fetchData = async () => {
       setIsLoading(true)
       await fetchGroup()
       group && group.id && await fetchSprints()
       await fetchTimeLogs()
       group && group.id && await fetchGroupSprintSummary(group.id)
+      await fetchTags()
       setIsLoading(false)
     }
 
@@ -137,14 +155,14 @@ const TimeLogsPage = (props) => {
       )
   }, [allSprints])
 
-  const handleSubmit = async (date, time, description) => {
+  const handleSubmit = async (date, time, description, tags) => {
     const log = {
       studentNumber: user.studentNumber,
       sprint: selectedSprintNumber,
       date,
       minutes: hoursAndMinutesToMinutes(minutesAndHoursFromString(time)),
       description,
-      tags: [],
+      tags: tags,
       groupId: group.id,
     }
     try {
@@ -181,7 +199,7 @@ const TimeLogsPage = (props) => {
   const handleClickNextSprint = () => {
     setSelectedSprintNumber(
       existingSprintNumbers.find((sprint) => sprint > selectedSprintNumber) ||
-        selectedSprintNumber
+      selectedSprintNumber
     )
   }
 
@@ -239,7 +257,7 @@ const TimeLogsPage = (props) => {
           <Typography variant='h5'>Sprint</Typography>
           <TimeLogChart chartVariant='sprint' mobileView={isMobileView} />
           <Typography variant='h5'>Project</Typography>
-          <TimeLogChart chartVariant='total'  mobileView={isMobileView} />
+          <TimeLogChart chartVariant='total' mobileView={isMobileView} />
         </div>
       </div>
     )
@@ -259,6 +277,7 @@ const TimeLogsPage = (props) => {
             <TimeLogForm
               handleSubmit={handleSubmit}
               disabled={selectedSprintNumber !== currentSprintNumber}
+              availableTags={availableTags}
             />
           </div>
           <div id='timelog-rows'>

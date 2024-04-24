@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Chip, Input } from '@material-ui/core'
 
 import './TimeLogsPage.css'
 
-export const TimeLogForm = ({ handleSubmit, disabled }) => {
+export const TimeLogForm = ({ handleSubmit, disabled, availableTags }) => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
   const [time, setTime] = useState('')
   const [description, setDescription] = useState('')
   const [timeErrorMessage, setTimeErrorMessage] = useState('')
   const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('')
+  const [tags, setTags] = useState([])
 
   const handleDateChange = (event) => {
     setDate(event.target.value)
@@ -20,6 +21,10 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
 
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value)
+  }
+
+  const handleTagsChange = (event) => {
+    setTags(event.target.value)
   }
 
   const formIsInvalid = () => {
@@ -41,7 +46,7 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
     if (!formIsInvalid()) {
       setTimeErrorMessage('')
       setDescriptionErrorMessage('')
-      handleSubmit(date, time, description)
+      handleSubmit(date, time, description, tags)
       clearForm()
     }
   }
@@ -50,6 +55,7 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
     setDate(new Date().toISOString().slice(0, 10))
     setTime('')
     setDescription('')
+    setTags([])
   }
 
   return (
@@ -99,6 +105,30 @@ export const TimeLogForm = ({ handleSubmit, disabled }) => {
           }}
           variant="outlined"
         />
+        <FormControl variant="outlined" className="tags">
+          <InputLabel id="tags-label">Tags</InputLabel>
+          <Select
+            id="tags"
+            disabled={disabled}
+            multiple
+            value={tags}
+            onChange={handleTagsChange}
+            input={<Input id="select-multiple-chip" />}
+            renderValue={(selected) => (
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </div>
+            )}
+          >
+            {availableTags.map((tag) => (
+              <MenuItem key={tag} value={tag}>
+                {tag}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
       <Button
         id="time-log-submit-button"
