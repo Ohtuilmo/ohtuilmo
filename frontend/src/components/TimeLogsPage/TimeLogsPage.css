@@ -20,21 +20,33 @@
     flex-wrap: wrap;
 }
 
-.timelogs-container-4 {
-    max-width: 1080px;
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
-    gap: 120px;
+.timelogs-responsive-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 48px;
+
+    @media (min-width: 1160px) {
+        grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+    }
 }
 
-.timelogs-container-chart {
+.timelogs-charts-container {
     display: flex;
     flex-direction: column;
-    max-width: 600px;
-    margin-bottom: 42px;
-    gap: 40px;
-    padding-left: 20px;
+    width: 100%;
+    gap: 40px;  
+}
+
+.timelogs-chart-and-title-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 40px;  
+}
+
+.timelogs-chart-container {
+    height: 300px;
 }
 
 .timelogs-sprint-select {
@@ -90,6 +102,7 @@
 
 .timelogs-row-container:not(:last-child) {
     border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 16px;
 }
 
 
@@ -121,9 +134,21 @@
     align-self: flex-start;
 }
 
+.timelogs-chart {
+    > svg {
+        max-width: 620px;
+    }
+}
+
+.timelogs-not-available-message-and-icon {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    color: #4d4d4d;
+}
+
 .timelogs-tags-row {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    margin-bottom: 10px;
 }

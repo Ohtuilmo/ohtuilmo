@@ -23,49 +23,33 @@ export const NoneAvailable = () => (
 export const NoTimeLogsPlaceholderSprint = () => (
   <div
     id='timelogs-placeholder-sprint'
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '600px',
-      marginTop: '1rem'
-    }}
     data-cy='timelogs-placeholder-sprint' >
-    <h1
-      style={{ textAlign: 'center', width: '360px' }}
+    <h3
+      style={{ textAlign: 'left', margin: '8px' }}
       data-cy='timelogs-not-available' >
       There are no time logs available for this sprint.
-    </h1>
-    <h2
-      style={{ textAlign: 'center', width: '360px' }}
+    </h3>
+    <h4
+      style={{ textAlign: 'left', margin: '8px' }}
       data-cy='timelogs-chart-cannot-generate' >
       The chart cannot be generated.
-    </h2>
+    </h4>
   </div>
 )
 
 export const NoTimeLogsPlaceholderProject = () => (
   <div
     id='timelogs-placeholder-total'
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '600px',
-      marginTop: '1rem'
-    }}
     data-cy='timelogs-placeholder-total' >
-    <h1
-      style={{ textAlign: 'center', width: '360px' }}
+    <h3
+      style={{ textAlign: 'left', margin: '8px' }}
       data-cy='timelogs-not-available' >
       There are no time logs available for this project.
-    </h1>
-    <h2
-      style={{ textAlign: 'center', width: '360px' }}
+    </h3>
+    <h4
+      style={{ textAlign: 'left', margin: '8px' }}
       data-cy='timelogs-chart-cannot-generate' >
       The chart cannot be generated.
-    </h2>
+    </h4>
   </div>
 )

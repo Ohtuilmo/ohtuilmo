@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Chip, Input } from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core'
+import TagSelect from './TagSelect'
 
 import './TimeLogsPage.css'
 
@@ -105,30 +106,12 @@ export const TimeLogForm = ({ handleSubmit, disabled, availableTags }) => {
           }}
           variant="outlined"
         />
-        <FormControl variant="outlined" className="tags">
-          <InputLabel id="tags-label">Tags</InputLabel>
-          <Select
-            id="tags"
-            disabled={disabled}
-            multiple
-            value={tags}
-            onChange={handleTagsChange}
-            input={<Input id="select-multiple-chip" />}
-            renderValue={(selected) => (
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </div>
-            )}
-          >
-            {availableTags.map((tag) => (
-              <MenuItem key={tag} value={tag}>
-                {tag}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <TagSelect
+          disabled={disabled}
+          tags={tags}
+          handleTagsChange={handleTagsChange}
+          availableTags={availableTags}
+        />
       </div>
       <Button
         id="time-log-submit-button"

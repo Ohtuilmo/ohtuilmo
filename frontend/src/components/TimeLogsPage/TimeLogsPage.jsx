@@ -11,9 +11,7 @@ import {
 import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintSelect } from './SprintSelect'
 import { Typography } from '@material-ui/core'
-
-// hooks
-import useCheckMobileView from '../../hooks/useCheckMobileView'
+import Error from '@material-ui/icons/Error'
 
 // services
 import timeLogsService from '../../services/timeLogs'
@@ -41,13 +39,15 @@ const TimeLogsPage = (props) => {
     group,
     initializeMyGroup
   } = props
-  const isMobileView = useCheckMobileView()
+
   const [allLogs, setAllLogs] = useState([])
   const [allSprints, setAllSprints] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [availableTags, setAvailableTags] = useState([])
 
-  const existingSprintNumbers = allSprints.map((sprint) => sprint.sprint).sort()
+  const existingSprintNumbers = allSprints
+    .map((sprint) => sprint.sprint)
+    .sort((a, b) => a - b)
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -196,18 +196,23 @@ const TimeLogsPage = (props) => {
     }
   }
 
+  const previousSprint = [...existingSprintNumbers]
+    .reverse()
+    .find((sprint) => sprint < selectedSprintNumber)
+
+  const nextSprint = existingSprintNumbers.find(
+    (sprint) => sprint > selectedSprintNumber
+  )
+
   const handleClickNextSprint = () => {
     setSelectedSprintNumber(
-      existingSprintNumbers.find((sprint) => sprint > selectedSprintNumber) ||
-      selectedSprintNumber
+      nextSprint !== undefined ? nextSprint : selectedSprintNumber
     )
   }
 
   const handleClickPreviousSprint = () => {
     setSelectedSprintNumber(
-      [...existingSprintNumbers]
-        .reverse()
-        .find((sprint) => sprint < selectedSprintNumber) || selectedSprintNumber
+      previousSprint !== undefined ? previousSprint : selectedSprintNumber
     )
   }
 
@@ -221,8 +226,8 @@ const TimeLogsPage = (props) => {
   if (!group) return <NotInGroupPlaceholder />
   if (allSprints.length === 0) return <NoSprintsPlaceholder />
 
-  if (isMobileView) {
-    return (
+  return (
+    <div className='timelogs-responsive-grid'>
       <div className='timelogs-container-1'>
         <div className='timelogs-container-2'>
           <div className='timelogs-container-3'>
@@ -231,55 +236,15 @@ const TimeLogsPage = (props) => {
               sprintNumber={selectedSprintNumber}
               handleClickNextSprint={handleClickNextSprint}
               handleClickPreviousSprint={handleClickPreviousSprint}
+              nextSprintButtonDisabled={nextSprint === undefined}
+              previousSprintButtonDisabled={previousSprint === undefined}
             />
           </div>
           <TimeLogForm
             handleSubmit={handleSubmit}
             disabled={selectedSprintNumber !== currentSprintNumber}
+            availableTags={availableTags}
           />
-        </div>
-        <div id='timelog-rows'>
-          {isLogs(logsBySprint) &&
-            logsBySprint.map((log) => (
-              <TimeLogRow
-                key={log.id}
-                log={log}
-                handleDelete={() => handleDelete(log.id)}
-              />
-            ))}
-          {!isLogs(logsBySprint) && allSprints.length > 0 && (
-            <p>No logs yet :&#40;</p>
-          )}
-        </div>
-        <div className='timelogs-container-chart' style={{
-          marginTop: '1rem'
-        }}>
-          <Typography variant='h5'>Sprint</Typography>
-          <TimeLogChart chartVariant='sprint' mobileView={isMobileView} />
-          <Typography variant='h5'>Project</Typography>
-          <TimeLogChart chartVariant='total' mobileView={isMobileView} />
-        </div>
-      </div>
-    )
-  } else {
-    return (
-      <div className='timelogs-container-4'>
-        <div className='timelogs-container-1'>
-          <div className='timelogs-container-2'>
-            <div className='timelogs-container-3'>
-              <Typography variant='h4'>Time Logs</Typography>
-              <SprintSelect
-                sprintNumber={selectedSprintNumber}
-                handleClickNextSprint={handleClickNextSprint}
-                handleClickPreviousSprint={handleClickPreviousSprint}
-              />
-            </div>
-            <TimeLogForm
-              handleSubmit={handleSubmit}
-              disabled={selectedSprintNumber !== currentSprintNumber}
-              availableTags={availableTags}
-            />
-          </div>
           <div id='timelog-rows'>
             {isLogs(logsBySprint) &&
               logsBySprint.map((log) => (
@@ -290,19 +255,26 @@ const TimeLogsPage = (props) => {
                 />
               ))}
             {!isLogs(logsBySprint) && allSprints.length > 0 && (
-              <p>No logs yet :&#40;</p>
+              <p className="timelogs-not-available-message-and-icon">
+                <Error />
+                There are no time logs for this sprint.
+              </p>
             )}
           </div>
         </div>
-        <div className='timelogs-container-chart'>
-          <Typography variant='h5'>Sprint</Typography>
+      </div>
+      <div className='timelogs-charts-container'>
+        <div className='timelogs-chart-and-title-container'>
+          <Typography variant='h5'>Sprint Chart</Typography>
           <TimeLogChart chartVariant='sprint' />
-          <Typography variant='h5'>Project</Typography>
+        </div>
+        <div className='timelogs-chart-and-title-container'>
+          <Typography variant='h5'>Project Chart</Typography>
           <TimeLogChart chartVariant='total' />
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => ({

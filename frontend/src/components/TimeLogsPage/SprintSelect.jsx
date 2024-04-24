@@ -9,8 +9,10 @@ export const SprintSelect = ({
   sprintNumber,
   handleClickNextSprint,
   handleClickPreviousSprint,
+  nextSprintButtonDisabled,
+  previousSprintButtonDisabled,
 }) => {
-  if (!sprintNumber) {
+  if (sprintNumber === undefined) {
     return <></>
   } else {
     return (
@@ -20,8 +22,15 @@ export const SprintSelect = ({
           disableRipple
           onClick={handleClickPreviousSprint}
           className="button"
+          disabled={previousSprintButtonDisabled}
         >
-          <ArrowBackIosIcon style={{ fontSize: '16px' }} />
+          <ArrowBackIosIcon
+            style={
+              previousSprintButtonDisabled
+                ? { fontSize: '16px', color: 'transparent' }
+                : { fontSize: '16px' }
+            }
+          />
         </IconButton>
         <Typography variant="button">SPRINT {sprintNumber}</Typography>
         <IconButton
@@ -29,8 +38,15 @@ export const SprintSelect = ({
           disableRipple
           onClick={handleClickNextSprint}
           className="button"
+          disabled={nextSprintButtonDisabled}
         >
-          <ArrowForwardIosIcon style={{ fontSize: '16px' }} />
+          <ArrowForwardIosIcon
+            style={
+              nextSprintButtonDisabled
+                ? { fontSize: '16px', color: 'transparent' }
+                : { fontSize: '16px' }
+            }
+          />
         </IconButton>
       </div>
     )
