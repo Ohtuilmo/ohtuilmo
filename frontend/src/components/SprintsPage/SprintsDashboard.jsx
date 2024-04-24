@@ -156,8 +156,17 @@ const SprintsPage = (props) => {
                 const startDateObj = new Date(sprint.start_date)
                 const endDateObj = new Date(sprint.end_date)
 
-                const formattedStartDate = `${startDateObj.getDate().toString().padStart(2, '0')}/${(startDateObj.getMonth() + 1).toString().padStart(2, '0')}/${startDateObj.getFullYear()}`
-                const formattedEndDate = `${endDateObj.getDate().toString().padStart(2, '0')}/${(endDateObj.getMonth() + 1).toString().padStart(2, '0')}/${endDateObj.getFullYear()}`
+                const formattedStartDate = startDateObj.toLocaleDateString('fi-FI', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }).replace(/\./g, '/')
+
+                const formattedEndDate = endDateObj.toLocaleDateString('fi-FI', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }).replace(/\./g, '/')
 
                 return (
                   <tr key={sprint.id}>
