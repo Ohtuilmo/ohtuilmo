@@ -61,20 +61,22 @@ const TimeLogChart = (props) => {
         for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
           const name = Object.keys(sprintData[entryIndex])[0]
           const minutes = Object.values(sprintData[entryIndex])[0]
+          const hours = minutes/60
           mappedData.push({
             sprint: -1,
             name: name,
-            minutes: minutes
+            hours: parseFloat(hours.toFixed(1))
           })
         }
       } else {
         for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
           const name = Object.keys(sprintData[entryIndex])[0]
           const minutes = Object.values(sprintData[entryIndex])[0]
+          const hours = minutes/60
           mappedData.push({
             sprint: Number(sprint),
             name: name,
-            minutes: minutes
+            hours: parseFloat(hours.toFixed(1))
           })
         }
       }
@@ -115,7 +117,7 @@ const TimeLogChart = (props) => {
         <YAxis />
         <Tooltip />
         <Bar
-          dataKey='minutes'
+          dataKey='hours'
           background={false}
         >
           {chartData.map((entry, index) => (
@@ -140,7 +142,7 @@ const TimeLogChart = (props) => {
           <YAxis />
           <Tooltip />
           <Bar
-            dataKey='minutes'
+            dataKey='hours'
             background={false}
           >
             {chartData.map((entry, index) => (
