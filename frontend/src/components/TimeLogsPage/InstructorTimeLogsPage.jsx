@@ -49,7 +49,6 @@ const InstructorTimeLogsPage = () => {
     }
 
     fetchGroup()
-    console.log(selectedGroup)
   }, [selectedStudent])
 
   return (
