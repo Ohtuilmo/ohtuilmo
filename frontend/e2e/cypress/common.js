@@ -29,7 +29,7 @@ export const TEST_USER3 = {
     uid: 'indicatortester',
     givenname: 'Volodymyr',
     mail: 'volodymy.testerskyy@fakemail.not',
-    hypersonstudentid: '0918273645',
+    hypersonstudentid: '918273645',
     sn: 'Testerskyy'
   }
 }

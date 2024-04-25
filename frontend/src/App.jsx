@@ -43,6 +43,7 @@ import registrationmanagementActions from './reducers/actions/registrationManage
 import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 import * as userActions from './reducers/actions/userActions'
+import myGroupActions from './reducers/actions/myGroupActions'
 
 // Protected routes
 import {
@@ -74,6 +75,7 @@ const App = (props) => {
     clearRegistrations,
     isLoading,
     user,
+    initializeMyGroup
   } = props
 
   useEffect(() => {
@@ -84,6 +86,14 @@ const App = (props) => {
       } catch (e) {
         console.log('error happened', e)
         setError('Error fetching registration management configuration', 5000)
+      }
+    }
+
+    const handleGroupInit = async () => {
+      try {
+        await initializeMyGroup()
+      } catch (err) {
+        console.log(err)
       }
     }
 
@@ -98,6 +108,7 @@ const App = (props) => {
     const fetchData = async () => {
       updateIsLoading(true)
       !isCustomerReviewPage && (await handleLogin())
+      user && (await handleGroupInit())
       await fetchRegistrationManagementData()
       updateIsLoading(false)
     }
@@ -115,7 +126,7 @@ const App = (props) => {
     }, 60 * 1000)
 
     return () => clearInterval(loginInterval)
-  }, [fetchRegistrationManagement, loginUser, setError, updateIsLoading])
+  }, [fetchRegistrationManagement, loginUser, setError, updateIsLoading, initializeMyGroup])
 
   const logout = () => {
     updateIsLoading(true)
@@ -288,6 +299,7 @@ const mapDispatchToProps = {
   ...peerReviewPageActions,
   logoutUser: userActions.logoutUser,
   loginUser: userActions.loginUser,
+  initializeMyGroup: myGroupActions.initializeMyGroup,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

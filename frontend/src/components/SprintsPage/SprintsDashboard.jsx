@@ -7,7 +7,6 @@ import { NotInGroupPlaceholder } from '../common/Placeholders'
 import './SprintsDashboard.css'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import myGroupActions from '../../reducers/actions/myGroupActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
 
@@ -18,7 +17,7 @@ const SprintsPage = (props) => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
-  const { group, studentNumber, initializeMyGroup } = props
+  const { group, studentNumber } = props
 
   useEffect(() => {
     const fetchSprints = async () => {
@@ -29,16 +28,8 @@ const SprintsPage = (props) => {
         console.error('Error fetching sprints:', error)
       }
     }
-    const fetchGroup = async () => {
-      try {
-        await initializeMyGroup()
-      } catch (error) {
-        console.error('Error fetching group:', error)
-      }
-    }
 
     fetchSprints()
-    fetchGroup()
   }, [])
 
   const handleAddSprint = async () => {
@@ -196,7 +187,6 @@ const SprintsPage = (props) => {
 }
 
 const mapDispatchToProps = {
-  initializeMyGroup: myGroupActions.initializeMyGroup,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
 }

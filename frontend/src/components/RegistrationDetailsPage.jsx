@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 
 import registrationActions from '../reducers/actions/registrationActions'
-import myGroupActions from '../reducers/actions/myGroupActions'
 
 import peerReviewService from '../services/peerReview'
 
@@ -189,7 +188,6 @@ const RegistrationAnswers = ({ questions }) => {
 
 class RegistrationDetailsPage extends React.Component {
   async componentDidMount() {
-    await this.props.initializeMyGroup()
     if (this.props.ownRegistrations.length === 0) {
       await this.fetchOwnregistrations()
     }
@@ -269,8 +267,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  fetchRegistrations: registrationActions.fetchRegistrations,
-  initializeMyGroup: myGroupActions.initializeMyGroup
+  fetchRegistrations: registrationActions.fetchRegistrations
 }
 
 const ConnectedRegistrationDetailsPage = connect(

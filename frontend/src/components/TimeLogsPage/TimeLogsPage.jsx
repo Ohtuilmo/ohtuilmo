@@ -19,7 +19,6 @@ import sprintService from '../../services/sprints'
 import tagService from '../../services/tags'
 
 // actions
-import myGroupActions from '../../reducers/actions/myGroupActions'
 import {
   minutesAndHoursFromString,
   hoursAndMinutesToMinutes
@@ -36,8 +35,7 @@ const TimeLogsPage = (props) => {
     setSelectedSprintNumber,
     setGroupSprintSummary,
     user,
-    group,
-    initializeMyGroup
+    group
   } = props
 
   const [allLogs, setAllLogs] = useState([])
@@ -50,19 +48,6 @@ const TimeLogsPage = (props) => {
     .sort((a, b) => a - b)
 
   useEffect(() => {
-    const fetchGroup = async () => {
-      try {
-        await initializeMyGroup()
-      } catch (error) {
-        console.error(
-          'Error fetching group:',
-          error.message,
-          ' / ',
-          error.response.data.error
-        )
-        notificationActions.setError(error.response.data.error)
-      }
-    }
     const fetchTimeLogs = async () => {
       try {
         const logs = await timeLogsService.getTimeLogs()
@@ -122,7 +107,6 @@ const TimeLogsPage = (props) => {
     }
     const fetchData = async () => {
       setIsLoading(true)
-      await fetchGroup()
       group && group.id && await fetchSprints()
       await fetchTimeLogs()
       group && group.id && await fetchGroupSprintSummary(group.id)
@@ -291,7 +275,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  initializeMyGroup: myGroupActions.initializeMyGroup,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   setCurrentSprintNumber: timeLogsActions.setCurrentSprintNumber,
