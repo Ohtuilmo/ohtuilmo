@@ -1,0 +1,11 @@
+FROM registry.access.redhat.com/ubi9/nodejs-20
+
+USER root
+
+WORKDIR /usr/src/app
+
+COPY package* ./
+
+RUN npm install
+
+EXPOSE 3000

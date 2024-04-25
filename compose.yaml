@@ -1,0 +1,68 @@
+﻿version: '3'
+services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 10s
+      retries: 60
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm run db:migrate
+        npm run db:seed:all
+        npm run watch
+    ports:
+      - 3001:3001
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - PORT=3001
+      - SECRET=yoursecrethere
+      - EMAIL_ENABLED=false
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+    container_name: backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm run dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    container_name: frontend
+    depends_on:
+      - backend
+      - db
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    environment:
+      - ADMINER_DESIGN=galkaev
+    ports:
+      - 8083:8080
+
+volumes:
+  pg-data:

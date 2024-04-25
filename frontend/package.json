@@ -25,17 +25,13 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "CYPRESS_baseUrl=http://localhost:3000 npm run cypress:open",
+    "test-setup:up": "docker compose -p ohtuilmo-local-test -f ../compose.local-test.yaml --profile test-setup up -d",
+    "test-setup:down": "docker compose -p ohtuilmo-local-test down",
+    "test-setup:restart": "npm run test-setup:down && npm run test-setup:up",
+    "test": "CYPRESS_baseUrl=http://localhost:3002 npx cypress open",
+    "test:headless": "CYPRESS_VIDEO=false CYPRESS_baseUrl=http://localhost:3002 npx cypress run",
     "lint": "eslint src/",
-    "lint:fix": "eslint --fix src/",
-    "test:headless": "CYPRESS_baseUrl=http://localhost:3000 npm run cypress:run",
-    "e2e:install": "./e2e/run_cypress_e2e.sh install",
-    "e2e:setup": "./e2e/run_cypress_e2e.sh setup",
-    "e2e:run": "./e2e/run_cypress_e2e.sh run",
-    "e2e:open": "./e2e/run_cypress_e2e.sh open",
-    "e2e:teardown": "./e2e/run_cypress_e2e.sh teardown",
-    "cypress:open": "npx cypress open -P ./",
-    "cypress:run": "npx cypress run -P ./"
+    "lint:fix": "eslint --fix src/"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
