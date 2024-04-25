@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { withRouter } from 'react-router-dom'
 
 import { TimeLogsSelectForm } from './TimeLogsSelectForm'
-
-import { withRouter } from 'react-router-dom'
+import { TimeLogRow } from './TimeLogRow'
 
 import userService from '../../services/user'
 import groupManagementService from '../../services/groupManagement'
+import timeLogsService from '../../services/timeLogs'
 
 const InstructorTimeLogsPage = () => {
   const [selectedStudent, setSelectedStudent] = useState(null)
