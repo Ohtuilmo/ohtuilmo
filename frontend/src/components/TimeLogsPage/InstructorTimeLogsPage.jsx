@@ -10,11 +10,11 @@ import groupManagementService from '../../services/groupManagement'
 import timeLogsService from '../../services/timeLogs'
 
 const InstructorTimeLogsPage = () => {
-  const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
-  const [allStudents, setAllStudents] = useState([])
-  const [allLogs, setAllLogs] = useState(null)
-  const [selectedGroup, setSelectedGroup] = useState(null)
   const [allGroups, setAllGroups] = useState([])
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [allStudents, setAllStudents] = useState([])
+  const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
+  const [allLogs, setAllLogs] = useState(null)
 
   const [isLoading, setIsLoading] = useState(true)
 
