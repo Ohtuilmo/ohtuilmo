@@ -24,21 +24,12 @@ const loggedInUnregisteredItems = (history) => {
   ]
 }
 
-
-
-
-
-
 const loggedInItems = (history) => {
   return [
     {
       text: 'Home',
       handler: () => history.push('/'),
     },
-    // {
-    //   text: 'Register',
-    //   handler: () => history.push('/register'),
-    // },
     {
       text: 'Registration Details',
       handler: () => history.push('/registrationdetails'),
@@ -51,7 +42,6 @@ const loggedInItems = (history) => {
       text: 'Time Logs',
       handler: () => history.push('/timelogs'),
     },
-    // TODO: uncomment this in the Sprint Management PR.
     {
       text: 'Sprint Dashboard',
       handler: () => history.push('/sprints'),
