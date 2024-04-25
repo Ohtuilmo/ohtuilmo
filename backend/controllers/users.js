@@ -1,6 +1,6 @@
 const usersRouter = require('express').Router()
 const db = require('../models/index')
-const { checkLogin, checkInstructor, checkAdmin } = require('../middleware')
+const { checkLogin, checkInstructor } = require('../middleware')
 
 usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
   const { email } = req.body
