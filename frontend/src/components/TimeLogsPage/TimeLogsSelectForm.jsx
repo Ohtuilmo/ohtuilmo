@@ -3,15 +3,55 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 
-export const TimeLogsSelectForm = ({ students, selectedStudent, handleStudentChange }) => {
+export const TimeLogsSelectForm = ({
+  groups, selectedGroup, handleGroupChange,
+  students, selectedStudent, handleStudentChange }) => {
+  const GroupSelectWrapper = ({ label, children }) => (
+    <div style={{ padding: 20 }}>
+      <Typography variant="caption">{label}</Typography>
+      {children}
+    </div>
+  )
+
+  const GroupSelect = ({
+    groups,
+    selectedGroup,
+    handleGroupChange
+  }) => {
+    return (
+      <Select
+        data-cy="group-selector"
+        value={selectedGroup}
+        onChange={(e) => {
+          handleGroupChange(e.target.value)
+          handleStudentChange(null)
+        }}
+      >
+        {groups.map((group) => (
+          <MenuItem
+            key={group.id}
+            className="group-menu-item"
+            value={group}
+          >
+            {group.name}
+          </MenuItem>
+        ))}
+      </Select>
+  )}
+
+  const StudentIsInGroup = ( student, group ) => {
+    return group.studentIds.includes(student.student_number)
+  }
+  
   const StudentSelectWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
       {children}
     </div>
   )
-  
+
   const StudentSelect = ({
+    selectedGroup,
     students,
     selectedStudent,
     handleStudentChange
@@ -23,8 +63,10 @@ export const TimeLogsSelectForm = ({ students, selectedStudent, handleStudentCha
         onChange={(e) => {
           handleStudentChange(e.target.value)
         }}
+        disabled={!selectedGroup}
       >
-        {students.map((student) => (
+        {students.filter(student => StudentIsInGroup(student, selectedGroup))
+          .map((student) => (
           <MenuItem
             key={student.student_number}
             className="student-menu-item"
@@ -40,13 +82,24 @@ export const TimeLogsSelectForm = ({ students, selectedStudent, handleStudentCha
   return (
     <div className="timelog-select-container">
       <div className="selector-container">
-        <StudentSelectWrapper label="Select student">
-          <StudentSelect
-            selectedStudent={selectedStudent}
+        <GroupSelectWrapper label="Select group">
+          <GroupSelect
+            selectedGroup={selectedGroup}
+            handleGroupChange={handleGroupChange}
+            groups={groups}
             handleStudentChange={handleStudentChange}
-            students={students}
           />
-        </StudentSelectWrapper>
+        </GroupSelectWrapper>
+        {selectedGroup &&
+          <StudentSelectWrapper label="Select student">
+            <StudentSelect
+              selectedGroup={selectedGroup}
+              selectedStudent={selectedStudent}
+              handleStudentChange={handleStudentChange}
+              students={students}
+            />
+          </StudentSelectWrapper>
+        }
       </div>
     </div>
   )

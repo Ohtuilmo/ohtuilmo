@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 
 import { TimeLogsSelectForm } from './TimeLogsSelectForm'
 import { TimeLogRow } from './TimeLogRow'
+import LoadingSpinner from '../common/LoadingSpinner'
 
 import userService from '../../services/user'
 import groupManagementService from '../../services/groupManagement'
@@ -13,8 +14,26 @@ const InstructorTimeLogsPage = () => {
   const [allStudents, setAllStudents] = useState([])
   const [allLogs, setAllLogs] = useState(null)
   const [selectedGroup, setSelectedGroup] = useState(null)
+  const [allGroups, setAllGroups] = useState([])
+
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+      const fetchAllGroups = async () => {
+        try {
+          const allGroups = await groupManagementService.get()
+          setAllGroups(allGroups)
+        } catch (error) {
+          console.error(
+            'Error fetching groups:',
+            error.message,
+            ' / ',
+            error.response.data.error
+          )
+          notificationActions.setError(error.response.data.error)
+        }
+      }
+
       const fetchAllStudents = async () => {
         try {
           const allStudents = await userService.get()
@@ -46,45 +65,33 @@ const InstructorTimeLogsPage = () => {
       }
 
       const fetchData = async () => {
+        setIsLoading(true)
+        await fetchAllGroups()
         await fetchAllStudents()
         await fetchAllLogs()
+        setIsLoading(false)
       }
       fetchData()
     }, [])
-
-  useEffect(() => {
-    const fetchGroup = async () => {
-      try {
-        const group = await groupManagementService.getByStudent(selectedStudent)
-        setSelectedGroup(group)
-      } catch (error) {
-        console.error(
-          'Error fetching group:',
-          error.message,
-          ' / ',
-          error.response.data.error
-        )
-        notificationActions.setError(error.response.data.error)
-      }
-    }
-
-    fetchGroup()
-  }, [selectedStudent])
 
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
     isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudent)
 
+  if (isLoading) return <LoadingSpinner />
   return (
     <div>
       <div>
         <TimeLogsSelectForm
+          groups={allGroups}
+          selectedGroup={selectedGroup}
+          handleGroupChange={setSelectedGroup}
           students={allStudents}
           selectedStudent={selectedStudent}
           handleStudentChange={setSelectedStudent}
         />
         <div>{selectedStudent}</div>
-        {selectedGroup && <div>{selectedGroup.groupName}</div>}
+        {selectedGroup && <div>{selectedGroup.name}</div>}
       </div>
       <div id='timelog-rows'>
         {isLogs(logsByStudent) &&
