@@ -55,3 +55,13 @@ Registration, administration and review tool for University of Helsinki's softwa
 4. If you want to restore test setup and the database to their initial stage, just run `npm run test-setup` again.
 
 5. When you are done, you can remove containers and are related resources with command `npm run test-setup:down`
+
+## How to manually inspect database
+
+Development setup includes database management tool called Adminer. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
+
+- System: PostgreSQL
+- Server: db
+- Username: postgres
+- Password: postgres
+- Database: postgres
