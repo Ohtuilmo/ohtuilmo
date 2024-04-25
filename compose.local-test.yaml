@@ -1,0 +1,75 @@
+version: '3'
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: test-db
+    profiles: [test-setup, cypress]
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 10s
+      retries: 60
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm run db:migrate
+        npm run db:seed:all
+        npm run watch:test
+        while ! curl -fsS http://localhost:3001/api >/dev/null; sleep 1; done
+        echo "Test setup is now up!"
+    expose:
+      - 3001
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - PORT=3001
+      - SECRET=yoursecrethere
+      - EMAIL_ENABLED=false
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+    container_name: test-backend
+    profiles: [test-setup, cypress]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm run dev
+    ports:
+      - 3002:3000
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    container_name: test-frontend
+    profiles: [test-setup, cypress]
+    depends_on:
+      - backend
+      - db
+  
+  cypress:
+    image: cypress/included:3.8.3
+    container_name: cypress
+    profiles: [cypress]
+    volumes:
+      - ./frontend/e2e:/e2e
+      - ./frontend/cypress.json:/cypress.json
+    environment:
+      - CYPRESS_baseUrl=http://frontend:3000
+      - CYPRESS_VIDEO=false
+    depends_on:
+      - db
+      - backend
+      - frontend

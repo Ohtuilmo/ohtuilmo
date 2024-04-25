@@ -1,14 +1,1 @@
-# Only include files that we need for "npm install",
-# "react-scripts build" and "serve"!
-*
-!public/
-!src/
-# react-scripts build runs linter, include eslint configs
-!.eslintignore
-!.eslintrc.js
-!package*.json
-!index.html
-!vite.config.js
-# nice-to-haves I guess?
-!LICENCE
-!README.md
+node_modules
