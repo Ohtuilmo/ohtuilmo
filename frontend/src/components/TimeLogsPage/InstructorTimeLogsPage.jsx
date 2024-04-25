@@ -53,13 +53,16 @@ const InstructorTimeLogsPage = () => {
 
   return (
     <div>
-      <TimeLogsSelectForm
-        students={allStudents}
-        handleStudentChange={setSelectedStudent}
-      />
-      <div>{selectedStudent}</div>
-      {selectedGroup && <div>{selectedGroup.groupName}</div>}
-     </div>
+      <div>
+        <TimeLogsSelectForm
+          students={allStudents}
+          selectedStudent={selectedStudent}
+          handleStudentChange={setSelectedStudent}
+        />
+        <div>{selectedStudent}</div>
+        {selectedGroup && <div>{selectedGroup.groupName}</div>}
+      </div>
+   </div>
   )
 }
 

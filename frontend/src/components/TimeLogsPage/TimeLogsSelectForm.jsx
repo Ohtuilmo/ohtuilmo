@@ -3,7 +3,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 
-export const TimeLogsSelectForm = ({ students, handleStudentChange }) => {
+export const TimeLogsSelectForm = ({ students, selectedStudent, handleStudentChange }) => {
   const StudentSelectWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
@@ -13,13 +13,13 @@ export const TimeLogsSelectForm = ({ students, handleStudentChange }) => {
   
   const StudentSelect = ({
     students,
-    currentStudent,
+    selectedStudent,
     handleStudentChange
   }) => {
     return (
       <Select
         data-cy="student-selector"
-        value={currentStudent}
+        value={selectedStudent}
         onChange={(e) => {
           handleStudentChange(e.target.value)
         }}
@@ -42,7 +42,7 @@ export const TimeLogsSelectForm = ({ students, handleStudentChange }) => {
       <div className="selector-container">
         <StudentSelectWrapper label="Select student">
           <StudentSelect
-            currentStudent={currentStudent}
+            selectedStudent={selectedStudent}
             handleStudentChange={handleStudentChange}
             students={students}
           />
