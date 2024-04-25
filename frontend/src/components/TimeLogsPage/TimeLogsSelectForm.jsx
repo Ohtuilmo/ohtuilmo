@@ -8,7 +8,7 @@ export const TimeLogsSelectForm = ({
   groups, selectedGroup, handleGroupChange,
   students, selectedStudentNumber, handleStudentNumberChange }) => {
 
-  const ConfigurationSelectWrapper = ({ label, children }) => (
+  const SelectorWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
       {children}
@@ -48,13 +48,6 @@ export const TimeLogsSelectForm = ({
     return group.configurationId === configuration.id
   }
 
-  const GroupSelectWrapper = ({ label, children }) => (
-    <div style={{ padding: 20 }}>
-      <Typography variant="caption">{label}</Typography>
-      {children}
-    </div>
-  )
-
   const GroupSelect = ({
     groups,
     selectedGroup,
@@ -85,13 +78,6 @@ export const TimeLogsSelectForm = ({
   const StudentIsInGroup = ( student, group ) => {
     return group.studentIds.includes(student.student_number)
   }
-  
-  const StudentSelectWrapper = ({ label, children }) => (
-    <div style={{ padding: 20 }}>
-      <Typography variant="caption">{label}</Typography>
-      {children}
-    </div>
-  )
 
   const StudentSelect = ({
     selectedGroup,
@@ -125,7 +111,7 @@ export const TimeLogsSelectForm = ({
   return (
     <div className="timelog-select-container">
       <div className="selector-container">
-        <ConfigurationSelectWrapper label="Select configuration">
+        <SelectorWrapper label="Select configuration">
           <ConfigurationSelect
             configurations={configurations}
             selectedConfiguration={selectedConfiguration}
@@ -133,26 +119,26 @@ export const TimeLogsSelectForm = ({
             handleGroupChange={handleGroupChange}
             handleStudentNumberChange={handleStudentNumberChange}
           />
-        </ConfigurationSelectWrapper>
+        </SelectorWrapper>
         {selectedConfiguration &&
-          <GroupSelectWrapper label="Select group">
+          <SelectorWrapper label="Select group">
             <GroupSelect
               selectedGroup={selectedGroup}
               handleGroupChange={handleGroupChange}
               groups={groups}
               handleStudentNumberChange={handleStudentNumberChange}
             />
-          </GroupSelectWrapper>
+          </SelectorWrapper>
         }
         {selectedGroup &&
-          <StudentSelectWrapper label="Select student">
+          <SelectorWrapper label="Select student">
             <StudentSelect
               selectedGroup={selectedGroup}
               selectedStudentNumber={selectedStudentNumber}
               handleStudentNumberChange={handleStudentNumberChange}
               students={students}
             />
-          </StudentSelectWrapper>
+          </SelectorWrapper>
         }
       </div>
     </div>
