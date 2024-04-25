@@ -10,7 +10,7 @@ import groupManagementService from '../../services/groupManagement'
 import timeLogsService from '../../services/timeLogs'
 
 const InstructorTimeLogsPage = () => {
-  const [selectedStudent, setSelectedStudent] = useState(null)
+  const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
   const [allStudents, setAllStudents] = useState([])
   const [allLogs, setAllLogs] = useState(null)
   const [selectedGroup, setSelectedGroup] = useState(null)
@@ -76,7 +76,7 @@ const InstructorTimeLogsPage = () => {
 
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
-    isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudent)
+    isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudentNumber)
 
   if (isLoading) return <LoadingSpinner />
   return (
@@ -87,10 +87,9 @@ const InstructorTimeLogsPage = () => {
           selectedGroup={selectedGroup}
           handleGroupChange={setSelectedGroup}
           students={allStudents}
-          selectedStudent={selectedStudent}
-          handleStudentChange={setSelectedStudent}
+          selectedStudentNumber={selectedStudentNumber}
+          handleStudentNumberChange={setSelectedStudentNumber}
         />
-        <div>{selectedStudent}</div>
         {selectedGroup && <div>{selectedGroup.name}</div>}
       </div>
       <div id='timelog-rows'>

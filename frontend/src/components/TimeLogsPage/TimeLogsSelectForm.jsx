@@ -5,7 +5,7 @@ import Select from '@material-ui/core/Select'
 
 export const TimeLogsSelectForm = ({
   groups, selectedGroup, handleGroupChange,
-  students, selectedStudent, handleStudentChange }) => {
+  students, selectedStudentNumber, handleStudentNumberChange }) => {
   const GroupSelectWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
@@ -24,7 +24,7 @@ export const TimeLogsSelectForm = ({
         value={selectedGroup}
         onChange={(e) => {
           handleGroupChange(e.target.value)
-          handleStudentChange(null)
+          handleStudentNumberChange(null)
         }}
       >
         {groups.map((group) => (
@@ -53,15 +53,15 @@ export const TimeLogsSelectForm = ({
   const StudentSelect = ({
     selectedGroup,
     students,
-    selectedStudent,
-    handleStudentChange
+    selectedStudentNumber,
+    handleStudentNumberChange
   }) => {
     return (
       <Select
         data-cy="student-selector"
-        value={selectedStudent}
+        value={selectedStudentNumber}
         onChange={(e) => {
-          handleStudentChange(e.target.value)
+          handleStudentNumberChange(e.target.value)
         }}
         disabled={!selectedGroup}
       >
@@ -87,15 +87,15 @@ export const TimeLogsSelectForm = ({
             selectedGroup={selectedGroup}
             handleGroupChange={handleGroupChange}
             groups={groups}
-            handleStudentChange={handleStudentChange}
+            handleStudentNumberChange={handleStudentNumberChange}
           />
         </GroupSelectWrapper>
         {selectedGroup &&
           <StudentSelectWrapper label="Select student">
             <StudentSelect
               selectedGroup={selectedGroup}
-              selectedStudent={selectedStudent}
-              handleStudentChange={handleStudentChange}
+              selectedStudentNumber={selectedStudentNumber}
+              handleStudentNumberChange={handleStudentNumberChange}
               students={students}
             />
           </StudentSelectWrapper>
