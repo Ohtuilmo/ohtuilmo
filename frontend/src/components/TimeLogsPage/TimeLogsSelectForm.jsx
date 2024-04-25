@@ -30,7 +30,7 @@ export const TimeLogsSelectForm = ({ students, selectedStudent, handleStudentCha
             className="student-menu-item"
             value={student.student_number}
           >
-            {student.first_names}
+            {student.first_names} {student.last_name}
           </MenuItem>
         ))}
       </Select>
