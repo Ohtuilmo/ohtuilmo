@@ -13,10 +13,12 @@ import {
   loggedInItems,
   adminItems,
   instructorItems,
+  loggedInUnregisteredItems
 } from './MenuItemLists'
 import './NavigationBar.css'
 
 const NavigationBar = ({ group, user, history, logout }) => {
+
   const getAppropriateMenuItemList = () => {
     if (user === null) {
       return { items: regularItems(history) }
@@ -28,19 +30,23 @@ const NavigationBar = ({ group, user, history, logout }) => {
           { title: 'Admin', items: adminItems(history) },
           { title: 'Instructor', items: instructorItems(history) },
           { title: 'Student', items: loggedInItems(history) },
+          { title: 'Student - no group', items: loggedInUnregisteredItems(history) }
         ],
       }
     } else if (user.user.instructor) {
       return {
         items: [
           { title: 'Instructor', items: instructorItems(history) },
-          { title: 'Student', items: loggedInItems(history) }
+          { title: 'Student', items: loggedInItems(history) },
+          { title: 'Student - no group', items: loggedInUnregisteredItems(history) }
         ],
       }
-    } else {
+    } else if (group) {
       return {
         items: [{ title: 'Student', items: loggedInItems(history) }],
       }
+    } else {
+      return [{ title: 'Student - no group', items: loggedInUnregisteredItems(history) }]
     }
   }
 

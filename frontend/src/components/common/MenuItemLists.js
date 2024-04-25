@@ -7,7 +7,7 @@ const regularItems = (history) => {
   ]
 }
 
-const loggedInItems = (history) => {
+const loggedInUnregisteredItems = (history) => {
   return [
     {
       text: 'Home',
@@ -17,6 +17,28 @@ const loggedInItems = (history) => {
       text: 'Register',
       handler: () => history.push('/register'),
     },
+    {
+      text: 'Registration Details',
+      handler: () => history.push('/registrationdetails'),
+    },
+  ]
+}
+
+
+
+
+
+
+const loggedInItems = (history) => {
+  return [
+    {
+      text: 'Home',
+      handler: () => history.push('/'),
+    },
+    // {
+    //   text: 'Register',
+    //   handler: () => history.push('/register'),
+    // },
     {
       text: 'Registration Details',
       handler: () => history.push('/registrationdetails'),
@@ -44,7 +66,7 @@ const instructorItems = (history) => {
       handler: () => history.push('/'),
     },
     {
-      text: 'Intructor Page',
+      text: 'Instructor Page',
       handler: () => history.push('/instructorpage'),
     },
     {
@@ -127,4 +149,4 @@ const adminItems = (history) => {
   ]
 }
 
-export { regularItems, loggedInItems, adminItems, instructorItems }
+export { regularItems, loggedInUnregisteredItems,loggedInItems, adminItems, instructorItems }
