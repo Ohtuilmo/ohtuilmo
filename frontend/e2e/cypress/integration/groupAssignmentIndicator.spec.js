@@ -20,17 +20,6 @@ describe('Group assignment indicator tests', () => {
   })
 
   describe('Indicator for registered user', () => {
-    before(() => {
-      cy.loginAsAdmin()
-      cy.createGroup({
-        name: 'Indicator Test Group',
-        topicId: 1,
-        configurationId: 1,
-        instructorId: null,
-        studentIds: ['0918273645'],
-      })
-      cy.logout()
-    })
     beforeEach(() => {
       cy.loginAsRegisteredIndicatedUser()
       cy.visit('/')
@@ -40,7 +29,7 @@ describe('Group assignment indicator tests', () => {
       cy.get('[data-cy=groupname_display_assigned]')
         .should('exist')
         .and('be.visible')
-        .and('have.text', 'Indicator Test Group')
+        .and('have.text', 'tekOäly-ryhmä')
     })
 
     afterEach(() => {

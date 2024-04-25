@@ -89,10 +89,17 @@ const App = (props) => {
       }
     }
 
+    const handleGroupInit = async () => {
+      try {
+        await initializeMyGroup()
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     const handleLogin = async () => {
       try {
         await loginUser()
-        await initializeMyGroup()
       } catch (err) {
         console.log(err)
       }
@@ -101,6 +108,7 @@ const App = (props) => {
     const fetchData = async () => {
       updateIsLoading(true)
       !isCustomerReviewPage && (await handleLogin())
+      user && (await handleGroupInit())
       await fetchRegistrationManagementData()
       updateIsLoading(false)
     }

@@ -23,14 +23,14 @@ export const TEST_USER2 = {
 }
 
 export const TEST_USER3 = {
-  username: 'indicatortester',
-  password: 'indicatorTester321',
+  username: 'timoTekoäly',
+  password: 'timoTekoäly321',
   headers: {
-    uid: 'indicatortester',
-    givenname: 'Volodymyr',
-    mail: 'volodymy.testerskyy@fakemail.not',
-    hypersonstudentid: '0918273645',
-    sn: 'Testerskyy'
+    uid: 'timoTekoäly',
+    givenname: 'Timo',
+    mail: 'timoTeko@gmail.com',
+    hypersonstudentid: '112345704',
+    sn: 'Tekoäly'
   }
 }
 
