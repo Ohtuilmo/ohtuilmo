@@ -327,7 +327,7 @@ describe('Instructor page', () => {
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
     cy.contains('Tykittelijät')
-    cy.contains('2.50')
+    cy.contains('3.00')
   })
 
   it('displays the corresponding groups of each configuration', () => {
@@ -340,7 +340,7 @@ describe('Instructor page', () => {
     )
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
-    cy.contains('4.50')
+    cy.contains('4.00')
   })
 
   it('is loaded displaying all groups of a configuration', () => {

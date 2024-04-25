@@ -214,7 +214,7 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
           <tr className="radio-row">
             <th />
             <PeerHeaders peers={peers} />
-            <th className="radio-header">Mean</th>
+            <th className="radio-header">Average (without own grading)</th>
           </tr>
         </thead>
         <tbody>
@@ -250,35 +250,36 @@ const PeerHeaders = ({ peers }) => {
 }
 
 const sum = (arr) => arr.reduce((sum, value) => sum + value, 0)
-const average = (arr) => sum(arr) / arr.length
 
 const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
-  const otherPeersRatingOfMember = answers
-    .map((peersSubmission) => peersSubmission.answer_sheet)
-    .map((peersAnswerSheet) => peersAnswerSheet[questionNumber].peers[member])
+  const allPeersRatings = new Array(numberOfPeers).fill({ rating: '-', isSelf: false })
 
-  const missing = []
-  for (let i = 0; i < numberOfPeers - answers.length; i++) {
-    missing.push(i)
-  }
+  answers.forEach((answer, index) => {
+    const peerFullName = `${answer.student.first_names} ${answer.student.last_name}`
+    if (answer.answer_sheet[questionNumber].peers[member] !== undefined) {
+      allPeersRatings[index] = {
+        rating: answer.answer_sheet[questionNumber].peers[member],
+        isSelf: peerFullName === member
+      }
+    }
+  })
 
-  const averageRating = average(otherPeersRatingOfMember)
+  const validRatings = allPeersRatings
+    .filter(ratingInfo => ratingInfo.rating !== '-' && !ratingInfo.isSelf)
+    .map(ratingInfo => ratingInfo.rating)
+
+  const averageRating = validRatings.length > 0
+    ? (sum(validRatings) / validRatings.length).toFixed(2)
+    : 'N/A'
 
   return (
     <React.Fragment>
-      {otherPeersRatingOfMember.map((rating, index) => (
+      {allPeersRatings.map((ratingInfo, index) => (
         <td className="radio-button" key={`peer-row-${index}`}>
-          {rating}
+          {typeof ratingInfo.rating === 'number' ? ratingInfo.rating.toFixed(2) : ratingInfo.rating}
         </td>
       ))}
-
-      {missing.map((_, index) => (
-        <td className="radio-button" key={`peer-row-${index}`}>
-          -
-        </td>
-      ))}
-
-      <td className="radio-button">{averageRating.toFixed(2)}</td>
+      <td className="radio-button">{averageRating}</td>
     </React.Fragment>
   )
 }

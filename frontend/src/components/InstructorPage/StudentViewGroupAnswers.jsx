@@ -1,4 +1,5 @@
 import React from 'react'
+import './InstructorPage.css'
 
 const RadioAnswer = ({ answers, questionHeader, student }) => {
   const allPeers = answers.reduce((acc, answer) => {
@@ -14,21 +15,26 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
   return (
     <div>
       <h4>{questionHeader}</h4>
-      <table>
+      <table className="radio-button-table">
         <thead>
-          <tr>
-            <th>Student</th>
-            {allPeers.map(peer => <th key={peer}>{peer}</th>)}
-            <th>Average</th>
+          <tr className="radio-inforow">
+            <th />
+            <th colSpan={allPeers.length} className="radio-infoheader">Reviewers</th>
+            <th />
+          </tr>
+          <tr className="radio-row">
+            <th />
+            {allPeers.map(peer => <th key={peer} className="radio-header">{peer}</th>)}
+            <th className="radio-header">Average (without own grading)</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr className="peer-header">
             <td>{studentName}</td>
             {allPeers.map((peer, peerIndex) => (
-              <td key={peerIndex}>{calculatePeerRating(studentName, peer, answers)}</td>
+              <td key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</td>
             ))}
-            <td>{calculateAverageRating(studentName, answers, allPeers.length)}</td>
+            <td className="radio-button">{calculateAverageRating(studentName, answers)}</td>
           </tr>
         </tbody>
       </table>
@@ -41,11 +47,20 @@ const calculatePeerRating = (member, peer, answers) => {
   return submission ? submission.peers[member] : '-'
 }
 
-const calculateAverageRating = (member, answers, totalPeers) => {
-  const ratings = answers.map(answer => answer.peers[member]).filter(rating => rating !== undefined)
+const calculateAverageRating = (member, answers) => {
+  const ratings = answers.reduce((acc, answer) => {
+    const responderFullName = `${answer.student.first_names} ${answer.student.last_name}`
+
+    if (responderFullName !== member && answer.peers[member] !== undefined) {
+      acc.push(answer.peers[member])
+    }
+    return acc
+  }, [])
+
   const sum = ratings.reduce((acc, rating) => acc + rating, 0)
-  return (sum / totalPeers).toFixed(2)
+  return ratings.length > 0 ? (sum / ratings.length).toFixed(2) : 'N/A'
 }
+
 
 const StudentViewGroupAnswers = ({ answers }) => {
   return (
