@@ -171,7 +171,7 @@ const fetchAllFromDb = async () => {
 
 timeLogsRouter.get('/', checkLogin, async (req, res) => {
   try {
-    if (req.user.admin) {
+    if (req.user.admin || req.user.instructor) {
       const timeLogs = await fetchAllFromDb()
       return res.status(200).json(timeLogs)
     }
