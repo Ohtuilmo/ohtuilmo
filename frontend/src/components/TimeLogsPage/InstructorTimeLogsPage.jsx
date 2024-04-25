@@ -6,10 +6,13 @@ import { TimeLogRow } from './TimeLogRow'
 import LoadingSpinner from '../common/LoadingSpinner'
 
 import userService from '../../services/user'
+import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import timeLogsService from '../../services/timeLogs'
 
 const InstructorTimeLogsPage = () => {
+  const [allConfigurations, setAllConfigurations] = useState([])
+  const [selectedConfiguration, setSelectedConfiguration] = useState(null)
   const [allGroups, setAllGroups] = useState([])
   const [selectedGroup, setSelectedGroup] = useState(null)
   const [allStudents, setAllStudents] = useState([])
@@ -19,6 +22,21 @@ const InstructorTimeLogsPage = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    const fetchAllConfigurations = async () => {
+      try {
+        const allConfigurations = await configurationService.getAll()
+        setAllConfigurations(allConfigurations.configurations)
+      } catch (error) {
+        console.error(
+          'Error fetching groups:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
+      }
+    }
+
       const fetchAllGroups = async () => {
         try {
           const allGroups = await groupManagementService.get()
@@ -66,6 +84,7 @@ const InstructorTimeLogsPage = () => {
 
       const fetchData = async () => {
         setIsLoading(true)
+        await fetchAllConfigurations()
         await fetchAllGroups()
         await fetchAllStudents()
         await fetchAllLogs()
@@ -83,6 +102,9 @@ const InstructorTimeLogsPage = () => {
     <div>
       <div>
         <TimeLogsSelectForm
+          configurations={allConfigurations}
+          selectedConfiguration={selectedConfiguration}
+          handleConfigurationChange={setSelectedConfiguration}
           groups={allGroups}
           selectedGroup={selectedGroup}
           handleGroupChange={setSelectedGroup}
@@ -101,7 +123,7 @@ const InstructorTimeLogsPage = () => {
             />
           ))}
         {!isLogs(logsByStudent) && (
-          <p>No logs yet :&#40;</p>
+          <p>No logs by the selected user.</p>
         )}
       </div>
    </div>

@@ -4,8 +4,50 @@ import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 
 export const TimeLogsSelectForm = ({
+  configurations, selectedConfiguration, handleConfigurationChange,
   groups, selectedGroup, handleGroupChange,
   students, selectedStudentNumber, handleStudentNumberChange }) => {
+
+  const ConfigurationSelectWrapper = ({ label, children }) => (
+    <div style={{ padding: 20 }}>
+      <Typography variant="caption">{label}</Typography>
+      {children}
+    </div>
+  )
+
+  const ConfigurationSelect = ({
+    configurations,
+    selectedConfiguration,
+    handleConfigurationChange,
+    handleGroupChange,
+    handleStudentNumberChange
+  }) => {
+    return (
+      <Select
+        data-cy="configuration-selector"
+        value={selectedConfiguration}
+        onChange={(e) => {
+          handleConfigurationChange(e.target.value)
+          handleGroupChange(null)
+          handleStudentNumberChange(null)
+        }}
+      >
+        {configurations.map((configuration) => (
+          <MenuItem
+            key={configuration.id}
+            className="configuration-menu-item"
+            value={configuration}
+          >
+            {configuration.name}
+          </MenuItem>
+        ))}
+      </Select>
+  )}
+
+  const GroupIsInConfiguration = ( group, configuration ) => {
+    return group.configurationId === configuration.id
+  }
+
   const GroupSelectWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
@@ -27,7 +69,8 @@ export const TimeLogsSelectForm = ({
           handleStudentNumberChange(null)
         }}
       >
-        {groups.map((group) => (
+        {groups.filter(group => GroupIsInConfiguration(group, selectedConfiguration))
+          .map((group) => (
           <MenuItem
             key={group.id}
             className="group-menu-item"
@@ -82,14 +125,25 @@ export const TimeLogsSelectForm = ({
   return (
     <div className="timelog-select-container">
       <div className="selector-container">
-        <GroupSelectWrapper label="Select group">
-          <GroupSelect
-            selectedGroup={selectedGroup}
+        <ConfigurationSelectWrapper label="Select configuration">
+          <ConfigurationSelect
+            configurations={configurations}
+            selectedConfiguration={selectedConfiguration}
+            handleConfigurationChange={handleConfigurationChange}
             handleGroupChange={handleGroupChange}
-            groups={groups}
             handleStudentNumberChange={handleStudentNumberChange}
           />
-        </GroupSelectWrapper>
+        </ConfigurationSelectWrapper>
+        {selectedConfiguration &&
+          <GroupSelectWrapper label="Select group">
+            <GroupSelect
+              selectedGroup={selectedGroup}
+              handleGroupChange={handleGroupChange}
+              groups={groups}
+              handleStudentNumberChange={handleStudentNumberChange}
+            />
+          </GroupSelectWrapper>
+        }
         {selectedGroup &&
           <StudentSelectWrapper label="Select student">
             <StudentSelect
