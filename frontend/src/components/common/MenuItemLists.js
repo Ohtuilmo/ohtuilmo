@@ -7,7 +7,7 @@ const regularItems = (history) => {
   ]
 }
 
-const loggedInItems = (history) => {
+const loggedInUnregisteredItems = (history) => {
   return [
     {
       text: 'Home',
@@ -21,6 +21,19 @@ const loggedInItems = (history) => {
       text: 'Registration Details',
       handler: () => history.push('/registrationdetails'),
     },
+  ]
+}
+
+const loggedInItems = (history) => {
+  return [
+    {
+      text: 'Home',
+      handler: () => history.push('/'),
+    },
+    {
+      text: 'Registration Details',
+      handler: () => history.push('/registrationdetails'),
+    },
     {
       text: 'Peer Review',
       handler: () => history.push('/peerreview'),
@@ -29,7 +42,6 @@ const loggedInItems = (history) => {
       text: 'Time Logs',
       handler: () => history.push('/timelogs'),
     },
-    // TODO: uncomment this in the Sprint Management PR.
     {
       text: 'Sprint Dashboard',
       handler: () => history.push('/sprints'),
@@ -127,4 +139,4 @@ const adminItems = (history) => {
   ]
 }
 
-export { regularItems, loggedInItems, adminItems, instructorItems }
+export { regularItems, loggedInUnregisteredItems,loggedInItems, adminItems, instructorItems }
