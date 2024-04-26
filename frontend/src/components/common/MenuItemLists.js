@@ -67,6 +67,10 @@ const instructorItems = (history) => {
       text: 'Customer reviews',
       handler: () => history.push('/adminstration/customer-reviews'),
     },
+    {
+      text: 'Time Logs (Instructor)',
+      handler: () => history.push('/instructor-timelogs'),
+    }
   ]
 }
 

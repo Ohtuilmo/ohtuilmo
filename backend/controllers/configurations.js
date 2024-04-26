@@ -1,6 +1,6 @@
 const configurationsRouter = require('express').Router()
 const db = require('../models/index')
-const { checkAdmin, checkLogin } = require('../middleware')
+const { checkAdmin, checkLogin, checkInstructor } = require('../middleware')
 
 // determines which associated models are returned with configuration
 const includeArray = [
@@ -154,7 +154,7 @@ configurationsRouter.put('/:id', checkAdmin, (req, res) => {
   updateChecks(req, res)
 })
 
-configurationsRouter.get('/', checkAdmin, (req, res) => {
+configurationsRouter.get('/', checkInstructor, (req, res) => {
   db.Configuration.findAll({
     include: includeArray,
   })

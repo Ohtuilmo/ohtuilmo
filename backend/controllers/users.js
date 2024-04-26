@@ -1,6 +1,6 @@
 const usersRouter = require('express').Router()
 const db = require('../models/index')
-const { checkLogin, checkAdmin } = require('../middleware')
+const { checkLogin, checkInstructor } = require('../middleware')
 
 usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
   const { email } = req.body
@@ -31,13 +31,39 @@ usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
   }
 })
 
-usersRouter.get('/', checkAdmin, async (req, res) => {
-  try {
-    const users = await db.User.findAll()
-    res.status(200).json(users)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+// If the user is an instructor, the get all of the student numbers for
+// the students in the current configuration, then gets the corresponding
+// users from the database.
+usersRouter.get('/', checkInstructor, async (req, res) => {
+  if (req.user.admin) {
+    try {
+      const users = await db.User.findAll()
+      res.status(200).json(users)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    }
+  } else {
+    try {
+      const configuration = await db.Configuration.findOne({
+        order: [['createdAt', 'DESC']]
+      })
+      const groups = await db.Group.findAll({
+        where: { configurationId: configuration.id },
+        include: [{ model: db.User, as: 'students' }],
+      })
+      const studentNumbersInGroups = groups.map(
+        group => group.students.map(
+          student => student.student_number)).flat()
+
+      const users = await db.User.findAll({
+        where: { student_number: studentNumbersInGroups }
+      })
+      res.status(200).json(users)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    }
   }
 })
 

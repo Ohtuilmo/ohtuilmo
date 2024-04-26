@@ -31,6 +31,7 @@ import Registrations from './components/Registrations'
 import InstructorReviews from './components/InstructorReviews'
 import ViewUsersPage from './components/ViewUsersPage/ViewUsersPage'
 import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
+import InstructorTimeLogsPage from './components/TimeLogsPage/InstructorTimeLogsPage'
 import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
 import TagsDashboard from './components/TagManagementPage/TagsDashboard'
 
@@ -257,7 +258,10 @@ const App = (props) => {
               path="/adminstration/customer-reviews"
               render={renderWithLoadingCheck(<ViewCustomerReviewsPage />)}
             />
-
+            <InstructorRoute
+              path="/instructor-timelogs"
+              render = {renderWithLoadingCheck(<InstructorTimeLogsPage />)}
+            />
             <LoginRoute
               exact
               path="/registrationdetails"

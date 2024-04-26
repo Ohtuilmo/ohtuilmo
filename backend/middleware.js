@@ -69,6 +69,21 @@ const checkLogin = (req, res, next) => {
 }
 
 /** @type {RequestHandler} */
+const checkInstructor = (req, res, next) => {
+  const { error, status, token } = authenticateToken(req)
+  if (!token) {
+    return res.status(status).json({ error })
+  }
+
+  if (!token.instructor && !token.admin) {
+    return res.status(401).json({ error: 'not instructor' })
+  }
+
+  req.user = token
+  next()
+}
+
+/** @type {RequestHandler} */
 const checkAdmin = (req, res, next) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
@@ -106,6 +121,7 @@ const logger = (request, response, next) => {
 
 module.exports = {
   checkLogin,
+  checkInstructor,
   checkAdmin,
   logger,
   fakeshibbo,
