@@ -12,16 +12,9 @@ import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
 import TopicDialog from './TopicDialog'
 import CourseMaterial from './common/CourseMaterial'
 
-import { formatDate } from '../utils/functions'
+import { formatDate, extractCallingName } from '../utils/functions'
 
 import './RegistrationDetailsPage.css'
-
-const extractCallingName = (firstNames) => {
-  if (firstNames.includes('*')) {
-    return firstNames.split('*')[1].split(' ')[0]
-  }
-  return firstNames.split(' ')[0]
-}
 
 class PeerReviewInfo extends React.Component {
   constructor(props) {

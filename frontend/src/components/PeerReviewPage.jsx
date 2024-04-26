@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import './PeerReviewPage.css'
-import { getUser } from '../utils/functions'
+import { getUser, extractCallingName } from '../utils/functions'
 import {
   NotInGroupPlaceholder,
   LoadingPlaceholder,
@@ -343,13 +343,6 @@ const OptionHeaders = ({ options }) => {
       </th>
     )
   })
-}
-
-const extractCallingName = (firstNames) => {
-  if (firstNames.includes('*')) {
-    return firstNames.split('*')[1].split(' ')[0]
-  }
-  return firstNames.split(' ')[0]
 }
 
 const QuestionRows = ({ peers, options, questionId, answerSheet }) => (

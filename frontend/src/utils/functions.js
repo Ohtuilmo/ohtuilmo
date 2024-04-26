@@ -52,3 +52,10 @@ export const addDaysToDate = (date, days) => {
   newDate.setDate(newDate.getDate() + days)
   return newDate
 }
+
+export const extractCallingName = (firstNames) => {
+  if (firstNames.includes('*')) {
+    return firstNames.split('*')[1].split(' ')[0]
+  }
+  return firstNames.split(' ')[0]
+}
