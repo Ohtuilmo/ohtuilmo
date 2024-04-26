@@ -14,7 +14,7 @@ const initialQuestionsWithAnswers = [
   {
     Header: 'Tiimin yhteistyön arviointi',
     Description: 'Arvioi sanallisesti tiimin yhteistyötä ja kommunikaatiota.',
-    Type: 'text'
+    Type: 'peerReview',
   },
 ]
 
@@ -48,11 +48,15 @@ const initialPeerReviewAnswers1 =[
     'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
   },
   {
-    'id': 2,
-    'type': 'text',
-    'answer': 'Hyvä tiimi, mutta kommunikaatio voisi olla selkeämpää. Tiimin jäsenet olivat kuitenkin aktiivisia ja osallistuivat.',
-    'questionHeader': 'Tiimin yhteistyön arviointi'
-  }
+    id: 2,
+    type: 'peerReview',
+    peers: {
+      'New User': 'Ihan hyvää työtä!',
+      'John Smith': 'Hyvin toimi yhteistyö!',
+      'Jane Madison': 'Loistavaa!',
+    },
+    questionHeader: 'Tiimin yhteistyön arviointi',
+  },
 ]
 
 const initialPeerReviewAnswers2 =[
@@ -69,11 +73,16 @@ const initialPeerReviewAnswers2 =[
     'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
   },
   {
-    'id': 2,
-    'type': 'text',
-    'answer': 'En osaa sanoa, kirjoittamminen on minulle välillä vaikeaa. Ihan kivat tyypit, jaksoin tulla paikalle.',
-    'questionHeader': 'Tiimin yhteistyön arviointi'
-  }
+    id: 2,
+    type: 'peerReview',
+    peers: {
+      'New User':
+        'En osaa sanoa, kirjoittamminen on minulle välillä vaikeaa. Ihan kiva tyyppi, jaksoi tulla paikalle.',
+      'John Smith': 'En tiiä, en tunne tätä tyyppiä ollenkaan.',
+      'Jane Madison': 'Hyvä tyyppi, osasi hommansa!',
+    },
+    questionHeader: 'Tiimin yhteistyön arviointi',
+  },
 ]
 
 const InitialPeerReview = [
