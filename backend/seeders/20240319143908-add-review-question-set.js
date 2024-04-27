@@ -52,7 +52,7 @@ const initialPeerReviewAnswers1 =[
     type: 'peerReview',
     peers: {
       'New User': 'Ihan hyvää työtä!',
-      'John Smith': 'Hyvin toimi yhteistyö!',
+      'John Smith': 'Hyvin toimi yhteistyö (itseni kanssa)!',
       'Jane Madison': 'Loistavaa!',
     },
     questionHeader: 'Tiimin yhteistyön arviointi',
@@ -79,7 +79,32 @@ const initialPeerReviewAnswers2 =[
       'New User':
         'En osaa sanoa, kirjoittamminen on minulle välillä vaikeaa. Ihan kiva tyyppi, jaksoi tulla paikalle.',
       'John Smith': 'En tiiä, en tunne tätä tyyppiä ollenkaan.',
-      'Jane Madison': 'Hyvä tyyppi, osasi hommansa!',
+      'Jane Madison': 'Hyvä tyyppi, osasi hommansa (itsearvio)!',
+    },
+    questionHeader: 'Tiimin yhteistyön arviointi',
+  },
+]
+
+const initialPeerReviewAnswers3 =[
+  {
+    'id': 0,
+    'type': 'number',
+    'answer': '30',
+    'questionHeader': 'Kuinka monta tuntia käytit projektin parissa?'
+  },
+  {
+    'id': 1,
+    'type': 'radio',
+    'peers': { 'New User': 4, 'John Smith': 3, 'Jane Madison': 2 },
+    'questionHeader': 'Tiimin jäsenten tekninen kontribuutio'
+  },
+  {
+    id: 2,
+    type: 'peerReview',
+    peers: {
+      'New User': 'Ihan hyvin mulla meni, kiitos kysymästä!',
+      'John Smith': 'Yhteistyö sujui hyvin, aktiivinen osallistuminen!',
+      'Jane Madison': 'Erinomaista työtä, hyvä tiimipelaaja!',
     },
     questionHeader: 'Tiimin yhteistyön arviointi',
   },
@@ -97,6 +122,12 @@ const InitialPeerReview = [
     configuration_id: 1,
     review_round: 1,
     answer_sheet: JSON.stringify(initialPeerReviewAnswers2)
+  },
+  {
+    user_id: 112345700,
+    configuration_id: 1,
+    review_round: 1,
+    answer_sheet: JSON.stringify(initialPeerReviewAnswers3)
   },
 ]
 
