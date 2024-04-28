@@ -13,6 +13,8 @@ module.exports = {
   },
   production: {
     url: process.env.DATABASE_URL,
+    seederStorage: 'sequelize',
+    seederStorageTableName: 'SeederMeta',
     dialectOptions: {
       ssl: {
         require: true,
