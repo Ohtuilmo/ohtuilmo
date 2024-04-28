@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
+import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
+import Error from '@material-ui/icons/Error'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
 import './InstructorPage.css'
@@ -15,25 +17,24 @@ import StudentViewGroupAnswers from './StudentViewGroupAnswers'
 import peerReviewService from '../../services/peerReview'
 import instructorPageActions from '../../reducers/actions/instructorPageActions'
 
-const GroupDetails = ({ myGroup }) => {
-  if (!myGroup) {
-    return (
-      <div>
-        <h2>There are currently no students in your group.</h2>
-      </div>
-    )
+const StyledSelect = withStyles({
+
+  select: {
+    minWidth: '140px',
+  },
+})(Select)
+
+const StyledButton = withStyles({
+  root: {
+    minWidth: '160px',
+  },
+})(Button)
+
+const GroupStudents = ({ myGroup }) => {
+  if (!myGroup || myGroup.length === 0) {
+    return <div className='group-notification-container'><Error /><h4>There are currently no students in your group.</h4></div>
   } else {
-    return (
-      <div>
-        {myGroup.map((member, index) => {
-          return (
-            <p key={index}>
-              {index + 1}. {member}
-            </p>
-          )
-        })}
-      </div>
-    )
+    return <div className='students-container'><h4>Students:</h4>{myGroup.map((member, index) => <p key={index}> {index + 1}. {member}</p>)}</div>
   }
 }
 
@@ -47,55 +48,48 @@ const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) =>
       {answers.map((projectGroup, index) => {
         if (currentGroupID === projectGroup.group.id || currentGroupID === '0') {
           return (
-            <div key={index}>
-              <hr />
+            <div key={index} className='flex-column-32-container divider-48'>
               <br />
-              <h1>{projectGroup.group.name}</h1>
-              <h3>Instructor: {projectGroup.group.instructorName}</h3>
-              <GroupDetails myGroup={projectGroup.group.studentNames} />
+              <div className='group-title-container'>
+                <h1 className='group-name'>{projectGroup.group.name}</h1>
+                <h4 className='instructor-name'>Instructor: {projectGroup.group.instructorName}</h4>
+              </div>
+              <GroupStudents myGroup={projectGroup.group.studentNames} />
+              <div>
+                {projectGroup.round1Answers.length > 0 ? (
+                  <div className='padding-bottom-64 flex-column-16'>
+                    <div className='peer-review-header'><h2>Peer Reviews&nbsp;</h2><h2 className='peer-review-subheader'>/ 1st Round</h2></div>
+                    {viewMode === 'students' ? (
+                      <StudentViewGroupAnswers answers={projectGroup.round1Answers} />
+                    ) : (
+                      <GroupAnswers
+                        answers={projectGroup.round1Answers}
+                        students={projectGroup.group.studentNames}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <div className='group-notification-container'><Error /><h4>This group has not answered to the first peer review round yet.</h4></div>
+                )}
 
-              {projectGroup.round1Answers.length > 0 ? (
-                <div>
-                  <h2>Peer review answers from the first round.</h2>
-                  {viewMode === 'students' ? (
-                    <StudentViewGroupAnswers answers={projectGroup.round1Answers} />
-                  ) : (
-                    <GroupAnswers
-                      answers={projectGroup.round1Answers}
-                      students={projectGroup.group.studentNames}
-                    />
-                  )}
-                </div>
-              ) : (
-                <h2>
-                  This group has not answered to the first peer review round yet.
-                </h2>
-              )}
-
-              {projectGroup.round2Answers.length > 0 ? (
-                <div>
-                  <h2>Peer review answers from the second round.</h2>
-                  {viewMode === 'students' ? (
-                    <StudentViewGroupAnswers answers={projectGroup.round2Answers} />
-                  ) : (
-                    <GroupAnswers
-                      answers={projectGroup.round2Answers}
-                      students={projectGroup.group.studentNames}
-                    />
-                  )}
-                </div>
-              ) : (
-                <h2>
-                  This group has not answered to the second peer review round yet.
-                </h2>
-              )}
-
-              <br />
+                {projectGroup.round2Answers.length > 0 ? (
+                  <div className='flex-column-16'>
+                    <div className='peer-review-header'><h2>Peer Reviews&nbsp;</h2><h2 className='peer-review-subheader'>/ 2nd Round</h2></div>
+                    {viewMode === 'students' ? (
+                      <StudentViewGroupAnswers answers={projectGroup.round2Answers} />
+                    ) : (
+                      <GroupAnswers
+                        answers={projectGroup.round2Answers}
+                        students={projectGroup.group.studentNames}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <div className='group-notification-container'><Error /><h4>This group has not answered to the second peer review round yet.</h4></div>
+                )}
+              </div>
             </div>
           )}
-        else {
-          return (<div key='empty-div'></div>)
-        }
       })}
     </div>
   )
@@ -113,15 +107,15 @@ const getQuestions = (answers) => {
 }
 
 const Question = ({ title, children }) => (
-  <div>
-    <h3>{title}</h3>
+  <div className='flex-column-16'>
+    <div className='peer-review-question-container'><h3>{title}</h3></div>
     {children}
   </div>
 )
 
 const GroupAnswers = ({ answers, students }) => {
   return (
-    <div>
+    <div className='flex-column-32-container padding-left-18'>
       {getQuestions(answers).map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
@@ -155,19 +149,21 @@ const GroupAnswers = ({ answers, students }) => {
 
 const PeerReviewAnswer = ({ answers, questionNumber }) => {
   return (
-    <div>
+    <div className='all-peer-reviews-container padding-left-18'>
       {answers.map((member, index) => {
         const peers = member && member.answer_sheet && member.answer_sheet[questionNumber] ? member.answer_sheet[questionNumber].peers : null
         return (
-          <div key={`${member}-${index}`}>
-            <p>{member.student.last_name}</p>
-            {peers && Object.entries(peers).map(
-              ([peer, review]) => (
-                <p key={peer}>
-                  {peer}: {review}
-                </p>
-              )
-            )}
+          <div className='peer-review-and-author-container' key={`${member}-${index}`}>
+            <p className='peer-review-author-text'>Reviews by {`${member.student.first_names} ${member.student.last_name}`}:</p>
+            <div className='peer-review-container'>
+              {peers && Object.entries(peers).map(
+                ([peer, review]) => (
+                  <div className='peer-review-text' key={peer}>
+                    <p>{peer}:&nbsp;</p><p>{review}</p>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         )
       })}
@@ -177,11 +173,11 @@ const PeerReviewAnswer = ({ answers, questionNumber }) => {
 
 const TextNumberAnswer = ({ answers, questionNumber }) => {
   return (
-    <div>
+    <div className='padding-left-18'>
       {answers.map((member, index) => {
         return (
-          <div key={index}>
-            <p>{member.student.last_name}</p>
+          <div className='text-number-answer-container' key={index}>
+            <p>{`${member.student.first_names} ${member.student.last_name}`}:&nbsp;</p>
             <p>{member.answer_sheet[questionNumber].answer}</p>
           </div>
         )
@@ -201,27 +197,29 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
   })
 
   return (
-    <div>
+    <div className='padding-left-18'>
       <table className="radio-button-table">
         <thead>
           <tr className="radio-inforow">
             <th />
-            <th colSpan={peers.length} className="radio-infoheader">
-              Reviewers
-            </th>
+            { peers.map((peer, index) => (
+              <th key={`radio-infoheader-${index}`} className="radio-infoheader text-overflow-ellipsis">
+                Reviewer
+              </th>
+            ))}
             <th />
           </tr>
           <tr className="radio-row">
             <th />
             <PeerHeaders peers={peers} />
-            <th className="radio-header">Average (without own grading)</th>
+            <th className="radio-header text-overflow-ellipsis">Average <p>(without self-review)</p></th>
           </tr>
         </thead>
         <tbody>
           {peers.map((member, index) => {
             return (
               <tr key={index}>
-                <th className="peer-header">
+                <th className="peer-header text-overflow-ellipsis">
                   <p>{member}</p>
                 </th>
                 <PeerRows
@@ -242,7 +240,7 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
 const PeerHeaders = ({ peers }) => {
   return peers.map((option, optionId) => {
     return (
-      <th className="radio-header" key={optionId}>
+      <th className="radio-header text-overflow-ellipsis" key={optionId}>
         {option}
       </th>
     )
@@ -289,16 +287,15 @@ const DownloadButton = ({ jsonData, fileName }) => {
   const href = `data:${data}`
 
   return (
-    <Button
+    <StyledButton
       component="a"
       href={href}
       download={fileName}
       variant="contained"
       color="primary"
-      style= {{ margin: 20 }}
     >
-      Download as JSON
-    </Button>
+      Download JSON
+    </StyledButton>
   )
 }
 
@@ -308,18 +305,18 @@ const SelectViewButton = ({ viewMode, setViewMode }) => {
   }
 
   return (
-    <Button
+    <StyledButton
       onClick={toggleView}
       variant="contained"
       color="primary"
     >
-      View answers by {viewMode === 'questions' ? 'Students' : 'Questions'}
-    </Button>
+      {viewMode === 'questions' ? 'Student' : 'Question'} View
+    </StyledButton>
   )
 }
 
 const ConfigurationSelectWrapper = ({ label, children }) => (
-  <div style={{ padding: 20 }}>
+  <div>
     <Typography variant="caption">{label}</Typography>
     {children}
   </div>
@@ -332,7 +329,14 @@ const ConfigurationSelect = ({
   setCurrentGroupID
 }) => {
   return (
-    <Select
+    <StyledSelect
+      MenuProps={{
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left'
+        },
+        getContentAnchorEl: null
+      }}
       data-cy="configuration-selector"
       value={currentConfiguration}
       onChange={(e) => {
@@ -349,12 +353,12 @@ const ConfigurationSelect = ({
           {configuration.name}
         </MenuItem>
       ))}
-    </Select>
+    </StyledSelect>
   )
 }
 
 const GroupSelectWrapper = ({ label, children }) => (
-  <div style={{ padding: 20 }}>
+  <div>
     <Typography variant='caption'>{label}</Typography>
     {children}
   </div>
@@ -362,7 +366,14 @@ const GroupSelectWrapper = ({ label, children }) => (
 
 const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroupsInConfig }) => {
   return (
-    <Select
+    <StyledSelect
+      MenuProps={{
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left'
+        },
+        getContentAnchorEl: null
+      }}
       data-cy='group-selector'
       value={currentGroupID}
       onChange={(e) => setCurrentGroupID(e.target.value)}
@@ -383,7 +394,7 @@ const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroupsInConfig }) =
           {group.name}
         </MenuItem>
       ))}
-    </Select>
+    </StyledSelect>
   )
 }
 
@@ -440,35 +451,39 @@ const InstructorPage = (props) => {
   }, [setAnswers, setConfigurations, setCurrentConfiguration, setError, setGroups, setCurrentGroupID])
 
   if (!answers || !currentConfiguration || !groups || !currentGroupID) {
-    return <div className="instructor-container">Loading</div>
+    return <div className="flex-column-32-container">Loading</div>
   }
 
   return (
-    <div className="instructor-container">
-      <DownloadButton
-        jsonData={JSON.stringify(answers)}
-        fileName="peerReviews.json"
-      />
-      <SelectViewButton
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-      />
-      <div className="selector-container">
-        <ConfigurationSelectWrapper label="Select configuration">
-          <ConfigurationSelect
-            currentConfiguration={currentConfiguration}
-            setCurrentConfiguration={setCurrentConfiguration}
-            configurations={configurations}
-            setCurrentGroupID={setCurrentGroupID}
+    <div className="flex-column-32-container">
+      <div className="filter-row-container">
+        <div className="selector-container">
+          <ConfigurationSelectWrapper label="Configuration">
+            <ConfigurationSelect
+              currentConfiguration={currentConfiguration}
+              setCurrentConfiguration={setCurrentConfiguration}
+              configurations={configurations}
+              setCurrentGroupID={setCurrentGroupID}
+            />
+          </ConfigurationSelectWrapper>
+          <GroupSelectWrapper label="Group">
+            <GroupSelect
+              currentGroupID={currentGroupID}
+              setCurrentGroupID={setCurrentGroupID}
+              allGroupsInConfig={groups.filter(group => group.configurationId === currentConfiguration)}
+            />
+          </GroupSelectWrapper>
+        </div>
+        <div className="button-container">
+          <DownloadButton
+            jsonData={JSON.stringify(answers)}
+            fileName="peerReviews.json"
           />
-        </ConfigurationSelectWrapper>
-        <GroupSelectWrapper label="Select displayed group">
-          <GroupSelect
-            currentGroupID={currentGroupID}
-            setCurrentGroupID={setCurrentGroupID}
-            allGroupsInConfig={groups.filter(group => group.configurationId === currentConfiguration)}
+          <SelectViewButton
+            viewMode={viewMode}
+            setViewMode={setViewMode}
           />
-        </GroupSelectWrapper>
+        </div>
       </div>
       <Answers answers={answers} currentConfiguration={currentConfiguration} currentGroupID={currentGroupID} viewMode={viewMode}/>
     </div>

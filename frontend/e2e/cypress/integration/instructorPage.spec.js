@@ -371,13 +371,13 @@ describe('Instructor page', () => {
     cy.get('[data-cy=group-selector]').click()
     cy.get('.specified-group-menu-item').contains('Tykittelijät').click()
   
-    cy.contains('View answers by Students').click()
-    cy.contains('View answers by Questions') 
-    cy.contains('Peer review answers from the first round.')
+    cy.contains('Student View').click()
+    cy.contains('Question View') 
+    cy.contains('/ 1st Round')
     cy.contains('Tykittelijät')
   
-    cy.contains('View answers by Questions').click()
-    cy.contains('View answers by Students')
+    cy.contains('Question View').click()
+    cy.contains('Student View')
   })
   
   after(() => {

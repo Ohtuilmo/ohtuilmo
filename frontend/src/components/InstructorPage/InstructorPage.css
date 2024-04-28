@@ -1,14 +1,24 @@
 .radio-header {
   width: 100px;
+  text-align: center;
+
+  > p {
+    line-height: 1.8;
+    margin: 0;
+    font-size: 14px;
+  }
 }
 .radio-infoheader {
-  border: 1px solid black;
+  text-align: center;
+  font-weight: 400;
 }
 .radio-inforow {
   margin: auto;
 }
 .radio-button-table {
   padding: 0;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .peer-row,
@@ -17,16 +27,200 @@
 }
 
 .peer-header,
-.radio-header,
 .radio-button {
-  border: 1px solid black;
   margin: auto;
   padding: 0;
   text-align: center;
+
+  > th {
+    text-align: center;
+
+    > p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }
 .selector-container {
   display: flex;
   flex-direction: row;
   justify-content: left;
   flex-wrap: wrap;
+  gap: 18px;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 12px
+}
+
+.flex-column-32-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.divider-48:not(:last-child) {
+  padding-bottom: 48px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.divider-20:not(:last-child) {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.group-notification-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: #4d4d4d;
+
+    > h4 {
+      color: #555555;
+      margin: 0;
+  }
+}
+
+.filter-row-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: end;
+  gap: 24px;
+}
+
+.group-name, .instructor-name {
+  margin: 0;
+}
+
+.group-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.students-container {
+  > h4 {
+    margin: 0;
+    line-height: 3;
+  }
+
+  > p {
+    margin: 0;
+    line-height: 1.25;
+  }
+}
+
+.peer-review-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.peer-review-subheader {
+ color: #8e8e8e;
+}
+
+.text-number-answer-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+
+  > p {
+    margin: 0;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+}
+
+.padding-left-18 {
+  padding-left: 18px;
+}
+
+.padding-bottom-32 {
+  padding-bottom: 32px;
+}
+
+.padding-bottom-64 {
+  padding-bottom: 64px;
+}
+
+.peer-review-question-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.peer-review-container {
+  > p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.all-peer-reviews-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.peer-review-author-text{
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.peer-review-and-author-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.peer-review-text {
+  display: grid;
+  grid-template-columns: 200px repeat(auto-fill, minmax(300px, 1fr));
+  
+  .bold {
+    font-family: sans-serif;
+    font-weight: 600;
+    color: #3a3a3a;
+  }
+  @media (max-width: 750px) {
+    display: flex;
+    gap: 32px;
+  }
+}
+
+.student-view-student-name {
+  font-family: sans-serif;
+  font-weight: 600;
+  margin: 0;
+}
+
+.flex-column-16 {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.flex-column-72 {
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+}
+
+.text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;  
+  }
 }

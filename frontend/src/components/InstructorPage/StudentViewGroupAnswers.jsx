@@ -12,11 +12,16 @@ const PeerReviewAnswer = ({ answers, questionHeader, student }) => {
     answer => `${extractCallingName(answer.student.first_names)} ${answer.student.last_name}` !== studentName)
 
   return (
-    <div>
+    <div className='padding-left-18'>
       <h3>{questionHeader}</h3>
-      {otherStudentsAnswers.map((answer, index) => (
-        <p key={index}>From {`${answer.student.first_names} ${answer.student.last_name}`}: {answer.peers[studentName]}</p>
-      ))}
+      <div className='padding-left-18'>
+        {otherStudentsAnswers.map((answer, index) => (
+          <div className='peer-review-text' key={`peer-review-${index}`}>
+            <p className='bold'>{`${answer.student.first_names} ${answer.student.last_name}`} says:&nbsp;</p>
+            <p>{answer.peers[studentName]}</p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -33,31 +38,37 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
   const studentName = `${student.first_names} ${student.last_name}`
 
   return (
-    <div>
-      <h4>{questionHeader}</h4>
-      <table className="radio-button-table">
-        <thead>
-          <tr className="radio-inforow">
-            <th />
-            <th colSpan={allPeers.length} className="radio-infoheader">Reviewers</th>
-            <th />
-          </tr>
-          <tr className="radio-row">
-            <th />
-            {allPeers.map(peer => <th key={peer} className="radio-header">{peer}</th>)}
-            <th className="radio-header">Average (without own grading)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="peer-header">
-            <td>{studentName}</td>
-            {allPeers.map((peer, peerIndex) => (
-              <td key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</td>
-            ))}
-            <td className="radio-button">{calculateAverageRating(studentName, answers)}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div className='padding-left-18'>
+      <h3>{questionHeader}</h3>
+      <div className='padding-left-18'>
+        <table className="radio-button-table">
+          <thead>
+            <tr className="radio-inforow">
+              <th />
+              { allPeers.map((peer, index) => (
+                <th key={`radio-infoheader-${index}`} className="radio-infoheader text-overflow-ellipsis">
+                Reviewer
+                </th>
+              ))}
+              <th />
+            </tr>
+            <tr className="radio-row">
+              <th />
+              {allPeers.map(peer => <th key={peer} className="radio-header text-overflow-ellipsis">{peer}</th>)}
+              <th className="radio-header text-overflow-ellipsis">Average <p>(without self-review)</p></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="peer-header">
+              <th><p>{studentName}</p></th>
+              {allPeers.map((peer, peerIndex) => (
+                <td key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</td>
+              ))}
+              <td className="radio-button">{calculateAverageRating(studentName, answers)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -84,10 +95,10 @@ const calculateAverageRating = (member, answers) => {
 
 const StudentViewGroupAnswers = ({ answers }) => {
   return (
-    <div>
+    <div className='padding-left-18 flex-column-72'>
       {answers.map((studentAnswer, answerIndex) => (
-        <div key={answerIndex}>
-          <h2>{studentAnswer.student.first_names} {studentAnswer.student.last_name}</h2>
+        <div key={answerIndex} className='flex-column-16 divider-48'>
+          <h3 className='student-view-student-name'>{studentAnswer.student.first_names} {studentAnswer.student.last_name}</h3>
           {studentAnswer.answer_sheet.map((question, questionIndex) => {
             if (question.type === 'radio') {
               return (
@@ -115,9 +126,9 @@ const StudentViewGroupAnswers = ({ answers }) => {
               )
             } else {
               return (
-                <div key={questionIndex}>
+                <div className='padding-left-18' key={questionIndex}>
                   <h3>{question.questionHeader}</h3>
-                  <p>{question.answer}</p>
+                  <p className='padding-left-18'>{question.answer}</p>
                 </div>
               )
             }
