@@ -1,21 +1,15 @@
 import React from 'react'
-import { extractCallingName } from '../../utils/functions'
 
 import './InstructorPage.css'
 
 const PeerReviewAnswer = ({ answers, questionHeader, student }) => {
-  const studentName = `${extractCallingName(student.first_names)} ${student.last_name}`
-
-  // It's so dumb to use the student's name instead of id here, but this is
-  // all over the codebase so prolly requires quite a bit of work to fix.
-  const otherStudentsAnswers = answers.filter(
-    answer => `${extractCallingName(answer.student.first_names)} ${answer.student.last_name}` !== studentName)
+  const studentName = `${student.first_names} ${student.last_name}`
 
   return (
     <div className='padding-left-18'>
       <h3>{questionHeader}</h3>
       <div className='padding-left-18'>
-        {otherStudentsAnswers.map((answer, index) => (
+        {answers.map((answer, index) => (
           <div className='peer-review-text' key={`peer-review-${index}`}>
             <p className='bold'>{`${answer.student.first_names} ${answer.student.last_name}`} says:&nbsp;</p>
             <p>{answer.peers[studentName]}</p>
@@ -98,7 +92,7 @@ const StudentViewGroupAnswers = ({ answers }) => {
     <div className='padding-left-18 flex-column-72'>
       {answers.map((studentAnswer, answerIndex) => (
         <div key={answerIndex} className='flex-column-16 divider-48'>
-          <h3 className='student-view-student-name'>{studentAnswer.student.first_names} {studentAnswer.student.last_name}</h3>
+          <h3 className='student-view-student-name'>Reviews for {studentAnswer.student.first_names} {studentAnswer.student.last_name}</h3>
           {studentAnswer.answer_sheet.map((question, questionIndex) => {
             if (question.type === 'radio') {
               return (
