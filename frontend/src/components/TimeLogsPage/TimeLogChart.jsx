@@ -43,7 +43,7 @@ const CustomizedTick = (props) => {
 }
 
 const TimeLogChart = (props) => {
-  const alternativeView = true
+  const alternativeView = false
   const {
     groupSprintSummary,
     selectedSprintNumber,
@@ -111,7 +111,7 @@ const TimeLogChart = (props) => {
     return chartVariant === 'total'
       ? (<div className='timelogs-chart-container'>
         <ResponsiveContainer>
-          {alternativeView
+          {!alternativeView
             ? <BarChart
               margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
               id='timelogs-chart-total'
@@ -165,7 +165,7 @@ const TimeLogChart = (props) => {
       : sprints.includes(selectedSprintNumber)
         ? (<div className='timelogs-chart-container'>
           <ResponsiveContainer>
-            {alternativeView
+            {!alternativeView
               ? <BarChart
                 margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
                 id='timelogs-chart-sprint'
