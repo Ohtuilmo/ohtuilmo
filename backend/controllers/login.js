@@ -10,6 +10,30 @@ const handleDatabaseError = (res, error) => {
     .json({ error: 'Something is wrong... try reloading the page' })
 }
 
+const checkIfActiveInstructor = async (student_number) => {
+  try {
+    const latestConfigurationId = await db.Configuration.findOne({
+      order: [['created_at', 'DESC']],
+      attributes: ['id']
+    })
+
+    if (!latestConfigurationId) {
+      return false
+    }
+
+    const group = await db.Group.findOne({
+      where: {
+        configuration_id: latestConfigurationId.id,
+        instructor_id: student_number
+      }
+    })
+    return group.length > 0
+  } catch (error) {
+    console.error('Error checking if active instructor:', error)
+    return false
+  }
+}
+
 loginRouter.post('/', async (req, res) => {
   if (!req.headers.hypersonstudentid)
     return res
@@ -27,7 +51,8 @@ loginRouter.post('/', async (req, res) => {
       if (foundUser) {
         //user already in database, no need to add
         const token = jwt.sign(
-          { id: foundUser.student_number, admin: foundUser.admin },
+          { id: foundUser.student_number, admin: foundUser.admin,
+            instructor: checkIfActiveInstructor(foundUser.student_number) },
           config.secret
         )
         return res.status(200).set('Cache-Control', 'no-store').json({

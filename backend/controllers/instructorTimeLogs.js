@@ -1,7 +1,8 @@
 const instructorTimeLogsRouter = require('express').Router()
-const { checkAdmin } = require('../middleware')
+const { checkLogin } = require('../middleware')
 const db = require('../models/index')
 const { Sequelize } = require('sequelize')
+
 const fetchAllFromDb = async () => {
   try {
     const rawLogs = await db.TimeLog.findAll({
@@ -70,10 +71,37 @@ const fetchAllFromDb = async () => {
   }
 }
 
-instructorTimeLogsRouter.get('/', checkAdmin, async (req, res) => {
+const fetchGroupIdsFromLatestConfiguration = async () => {
   try {
-    const timeLogs = await fetchAllFromDb()
-    return res.status(200).json(timeLogs)
+    const latestConfigurationId = await db.Configuration.findOne({
+      order: [['created_at', 'DESC']],
+      attributes: ['id']
+    })
+
+    const groups = await db.Group.findAll({
+      where: {
+        configuration_id: latestConfigurationId.id
+      }
+    })
+    return groups.map(group => group.id)
+  } catch (error) {
+    console.error('Error fetching groups:', error)
+    return false
+  }
+}
+
+instructorTimeLogsRouter.get('/', checkLogin, async (req, res) => {
+  try {
+    if (req.user.admin ) {
+      const timeLogs = await fetchAllFromDb()
+      return res.status(200).json(timeLogs)
+    } else if (req.user.instructor) {
+      const timeLogs = await fetchAllFromDb()
+      const activeGroupIds = await fetchGroupIdsFromLatestConfiguration()
+      const filteredTimeLogs = timeLogs.filter(log => activeGroupIds.includes(log.groupId))
+      return res.status(200).json(filteredTimeLogs)
+    }
+    return res.status(302).json({ error: 'Not authorized.' })
   } catch (error) {
     return res.status(500).json({ error: 'Error fetching time logs.' })
   }
