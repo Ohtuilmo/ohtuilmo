@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { TimeLogForm } from './TimeLogForm'
@@ -107,15 +107,15 @@ const TimeLogsPage = (props) => {
     }
     const fetchData = async () => {
       setIsLoading(true)
-      group && group.id && await fetchSprints()
+      group?.id && await fetchSprints()
       await fetchTimeLogs()
-      group && group.id && await fetchGroupSprintSummary(group.id)
+      group?.id && await fetchGroupSprintSummary(group.id)
       await fetchTags()
       setIsLoading(false)
     }
 
     fetchData()
-  }, [])
+  }, [setGroupSprintSummary])
 
   useEffect(() => {
     const today = new Date()
@@ -152,6 +152,8 @@ const TimeLogsPage = (props) => {
     try {
       const updatedLogs = await timeLogsService.createTimeLog(log)
       setAllLogs(updatedLogs)
+      const summaryData = await timeLogsService.getGroupSprintSummary(group.id)
+      setGroupSprintSummary(JSON.parse(summaryData))
       props.setSuccess('Time log created successfully')
     } catch (error) {
       console.error(
