@@ -8,7 +8,7 @@ import LoadingSpinner from '../common/LoadingSpinner'
 import userService from '../../services/user'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
-import timeLogsService from '../../services/timeLogs'
+import instructorTimeLogsService from '../../services/instructorTimeLogs'
 
 const InstructorTimeLogsPage = () => {
   const [allConfigurations, setAllConfigurations] = useState([])
@@ -69,7 +69,7 @@ const InstructorTimeLogsPage = () => {
 
       const fetchAllLogs = async () => {
         try {
-          const allLogs = await timeLogsService.getTimeLogs()
+          const allLogs = await instructorTimeLogsService.getTimeLogs()
           setAllLogs(allLogs)
         } catch (error) {
           console.error(
