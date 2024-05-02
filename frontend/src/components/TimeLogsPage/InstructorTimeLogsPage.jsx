@@ -9,6 +9,7 @@ import userService from '../../services/user'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import instructorTimeLogsService from '../../services/instructorTimeLogs'
+import * as notificationActions from '../../reducers/actions/notificationActions'
 
 const InstructorTimeLogsPage = () => {
   const [allConfigurations, setAllConfigurations] = useState([])
@@ -37,61 +38,61 @@ const InstructorTimeLogsPage = () => {
       }
     }
 
-      const fetchAllGroups = async () => {
-        try {
-          const allGroups = await groupManagementService.get()
-          setAllGroups(allGroups)
-        } catch (error) {
-          console.error(
-            'Error fetching groups:',
-            error.message,
-            ' / ',
-            error.response.data.error
-          )
-          notificationActions.setError(error.response.data.error)
-        }
+    const fetchAllGroups = async () => {
+      try {
+        const allGroups = await groupManagementService.get()
+        setAllGroups(allGroups)
+      } catch (error) {
+        console.error(
+          'Error fetching groups:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
       }
+    }
 
-      const fetchAllStudents = async () => {
-        try {
-          const allStudents = await userService.get()
-          setAllStudents(allStudents)
-        } catch (error) {
-          console.error(
-            'Error fetching students:',
-            error.message,
-            ' / ',
-            error.response.data.error
-          )
-          notificationActions.setError(error.response.data.error)
-        }
+    const fetchAllStudents = async () => {
+      try {
+        const allStudents = await userService.get()
+        setAllStudents(allStudents)
+      } catch (error) {
+        console.error(
+          'Error fetching students:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
       }
+    }
 
-      const fetchAllLogs = async () => {
-        try {
-          const allLogs = await instructorTimeLogsService.getTimeLogs()
-          setAllLogs(allLogs)
-        } catch (error) {
-          console.error(
-            'Error fetching logs:',
-            error.message,
-            ' / ',
-            error.response.data.error
-          )
-          notificationActions.setError(error.response.data.error)
-        }
+    const fetchAllLogs = async () => {
+      try {
+        const allLogs = await instructorTimeLogsService.getTimeLogs()
+        setAllLogs(allLogs)
+      } catch (error) {
+        console.error(
+          'Error fetching logs:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
       }
+    }
 
-      const fetchData = async () => {
-        setIsLoading(true)
-        await fetchAllConfigurations()
-        await fetchAllGroups()
-        await fetchAllStudents()
-        await fetchAllLogs()
-        setIsLoading(false)
-      }
-      fetchData()
-    }, [])
+    const fetchData = async () => {
+      setIsLoading(true)
+      await fetchAllConfigurations()
+      await fetchAllGroups()
+      await fetchAllStudents()
+      await fetchAllLogs()
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [])
 
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
@@ -126,7 +127,7 @@ const InstructorTimeLogsPage = () => {
           <p>No logs by the selected user.</p>
         )}
       </div>
-   </div>
+    </div>
   )
 }
 
