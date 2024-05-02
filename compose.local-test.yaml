@@ -60,12 +60,12 @@ services:
       - db
   
   cypress:
-    image: cypress/included:3.8.3
+    image: cypress/included:13.8.0
     container_name: cypress
     profiles: [cypress]
     volumes:
       - ./frontend/e2e:/e2e
-      - ./frontend/cypress.json:/cypress.json
+      - ./frontend/cypress.config.js:/cypress.config.js
     environment:
       - CYPRESS_baseUrl=http://frontend:3000
       - CYPRESS_VIDEO=false
