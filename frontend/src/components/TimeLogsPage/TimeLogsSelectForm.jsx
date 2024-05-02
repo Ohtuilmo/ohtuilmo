@@ -1,3 +1,4 @@
+import React from 'react'
 import './TimeLogsPage.css'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
@@ -42,7 +43,7 @@ export const TimeLogsSelectForm = ({
           </MenuItem>
         ))}
       </Select>
-  )}
+    )}
 
   const GroupIsInConfiguration = ( group, configuration ) => {
     return group.configurationId === configuration.id
@@ -64,16 +65,16 @@ export const TimeLogsSelectForm = ({
       >
         {groups.filter(group => GroupIsInConfiguration(group, selectedConfiguration))
           .map((group) => (
-          <MenuItem
-            key={group.id}
-            className="group-menu-item"
-            value={group}
-          >
-            {group.name}
-          </MenuItem>
-        ))}
+            <MenuItem
+              key={group.id}
+              className="group-menu-item"
+              value={group}
+            >
+              {group.name}
+            </MenuItem>
+          ))}
       </Select>
-  )}
+    )}
 
   const StudentIsInGroup = ( student, group ) => {
     return group.studentIds.includes(student.student_number)
@@ -96,14 +97,14 @@ export const TimeLogsSelectForm = ({
       >
         {students.filter(student => StudentIsInGroup(student, selectedGroup))
           .map((student) => (
-          <MenuItem
-            key={student.student_number}
-            className="student-menu-item"
-            value={student.student_number}
-          >
-            {student.first_names} {student.last_name}
-          </MenuItem>
-        ))}
+            <MenuItem
+              key={student.student_number}
+              className="student-menu-item"
+              value={student.student_number}
+            >
+              {student.first_names} {student.last_name}
+            </MenuItem>
+          ))}
       </Select>
     )
   }
