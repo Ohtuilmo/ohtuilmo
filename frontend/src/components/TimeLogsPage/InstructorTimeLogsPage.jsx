@@ -5,6 +5,7 @@ import { TimeLogsSelectForm } from './TimeLogsSelectForm'
 import { TimeLogRow } from './TimeLogRow'
 import TimeLogChart from './TimeLogChart'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { SprintSelect } from './SprintSelect'
 
 import { Typography } from '@material-ui/core'
 
@@ -13,11 +14,14 @@ import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import timeLogsService from '../../services/timeLogs'
 import instructorTimeLogsService from '../../services/instructorTimeLogs'
+
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import timeLogsActions from '../../reducers/actions/timeLogsActions'
 
 const InstructorTimeLogsPage = (props) => {
   const {
+    selectedSprintNumber,
+    setSelectedSprintNumber,
     setGroupSprintSummary
   } = props
 
@@ -30,6 +34,7 @@ const InstructorTimeLogsPage = (props) => {
   const [allLogs, setAllLogs] = useState(null)
 
   const [isLoading, setIsLoading] = useState(true)
+  const possibleSprintNumbers = Array.from({length: 101}, (_, i) => i)
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -108,6 +113,7 @@ const InstructorTimeLogsPage = (props) => {
       try {
         const summaryData = await timeLogsService.getGroupSprintSummary(group_id)
         setGroupSprintSummary(JSON.parse(summaryData))
+        setSelectedSprintNumber(0)
       } catch (error) {
         console.error(
           'Error fetching group sprint summary:',
@@ -126,6 +132,26 @@ const InstructorTimeLogsPage = (props) => {
     }
     selectedGroup?.id && fetchChartData(selectedGroup.id)
   }, [selectedGroup])
+
+  const previousSprint = [...possibleSprintNumbers]
+  .reverse()
+  .find((sprint) => sprint < selectedSprintNumber)
+
+  const nextSprint = possibleSprintNumbers.find(
+    (sprint) => sprint > selectedSprintNumber
+  )
+
+  const handleClickNextSprint = () => {
+    setSelectedSprintNumber(
+      nextSprint !== undefined ? nextSprint : selectedSprintNumber
+    )
+  }
+
+  const handleClickPreviousSprint = () => {
+    setSelectedSprintNumber(
+      previousSprint !== undefined ? previousSprint : selectedSprintNumber
+    )
+  }
 
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
@@ -147,7 +173,18 @@ const InstructorTimeLogsPage = (props) => {
             selectedStudentNumber={selectedStudentNumber}
             handleStudentNumberChange={setSelectedStudentNumber}
           />
-          {selectedGroup && <div>{selectedGroup.name}</div>}
+          {selectedGroup && (
+          <div>
+            {selectedGroup.name}
+            <SprintSelect
+              sprintNumber={selectedSprintNumber}
+              handleClickNextSprint={handleClickNextSprint}
+              handleClickPreviousSprint={handleClickPreviousSprint}
+              nextSprintButtonDisabled={nextSprint === undefined}
+              previousSprintButtonDisabled={previousSprint === undefined}
+            />
+          </div>
+        )}
         </div>
         <div id='timelog-rows'>
           {isLogs(logsByStudent) &&
@@ -182,12 +219,14 @@ const InstructorTimeLogsPage = (props) => {
 
 const mapStateToProps = (state) => ({
   state: state,
+  selectedSprintNumber: state.timeLogs.selectedSprintNumber,
 })
 
 const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   setGroupSprintSummary: timeLogsActions.setGroupSprintSummary,
+  setSelectedSprintNumber: timeLogsActions.setSelectedSprintNumber,
 }
 
 export default withRouter(
