@@ -40,6 +40,22 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 5.  When you are done, close containers from the active console with shortcut `CTRL+C` or from other console with command `docker compose down`.
 
+### When there is change in dependencies
+
+If frontend or backend dependencies change, ie. there is change in frontend or backend package.json file, you need to install dependencies again locally and rebuild containers:
+
+1. Remove dev containers with command `docker compose down`
+
+2. Run `nvm use && npm i` in frontend or backend folder or in both if both has had changes for dependencies.
+
+3. Rebuild dev containers with `docker compose up --build`
+
+### How to restore database to its initial state
+
+1. Remove containers and volumes related with command `docker compose down --volumes`
+
+2. Restart dev setup with `docker compose up`
+
 ### How to change user roles in dev environment
 
 In development environment, login is faked in backend using fakeshibbo middleware. You can run software in different user roles by modifying faceshibbo in ./backend/middleware.js file.
@@ -66,7 +82,7 @@ Modify line `const test_user = test_users.student` to correspond user role desir
 
 ## How to manually inspect database
 
-Development setup includes database management tool called Adminer. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
+Development setup includes database management tool called Adminer. With Adminer, you can easily inspect and modify database using your browser. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
 
 - System: PostgreSQL
 - Server: db
