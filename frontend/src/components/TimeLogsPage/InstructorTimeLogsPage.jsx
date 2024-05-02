@@ -3,15 +3,24 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { TimeLogsSelectForm } from './TimeLogsSelectForm'
 import { TimeLogRow } from './TimeLogRow'
+import TimeLogChart from './TimeLogChart'
 import LoadingSpinner from '../common/LoadingSpinner'
+
+import { Typography } from '@material-ui/core'
 
 import userService from '../../services/user'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
+import timeLogsService from '../../services/timeLogs'
 import instructorTimeLogsService from '../../services/instructorTimeLogs'
 import * as notificationActions from '../../reducers/actions/notificationActions'
+import timeLogsActions from '../../reducers/actions/timeLogsActions'
 
 const InstructorTimeLogsPage = (props) => {
+  const {
+    setGroupSprintSummary
+  } = props
+
   const [allConfigurations, setAllConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState(null)
   const [allGroups, setAllGroups] = useState([])
@@ -94,40 +103,80 @@ const InstructorTimeLogsPage = (props) => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchGroupSprintSummary = async (group_id) => {
+      try {
+        const summaryData = await timeLogsService.getGroupSprintSummary(group_id)
+        setGroupSprintSummary(JSON.parse(summaryData))
+      } catch (error) {
+        console.error(
+          'Error fetching group sprint summary:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
+      }
+    }
+
+    const fetchChartData = async (selectedGroupId) => {
+      setIsLoading(true)
+      await fetchGroupSprintSummary(selectedGroupId)
+      setIsLoading(false)
+    }
+    selectedGroup?.id && fetchChartData(selectedGroup.id)
+  }, [selectedGroup])
+
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
     isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudentNumber)
 
   if (isLoading) return <LoadingSpinner />
   return (
-    <div>
-      <div>
-        <TimeLogsSelectForm
-          configurations={allConfigurations}
-          selectedConfiguration={selectedConfiguration}
-          handleConfigurationChange={setSelectedConfiguration}
-          groups={allGroups}
-          selectedGroup={selectedGroup}
-          handleGroupChange={setSelectedGroup}
-          students={allStudents}
-          selectedStudentNumber={selectedStudentNumber}
-          handleStudentNumberChange={setSelectedStudentNumber}
-        />
-        {selectedGroup && <div>{selectedGroup.name}</div>}
+    <div className='timelogs-responsive-grid'>
+      <div id='timelogs-container-1'>
+        <div>
+          <TimeLogsSelectForm
+            configurations={allConfigurations}
+            selectedConfiguration={selectedConfiguration}
+            handleConfigurationChange={setSelectedConfiguration}
+            groups={allGroups}
+            selectedGroup={selectedGroup}
+            handleGroupChange={setSelectedGroup}
+            students={allStudents}
+            selectedStudentNumber={selectedStudentNumber}
+            handleStudentNumberChange={setSelectedStudentNumber}
+          />
+          {selectedGroup && <div>{selectedGroup.name}</div>}
+        </div>
+        <div id='timelog-rows'>
+          {isLogs(logsByStudent) &&
+            logsByStudent.map((log) => (
+              <TimeLogRow
+                key={log.id}
+                log={log}
+              />
+            ))}
+          {!isLogs(logsByStudent) && (
+            <p>No logs by the selected user.</p>
+          )}
+        </div>
       </div>
-      <div id='timelog-rows'>
-        {isLogs(logsByStudent) &&
-          logsByStudent.map((log) => (
-            <TimeLogRow
-              key={log.id}
-              log={log}
-            />
-          ))}
-        {!isLogs(logsByStudent) && (
-          <p>No logs by the selected user.</p>
-        )}
+      <div id='chart-container'>
+        {selectedGroup &&
+          <div className='timelogs-charts-container'>
+            <div className='timelogs-chart-and-title-container'>
+              <Typography variant='h5'>Sprint Chart</Typography>
+              <TimeLogChart chartVariant='sprint' />
+            </div>
+            <div className='timelogs-chart-and-title-container'>
+              <Typography variant='h5'>Project Chart</Typography>
+              <TimeLogChart chartVariant='total' />
+            </div>
+          </div>
+          }
       </div>
-    </div>
+  </div>
   )
 }
 
@@ -138,6 +187,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
+  setGroupSprintSummary: timeLogsActions.setGroupSprintSummary,
 }
 
 export default withRouter(
