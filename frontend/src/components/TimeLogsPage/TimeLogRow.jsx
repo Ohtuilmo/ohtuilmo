@@ -29,7 +29,7 @@ export const TimeLogRow = ({ log, handleDelete }) => {
         <div className="timelogs-description">
           <p>{log.description}</p>
         </div>
-        {/*<IconButton
+        <IconButton
           id={`timelog-remove-button-${log.id}`}
           className="timelogs-remove-button"
           style={{ padding: '0 12px' }}
@@ -37,7 +37,7 @@ export const TimeLogRow = ({ log, handleDelete }) => {
           onClick={() => setConfirmOpen(true)}
         >
           <DeleteOutlineRounded />
-        </IconButton>*/}
+        </IconButton>
         <ConfirmationDialog
           title="Delete Time Log?"
           open={confirmOpen}
