@@ -175,7 +175,7 @@ const InstructorTimeLogsPage = (props) => {
           />
           {selectedGroup && (
           <div>
-            {selectedGroup.name}
+            <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
             <SprintSelect
               sprintNumber={selectedSprintNumber}
               handleClickNextSprint={handleClickNextSprint}
