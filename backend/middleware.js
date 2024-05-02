@@ -100,13 +100,42 @@ const checkAdmin = (req, res, next) => {
 
 /** @type {RequestHandler} */
 const fakeshibbo = (req, res, next) => {
-  req.headers.employeenumber = ''
-  req.headers.mail = ''
-  req.headers.hypersonstudentid =
-    '112345699'
-  req.headers.uid = 'olliohj'
-  req.headers.givenname = 'Olli'
-  req.headers.sn = 'Ohjaaja'
+  const test_users = {
+    student: {
+      employeenumber: '',
+      mail: '',
+      hypersonstudentid: '112345701',
+      uid: 'johnsmith',
+      givenname: 'John',
+      sn: 'Smith',
+    },
+    instructor: {
+      employeenumber: '',
+      mail: '',
+      hypersonstudentid: '112345699',
+      uid: 'olliohj',
+      givenname: 'Olli',
+      sn: 'Ohjaaja',
+    },
+    admin: {
+      employeenumber: '',
+      mail: '',
+      hypersonstudentid: '012345688',
+      uid: 'testertester2',
+      givenname: 'Angela',
+      sn: 'Merkel',
+    },
+  }
+
+  // select one of the following: student, instructor, admin
+  const test_user = test_users.student
+
+  req.headers.employeenumber = test_user.employeenumber
+  req.headers.mail = test_user.mail
+  req.headers.hypersonstudentid = test_user.hypersonstudentid
+  req.headers.uid = test_user.uid
+  req.headers.givenname = test_user.givenname
+  req.headers.sn = test_user.sn
   next()
 }
 
