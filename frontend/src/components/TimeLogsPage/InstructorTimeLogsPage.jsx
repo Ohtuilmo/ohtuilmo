@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
-
+import { connect } from 'react-redux'
 import { TimeLogsSelectForm } from './TimeLogsSelectForm'
 import { TimeLogRow } from './TimeLogRow'
 import LoadingSpinner from '../common/LoadingSpinner'
@@ -11,7 +11,7 @@ import groupManagementService from '../../services/groupManagement'
 import instructorTimeLogsService from '../../services/instructorTimeLogs'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
-const InstructorTimeLogsPage = () => {
+const InstructorTimeLogsPage = (props) => {
   const [allConfigurations, setAllConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState(null)
   const [allGroups, setAllGroups] = useState([])
@@ -131,6 +131,15 @@ const InstructorTimeLogsPage = () => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  state: state,
+})
+
+const mapDispatchToProps = {
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess,
+}
+
 export default withRouter(
-  (InstructorTimeLogsPage)
+  connect(mapStateToProps, mapDispatchToProps)(InstructorTimeLogsPage)
 )
