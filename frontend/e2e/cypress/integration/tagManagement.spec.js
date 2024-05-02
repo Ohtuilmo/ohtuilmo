@@ -48,7 +48,7 @@ describe('Tag management', () => {
     cy.get('.button').click()
     cy.contains('Title must be at least 3 characters.').should('exist')
   })
-  it('tag can be deleted', () => {
+  it('tag is not deleted when No is pressed in confirmation dialog', () => {
     cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
@@ -56,9 +56,20 @@ describe('Tag management', () => {
       })
     cy.get('#tagTitle').type('New tag')
     cy.get('.delete-tag-button').click()
+    cy.contains('No').click()
+    cy.contains('New tag').should('exist')
+  })
+  it('tag is deleted when Yes is pressed in confirmation dialog', () => {
+    cy.get('#hamburger-menu-button')
+      .click()
+      .then(() => {
+        cy.contains('Tag management').click()
+      })
+    cy.get('#tagTitle').type('New tag')
+    cy.get('.delete-tag-button').click()
+    cy.contains('Yes').click()
     cy.contains('New tag').should('not.exist')
   })
-
   // missing test: tag associated with existing time log cannot be deleted  
   // is not tested. This is because the test would require a time log to be created and associated with a tag.'
   // and cannot be done before adding tag to time logs front end is implemented.
