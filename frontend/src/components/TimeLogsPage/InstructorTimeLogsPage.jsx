@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
-
+import { connect } from 'react-redux'
 import { TimeLogsSelectForm } from './TimeLogsSelectForm'
 import { TimeLogRow } from './TimeLogRow'
+import TimeLogChart from './TimeLogChart'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { SprintSelect } from './SprintSelect'
+
+import { Typography } from '@material-ui/core'
 
 import userService from '../../services/user'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
+import timeLogsService from '../../services/timeLogs'
 import instructorTimeLogsService from '../../services/instructorTimeLogs'
-import * as notificationActions from '../../reducers/actions/notificationActions'
 
-const InstructorTimeLogsPage = () => {
+import * as notificationActions from '../../reducers/actions/notificationActions'
+import timeLogsActions from '../../reducers/actions/timeLogsActions'
+
+const InstructorTimeLogsPage = (props) => {
+  const {
+    selectedSprintNumber,
+    setSelectedSprintNumber,
+    setGroupSprintSummary
+  } = props
+
   const [allConfigurations, setAllConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState(null)
   const [allGroups, setAllGroups] = useState([])
@@ -21,6 +34,7 @@ const InstructorTimeLogsPage = () => {
   const [allLogs, setAllLogs] = useState(null)
 
   const [isLoading, setIsLoading] = useState(true)
+  const possibleSprintNumbers = Array.from({length: 101}, (_, i) => i)
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -94,43 +108,127 @@ const InstructorTimeLogsPage = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchGroupSprintSummary = async (group_id) => {
+      try {
+        const summaryData = await timeLogsService.getGroupSprintSummary(group_id)
+        setGroupSprintSummary(JSON.parse(summaryData))
+        setSelectedSprintNumber(0)
+      } catch (error) {
+        console.error(
+          'Error fetching group sprint summary:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        notificationActions.setError(error.response.data.error)
+      }
+    }
+
+    const fetchChartData = async (selectedGroupId) => {
+      setIsLoading(true)
+      await fetchGroupSprintSummary(selectedGroupId)
+      setIsLoading(false)
+    }
+    selectedGroup?.id && fetchChartData(selectedGroup.id)
+  }, [selectedGroup])
+
+  const previousSprint = [...possibleSprintNumbers]
+  .reverse()
+  .find((sprint) => sprint < selectedSprintNumber)
+
+  const nextSprint = possibleSprintNumbers.find(
+    (sprint) => sprint > selectedSprintNumber
+  )
+
+  const handleClickNextSprint = () => {
+    setSelectedSprintNumber(
+      nextSprint !== undefined ? nextSprint : selectedSprintNumber
+    )
+  }
+
+  const handleClickPreviousSprint = () => {
+    setSelectedSprintNumber(
+      previousSprint !== undefined ? previousSprint : selectedSprintNumber
+    )
+  }
+
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
     isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudentNumber)
 
   if (isLoading) return <LoadingSpinner />
   return (
-    <div>
-      <div>
-        <TimeLogsSelectForm
-          configurations={allConfigurations}
-          selectedConfiguration={selectedConfiguration}
-          handleConfigurationChange={setSelectedConfiguration}
-          groups={allGroups}
-          selectedGroup={selectedGroup}
-          handleGroupChange={setSelectedGroup}
-          students={allStudents}
-          selectedStudentNumber={selectedStudentNumber}
-          handleStudentNumberChange={setSelectedStudentNumber}
-        />
-        {selectedGroup && <div>{selectedGroup.name}</div>}
-      </div>
-      <div id='timelog-rows'>
-        {isLogs(logsByStudent) &&
-          logsByStudent.map((log) => (
-            <TimeLogRow
-              key={log.id}
-              log={log}
+    <div className='timelogs-responsive-grid'>
+      <div id='timelogs-container-1'>
+        <div>
+          <TimeLogsSelectForm
+            configurations={allConfigurations}
+            selectedConfiguration={selectedConfiguration}
+            handleConfigurationChange={setSelectedConfiguration}
+            groups={allGroups}
+            selectedGroup={selectedGroup}
+            handleGroupChange={setSelectedGroup}
+            students={allStudents}
+            selectedStudentNumber={selectedStudentNumber}
+            handleStudentNumberChange={setSelectedStudentNumber}
+          />
+          {selectedGroup && (
+          <div>
+            <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
+            <SprintSelect
+              sprintNumber={selectedSprintNumber}
+              handleClickNextSprint={handleClickNextSprint}
+              handleClickPreviousSprint={handleClickPreviousSprint}
+              nextSprintButtonDisabled={nextSprint === undefined}
+              previousSprintButtonDisabled={previousSprint === undefined}
             />
-          ))}
-        {!isLogs(logsByStudent) && (
-          <p>No logs by the selected user.</p>
+          </div>
         )}
+        </div>
+        <div id='timelog-rows'>
+          {isLogs(logsByStudent) &&
+            logsByStudent.map((log) => (
+              <TimeLogRow
+                key={log.id}
+                log={log}
+              />
+            ))}
+          {!isLogs(logsByStudent) && (
+            <p>No logs by the selected user.</p>
+          )}
+        </div>
       </div>
-    </div>
+      <div id='chart-container'>
+        {selectedGroup &&
+          <div className='timelogs-charts-container'>
+            <div className='timelogs-chart-and-title-container'>
+              <Typography variant='h5'>Sprint Chart</Typography>
+              <TimeLogChart chartVariant='sprint' />
+            </div>
+            <div className='timelogs-chart-and-title-container'>
+              <Typography variant='h5'>Project Chart</Typography>
+              <TimeLogChart chartVariant='total' />
+            </div>
+          </div>
+          }
+      </div>
+  </div>
   )
 }
 
+const mapStateToProps = (state) => ({
+  state: state,
+  selectedSprintNumber: state.timeLogs.selectedSprintNumber,
+})
+
+const mapDispatchToProps = {
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess,
+  setGroupSprintSummary: timeLogsActions.setGroupSprintSummary,
+  setSelectedSprintNumber: timeLogsActions.setSelectedSprintNumber,
+}
+
 export default withRouter(
-  (InstructorTimeLogsPage)
+  connect(mapStateToProps, mapDispatchToProps)(InstructorTimeLogsPage)
 )

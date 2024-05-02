@@ -103,8 +103,10 @@ const TimeLogChart = (props) => {
 
   useEffect(() => {
     const mappedData = mapSprintSummaryData(groupSprintSummary)
-    setSprints([...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1))])
-    setChartData(mappedData)
+    if (mappedData) {
+      setSprints([...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1))])
+      setChartData(mappedData)
+    }
   }, [groupSprintSummary])
 
   if (chartData && chartData.length > 0) {
