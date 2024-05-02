@@ -75,7 +75,8 @@ const TimeLogChart = (props) => {
             altLabel: `${hours} h, ${minutesLeft} min`,
             hLabel: `${hours} hours`,
             minutes: minutesLeft,
-            mLabel: `${minutesLeft} minutes`
+            mLabel: `${minutesLeft} minutes`,
+            defaultLabel: `${altHours.toFixed(1)} h`
           })
         }
       } else {
@@ -93,7 +94,8 @@ const TimeLogChart = (props) => {
             altLabel: `${hours} h, ${minutesLeft} min`,
             hLabel: `${hours} hours`,
             minutes: minutesLeft,
-            mLabel: `${minutesLeft} minutes`
+            mLabel: `${minutesLeft} minutes`,
+            defaultLabel: `${altHours.toFixed(1)} h`
           })
         }
       }
@@ -126,7 +128,7 @@ const TimeLogChart = (props) => {
                 dataKey='altHours'
                 background={false}
               >
-                <LabelList dataKey='altLabel' position='top' />
+                <LabelList dataKey='defaultLabel' position='top' />
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
                 ))}
@@ -180,7 +182,7 @@ const TimeLogChart = (props) => {
                   dataKey='altHours'
                   background={false}
                 >
-                  <LabelList dataKey='altLabel' position='top' />
+                  <LabelList dataKey='defaultLabel' position='top' />
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
                   ))}
