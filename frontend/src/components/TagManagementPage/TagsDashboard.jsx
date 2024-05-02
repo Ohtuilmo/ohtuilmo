@@ -2,17 +2,20 @@ import React, { useState, useEffect, useRef } from 'react'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { DeleteOutlineRounded } from '@material-ui/icons'
 import tagService from '../../services/tags'
 import './TagsDashboard.css'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as notificationActions from '../../reducers/actions/notificationActions'
-
+import ConfirmationDialog from '../common/ConfirmationDialog'
 
 const TagsPage = (props) => {
   const [allTags, setAllTags] = useState([])
   const [tagTitle, setTagTitle] = useState('')
   const isMounted = useRef(true)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [tagToDelete, setTagToDelete] = useState(null)
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -22,7 +25,7 @@ const TagsPage = (props) => {
           setAllTags(fetchedData)
         }
       } catch (error) {
-        console.error('Error fetching tags:', error.message, ' / ' , error.response.data.error)
+        console.error('Error fetching tags:', error.message, ' / ', error.response.data.error)
         if (error.response && error.response.data && error.response.data.error) {
           props.setError(error.response.data.error)
         } else {
@@ -47,7 +50,7 @@ const TagsPage = (props) => {
       clearForm()
       props.setSuccess('Tag created successfully.')
     } catch (error) {
-      console.error('Error fetching tags:', error.message, ' / ' , error.response.data.error)
+      console.error('Error fetching tags:', error.message, ' / ', error.response.data.error)
       props.setError(error.response.data.error, 3000)
     }
   }
@@ -62,7 +65,7 @@ const TagsPage = (props) => {
       setAllTags(updatedTags)
       props.setSuccess('Tag deleted successfully.')
     } catch (error) {
-      console.error('Error fetching tags:', error.message, ' / ' , error.response.data.error)
+      console.error('Error fetching tags:', error.message, ' / ', error.response.data.error)
       props.setError(error.response.data.error)
     }
   }
@@ -113,8 +116,11 @@ const TagsPage = (props) => {
                 <td>{tag.title}</td>
                 <td>
                   <Button
-                    onClick={() => handleDeleteTag(tag.id)}
-                    className = 'delete-tag-button'
+                    onClick={() => {
+                      setTagToDelete(tag.id)
+                      setConfirmOpen(true)
+                    }}
+                    className='delete-tag-button'
                     variant="contained"
                     color="secondary"
                   >
@@ -125,6 +131,14 @@ const TagsPage = (props) => {
             ))}
           </tbody>
         </table>
+        <ConfirmationDialog
+          title="Delete Tag?"
+          open={confirmOpen}
+          setOpen={setConfirmOpen}
+          onConfirm={() => handleDeleteTag(tagToDelete)}
+        >
+          Delete this tag? It cannot be restored.
+        </ConfirmationDialog>
       </div>
     </div>
   )
