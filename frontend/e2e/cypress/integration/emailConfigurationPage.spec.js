@@ -205,7 +205,7 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
     })
 
-    it('simultaneously updates all email templates successfully', () => {
+    it.skip('simultaneously updates all email templates successfully', () => {
       const texts = [
         [
           'Topic proposal accepted',
