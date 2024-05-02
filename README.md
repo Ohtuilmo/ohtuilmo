@@ -16,6 +16,8 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 ## Development
 
+### How to start development
+
 1.  Make sure you have docker, docker-compose and nvm installed.
 
 2.  Clone this repository to your computer.
@@ -38,6 +40,12 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 5.  When you are done, close containers from the active console with shortcut `CTRL+C` or from other console with command `docker compose down`.
 
+### How to change user roles in dev environment
+
+In development environment, login is faked in backend using fakeshibbo middleware. You can run software in different user roles by modifying faceshibbo in ./backend/middleware.js file.
+
+Modify line `const test_user = test_users.student` to correspond user role desired (student, instructor, or admin). Changes take effect immediately when you save your changes and reload the page.
+
 ## How to run Cypress tests
 
 1. Switch to frontend folder.
@@ -54,7 +62,7 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 4. If you want to restore test setup and the database to their initial stage, just run `npm run test-setup` again.
 
-5. When you are done, you can remove containers and are related resources with command `npm run test-setup:down`
+5. When you are done, you can remove containers and all related resources with command `npm run test-setup:down`
 
 ## How to manually inspect database
 
