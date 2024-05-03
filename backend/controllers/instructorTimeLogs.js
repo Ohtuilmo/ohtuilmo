@@ -1,5 +1,5 @@
 const instructorTimeLogsRouter = require('express').Router()
-const { checkLogin, checkInstructor } = require('../middleware')
+const { checkInstructor } = require('../middleware')
 const db = require('../models/index')
 const { Sequelize } = require('sequelize')
 
@@ -72,7 +72,7 @@ const fetchAllFromDb = async () => {
 }
 
 instructorTimeLogsRouter.get('/', checkInstructor, async (req, res) => {
-  try {   
+  try {
     const timeLogs = await fetchAllFromDb()
     return res.status(200).json(timeLogs)
   } catch (error) {
