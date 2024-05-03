@@ -100,7 +100,7 @@ const TimeLogChart = (props) => {
         }
       }
     }
-    return mappedData
+    return mappedData.sort((a, b) => a.name.localeCompare(b.name))
   }
 
   useEffect(() => {
