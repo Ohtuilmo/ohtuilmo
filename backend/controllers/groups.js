@@ -28,38 +28,18 @@ const formatGroup = (dbGroup) => {
 }
 
 router.get('/', checkInstructor, async (req, res) => {
-  if (req.user.admin) {
-    const groups = await db.Group.findAll({
-      include: [
-        {
-          as: 'students',
-          model: db.User,
-          attributes: ['student_number'], // only select the student number
-          through: { attributes: [] } // don't ignore junction table stuff
-        }
-      ]
-    })
-    const deserialized = groups.map(formatGroup)
-    res.json(deserialized)
-  } else {
-    const latestConfiguration = await db.Configuration.findOne({
-      order: [['createdAt', 'DESC']]
-    })
-
-    const groups = await db.Group.findAll({
-      where: { configuration_id: [latestConfiguration.id] },
-      include: [
-        {
-          as: 'students',
-          model: db.User,
-          attributes: ['student_number'], // only select the student number
-          through: { attributes: [] } // don't ignore junction table stuff
-        }
-      ]
-    })
-    const deserialized = groups.map(formatGroup)
-    res.json(deserialized)
-  }
+  const groups = await db.Group.findAll({
+    include: [
+      {
+        as: 'students',
+        model: db.User,
+        attributes: ['student_number'], // only select the student number
+        through: { attributes: [] } // don't ignore junction table stuff
+      }
+    ]
+  })
+  const deserialized = groups.map(formatGroup)
+  res.json(deserialized)
 })
 
 const isNil = (obj) => obj === null || obj === undefined
