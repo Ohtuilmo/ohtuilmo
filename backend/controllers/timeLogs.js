@@ -4,7 +4,7 @@ const db = require('../models/index')
 const { Sequelize } = require('sequelize')
 
 const validateTimeEntry = ({ sprint, date, minutes, description }) => {
-  if (!sprint || !date || isNaN(parseFloat(minutes)) || !description) {
+  if (isNaN(sprint) || !date || isNaN(parseFloat(minutes)) || !description) {
     return 'All fields must be filled.'
   }
   if (parseFloat(minutes) <= 0) {
