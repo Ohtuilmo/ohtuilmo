@@ -16,7 +16,7 @@ usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
 
   try {
     const user = await db.User.findOne({
-      where: { student_number: studentNumber }
+      where: { student_number: studentNumber },
     })
     if (!user) {
       return res.status(400).json({ error: 'user does not exist' })
@@ -27,7 +27,9 @@ usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
     res.status(200).json({ user: refreshedUser })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 })
 
@@ -41,28 +43,32 @@ usersRouter.get('/', checkInstructor, async (req, res) => {
       res.status(200).json(users)
     } catch (error) {
       console.log(error)
-      res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+      res
+        .status(500)
+        .json({ error: 'Something is wrong... try reloading the page' })
     }
   } else {
     try {
       const configuration = await db.Configuration.findOne({
-        order: [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC']],
       })
       const groups = await db.Group.findAll({
         where: { configurationId: configuration.id },
         include: [{ model: db.User, as: 'students' }],
       })
-      const studentNumbersInGroups = groups.map(
-        group => group.students.map(
-          student => student.student_number)).flat()
+      const studentNumbersInGroups = groups
+        .map((group) => group.students.map((student) => student.student_number))
+        .flat()
 
       const users = await db.User.findAll({
-        where: { student_number: studentNumbersInGroups }
+        where: { student_number: studentNumbersInGroups },
       })
       res.status(200).json(users)
     } catch (error) {
       console.log(error)
-      res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+      res
+        .status(500)
+        .json({ error: 'Something is wrong... try reloading the page' })
     }
   }
 })
@@ -70,7 +76,7 @@ usersRouter.get('/', checkInstructor, async (req, res) => {
 usersRouter.get('/isInstructor', checkLogin, async (req, res) => {
   try {
     const instructedGroups = await db.Group.findAll({
-      where: { instructorId: req.user.id }
+      where: { instructorId: req.user.id },
     })
     if (instructedGroups.length > 0) {
       res.status(200).json({ isInstructor: true })
@@ -79,7 +85,9 @@ usersRouter.get('/isInstructor', checkLogin, async (req, res) => {
     }
   } catch (error) {
     console.log(error)
-    res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+    res
+      .status(500)
+      .json({ error: 'Something is wrong... try reloading the page' })
   }
 })
 
