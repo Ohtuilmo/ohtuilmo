@@ -26,9 +26,8 @@ Registration, administration and review tool for University of Helsinki's softwa
 
     - If you get error "Version x is not yet installed", you can install required node version by simply giving command `nvm install` and then try again.
 
-4.  Run `docker compose up` to start development contaires.
+4.  Run `docker compose up` in any folder inside cloned repository to start development containers.
 
-    - This command works in any folder inside cloned repository
     - It will start 4 containers:
 
       | Container | Port |
@@ -82,7 +81,7 @@ Modify line `const test_user = test_users.student` to correspond user role desir
 
 ## How to manually inspect database
 
-Development setup includes database management tool called Adminer. With Adminer, you can easily inspect and modify database using your browser. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
+Development setup includes database management tool called Adminer. With Adminer, you can easily inspect and modify database by using your browser. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
 
 - System: PostgreSQL
 - Server: db
