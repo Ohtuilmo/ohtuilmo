@@ -37,32 +37,9 @@ usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
 // the students in the current configuration, then gets the corresponding
 // users from the database.
 usersRouter.get('/', checkInstructor, async (req, res) => {
-  if (req.user.admin) {
+  if (req.user.admin || req.user.instructor) {
     try {
       const users = await db.User.findAll()
-      res.status(200).json(users)
-    } catch (error) {
-      console.log(error)
-      res
-        .status(500)
-        .json({ error: 'Something is wrong... try reloading the page' })
-    }
-  } else {
-    try {
-      const configuration = await db.Configuration.findOne({
-        order: [['createdAt', 'DESC']],
-      })
-      const groups = await db.Group.findAll({
-        where: { configurationId: configuration.id },
-        include: [{ model: db.User, as: 'students' }],
-      })
-      const studentNumbersInGroups = groups
-        .map((group) => group.students.map((student) => student.student_number))
-        .flat()
-
-      const users = await db.User.findAll({
-        where: { student_number: studentNumbersInGroups },
-      })
       res.status(200).json(users)
     } catch (error) {
       console.log(error)
