@@ -35,6 +35,7 @@ const userIsInstructorForCurrentGroup = async (student_number) => {
 }
 
 loginRouter.post('/', async (req, res) => {
+  console.log('Login HEADERS', req.headers)
   if (!req.headers.hypersonstudentid)
     return res
       .status(401)
