@@ -18,7 +18,7 @@ describe('Menu items for different user roles', () => {
             cy.contains('Admin').should('exist')
             cy.contains('Create Topic').should('exist')
             cy.contains('Topics').should('exist')
-            cy.contains('Reviews').should('exist')
+            cy.contains('Grades given by instructors').should('exist')
             cy.contains('Configuration').should('exist')
             cy.contains('Registration Management').should('exist')
             cy.contains('Current registrations').should('exist')

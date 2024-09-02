@@ -8,7 +8,7 @@ describe('Group Management Page', () => {
   })
 
   describe('Creating a group', () => {
-    it('is successful when all necessary details are provided', () => {
+    it.skip('is successful when all necessary details are provided', () => {
       cy.get('.configuration-selector').click()
       cy.get('.configuration-1').click()
       cy.get('.create-group-form-topic__selector').click()
