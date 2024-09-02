@@ -4,15 +4,8 @@ import instructorReview from '../services/instructorReview'
 const Answer = ({ answer }) => {
   const [visible, setVisible] = useState(false)
 
-  if (!visible) {
-    return (
-      <div>
-        <h2 onClick={() => setVisible(!visible)}>{answer.name.first_names} {answer.name.last_name}</h2>
-      </div>
-    )
-  }
-
   const withId = (id) => answer.answers.find(a => a.id === id)
+
 
   const double = answer.answers.filter(a => a.header === 'Prosessin kehittäminen').length === 2
 
@@ -23,11 +16,25 @@ const Answer = ({ answer }) => {
   const customer = double ? 26 : 21
   const overall = double ? 31 : 26
 
-  return (
-    <div>
-      <h2 onClick={() => setVisible(!visible)}>{answer.name.first_names} {answer.name.last_name}</h2>
+  const style = {
+    border: '1px solid black',
+    padding: '5px',
+    margin: '5px'
+  }
 
-      <h3>Tekninen kontribuutio</h3>
+  if (!visible) {
+    return (
+      <div style={style}>
+        <h3 onClick={() => setVisible(!visible)}>{answer.name.first_names} {answer.name.last_name} {withId(overall).answer}</h3>
+      </div>
+    )
+  }
+
+  return (
+    <div style={style}>
+      <h3 onClick={() => setVisible(!visible)}>{answer.name.first_names} {answer.name.last_name}</h3>
+
+      <h4>Tekninen kontribuutio</h4>
       {withId(tech).answer}
       <p>
         <em>
@@ -41,7 +48,7 @@ const Answer = ({ answer }) => {
         arvosana {withId(tech+3).answer}
       </strong>
 
-      <h3>Prosessin noudattaminen</h3>
+      <h4>Prosessin noudattaminen</h4>
       {withId(process).answer}
       <p>
         <em>
@@ -55,7 +62,7 @@ const Answer = ({ answer }) => {
         arvosana {withId(process+3).answer}
       </strong>
 
-      <h3>Prosessin kehittäminen</h3>
+      <h4>Prosessin kehittäminen</h4>
       {withId(adapt).answer}
       <p>
         <em>
@@ -69,7 +76,7 @@ const Answer = ({ answer }) => {
         arvosana {withId(adapt+3).answer}
       </strong>
 
-      <h3>Ryhmätyöskentely</h3>
+      <h4>Ryhmätyöskentely</h4>
       {withId(group).answer}
       <p>
         <em>
@@ -83,7 +90,7 @@ const Answer = ({ answer }) => {
         arvosana {withId(group+3).answer}
       </strong>
 
-      <h3>Asiakasyöskentely</h3>
+      <h4>Asiakasyöskentely</h4>
       {withId(customer).answer}
       <p>
         <em>
@@ -97,7 +104,7 @@ const Answer = ({ answer }) => {
         arvosana {withId(customer + 3).answer}
       </strong>
 
-      <h3>Koko projekti</h3>
+      <h4>Koko projekti ({answer.name.first_names} {answer.name.last_name})</h4>
       <strong>
         arvosana {withId(overall).answer}
       </strong>
@@ -110,7 +117,7 @@ const Review = ({ review }) => {
 
   return (
     <div>
-      <h1 onClick={() => setVisible(!visible)}>{review.group_name}</h1>
+      <h2 onClick={() => setVisible(!visible)}>{review.group_name}</h2>
       {visible && review.answer_sheet.map((answer, i) => <Answer key={i} answer={answer} />)}
     </div>
   )
@@ -126,7 +133,8 @@ const InstructorReviews = () => {
 
   return (
     <div>
-      {reviews.map(data => <Review key={data.id} review={data.answer_sheet}/>)}
+      <h1>Grades given by instructors</h1>
+      {reviews.reverse().map(data => <Review key={data.id} review={data.answer_sheet}/>)}
     </div>
   )
 }

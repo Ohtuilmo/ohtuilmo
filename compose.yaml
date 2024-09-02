@@ -56,9 +56,9 @@ services:
       - backend
       - db
 
-  adminer:
+  adminer-ohtuilmo:
     image: adminer
-    container_name: adminer
+    container_name: adminer-ohtuilmo
     environment:
       - ADMINER_DESIGN=galkaev
     ports:

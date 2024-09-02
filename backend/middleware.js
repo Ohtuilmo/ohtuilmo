@@ -120,15 +120,15 @@ const fakeshibbo = (req, res, next) => {
     admin: {
       employeenumber: '',
       mail: '',
-      hypersonstudentid: '012345688',
-      uid: 'testertester2',
-      givenname: 'Angela',
-      sn: 'Merkel',
+      hypersonstudentid: '011120775',
+      uid: 'mluukkai',
+      givenname: 'Matti',
+      sn: 'Luukkainen',
     },
   }
 
   // select one of the following: student, instructor, admin
-  const test_user = test_users.student
+  const test_user = test_users.admin
 
   req.headers.employeenumber = test_user.employeenumber
   req.headers.mail = test_user.mail

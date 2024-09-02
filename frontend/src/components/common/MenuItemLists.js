@@ -87,7 +87,7 @@ const adminItems = (history) => {
       handler: () => history.push('/topics'),
     },
     {
-      text: 'Reviews',
+      text: 'Grades given by instructors',
       handler: () => history.push('/administration/reviews'),
     },
     {
