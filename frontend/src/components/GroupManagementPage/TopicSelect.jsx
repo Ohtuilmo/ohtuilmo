@@ -11,16 +11,26 @@ const TopicSelect = ({
   className,
   groupConfig
 }) => {
+
+  const filteredTopics = topics.filter(topic => {
+    const isSelected = (emails) => {
+      if (!emails || emails.length===0) {
+        return false
+      }
+
+      return emails.map(email => email.email.type).includes('topicAccepted')
+    }
+
+    return topic.active && topic.configuration_id === groupConfig && isSelected(topic.sentEmails)
+  })
+
   return (
     <Select
       className={className}
       value={groupTopicID}
       onChange={(e) => onTopicSelectChange(e.target.value)}
     >
-      {topics
-        .filter(
-          (topic) => topic.active && topic.configuration_id === groupConfig
-        )
+      {filteredTopics
         .map((topic) => (
           <MenuItem key={topic.id} value={topic.id} className="topic-menu-item">
             {topic.content.title}
@@ -31,8 +41,10 @@ const TopicSelect = ({
 }
 
 const mapStateToProps = (state) => {
+  const id =  state.groupPage.groupConfigurationID
+  const ids = state.configurationPage.configurations.map(config => config.id)
   return {
-    groupConfig: state.groupPage.groupConfigurationID
+    groupConfig: id ? id : Math.max(...ids),
   }
 }
 

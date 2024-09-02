@@ -96,7 +96,6 @@ const GroupCreationForm = ({
   onInstructorChange,
   topics,
   onTopicSelectChange,
-
   groupTopicID,
   groupConfigurationID,
   createGroupSuccsess,
@@ -108,6 +107,7 @@ const GroupCreationForm = ({
     const thistopic = topics.find((topic) => topic.id === topicid)
     onNameChangeForm(thistopic.content.title)
   }
+
   return (
     <div>
       <form
