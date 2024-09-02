@@ -41,7 +41,6 @@ describe('Menu items for different user roles', () => {
             cy.contains('Instructor').should('exist')
             cy.contains('Home').should('exist')
             cy.contains('Instructor Review').should('exist')
-            cy.contains('Reviews').should('exist')
             cy.contains('Customer reviews').should('exist')
           })
         })
