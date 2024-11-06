@@ -46,6 +46,7 @@ describe('Menu items for different user roles', () => {
         })
     })
 
+
     it('Admin should see student menu items', () => {
       cy.get('#hamburger-menu-button')
         .click()

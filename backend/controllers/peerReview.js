@@ -64,8 +64,8 @@ const validatePeerReviewAnswer = (question) => {
     if (answer.length < 7) {
       return 'Text answers must be over 7 characters long.'
     }
-    if (answer.length > 2000) {
-      return 'Text answer must be less than 2000 characters.'
+    if (answer.length > 200000) {
+      return 'Text answer must be less than 200000 characters.'
     }
   }
 
@@ -79,8 +79,8 @@ const validateTextAnswer = (question) => {
   if (question.answer.length < 30) {
     return 'Text answers must be over 30 characters long.'
   }
-  if (question.answer.length > 5000) {
-    return 'Text answer must be less than 5000 characters.'
+  if (question.answer.length > 50000) {
+    return 'Text answer must be less than 50000 characters.'
   }
   return null
 }
