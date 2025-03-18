@@ -5,14 +5,16 @@ import { Typography } from '@material-ui/core'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import './TopicFormPageInfo.css'
 
-const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
+const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) => {
+  const allowCretion = topicOpen && toggle
+
   return (
     <div className="topic-form-page-info">
       <div>
         {/* Not actually dangerous since html is imported from a static source */}
         <Typography dangerouslySetInnerHTML={{ __html: info }} />
       </div>
-      {topicOpen && (
+      {allowCretion && (
         <Button
           type="submit"
           variant="contained"
@@ -25,7 +27,7 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
           Create Topic
         </Button>
       )}
-      {!topicOpen && (
+      {!allowCretion && (
         <div className="topic-form-page-info-message">{topicMessage}</div>
       )}
     </div>
@@ -34,6 +36,7 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
 
 const mapStateToProps = (state) => {
   return {
+    toggle: state &&state.login && state.login.user && state.login.user.user && state.login.user.user.username === 'mluukkai',
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage
   }

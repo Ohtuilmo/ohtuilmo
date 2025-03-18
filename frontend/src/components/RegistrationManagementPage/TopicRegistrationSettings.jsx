@@ -78,7 +78,7 @@ const TopicRegistrationSettings = ({
             fullWidth
             label="Short project dates"
             margin="normal"
-            value={summerDates.short}
+            value={summerDates && summerDates.short}
             onChange={(e) => updateSummerDates({ ...summerDates, short: e.target.value })}
             required={!topicOpen}
           />
@@ -87,7 +87,7 @@ const TopicRegistrationSettings = ({
           fullWidth
           label="Long project dates"
           margin="normal"
-          value={summerDates.long}
+          value={summerDates && summerDates.long}
           onChange={(e) => updateSummerDates({ ...summerDates, long: e.target.value })}
           required={!topicOpen}
         />
