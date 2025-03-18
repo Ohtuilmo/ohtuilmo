@@ -14,7 +14,8 @@ const fetchRegistrationManagement = () => {
       topic_registration_conf,
       topic_registration_open,
       topic_registration_message,
-      summer_project
+      summer_project,
+      summer_dates
     } = response.registrationManagement
 
     dispatch({
@@ -24,6 +25,7 @@ const fetchRegistrationManagement = () => {
         peerReviewOpen: peer_review_open,
         peerReviewRound: peer_review_round,
         summerProject: summer_project,
+        summerDates: summer_dates,
         projectRegistrationConf: project_registration_conf,
         projectRegistrationOpen: project_registration_open,
         projectRegistrationMessage: project_registration_message,

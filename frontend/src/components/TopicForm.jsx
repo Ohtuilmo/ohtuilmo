@@ -8,6 +8,10 @@ import './TopicForm.css'
 
 const TopicForm = (props) => {
   const [agreement, setAgreement] = useState(false)
+  const [timing, setTiming] = useState({
+    short: false,
+    long: false
+  })
 
   const boxStyle = {
     backgroundColor: agreement ? '' :'#f0f0f0',
@@ -20,9 +24,9 @@ const TopicForm = (props) => {
     margin: '20px auto',
   }
 
-  const organization = props.content.organisation
+  const organisation = props.content.organisation
 
-  console.log('props.content', props.content)
+  const timingNotSet = !timing.short && !timing.long && props.summerProject
 
   return (
     <div className="topic-form">
@@ -67,7 +71,7 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateEmail(e.target.value)}
           />
         </div>
-        <div style={{ marginTop: 20 }}>
+        <div style={{ marginTop: 35 }}>
           Customer organization is / Asiakasorganisaatio on
           <RadioGroup
             aria-label="customer-organization"
@@ -77,34 +81,55 @@ const TopicForm = (props) => {
           >
             <div>
               <Radio
-                checked={organization === 'company'}
+                checked={organisation === 'company'}
                 value="company"
               />
-              Company / firma
+              Company / yritys
             </div>
             <div>
               <Radio
-                checked={organization === 'nonprofit'}
+                checked={organisation === 'nonprofit'}
                 value="nonprofit"
               />
-              Non-profit organization / järjetö
+              Non-profit organization / järjestö
             </div>
             <div>
               <Radio
                 value="research"
-                checked={organization === 'research'}
+                checked={organisation === 'research'}
               />
               Research institute / tutkimuslaitos
             </div>
             <div>
               <Radio
-                checked={organization === 'uh'}
+                checked={organisation === 'uh'}
                 value="uh"
               />
               University of Helsinki unit / Helsingin Yliopiston yksikkö
             </div>
           </RadioGroup>
         </div>
+
+        {props.summerProject&&(
+          <div style={{ marginTop: 35, marginBottom: 40 }}>
+            Suitable timing / Sopiva ajankohta
+            <div>
+              <Checkbox
+                checked={timing.short}
+                onChange={(e) => setTiming({ ...timing, short: e.target.checked })}
+                color="primary"
+              /> the early summer project {props.dates.short}
+            </div>
+            <div>
+              <Checkbox
+                checked={timing.long}
+                onChange={(e) => setTiming({ ...timing, long: e.target.checked })}
+                color="primary"
+              /> the whole summer project {props.dates.long}
+            </div>
+          </div>
+        )}
+
         <p>
           The fields below have Markdown support. / Seuraavia kenttiä voi
           muotoilla Markdown-notaatiolla. (<a href='https://guides.github.com/features/mastering-markdown/'>Markdown instructions / Markdown ohjeet</a>)
@@ -144,13 +169,6 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateSpecialRequests(e.target.value)}
           />
         </div>
-        {false&&<div >
-          Kerro seuraavassa kohdassa myös sopivat ajankohdat / tell also what is the suitable timing for your project
-          <ul>
-            <li>alkukesä / early summer 12.5.-28.6.</li>
-            <li>koko kesän projekti / whole summer 13.5.-30.8.</li>
-          </ul>
-        </div>}
         <div>
           <TextField
             fullWidth
@@ -162,18 +180,32 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateAdditionalInfo(e.target.value)}
           />
         </div>
-        {organization === '' && (
-          <div>
-            <div style={{ padding: 10 }}>
-              Select the customer provider organisaation type, from below the contact information
-            </div>
-            <div style={{ padding: 10 }}>
-              Valitse asiakasorganisaation tyyppi yhteystietojen alta
-            </div>
+        {organisation === '' || timingNotSet && (
+          <div style={boxStyle}>
+            {organisation === '' && (
+              <>
+                <div style={{ padding: 10 }}>
+                  Select the customer provider organisaation type, from below the contact information
+                </div>
+                <div style={{ padding: 10 }}>
+                  Valitse asiakasorganisaation tyyppi yhteystietojen alta
+                </div>
+              </>
+            )}
+            {timingNotSet && (
+              <>
+                <div style={{ padding: 10 }}>
+                Select the suitable timing for the project  from below the contact information
+                </div>
+                <div style={{ padding: 10 }}>
+                valitse projektille sopiva ajankohta yhteystietojen alta
+                </div>
+              </>
+            )}
           </div>
         )}
-        {organization !== 'company' && organization !== '' && (
-          <div>
+        {!timingNotSet && organisation !== 'company' && organisation !== '' && (
+          <div style={boxStyle}>
             <div style={{ marginTop: 10 }}>
               As a customer I promise to provide the group with the necessary information and resources for the project.
             </div>
@@ -187,11 +219,11 @@ const TopicForm = (props) => {
                 onChange={(e) => setAgreement(e.target.checked)}
                 color="primary"
               />
-              I agree to the above / sitoudyn ylläolevaan
+              I agree to the above / sitoudun ylläolevaan
             </div>
           </div>
         )}
-        {organization === 'company' && (
+        {!timingNotSet && organisation === 'company' && (
           <div style={boxStyle}>
             <div style={{ marginTop: 10 }}>
               If the project is selected for implementation
@@ -217,7 +249,7 @@ const TopicForm = (props) => {
                   onChange={(e) => setAgreement(e.target.checked)}
                   color="primary"
                 />
-                I agree to the above / sitoudyn ylläolevaan
+                I agree to the above / sitoudun ylläolevaan
               </div>
             </div>
           </div>
@@ -228,7 +260,7 @@ const TopicForm = (props) => {
               type="submit"
               variant="contained"
               color="primary"
-              disabled={organization === '' || !agreement}
+              disabled={organisation === '' || !agreement}
             >
               {props.submitButtonText}
             </Button>
@@ -250,12 +282,21 @@ const TopicForm = (props) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  console.log(state.registrationManagement)
+  return {
+    summerProject: state.registrationManagement.summerProject,
+    dates: state.registrationManagement.summerDates
+  }
+}
+
+
 const mapDispatchToProps = {
   ...topicFormPageActions
 }
 
 const ConnectedTopicForm = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(TopicForm)
 

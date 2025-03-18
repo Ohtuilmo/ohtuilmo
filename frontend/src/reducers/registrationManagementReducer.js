@@ -28,8 +28,8 @@ const registrationManagementReducer = (state = initialState, action) => {
       topicRegistrationConf: action.payload.topicRegistrationConf,
       topicRegistrationOpen: action.payload.topicRegistrationOpen,
       topicRegistrationMessage: action.payload.topicRegistrationMessage,
-      summer_project: action.payload.summerProject,
-      summer_dates: action.payload.summerDates
+      summerProject: action.payload.summerProject,
+      summerDates: action.payload.summerDates
     }
   case 'UPDATE_PEER_REVIEW_CONF':
     return {

@@ -39,6 +39,8 @@ const RegistrationManagement = (props) => {
       updateIsLoading,
       setSuccess,
       setError,
+      summerProject,
+      summerDates
     } = props
 
     updateIsLoading(true)
@@ -49,6 +51,8 @@ const RegistrationManagement = (props) => {
           peer_review_conf: peerReviewConf,
           peer_review_open: peerReviewOpen,
           peer_review_round: peerReviewRound,
+          summer_project: summerProject,
+          summer_dates: summerDates,
           project_registration_conf: projectConf,
           project_registration_open: projectOpen,
           project_registration_message: projectMessage,
@@ -131,6 +135,8 @@ const mapStateToProps = (state) => {
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     configurations: state.configurationPage.configurations,
+    summerProject: state.registrationManagement.summerProject,
+    summerDates: state.registrationManagement.summerDates,
   }
 }
 
