@@ -28,6 +28,10 @@ const TopicForm = (props) => {
 
   const timingNotSet = !timing.short && !timing.long && props.summerProject
 
+  console.log('timingNotSet', timingNotSet)
+  console.log('organisation', organisation.length)
+  console.log('ehto', organisation.length === 0 || timingNotSet)
+
   return (
     <div className="topic-form">
       <div className="preview-button">
@@ -180,9 +184,10 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateAdditionalInfo(e.target.value)}
           />
         </div>
-        {organisation === '' || timingNotSet && (
+
+        {(organisation.length === 0 || timingNotSet) && (
           <div style={boxStyle}>
-            {organisation === '' && (
+            {organisation.length === 0 && (
               <>
                 <div style={{ padding: 10 }}>
                   Select the customer provider organisaation type, from below the contact information
@@ -192,13 +197,16 @@ const TopicForm = (props) => {
                 </div>
               </>
             )}
+            {organisation.length === 0 && timingNotSet && (
+              <br />
+            )}
             {timingNotSet && (
               <>
                 <div style={{ padding: 10 }}>
                 Select the suitable timing for the project  from below the contact information
                 </div>
                 <div style={{ padding: 10 }}>
-                valitse projektille sopiva ajankohta yhteystietojen alta
+                Valitse projektille sopiva ajankohta yhteystietojen alta
                 </div>
               </>
             )}
