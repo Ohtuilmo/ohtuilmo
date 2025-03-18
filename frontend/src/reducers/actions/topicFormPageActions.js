@@ -12,6 +12,13 @@ const updateCustomerName = (customerName) => {
   }
 }
 
+const updateOrganisation = (organisation) => {
+  return {
+    type: 'UPDATE_ORGANISATION_TYPE',
+    payload: organisation
+  }
+}
+
 const updateEmail = (email) => {
   return {
     type: 'UPDATE_EMAIL',
@@ -92,6 +99,8 @@ export default {
   updateTitle,
   updateCustomerName,
   updateEmail,
+  updateOrganisation,
+  //updateDates,
   updateDescription,
   updateEnvironment,
   updateSpecialRequests,

@@ -9,7 +9,8 @@ const initialState = {
   projectRegistrationInfo: '',
   topicRegistrationConf: 0,
   topicRegistrationOpen: false,
-  topicRegistrationMessage: 'Registration is closed.'
+  topicRegistrationMessage: 'Registration is closed.',
+  summerProject: false,
 }
 
 const registrationManagementReducer = (state = initialState, action) => {
@@ -26,7 +27,9 @@ const registrationManagementReducer = (state = initialState, action) => {
       projectRegistrationInfo: action.payload.projectRegistrationInfo,
       topicRegistrationConf: action.payload.topicRegistrationConf,
       topicRegistrationOpen: action.payload.topicRegistrationOpen,
-      topicRegistrationMessage: action.payload.topicRegistrationMessage
+      topicRegistrationMessage: action.payload.topicRegistrationMessage,
+      summer_project: action.payload.summerProject,
+      summer_dates: action.payload.summerDates
     }
   case 'UPDATE_PEER_REVIEW_CONF':
     return {
@@ -37,6 +40,16 @@ const registrationManagementReducer = (state = initialState, action) => {
     return {
       ...state,
       peerReviewOpen: action.payload
+    }
+  case 'UPDATE_SUMMER_TOPIC':
+    return {
+      ...state,
+      summerProject: action.payload
+    }
+  case 'UPDATE_SUMMER_DATES':
+    return {
+      ...state,
+      summerDates: action.payload
     }
   case 'UPDATE_PEER_REVIEW_ROUND':
     return {

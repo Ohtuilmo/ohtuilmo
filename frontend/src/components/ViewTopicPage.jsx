@@ -46,6 +46,7 @@ class ViewTopicPage extends React.Component {
     if (!this.props.topic) {
       return <div />
     }
+
     return (
       <div className="topic-view-page-container">
         {this.props.isOnEditMode ? (

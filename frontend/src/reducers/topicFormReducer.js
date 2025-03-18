@@ -3,6 +3,7 @@ const initialState = {
     title: '',
     customerName: '',
     email: '',
+    organisation: '',
     description: '',
     environment: '',
     specialRequests: '',
@@ -38,6 +39,14 @@ const topicFormReducer = (state = initialState, action) => {
       content: {
         ...state.content,
         email: action.payload
+      }
+    }
+  case 'UPDATE_ORGANISATION_TYPE':
+    return {
+      ...state,
+      content: {
+        ...state.content,
+        organisation: action.payload
       }
     }
   case 'UPDATE_DESCRIPTION':
@@ -95,7 +104,8 @@ const topicFormReducer = (state = initialState, action) => {
         description: action.payload.description,
         environment: action.payload.environment,
         specialRequests: action.payload.specialRequests,
-        additionalInfo: action.payload.additionalInfo
+        additionalInfo: action.payload.additionalInfo,
+        organisation: action.payload.organisation
       }
     }
   case 'UPDATE_PREVIEW':

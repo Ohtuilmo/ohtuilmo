@@ -13,7 +13,8 @@ const fetchRegistrationManagement = () => {
       project_registration_info,
       topic_registration_conf,
       topic_registration_open,
-      topic_registration_message
+      topic_registration_message,
+      summer_project
     } = response.registrationManagement
 
     dispatch({
@@ -22,6 +23,7 @@ const fetchRegistrationManagement = () => {
         peerReviewConf: peer_review_conf,
         peerReviewOpen: peer_review_open,
         peerReviewRound: peer_review_round,
+        summerProject: summer_project,
         projectRegistrationConf: project_registration_conf,
         projectRegistrationOpen: project_registration_open,
         projectRegistrationMessage: project_registration_message,
@@ -104,6 +106,20 @@ const updateTopicRegistrationMessage = (topicRegistrationMessage) => {
   }
 }
 
+const updateSummerProject = (summerProject) => {
+  return {
+    type: 'UPDATE_SUMMER_TOPIC',
+    payload: summerProject
+  }
+}
+
+const updateSummerDates = (summerDates) => {
+  return {
+    type: 'UPDATE_SUMMER_DATES',
+    payload: summerDates
+  }
+}
+
 export default {
   updatePeerReviewConf,
   fetchRegistrationManagement,
@@ -115,5 +131,7 @@ export default {
   updateProjectRegistrationInfo,
   updateTopicRegistrationConf,
   updateTopicRegistrationOpen,
-  updateTopicRegistrationMessage
+  updateTopicRegistrationMessage,
+  updateSummerProject,
+  updateSummerDates
 }

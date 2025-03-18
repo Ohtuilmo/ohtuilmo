@@ -29,6 +29,12 @@ module.exports = (sequelize, Sequelize) => {
     },
     topic_registration_message: {
       type: Sequelize.STRING
+    },
+    summer_project: {
+      type: Sequelize.BOOLEAN
+    },
+    summer_dates: {
+      type: Sequelize.JSONB
     }
   },
   {

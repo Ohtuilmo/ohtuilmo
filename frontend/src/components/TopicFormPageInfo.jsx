@@ -8,10 +8,6 @@ import './TopicFormPageInfo.css'
 const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
   return (
     <div className="topic-form-page-info">
-      {!topicOpen && (
-        <div className="topic-form-page-info-message">{topicMessage}</div>
-      )}
-
       <div>
         {/* Not actually dangerous since html is imported from a static source */}
         <Typography dangerouslySetInnerHTML={{ __html: info }} />
@@ -28,6 +24,9 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
         >
           Create Topic
         </Button>
+      )}
+      {!topicOpen && (
+        <div className="topic-form-page-info-message">{topicMessage}</div>
       )}
     </div>
   )
@@ -53,7 +52,7 @@ export default ConnectedTopicFormPageInfo
 
 const info = `
   <div style="margin-bottom: 20px;">
-    <h2>Asiakkaaksi ohjelmistoprojektiin / Become a customer in Software engineering project</h2>
+    <h2>Asiakkaaksi projektiin / Become a customer in the project</h2>
 
     <div>
       Lisää tietoa projektin <a href="https://www.helsinki.fi/fi/innovaatiot-ja-yhteistyo/innovaatiot-ja-yrittajyys/yritysyhteistyo-ja-kumppanuudet/hyodynna-opiskelijoiden-osaamista/software-engineering-project">sivuilla</a>.

@@ -35,6 +35,12 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
         <p className="title">Customer</p>
         <Typography variant="body1">{content.customerName}</Typography>
       </div>
+      {content.organisation &&(
+        <div className="block">
+          <p className="title">Organisation type</p>
+          <Typography variant="body1">{content.organisation}</Typography>
+        </div>
+      )}
       <div className="block">
         <p className="title">Contact email</p>
         <Typography variant="body1">{content.email}</Typography>
