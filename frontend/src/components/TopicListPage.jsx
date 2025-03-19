@@ -350,7 +350,6 @@ const TopicTableHead = () => (
  * @param {{ topics: any[], onEmailSendRequested: (info: TopicEmailInfo) => void, onActiveToggle: (topic: any) => void }} props
  */
 const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
-  console.table(topics)
   return topics.length > 0
     ? (
       <Table>

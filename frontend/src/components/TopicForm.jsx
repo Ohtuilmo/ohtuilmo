@@ -284,7 +284,6 @@ const TopicForm = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.registrationManagement)
   return {
     summerProject: state.registrationManagement.summerProject,
     dates: state.registrationManagement.summerDates
