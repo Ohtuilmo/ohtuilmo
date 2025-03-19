@@ -54,6 +54,13 @@ const updateAdditionalInfo = (additionalInfo) => {
   }
 }
 
+const updateDates = (dates) => {
+  return {
+    type: 'UPDATE_DATES',
+    payload: dates
+  }
+}
+
 const clearForm = () => {
   return {
     type: 'CLEAR_FORM'
@@ -100,7 +107,7 @@ export default {
   updateCustomerName,
   updateEmail,
   updateOrganisation,
-  //updateDates,
+  updateDates,
   updateDescription,
   updateEnvironment,
   updateSpecialRequests,

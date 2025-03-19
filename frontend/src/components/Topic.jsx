@@ -2,6 +2,7 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import ReactMarkdown from 'react-markdown'
+import { connect } from 'react-redux'
 import './Topic.css'
 
 const markdownRenderers = {
@@ -23,7 +24,7 @@ const Markdown = ({ children }) => (
   <ReactMarkdown renderers={markdownRenderers}>{children}</ReactMarkdown>
 )
 
-const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration }) => {
+const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration, summer, dates }) => {
   return (
     <div className="single-topic-container">
       <div className="block">
@@ -32,19 +33,28 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
         </Typography>
       </div>
       <div className="block">
-        <p className="title">Customer</p>
+        <p className="title" style={{ paddingBottom: 7 }}>Customer</p>
         <Typography variant="body1">{content.customerName}</Typography>
       </div>
       {content.organisation &&(
         <div className="block">
-          <p className="title">Organisation type</p>
+          <p className="title" style={{ paddingBottom: 7 }}>Organisation type</p>
           <Typography variant="body1">{content.organisation}</Typography>
         </div>
       )}
       <div className="block">
-        <p className="title">Contact email</p>
+        <p className="title" style={{ paddingBottom: 7 }}>Contact email</p>
         <Typography variant="body1">{content.email}</Typography>
       </div>
+      {summer &&(
+        <div className="block">
+          <p className="title">Suitable timing</p>
+          <ul>
+            {content.summerDates.short && <li>the early summer project {dates.short}</li>}
+            {content.summerDates.long && <li>the whole summer project {dates.long}</li>}
+          </ul>
+        </div>
+      )}
       <div className="block">
         <p className="title">Description</p>
         <Markdown>{content.description}</Markdown>
@@ -55,15 +65,17 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
       </div>
       <div className="block">
         <p className="title">Special requests</p>
-        <Markdown>
-          {content.specialRequests ? content.specialRequests : '-'}
-        </Markdown>
+        {content.specialRequests ?
+          <Markdown>{content.specialRequests}</Markdown> :
+          <div style={{ paddingTop: 7 }}>-</div>
+        }
       </div>
       <div className="block">
         <p className="title">Additional information</p>
-        <Markdown>
-          {content.additionalInfo ? content.additionalInfo : '-'}
-        </Markdown>
+        {content.additionalInfo ?
+          <Markdown>{content.additionalInfo}</Markdown> :
+          <div style={{ paddingTop: 7 }}>-</div>
+        }
       </div>
       {isEditable && (
         <div className="topic-edit-button">
@@ -83,4 +95,18 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
   )
 }
 
-export default Topic
+const mapStateToProps = (state) => {
+  return {
+    summer: state.registrationManagement.summerProject,
+    dates: state.registrationManagement.summerDates
+  }
+}
+
+
+const ConnectedTopic = connect(
+  mapStateToProps,
+  null
+)(Topic)
+
+
+export default ConnectedTopic

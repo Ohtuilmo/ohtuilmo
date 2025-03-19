@@ -272,6 +272,8 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
   const hasCustomerReviewMailBeenSent =
     topic.sentEmails.some(isCustomerReviewMail)
 
+  const isSummer = topic.content.summerDates && (topic.content.summerDates.short || topic.content.summerDates.long)
+
   return (
     <TableRow
       className="topic-table-row"
@@ -292,6 +294,11 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         <p className="topic-table-row__submit-date">
           Submitted {formatDate(topic.createdAt)}
         </p>
+        {isSummer && (
+          <p>
+            Suitable timing: {topic.content.summerDates.short && 'early summer'} {topic.content.summerDates.long && 'whole summer'}
+          </p>
+        )}
       </TableCell>
       <TableCell padding="none">
         {topic.hasReviewed ? (

@@ -7,7 +7,11 @@ const initialState = {
     description: '',
     environment: '',
     specialRequests: '',
-    additionalInfo: ''
+    additionalInfo: '',
+    summerDates: {
+      short: false,
+      long: false
+    }
   },
   showInfo: true,
   preview: false,
@@ -81,6 +85,14 @@ const topicFormReducer = (state = initialState, action) => {
         additionalInfo: action.payload
       }
     }
+  case 'UPDATE_DATES':
+    return {
+      ...state,
+      content: {
+        ...state.content,
+        summerDates: action.payload
+      }
+    }
   case 'CLEAR_FORM':
     return {
       ...state,
@@ -105,7 +117,8 @@ const topicFormReducer = (state = initialState, action) => {
         environment: action.payload.environment,
         specialRequests: action.payload.specialRequests,
         additionalInfo: action.payload.additionalInfo,
-        organisation: action.payload.organisation
+        organisation: action.payload.organisation,
+        summerDates: action.payload.summerDates
       }
     }
   case 'UPDATE_PREVIEW':

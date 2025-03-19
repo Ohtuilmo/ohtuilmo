@@ -23,14 +23,23 @@ class TopicDialog extends React.Component {
   }
 
   render() {
+    const isSummer = this.props.topic.content.summerDates && (this.props.topic.content.summerDates.short || this.props.topic.content.summerDates.long)
+
+    const padding = isSummer ? '10px' : '15px'
+
     return (
       <Card style={{ margin: '2px', height: '78px' }}>
         <CardContent
-          style={{ padding: '15px', display: 'flex', flexDirection: 'row' }}
+          style={{ padding, display: 'flex', flexDirection: 'row' }}
         >
           <div style={{ flex: 4 }}>
-            <Typography style={{ flex:  1, fontWeight: 'bold', color: 'gray' }}>{this.props.topic.content.title}</Typography>
+            <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>{this.props.topic.content.title}</Typography>
             <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>Customer: {this.props.topic.content.customerName}</Typography>
+            {isSummer && <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>
+              {this.props.topic.content.summerDates.short && 'early summer'}
+              {this.props.topic.content.summerDates.short && this.props.topic.content.summerDates.long ? ', ': '' }
+              {this.props.topic.content.summerDates.long && 'whole summer'}
+            </Typography>}
           </div>
           <Button variant="outlined" style={{ flex: 1, maxHeight: '42px' }} onClick={() => this.setState({ open: true })}>Details</Button>
         </CardContent>
