@@ -23,7 +23,7 @@ const TopicForm = (props) => {
 
   const organisation = props.content.organisation
 
-  const timingNotSet = !timing.short && !timing.long && props.summerProject
+  const timingNotSet = !timing || (!timing.short && !timing.long && props.summerProject)
 
   return (
     <div className="topic-form">
@@ -112,14 +112,14 @@ const TopicForm = (props) => {
             Suitable timing / Sopiva ajankohta
             <div>
               <Checkbox
-                checked={timing.short}
+                checked={timing && timing.short}
                 onChange={(e) => props.updateDates({ ...timing, short: e.target.checked })}
                 color="primary"
               /> the early summer project {props.dates.short}
             </div>
             <div>
               <Checkbox
-                checked={timing.long}
+                checked={timing && timing.long}
                 onChange={(e) => props.updateDates({ ...timing, long: e.target.checked })}
                 color="primary"
               /> the whole summer project {props.dates.long}
@@ -178,9 +178,9 @@ const TopicForm = (props) => {
           />
         </div>
 
-        {(organisation.length === 0 || timingNotSet) && (
+        {((organisation && organisation.length === 0) || timingNotSet) && (
           <div style={boxStyle}>
-            {organisation.length === 0 && (
+            {organisation && organisation.length === 0 && (
               <>
                 <div style={{ padding: 10 }}>
                   Select the customer provider organisaation type, from below the contact information
@@ -190,7 +190,7 @@ const TopicForm = (props) => {
                 </div>
               </>
             )}
-            {organisation.length === 0 && timingNotSet && (
+            {(organisation && organisation.length === 0) && timingNotSet && (
               <br />
             )}
             {timingNotSet && (
