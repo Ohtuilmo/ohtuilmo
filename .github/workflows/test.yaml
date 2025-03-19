@@ -65,7 +65,7 @@ jobs:
       - name: Setup Node.js for initializing db with backend's npm scripts
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
+          node-version: 20
 
       - name: Start db container
         run: docker compose -f compose.ci.yaml up db -d
