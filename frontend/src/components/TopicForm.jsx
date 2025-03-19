@@ -23,7 +23,7 @@ const TopicForm = (props) => {
 
   const organisation = props.content.organisation
 
-  const timingNotSet = !timing || (!timing.short && !timing.long && props.summerProject)
+  const timingNotSet = !timing || (timing && !timing.short && !timing.long && props.summerProject)
 
   return (
     <div className="topic-form">
