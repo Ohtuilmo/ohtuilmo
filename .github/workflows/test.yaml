@@ -6,6 +6,9 @@ on:
     - cron: "50 3 * * *"
   pull_request:
     types: [opened, synchronize]
+  push:
+    branches:
+      - main
 
 jobs:
   eslint:
