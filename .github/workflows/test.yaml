@@ -65,7 +65,7 @@ jobs:
       - name: Setup Node.js for initializing db with backend's npm scripts
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
 
       - name: Start db container
         run: docker compose -f compose.ci.yaml up db -d
@@ -82,6 +82,11 @@ jobs:
 
       - name: Start backend, frontend and nginx
         run: docker compose -f compose.ci.yaml up -d
+
+      - name: Setup Node.js for initializing db with backend's npm scripts
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
