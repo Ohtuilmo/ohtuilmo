@@ -46,7 +46,7 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
         <p className="title" style={{ paddingBottom: 7 }}>Contact email</p>
         <Typography variant="body1">{content.email}</Typography>
       </div>
-      {summer &&(
+      {summer && content.summerDates &&(
         <div className="block">
           <p className="title">Suitable timing</p>
           <ul>
