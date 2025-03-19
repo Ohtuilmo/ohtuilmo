@@ -8,7 +8,7 @@ import './TopicForm.css'
 
 const TopicForm = (props) => {
   const [agreement, setAgreement] = useState(false)
-  const  timing = props.content.summerDates
+  const timing = props.content.summerDates
 
   const boxStyle = {
     backgroundColor: agreement ? '' :'#f0f0f0',
@@ -22,8 +22,15 @@ const TopicForm = (props) => {
   }
 
   const organisation = props.content.organisation
-
   const timingNotSet = !timing || (timing && !timing.short && !timing.long && props.summerProject)
+
+  const periodChecked = (what) => {
+    if (!timing) {
+      return false
+    }
+    const value = timing[what]
+    return value
+  }
 
   return (
     <div className="topic-form">
@@ -107,19 +114,21 @@ const TopicForm = (props) => {
           </RadioGroup>
         </div>
 
-        {props.summerProject&&(
+        {props.summerProject && (
           <div style={{ marginTop: 35, marginBottom: 40 }}>
             Suitable timing / Sopiva ajankohta
             <div>
+              {timing && timing.short ? 'true' : 'false'}
               <Checkbox
-                checked={timing && timing.short}
+                checked={periodChecked('short')}
                 onChange={(e) => props.updateDates({ ...timing, short: e.target.checked })}
                 color="primary"
               /> the early summer project {props.dates.short}
             </div>
             <div>
+              {timing && timing.long ? 'true' : 'false'}
               <Checkbox
-                checked={timing && timing.long}
+                checked={periodChecked('long')}
                 onChange={(e) => props.updateDates({ ...timing, long: e.target.checked })}
                 color="primary"
               /> the whole summer project {props.dates.long}
