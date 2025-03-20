@@ -30,6 +30,7 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) 
       {!allowCretion && (
         <div className="topic-form-page-info-message">{topicMessage}</div>
       )}
+      <span style={{ margin: 10,  color: 'white' }} onClick={() => updateShowInfo(false)}>.</span>
     </div>
   )
 }
