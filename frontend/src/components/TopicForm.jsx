@@ -118,7 +118,6 @@ const TopicForm = (props) => {
           <div style={{ marginTop: 35, marginBottom: 40 }}>
             Suitable timing / Sopiva ajankohta
             <div>
-              {timing && timing.short ? 'true' : 'false'}
               <Checkbox
                 checked={periodChecked('short')}
                 onChange={(e) => props.updateDates({ ...timing, short: e.target.checked })}
@@ -126,7 +125,6 @@ const TopicForm = (props) => {
               /> the early summer project {props.dates.short}
             </div>
             <div>
-              {timing && timing.long ? 'true' : 'false'}
               <Checkbox
                 checked={periodChecked('long')}
                 onChange={(e) => props.updateDates({ ...timing, long: e.target.checked })}
