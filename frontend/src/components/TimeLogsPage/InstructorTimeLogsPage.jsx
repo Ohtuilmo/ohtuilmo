@@ -119,6 +119,7 @@ const InstructorTimeLogsPage = (props) => {
           newestGroupByInstructor.configurationId === configuration.id
       )
       setSelectedConfiguration(configurationByInstructor)
+      setSelectedGroup(newestGroupByInstructor)
     }
   }, [allConfigurations, allGroups])
 
