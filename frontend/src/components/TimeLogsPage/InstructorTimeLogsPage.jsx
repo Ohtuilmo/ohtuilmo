@@ -22,7 +22,8 @@ const InstructorTimeLogsPage = (props) => {
   const {
     selectedSprintNumber,
     setSelectedSprintNumber,
-    setGroupSprintSummary
+    setGroupSprintSummary,
+    user,
   } = props
 
   const [allConfigurations, setAllConfigurations] = useState([])
@@ -107,6 +108,19 @@ const InstructorTimeLogsPage = (props) => {
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+    if (allConfigurations.length > 0 && allGroups.length > 0) {
+      const newestGroupByInstructor = allGroups.findLast(
+        group => group.instructor === user.user.id
+      )
+      const configurationByInstructor = allConfigurations.find(
+        configuration =>
+          newestGroupByInstructor.configurationId === configuration.id
+      )
+      setSelectedConfiguration(configurationByInstructor)
+    }
+  }, [allConfigurations, allGroups])
 
   useEffect(() => {
     const fetchGroupSprintSummary = async (group_id) => {
@@ -220,6 +234,7 @@ const InstructorTimeLogsPage = (props) => {
 const mapStateToProps = (state) => ({
   state: state,
   selectedSprintNumber: state.timeLogs.selectedSprintNumber,
+  user: state.login.user,
 })
 
 const mapDispatchToProps = {
