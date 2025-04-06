@@ -5,8 +5,8 @@ import { Typography } from '@material-ui/core'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import './TopicFormPageInfo.css'
 
-const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) => {
-  const allowCretion = topicOpen && toggle
+const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo }) => {
+  const allowCretion = topicOpen
 
   return (
     <div className="topic-form-page-info">
@@ -36,7 +36,7 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) 
 
 const mapStateToProps = (state) => {
   return {
-    toggle: state &&state.login && state.login.user && state.login.user.user,
+    toggle: state && state.login && state.login.user && state.login.user.user,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage
   }
