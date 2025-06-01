@@ -111,8 +111,10 @@ const InstructorTimeLogsPage = (props) => {
 
   useEffect(() => {
     if (allConfigurations.length > 0 && allGroups.length > 0) {
-      const newestGroupByInstructor = allGroups.findLast(
-        group => group.instructor === user.user.id
+      const allGroupsInSortedOrder = [...allGroups] // clones the array
+      allGroupsInSortedOrder.sort((a, b) => a.id - b.id)
+      const newestGroupByInstructor = allGroupsInSortedOrder.findLast(
+        group => group.instructorId === user.user.student_number
       )
       const configurationByInstructor = allConfigurations.find(
         configuration =>
