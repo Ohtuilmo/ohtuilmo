@@ -173,6 +173,8 @@ const InstructorTimeLogsPage = (props) => {
   const isLogs = (logs) => logs && logs.length > 0
   const logsByStudent =
     isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudentNumber)
+  const logsBySelectedSprint =
+    isLogs(logsByStudent) && logsByStudent.filter((log) => log.sprint === selectedSprintNumber)
 
   if (isLoading) return <LoadingSpinner />
   return (
@@ -204,13 +206,12 @@ const InstructorTimeLogsPage = (props) => {
         )}
         </div>
         <div id='timelog-rows'>
-          {isLogs(logsByStudent) &&
-            logsByStudent.map((log) => (
-              <TimeLogRow
-                key={log.id}
-                log={log}
-              />
-            ))}
+          {isLogs(logsByStudent) && logsBySelectedSprint.map((log) => (
+            <TimeLogRow
+              key={log.id}
+              log={log}
+            />
+          ))}
           {!isLogs(logsByStudent) && (
             <p>No logs by the selected user.</p>
           )}
