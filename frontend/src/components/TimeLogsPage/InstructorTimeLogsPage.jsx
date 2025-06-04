@@ -211,7 +211,7 @@ const InstructorTimeLogsPage = (props) => {
             />
           ))}
           {!isLogs(logsByStudentAndSelectedSprint) && (
-            <p>No logs by the selected user.</p>
+            <p>No logs for the selected sprint.</p>
           )}
         </div>
       </div>
