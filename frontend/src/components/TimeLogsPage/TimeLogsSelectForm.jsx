@@ -32,6 +32,7 @@ export const TimeLogsSelectForm = ({
           handleGroupChange(null)
           handleStudentNumberChange(null)
         }}
+        MenuProps={{ style: { zIndex: 1600 } }}
       >
         {configurations.map((configuration) => (
           <MenuItem
@@ -62,6 +63,7 @@ export const TimeLogsSelectForm = ({
           handleGroupChange(e.target.value)
           handleStudentNumberChange(null)
         }}
+        MenuProps={{ style: { zIndex: 1600 } }}
       >
         {groups.filter(group => GroupIsInConfiguration(group, selectedConfiguration))
           .map((group) => (
@@ -94,6 +96,7 @@ export const TimeLogsSelectForm = ({
           handleStudentNumberChange(e.target.value)
         }}
         disabled={!selectedGroup}
+        MenuProps={{ style: { zIndex: 1600 } }}
       >
         {students.filter(student => StudentIsInGroup(student, selectedGroup))
           .map((student) => (
