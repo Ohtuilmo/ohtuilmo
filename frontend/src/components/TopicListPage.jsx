@@ -299,6 +299,11 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
             Suitable timing: {topic.content.summerDates.short && 'early summer'} {topic.content.summerDates.long && 'whole summer'}
           </p>
         )}
+        {topic.content.organisation === 'company' && (
+          <p>
+            Iprights: {topic.content.organisation && topic.content.ipRights ? topic.content.ipRights : 'Not specified'}
+          </p>
+        )}
       </TableCell>
       <TableCell padding="none">
         {topic.hasReviewed ? (
