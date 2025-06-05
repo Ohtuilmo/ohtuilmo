@@ -32,6 +32,14 @@ const TopicForm = (props) => {
     return value
   }
 
+  console.log(props.content)
+
+  const contract = props.content.organisation === 'company' ? 'https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/tree/master/sopimukset' : 'https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/tree/master/sopimukset'
+
+  const isCompany = props.content.organisation && props.content.organisation === 'company'
+
+  const iprNotSet = isCompany && props.content.ipRights === ''
+
   return (
     <div className="topic-form">
       <div className="preview-button">
@@ -114,6 +122,33 @@ const TopicForm = (props) => {
           </RadioGroup>
         </div>
 
+        {isCompany && (
+          <div style={{ marginTop: 35, marginBottom: 40 }}>
+            Intellectual property rights / Immateriaalioikeudet
+            <RadioGroup
+              aria-label="customer-organization"
+              name="customer-organization"
+              value={props.content.ipRights}
+              onChange={(e) => props.updateIp(e.target.value)}
+            >
+              <div>
+                <Radio
+                  checked={props.content.ipRights === 'open'}
+                  value="open"
+                />
+                Software is published under a open source license / Työ julkaistaan avoimella lisenssillä
+              </div>
+              <div>
+                <Radio
+                  checked={props.content.ipRights === 'nonopen'}
+                  value="nonopen"
+                />
+                The company holds all rights for the software / Yritykselle siirretään kaikki oikeudet tuotokseen
+              </div>
+            </RadioGroup>
+          </div>
+        )}
+
         {props.summerProject && (
           <div style={{ marginTop: 35, marginBottom: 40 }}>
             Suitable timing / Sopiva ajankohta
@@ -185,7 +220,7 @@ const TopicForm = (props) => {
           />
         </div>
 
-        {((organisation && organisation.length === 0) || timingNotSet) && (
+        {((organisation && organisation.length === 0) || timingNotSet || iprNotSet) && (
           <div style={boxStyle}>
             {organisation && organisation.length === 0 && (
               <>
@@ -203,16 +238,26 @@ const TopicForm = (props) => {
             {timingNotSet && (
               <>
                 <div style={{ padding: 10 }}>
-                Select the suitable timing for the project  from below the contact information
+                Select the suitable timing for the project from above
                 </div>
                 <div style={{ padding: 10 }}>
-                Valitse projektille sopiva ajankohta yhteystietojen alta
+                Valitse projektille sopiva ajankohta
+                </div>
+              </>
+            )}
+            {iprNotSet && (
+              <>
+                <div style={{ padding: 10 }}>
+                Select the type of intellectual property rights for the project from above
+                </div>
+                <div style={{ padding: 10 }}>
+                Valitse immateriaalioikeuksien tyyppi projektille
                 </div>
               </>
             )}
           </div>
         )}
-        {!timingNotSet && organisation !== 'company' && organisation !== '' && (
+        {!timingNotSet && organisation !== 'company' && organisation !== '' && !iprNotSet && (
           <div style={boxStyle}>
             <div style={{ marginTop: 10 }}>
               As a customer I promise to provide the group with the necessary information and resources for the project.
@@ -251,6 +296,23 @@ const TopicForm = (props) => {
             </div>
 
             <div>
+              IP Rights / Immateriaalioikeidet
+              <ul>
+                {props.content.ipRights === 'open' && (
+                  <li style={{ marginTop: 10 }}>
+                    Software is published under a open source license / Työ julkaistaan avoimella lisenssillä
+                  </li>
+                )}
+                {props.content.ipRights === 'nonopen' && (
+                  <li style={{ marginTop: 10 }}>
+                    The company holds all rights for the software / Yritykselle siirretään kaikki oikeudet tuotokseen
+                  </li>
+                )}
+                <li>See <a href={contract}>here</a> to see the contract / sopimus <a href={contract}>täällä</a> </li>
+              </ul>
+            </div>
+
+            <div>
               <div style={{ marginTop: 10 }}>
                 <Checkbox
                   checked={agreement}
@@ -268,7 +330,7 @@ const TopicForm = (props) => {
               type="submit"
               variant="contained"
               color="primary"
-              disabled={organisation === '' || !agreement}
+              disabled={organisation === '' || !agreement || iprNotSet}
             >
               {props.submitButtonText}
             </Button>

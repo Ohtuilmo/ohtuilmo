@@ -8,6 +8,7 @@ const initialState = {
     environment: '',
     specialRequests: '',
     additionalInfo: '',
+    ipRights: '', // ensure ipRights is always present
     summerDates: {
       short: false,
       long: false
@@ -53,6 +54,15 @@ const topicFormReducer = (state = initialState, action) => {
         organisation: action.payload
       }
     }
+  case 'UPDATE_IP_RIGHTS':
+    return {
+      ...state,
+      content: {
+        ...state.content,
+        ipRights: action.payload
+      }
+    }
+
   case 'UPDATE_DESCRIPTION':
     return {
       ...state,
@@ -103,7 +113,13 @@ const topicFormReducer = (state = initialState, action) => {
         description: '',
         environment: '',
         specialRequests: '',
-        additionalInfo: ''
+        additionalInfo: '',
+        ipRights: '',
+        organisation: '',
+        summerDates: {
+          short: false,
+          long: false
+        }
       }
     }
   case 'SET_CURRENT_TOPIC':
@@ -118,7 +134,8 @@ const topicFormReducer = (state = initialState, action) => {
         specialRequests: action.payload.specialRequests,
         additionalInfo: action.payload.additionalInfo,
         organisation: action.payload.organisation,
-        summerDates: action.payload.summerDates
+        summerDates: action.payload.summerDates,
+        ipRights: action.payload.ipRights
       }
     }
   case 'UPDATE_PREVIEW':

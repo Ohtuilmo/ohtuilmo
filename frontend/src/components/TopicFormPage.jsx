@@ -38,7 +38,7 @@ class TopicFormPage extends React.Component {
       return <Redirect to={'/topics/' + this.props.secretId} />
     }
 
-    if (this.props.showInfo) {
+    if (false && this.props.showInfo) {
       return <TopicFormPageInfo />
     }
 

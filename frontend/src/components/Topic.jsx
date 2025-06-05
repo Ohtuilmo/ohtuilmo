@@ -25,6 +25,8 @@ const Markdown = ({ children }) => (
 )
 
 const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration, summer, dates }) => {
+  const ipRights = content.ipRights === 'nonopen' ? 'The customer retains the intellectual property rights to the project.' : 'Software is published under a open source license'
+
   return (
     <div className="single-topic-container">
       <div className="block">
@@ -55,6 +57,11 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
           </ul>
         </div>
       )}
+      <div className="block">
+        <p className="title" style={{ paddingBottom: 7 }}>Intellectual property rights</p>
+        <Typography variant="body1">{ipRights}</Typography>
+      </div>
+
       <div className="block">
         <p className="title">Description</p>
         <Markdown>{content.description}</Markdown>

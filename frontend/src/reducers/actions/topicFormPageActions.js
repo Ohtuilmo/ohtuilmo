@@ -19,6 +19,14 @@ const updateOrganisation = (organisation) => {
   }
 }
 
+const updateIp = (rights) => {
+  console.log(rights)
+  return {
+    type: 'UPDATE_IP_RIGHTS',
+    payload: rights
+  }
+}
+
 const updateEmail = (email) => {
   return {
     type: 'UPDATE_EMAIL',
@@ -108,6 +116,7 @@ export default {
   updateEmail,
   updateOrganisation,
   updateDates,
+  updateIp,
   updateDescription,
   updateEnvironment,
   updateSpecialRequests,
