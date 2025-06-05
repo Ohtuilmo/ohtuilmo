@@ -36,14 +36,14 @@ const userIsInstructorForCurrentGroup = async (student_number) => {
 
 loginRouter.post('/', async (req, res) => {
   console.log('Login HEADERS', req.headers)
-  if (!req.headers.hypersonstudentid)
+  const student_number = req.headers.hypersonstudentid || req.headers.schacpersonaluniquecode
+
+  if (!student_number)
     return res
       .status(401)
       .set('Cache-Control', 'no-store')
       .json({ error: 'Student number missing from headers.' })
       .end()
-
-  const student_number = req.headers.hypersonstudentid
 
   db.User.findOne({
     where: { student_number },
