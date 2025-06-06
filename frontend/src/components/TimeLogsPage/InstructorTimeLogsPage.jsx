@@ -150,6 +150,38 @@ const InstructorTimeLogsPage = (props) => {
     selectedGroup?.id && fetchChartData(selectedGroup.id)
   }, [selectedGroup])
 
+  const handleMoveTimeLogToPreviousSprint = async (logId) => {
+    try {
+      const updatedLogs = await instructorTimeLogsService.moveTimeLogToPreviousSprint(logId)
+      setAllLogs(updatedLogs)
+      props.setSuccess('Time log moved to previous sprint successfully')
+    } catch (error) {
+      console.error(
+        'Error moving time log:',
+        error.message,
+        ' / ',
+        error.response.data.error
+      )
+      props.setError(error.response.data.error)
+    }
+  }
+
+  const handleMoveTimeLogToNextSprint = async (logId) => {
+    try {
+      const updatedLogs = await instructorTimeLogsService.moveTimeLogToNextSprint(logId)
+      setAllLogs(updatedLogs)
+      props.setSuccess('Time log moved to next sprint successfully')
+    } catch (error) {
+      console.error(
+        'Error moving time log:',
+        error.message,
+        ' / ',
+        error.response.data.error
+      )
+      props.setError(error.response.data.error)
+    }
+  }
+
   const previousSprint = [...possibleSprintNumbers]
   .reverse()
   .find((sprint) => sprint < selectedSprintNumber)
@@ -208,6 +240,8 @@ const InstructorTimeLogsPage = (props) => {
             <TimeLogRow
               key={log.id}
               log={log}
+              handleMoveToPreviousSprint={() => handleMoveTimeLogToPreviousSprint(log.id)}
+              handleMoveToNextSprint={() => handleMoveTimeLogToNextSprint(log.id)}
             />
           ))}
           {!isLogs(logsByStudentAndSelectedSprint) && (

@@ -3,12 +3,15 @@ import { minutesToFormattedHoursAndMinutes } from '../../utils/functions'
 import { DeleteOutlineRounded } from '@material-ui/icons'
 import { IconButton, Chip } from '@material-ui/core'
 import ConfirmationDialog from '../common/ConfirmationDialog'
+import Button from '@material-ui/core/Button'
 
 import './TimeLogsPage.css'
 
-export const TimeLogRow = ({ log, handleDelete }) => {
+export const TimeLogRow = ({ log, handleDelete, handleMoveToPreviousSprint, handleMoveToNextSprint }) => {
   const { hours, minutes } = minutesToFormattedHoursAndMinutes(log.minutes)
-  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
+  const [previousMoveConfirmOpen, setPreviousMoveConfirmOpen] = useState(false)
+  const [nextMoveConfirmOpen, setNextMoveConfirmOpen] = useState(false)
 
   const dateObj = new Date(log.date)
   const formattedDate = dateObj.toLocaleDateString('fi-FI', {
@@ -34,17 +37,51 @@ export const TimeLogRow = ({ log, handleDelete }) => {
           className="timelogs-remove-button"
           style={{ padding: '0 12px' }}
           disableRipple
-          onClick={() => setConfirmOpen(true)}
+          onClick={() => setDeleteConfirmOpen(true)}
         >
           <DeleteOutlineRounded />
         </IconButton>
         <ConfirmationDialog
           title="Delete Time Log?"
-          open={confirmOpen}
-          setOpen={setConfirmOpen}
+          open={deleteConfirmOpen}
+          setOpen={setDeleteConfirmOpen}
           onConfirm={handleDelete}
         >
           Delete this time log? It cannot be restored.
+        </ConfirmationDialog>
+        <Button
+          id={`timelog-move-button-previous-${log.id}`}
+          className="timelogs-move-button-previous"
+          style={{ padding: '0 12px' }}
+          disableRipple
+          onClick={() => setPreviousMoveConfirmOpen(true)}
+        >
+          Move to previous sprint
+        </Button>
+        <ConfirmationDialog
+          title="Move Time Log to previous sprint?"
+          open={previousMoveConfirmOpen}
+          setOpen={setPreviousMoveConfirmOpen}
+          onConfirm={handleMoveToPreviousSprint}
+        >
+          Move this time log to previos sprint?
+        </ConfirmationDialog>
+        <Button
+          id={`timelog-move-button-next-${log.id}`}
+          className="timelogs-move-button-next"
+          style={{ padding: '0 12px' }}
+          disableRipple
+          onClick={() => setNextMoveConfirmOpen(true)}
+        >
+          Move to next sprint
+        </Button>
+        <ConfirmationDialog
+          title="Move Time Log to next sprint?"
+          open={nextMoveConfirmOpen}
+          setOpen={setNextMoveConfirmOpen}
+          onConfirm={handleMoveToNextSprint}
+        >
+          Move this time log to next sprint?
         </ConfirmationDialog>
       </div>
       <div className="timelogs-tags-row">
