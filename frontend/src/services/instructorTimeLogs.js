@@ -16,4 +16,28 @@ const getTimeLogs = async () => {
   }
 }
 
-export default { getTimeLogs }
+const moveTimeLogToPreviousSprint = async (id) => {
+  try {
+    const response = await axios.patch(`${urlTimelogs}/${id}/moveToPrevious`, {}, {
+      headers: { Authorization: `Bearer ${getUserToken()}` }
+    })
+    return response.data
+  } catch (error) {
+    console.error('error in moveTimeLogToPreviousSprint', error.response.data.error)
+    throw error
+  }
+}
+
+const moveTimeLogToNextSprint = async (id) => {
+  try {
+    const response = await axios.patch(`${urlTimelogs}/${id}/moveToNext`, {}, {
+      headers: { Authorization: `Bearer ${getUserToken()}` }
+    })
+    return response.data
+  } catch (error) {
+    console.error('error in moveTimeLogToNextSprint', error.response.data.error)
+    throw error
+  }
+}
+
+export default { getTimeLogs, moveTimeLogToPreviousSprint, moveTimeLogToNextSprint }
