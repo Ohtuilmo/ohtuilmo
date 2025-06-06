@@ -260,12 +260,13 @@ const Review = ({ student, updateAnswer, index }) => {
 
   return (
     <div key={index}>
-      <h2 onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
-        {student.name.first_names + ' ' + student.name.last_name}
-        <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-          {visible ? <ExpandLess fontSize="large" /> : <ExpandMore fontSize="large" />}
-        </div>
-      </h2>
+      <div
+        onClick={() => setVisible(!visible)}
+        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+      >
+        <h2>{student.name.first_names + ' ' + student.name.last_name}</h2>
+        {visible ? <ExpandLess /> : <ExpandMore />}
+      </div>
       {
         visible &&
         <Questions
