@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { getUser } from '../utils/functions'
@@ -17,6 +17,8 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
 import instructorReviewService from '../services/instructorReview'
 
 class InstructorReviewPage extends React.Component {
@@ -252,17 +254,34 @@ const ConfigurationSelect = ({
     </Select>
   )
 }
-const Reviews = ({ answerSheet, updateAnswer }) => {
-  return answerSheet.map((student, index) => {
-    return (
-      <div key={index}>
-        <h1>{student.name.first_names + ' ' + student.name.last_name}</h1>
+
+const Review = ({ student, updateAnswer, index }) => {
+  const [visible, setVisible] = useState(false)
+
+  return (
+    <div key={index}>
+      <h2 onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
+        {student.name.first_names + ' ' + student.name.last_name}
+        <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+          {visible ? <ExpandLess fontSize="large" /> : <ExpandMore fontSize="large" />}
+        </div>
+      </h2>
+      {
+        visible &&
         <Questions
           studentAnswers={student.answers}
           updateAnswer={updateAnswer}
           userId={index}
         />
-      </div>
+      }
+    </div>
+  )
+}
+
+const Reviews = ({ answerSheet, updateAnswer }) => {
+  return answerSheet.map((student, index) => {
+    return (
+      <Review student={student} updateAnswer={updateAnswer} index={index} />
     )
   })
 }
