@@ -104,7 +104,8 @@ instructorTimeLogsRouter.patch('/:id/moveToPrevious', checkInstructor, async (re
     }
     timeLog.sprint_id = previousSprint.id
     await timeLog.save()
-    res.status(204).end()
+    const timeLogs = await fetchAllFromDb()
+    res.status(200).json(timeLogs)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching time logs.' })
   }
@@ -134,7 +135,8 @@ instructorTimeLogsRouter.patch('/:id/moveToNext', checkInstructor, async (req, r
     }
     timeLog.sprint_id = nextSprint.id
     await timeLog.save()
-    res.status(204).end()
+    const timeLogs = await fetchAllFromDb()
+    res.status(200).json(timeLogs)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching time logs.' })
   }
