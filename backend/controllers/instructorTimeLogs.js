@@ -80,4 +80,64 @@ instructorTimeLogsRouter.get('/', checkInstructor, async (req, res) => {
   }
 })
 
+instructorTimeLogsRouter.patch('/:id/moveToPrevious', checkInstructor, async (req, res) => {
+  const id = parseInt(req.params.id)
+  try {
+    const timeLog = await db.TimeLog.findOne({
+      where:{ id: id }
+    })
+    if (!timeLog) {
+      res
+        .status(404)
+        .json({ error: 'Time log not found or unauthorized to move' })
+    }
+    const currentSprint = await db.Sprint.findOne({
+      where:{ id: timeLog.sprint_id }
+    })
+    const previousSprint = await db.Sprint.findOne({
+      where:{ sprint: currentSprint.sprint - 1, group_id: currentSprint.group_id }
+    })
+    if (!previousSprint) {
+      res
+        .status(404)
+        .json({ error: 'Previous sprint not found' })
+    }
+    timeLog.sprint_id = previousSprint.id
+    await timeLog.save()
+    res.status(204).end()
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching time logs.' })
+  }
+})
+
+instructorTimeLogsRouter.patch('/:id/moveToNext', checkInstructor, async (req, res) => {
+  const id = parseInt(req.params.id)
+  try {
+    const timeLog = await db.TimeLog.findOne({
+      where:{ id: id }
+    })
+    if (!timeLog) {
+      res
+        .status(404)
+        .json({ error: 'Time log not found or unauthorized to move' })
+    }
+    const currentSprint = await db.Sprint.findOne({
+      where:{ id: timeLog.sprint_id }
+    })
+    const nextSprint = await db.Sprint.findOne({
+      where:{ sprint: currentSprint.sprint + 1, group_id: currentSprint.group_id }
+    })
+    if (!nextSprint) {
+      res
+        .status(404)
+        .json({ error: 'Next sprint not found' })
+    }
+    timeLog.sprint_id = nextSprint.id
+    await timeLog.save()
+    res.status(204).end()
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching time logs.' })
+  }
+})
+
 module.exports = instructorTimeLogsRouter
