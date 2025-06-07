@@ -242,6 +242,7 @@ const InstructorTimeLogsPage = (props) => {
               log={log}
               handleMoveToPreviousSprint={() => handleMoveTimeLogToPreviousSprint(log.id)}
               handleMoveToNextSprint={() => handleMoveTimeLogToNextSprint(log.id)}
+              role={'instructor'}
             />
           ))}
           {!isLogs(logsByStudentAndSelectedSprint) && (
