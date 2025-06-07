@@ -37,7 +37,7 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) 
 
 const mapStateToProps = (state) => {
   return {
-    toggle: state &&state.login && state.login.user && state.login.user.user && state.login.user.user.username === 'mluukkai',
+    toggle: state && state.login && state.login.user && state.login.user.user && state.login.user.user.username === 'mluukkai',
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage
   }
