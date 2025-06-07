@@ -276,7 +276,7 @@ const TopicForm = (props) => {
             </div>
           </div>
         )}
-        {!timingNotSet && organisation === 'company' && (
+        {!timingNotSet && organisation === 'company' && !iprNotSet && (
           <div style={boxStyle}>
             <div style={{ marginTop: 10 }}>
               If the project is selected for implementation
