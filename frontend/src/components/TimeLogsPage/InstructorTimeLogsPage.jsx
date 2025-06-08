@@ -6,8 +6,10 @@ import { TimeLogRow } from './TimeLogRow'
 import TimeLogChart from './TimeLogChart'
 import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintSelect } from './SprintSelect'
+import ConfirmationDialog from '../common/ConfirmationDialog'
 
 import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 
 import userService from '../../services/user'
 import configurationService from '../../services/configuration'
@@ -33,6 +35,9 @@ const InstructorTimeLogsPage = (props) => {
   const [allStudents, setAllStudents] = useState([])
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
   const [allLogs, setAllLogs] = useState(null)
+  const [checkedTimeLogs, setCheckedTimeLogs] = useState([])
+  const [previousMoveConfirmOpen, setPreviousMoveConfirmOpen] = useState(false)
+  const [nextMoveConfirmOpen, setNextMoveConfirmOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
   const possibleSprintNumbers = Array.from({length: 101}, (_, i) => i)
@@ -150,35 +155,55 @@ const InstructorTimeLogsPage = (props) => {
     selectedGroup?.id && fetchChartData(selectedGroup.id)
   }, [selectedGroup])
 
+  useEffect(() => {
+    setCheckedTimeLogs(checkedTimeLogs)
+  }, [checkedTimeLogs, setCheckedTimeLogs])
+
+  const handleTimeLogCheck = (logId) => {
+    setCheckedTimeLogs((prevChecked) => (
+      prevChecked.includes(logId) ? prevChecked.filter(id => id !== logId) : [...prevChecked, logId]
+    ))
+  }
+
   const handleMoveTimeLogToPreviousSprint = async (logId) => {
-    try {
-      const updatedLogs = await instructorTimeLogsService.moveTimeLogToPreviousSprint(logId)
-      setAllLogs(updatedLogs)
-      props.setSuccess('Time log moved to previous sprint successfully')
-    } catch (error) {
-      console.error(
-        'Error moving time log:',
-        error.message,
-        ' / ',
-        error.response.data.error
-      )
-      props.setError(error.response.data.error)
+    if (checkedTimeLogs.length > 0) {
+      for (logId in checkedTimeLogs) {
+        try {
+          const updatedLogs = await instructorTimeLogsService.moveTimeLogToPreviousSprint(checkedTimeLogs[logId])
+          setAllLogs(updatedLogs)
+          props.setSuccess('Time log moved to previous sprint successfully')
+          setCheckedTimeLogs([])
+        } catch (error) {
+          console.error(
+            'Error moving time log:',
+            error.message,
+            ' / ',
+            error.response.data.error
+          )
+          props.setError(error.response.data.error)
+        }
+      }
     }
   }
 
   const handleMoveTimeLogToNextSprint = async (logId) => {
-    try {
-      const updatedLogs = await instructorTimeLogsService.moveTimeLogToNextSprint(logId)
-      setAllLogs(updatedLogs)
-      props.setSuccess('Time log moved to next sprint successfully')
-    } catch (error) {
-      console.error(
-        'Error moving time log:',
-        error.message,
-        ' / ',
-        error.response.data.error
-      )
-      props.setError(error.response.data.error)
+    if (checkedTimeLogs.length > 0) {
+      for (logId in checkedTimeLogs) {
+        try {
+          const updatedLogs = await instructorTimeLogsService.moveTimeLogToNextSprint(checkedTimeLogs[logId])
+          setAllLogs(updatedLogs)
+          props.setSuccess('Time log moved to next sprint successfully')
+          setCheckedTimeLogs([])
+        } catch (error) {
+          console.error(
+            'Error moving time log:',
+            error.message,
+            ' / ',
+            error.response.data.error
+          )
+          props.setError(error.response.data.error)
+        }
+      }
     }
   }
 
@@ -236,13 +261,58 @@ const InstructorTimeLogsPage = (props) => {
         )}
         </div>
         <div id='timelog-rows'>
+          {isLogs(logsByStudentAndSelectedSprint) && (
+            <div>
+              <span className='text' style={{ padding: '0 12px 0 0' }}>
+                Move selected logs to
+              </span>
+              <Button
+               variant="outlined"
+               size="small"
+               id={`timelog-move-button-previous`}
+               className="timelog-move-button"
+               style={{ padding: '0 12px', marginRight: '12px' }}
+               disableRipple
+               onClick={() => setPreviousMoveConfirmOpen(true)}
+              >
+               previous sprint
+              </Button>
+              <ConfirmationDialog
+               title="Move Selected Time Logs to previous sprint?"
+               open={previousMoveConfirmOpen}
+               setOpen={setPreviousMoveConfirmOpen}
+               onConfirm={() => handleMoveTimeLogToPreviousSprint()}
+              >
+               Move selected time logs to previous sprint?
+              </ConfirmationDialog>
+              <Button
+               variant="outlined"
+               size="small"
+               id={`timelog-move-button-next`}
+               className="timelog-move-button"
+               style={{ padding: '0 12px' }}
+               disableRipple
+               onClick={() => setNextMoveConfirmOpen(true)}
+              >
+                next sprint
+              </Button>
+              <ConfirmationDialog
+               title="Move Selected Time Logs to next sprint?"
+               open={nextMoveConfirmOpen}
+               setOpen={setNextMoveConfirmOpen}
+               onConfirm={() => handleMoveTimeLogToNextSprint()}
+              >
+                Move selected time logs to next sprint?
+              </ConfirmationDialog>
+            </div>
+          )}
           {isLogs(logsByStudentAndSelectedSprint) && logsByStudentAndSelectedSprint.map((log) => (
             <TimeLogRow
               key={log.id}
               log={log}
-              handleMoveToPreviousSprint={() => handleMoveTimeLogToPreviousSprint(log.id)}
-              handleMoveToNextSprint={() => handleMoveTimeLogToNextSprint(log.id)}
-              role={'instructor'}
+              handleTimeLogCheck={() => handleTimeLogCheck(log.id)}
+              isChecked={checkedTimeLogs.includes(log.id)}
+              user={user.user}
             />
           ))}
           {!isLogs(logsByStudentAndSelectedSprint) && (
