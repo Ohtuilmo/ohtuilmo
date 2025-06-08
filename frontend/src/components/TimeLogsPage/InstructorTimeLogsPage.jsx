@@ -171,7 +171,7 @@ const InstructorTimeLogsPage = (props) => {
         try {
           const updatedLogs = await instructorTimeLogsService.moveTimeLogToPreviousSprint(checkedTimeLogs[logId])
           setAllLogs(updatedLogs)
-          props.setSuccess('Time log moved to previous sprint successfully')
+          props.setSuccess('Selected time logs moved to previous sprint successfully')
           setCheckedTimeLogs([])
         } catch (error) {
           console.error(
@@ -184,6 +184,9 @@ const InstructorTimeLogsPage = (props) => {
         }
       }
     }
+    else {
+      props.setError('No time logs selected')
+    }
   }
 
   const handleMoveTimeLogToNextSprint = async (logId) => {
@@ -192,7 +195,7 @@ const InstructorTimeLogsPage = (props) => {
         try {
           const updatedLogs = await instructorTimeLogsService.moveTimeLogToNextSprint(checkedTimeLogs[logId])
           setAllLogs(updatedLogs)
-          props.setSuccess('Time log moved to next sprint successfully')
+          props.setSuccess('Selected time logs moved to next sprint successfully')
           setCheckedTimeLogs([])
         } catch (error) {
           console.error(
@@ -204,6 +207,9 @@ const InstructorTimeLogsPage = (props) => {
           props.setError(error.response.data.error)
         }
       }
+    }
+    else {
+      props.setError('No time logs selected')
     }
   }
 
