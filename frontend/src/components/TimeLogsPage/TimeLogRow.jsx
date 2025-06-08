@@ -22,7 +22,7 @@ export const TimeLogRow = ({ log, handleDelete, handleTimeLogCheck, isChecked, u
     <div className="timelogs-row-container">
       <div className="timelogs-table-row">
         {user.instructor && (
-          <Checkbox 
+          <Checkbox
             id={`timelog-checkbox-${log.id}`}
             checked={isChecked}
             onChange={handleTimeLogCheck}

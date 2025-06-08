@@ -40,7 +40,7 @@ const InstructorTimeLogsPage = (props) => {
   const [moveToNextSprintConfirmOpen, setMoveToNextSprintConfirmOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
-  const possibleSprintNumbers = Array.from({length: 101}, (_, i) => i)
+  const possibleSprintNumbers = Array.from({ length: 101 }, (_, i) => i)
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -214,8 +214,8 @@ const InstructorTimeLogsPage = (props) => {
   }
 
   const previousSprint = [...possibleSprintNumbers]
-  .reverse()
-  .find((sprint) => sprint < selectedSprintNumber)
+    .reverse()
+    .find((sprint) => sprint < selectedSprintNumber)
 
   const nextSprint = possibleSprintNumbers.find(
     (sprint) => sprint > selectedSprintNumber
@@ -273,40 +273,40 @@ const InstructorTimeLogsPage = (props) => {
                 Move selected logs to
               </span>
               <Button
-               variant="outlined"
-               size="small"
-               id={`timelog-move-button-previous`}
-               className="timelog-move-button"
-               style={{ padding: '0 12px', marginRight: '12px' }}
-               disableRipple
-               onClick={() => setMoveToPreviousSprintConfirmOpen(true)}
+                variant="outlined"
+                size="small"
+                id={'timelog-move-button-previous'}
+                className="timelog-move-button"
+                style={{ padding: '0 12px', marginRight: '12px' }}
+                disableRipple
+                nClick={() => setMoveToPreviousSprintConfirmOpen(true)}
               >
                previous sprint
               </Button>
               <ConfirmationDialog
-               title="Move Selected Time Logs To Previous Sprint?"
-               open={moveToPreviousSprintConfirmOpen}
-               setOpen={setMoveToPreviousSprintConfirmOpen}
-               onConfirm={() => handleMoveTimeLogToPreviousSprint()}
+                title="Move Selected Time Logs To Previous Sprint?"
+                open={moveToPreviousSprintConfirmOpen}
+                setOpen={setMoveToPreviousSprintConfirmOpen}
+                onConfirm={() => handleMoveTimeLogToPreviousSprint()}
               >
                Move selected time logs to previous sprint?
               </ConfirmationDialog>
               <Button
-               variant="outlined"
-               size="small"
-               id={`timelog-move-button-next`}
-               className="timelog-move-button"
-               style={{ padding: '0 12px' }}
-               disableRipple
-               onClick={() => setMoveToNextSprintConfirmOpen(true)}
+                variant="outlined"
+                size="small"
+                id={'timelog-move-button-next'}
+                className="timelog-move-button"
+                style={{ padding: '0 12px' }}
+                disableRipple
+                onClick={() => setMoveToNextSprintConfirmOpen(true)}
               >
                 next sprint
               </Button>
               <ConfirmationDialog
-               title="Move Selected Time Logs To Next Sprint?"
-               open={moveToNextSprintConfirmOpen}
-               setOpen={setMoveToNextSprintConfirmOpen}
-               onConfirm={() => handleMoveTimeLogToNextSprint()}
+                title="Move Selected Time Logs To Next Sprint?"
+                open={moveToNextSprintConfirmOpen}
+                setOpen={setMoveToNextSprintConfirmOpen}
+                onConfirm={() => handleMoveTimeLogToNextSprint()}
               >
                 Move selected time logs to next sprint?
               </ConfirmationDialog>
@@ -340,7 +340,7 @@ const InstructorTimeLogsPage = (props) => {
           </div>
         }
       </div>
-  </div>
+    </div>
   )
 }
 
