@@ -279,7 +279,7 @@ const InstructorTimeLogsPage = (props) => {
                 className="timelog-move-button"
                 style={{ padding: '0 12px', marginRight: '12px' }}
                 disableRipple
-                nClick={() => setMoveToPreviousSprintConfirmOpen(true)}
+                onClick={() => setMoveToPreviousSprintConfirmOpen(true)}
               >
                previous sprint
               </Button>
