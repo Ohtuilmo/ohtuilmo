@@ -32,7 +32,7 @@ const TopicForm = (props) => {
     return value
   }
 
-  console.log(props.content)
+  //console.log(props.content)
 
   const contract = props.content.organisation === 'company' ? 'https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/tree/master/sopimukset' : 'https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/tree/master/sopimukset'
 
@@ -276,7 +276,7 @@ const TopicForm = (props) => {
             </div>
           </div>
         )}
-        {!timingNotSet && organisation === 'company' && (
+        {!timingNotSet && organisation === 'company' && !iprNotSet && (
           <div style={boxStyle}>
             <div style={{ marginTop: 10 }}>
               If the project is selected for implementation

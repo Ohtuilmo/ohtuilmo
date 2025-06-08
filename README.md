@@ -18,15 +18,11 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 ### How to start development
 
-1.  Make sure you have docker, docker-compose and nvm installed.
+1.  Make sure you have docker and docker-compose installed.
 
 2.  Clone this repository to your computer.
 
-3.  Run `nvm use && npm i` in both in backend and frontend folders.
-
-    - If you get error "Version x is not yet installed", you can install required node version by simply giving command `nvm install` and then try again.
-
-4.  Run `docker compose up` in any folder inside cloned repository to start development containers.
+3.  Run `docker compose up` in any folder inside cloned repository to start development containers.
 
     - It will start 4 containers:
 
@@ -37,17 +33,15 @@ Registration, administration and review tool for University of Helsinki's softwa
       | frontend  | 3000 |
       | adminer   | 8083 |
 
-5.  When you are done, close containers from the active console with shortcut `CTRL+C` or from other console with command `docker compose down`.
+4.  When you are done, close containers from the active console with shortcut `CTRL+C` or from other console with command `docker compose down`.
 
 ### When there is change in dependencies
 
-If frontend or backend dependencies change, ie. there is change in frontend or backend package.json file, you need to install dependencies again locally and rebuild containers:
+If frontend or backend dependencies change, ie. there is change in frontend or backend package.json file, you need to rebuild containers:
 
 1. Remove dev containers with command `docker compose down`
 
-2. Run `nvm use && npm i` in frontend or backend folder or in both if both has had changes for dependencies.
-
-3. Rebuild dev containers with `docker compose up --build`
+2. Rebuild dev containers with `docker compose up --build`
 
 ### How to restore database to its initial state
 
