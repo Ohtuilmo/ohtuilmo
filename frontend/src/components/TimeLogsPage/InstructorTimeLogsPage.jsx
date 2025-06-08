@@ -36,8 +36,8 @@ const InstructorTimeLogsPage = (props) => {
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
   const [allLogs, setAllLogs] = useState(null)
   const [checkedTimeLogs, setCheckedTimeLogs] = useState([])
-  const [previousMoveConfirmOpen, setPreviousMoveConfirmOpen] = useState(false)
-  const [nextMoveConfirmOpen, setNextMoveConfirmOpen] = useState(false)
+  const [moveToPreviousSprintConfirmOpen, setMoveToPreviousSprintConfirmOpen] = useState(false)
+  const [moveToNextSprintConfirmOpen, setMoveToNextSprintConfirmOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
   const possibleSprintNumbers = Array.from({length: 101}, (_, i) => i)
@@ -248,17 +248,17 @@ const InstructorTimeLogsPage = (props) => {
             handleStudentNumberChange={setSelectedStudentNumber}
           />
           {selectedGroup && (
-          <div>
-            <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
-            <SprintSelect
-              sprintNumber={selectedSprintNumber}
-              handleClickNextSprint={handleClickNextSprint}
-              handleClickPreviousSprint={handleClickPreviousSprint}
-              nextSprintButtonDisabled={nextSprint === undefined}
-              previousSprintButtonDisabled={previousSprint === undefined}
-            />
-          </div>
-        )}
+            <div>
+              <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
+              <SprintSelect
+                sprintNumber={selectedSprintNumber}
+                handleClickNextSprint={handleClickNextSprint}
+                handleClickPreviousSprint={handleClickPreviousSprint}
+                nextSprintButtonDisabled={nextSprint === undefined}
+                previousSprintButtonDisabled={previousSprint === undefined}
+              />
+            </div>
+          )}
         </div>
         <div id='timelog-rows'>
           {isLogs(logsByStudentAndSelectedSprint) && (
@@ -273,14 +273,14 @@ const InstructorTimeLogsPage = (props) => {
                className="timelog-move-button"
                style={{ padding: '0 12px', marginRight: '12px' }}
                disableRipple
-               onClick={() => setPreviousMoveConfirmOpen(true)}
+               onClick={() => setMoveToPreviousSprintConfirmOpen(true)}
               >
                previous sprint
               </Button>
               <ConfirmationDialog
-               title="Move Selected Time Logs to previous sprint?"
-               open={previousMoveConfirmOpen}
-               setOpen={setPreviousMoveConfirmOpen}
+               title="Move Selected Time Logs To Previous Sprint?"
+               open={moveToPreviousSprintConfirmOpen}
+               setOpen={setMoveToPreviousSprintConfirmOpen}
                onConfirm={() => handleMoveTimeLogToPreviousSprint()}
               >
                Move selected time logs to previous sprint?
@@ -292,14 +292,14 @@ const InstructorTimeLogsPage = (props) => {
                className="timelog-move-button"
                style={{ padding: '0 12px' }}
                disableRipple
-               onClick={() => setNextMoveConfirmOpen(true)}
+               onClick={() => setMoveToNextSprintConfirmOpen(true)}
               >
                 next sprint
               </Button>
               <ConfirmationDialog
-               title="Move Selected Time Logs to next sprint?"
-               open={nextMoveConfirmOpen}
-               setOpen={setNextMoveConfirmOpen}
+               title="Move Selected Time Logs To Next Sprint?"
+               open={moveToNextSprintConfirmOpen}
+               setOpen={setMoveToNextSprintConfirmOpen}
                onConfirm={() => handleMoveTimeLogToNextSprint()}
               >
                 Move selected time logs to next sprint?
@@ -332,7 +332,7 @@ const InstructorTimeLogsPage = (props) => {
               <TimeLogChart chartVariant='total' />
             </div>
           </div>
-          }
+        }
       </div>
   </div>
   )

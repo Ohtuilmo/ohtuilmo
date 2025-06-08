@@ -37,23 +37,23 @@ export const TimeLogRow = ({ log, handleDelete, handleTimeLogCheck, isChecked, u
         <div className="timelogs-description">
           <p>{log.description}</p>
         </div>
-          <IconButton
-            id={`timelog-remove-button-${log.id}`}
-            className="timelogs-remove-button"
-            style={{ padding: '0 12px' }}
-            disableRipple
-            onClick={() => setDeleteConfirmOpen(true)}
-          >
-            <DeleteOutlineRounded />
-          </IconButton>
-          <ConfirmationDialog
-            title="Delete Time Log?"
-            open={deleteConfirmOpen}
-            setOpen={setDeleteConfirmOpen}
-            onConfirm={handleDelete}
-          >
-            Delete this time log? It cannot be restored.
-          </ConfirmationDialog>
+        <IconButton
+          id={`timelog-remove-button-${log.id}`}
+          className="timelogs-remove-button"
+          style={{ padding: '0 12px' }}
+          disableRipple
+          onClick={() => setDeleteConfirmOpen(true)}
+        >
+          <DeleteOutlineRounded />
+        </IconButton>
+        <ConfirmationDialog
+          title="Delete Time Log?"
+          open={deleteConfirmOpen}
+          setOpen={setDeleteConfirmOpen}
+          onConfirm={handleDelete}
+        >
+          Delete this time log? It cannot be restored.
+        </ConfirmationDialog>
       </div>
       <div className="timelogs-tags-row">
         {log.tags.map((tag) => (
