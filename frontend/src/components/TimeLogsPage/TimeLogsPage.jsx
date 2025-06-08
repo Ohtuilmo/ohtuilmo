@@ -238,7 +238,7 @@ const TimeLogsPage = (props) => {
                   key={log.id}
                   log={log}
                   handleDelete={() => handleDelete(log.id)}
-                  role={'student'}
+                  user={user}
                 />
               ))}
             {!isLogs(logsBySprint) && allSprints.length > 0 && (
