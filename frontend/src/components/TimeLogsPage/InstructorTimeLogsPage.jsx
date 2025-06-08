@@ -284,7 +284,7 @@ const InstructorTimeLogsPage = (props) => {
                previous sprint
               </Button>
               <ConfirmationDialog
-                title="Move Selected Time Logs To Previous Sprint?"
+                title="Move Time Logs?"
                 open={moveToPreviousSprintConfirmOpen}
                 setOpen={setMoveToPreviousSprintConfirmOpen}
                 onConfirm={() => handleMoveTimeLogToPreviousSprint()}
@@ -303,7 +303,7 @@ const InstructorTimeLogsPage = (props) => {
                 next sprint
               </Button>
               <ConfirmationDialog
-                title="Move Selected Time Logs To Next Sprint?"
+                title="Move Time Logs?"
                 open={moveToNextSprintConfirmOpen}
                 setOpen={setMoveToNextSprintConfirmOpen}
                 onConfirm={() => handleMoveTimeLogToNextSprint()}
