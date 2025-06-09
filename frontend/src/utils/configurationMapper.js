@@ -30,8 +30,14 @@ const mapSemesterField = (content) => {
       break
     }
   }
-  parts[1] = content.match(yearPattern)[0]
-  return `${parts[1]} ${parts[0]}`
+
+  try {
+    parts[1] = content.match(yearPattern)[0]
+    return `${parts[1]} ${parts[0]}`
+  } catch (e) {
+    console.error('Error extracting year from content:', e)
+    return content
+  }
 }
 
 export default mapSemesterField

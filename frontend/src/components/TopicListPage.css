@@ -42,6 +42,16 @@
   vertical-align: baseline;
 }
 
+.topic-table-row-accepted > td {
+  vertical-align: baseline;
+  background-color: #F6F7F2;
+}
+
+.topic-table-row-rejected > td {
+  vertical-align: baseline;
+  background-color: #fff9f9;
+}
+
 .topics-filter-container {
   display: flex;
   flex-direction: row;

@@ -274,9 +274,19 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
 
   const isSummer = topic.content.summerDates && (topic.content.summerDates.short || topic.content.summerDates.long)
 
+  const className = () => {
+    if (hasAcceptMailBeenSent) {
+      return 'topic-table-row-accepted'
+    } else if (hasRejectMailBeenSent) {
+      return 'topic-table-row-rejected'
+    }
+
+    return 'topic-table-row'
+  }
+
   return (
     <TableRow
-      className="topic-table-row"
+      className={className()}
       data-cy-topic-name={topic.content.title}
     >
       <TableCell padding="dense">
@@ -299,11 +309,14 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
             Suitable timing: {topic.content.summerDates.short && 'early summer'} {topic.content.summerDates.long && 'whole summer'}
           </p>
         )}
-        {topic.content.organisation === 'company' && (
-          <p>
-            Iprights: {topic.content.organisation && topic.content.ipRights ? topic.content.ipRights : 'Not specified'}
-          </p>
-        )}
+        <p>
+          {topic.content.organisation}
+          {topic.content.organisation === 'company' && (
+            <span style={{ marginLeft: 10 }}>
+              Iprights: {topic.content.organisation && topic.content.ipRights ? topic.content.ipRights : 'Not specified'}
+            </span>
+          )}
+        </p>
       </TableCell>
       <TableCell padding="none">
         {topic.hasReviewed ? (
