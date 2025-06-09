@@ -45,7 +45,7 @@ const deleteTimeLog = async (id) => {
     })
     return response.data
   } catch (error) {
-    console.error('error in deleteTimeLog', error.response.data.error)
+    console.error('error in deleteTimeLog', error.response.data)
     throw error
   }
 }

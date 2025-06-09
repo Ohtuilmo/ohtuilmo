@@ -190,13 +190,7 @@ const InstructorTimeLogsPage = (props) => {
       setAllLogs(updatedLogs)
       props.setSuccess('Time log deleted successfully')
     } catch (error) {
-      console.error(
-        'Error deleting time log:',
-        error.message,
-        ' / ',
-        error.response.data.error
-      )
-      props.setError(error.response.data.error)
+      props.setError('Error deleting time log')
     }
   }
 
