@@ -155,10 +155,6 @@ const InstructorTimeLogsPage = (props) => {
     selectedGroup?.id && fetchChartData(selectedGroup.id)
   }, [selectedGroup])
 
-  useEffect(() => {
-    setCheckedTimeLogs(checkedTimeLogs)
-  }, [checkedTimeLogs, setCheckedTimeLogs])
-
   const handleTimeLogCheck = (logId) => {
     setCheckedTimeLogs((prevChecked) => (
       prevChecked.includes(logId) ? prevChecked.filter(id => id !== logId) : [...prevChecked, logId]
