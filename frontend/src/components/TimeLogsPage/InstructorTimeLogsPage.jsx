@@ -184,6 +184,16 @@ const InstructorTimeLogsPage = (props) => {
     }
   }
 
+  const handleDelete = async (logId) => {
+    try {
+      const updatedLogs = await instructorTimeLogsService.deleteTimeLog(logId)
+      setAllLogs(updatedLogs)
+      props.setSuccess('Time log deleted successfully')
+    } catch (error) {
+      props.setError('Error deleting time log')
+    }
+  }
+
   const previousSprint = [...possibleSprintNumbers]
     .reverse()
     .find((sprint) => sprint < selectedSprintNumber)
@@ -294,6 +304,7 @@ const InstructorTimeLogsPage = (props) => {
             <TimeLogRow
               key={log.id}
               log={log}
+              handleDelete={() => handleDelete(log.id)}
               handleTimeLogCheck={() => handleTimeLogCheck(log.id)}
               isChecked={checkedTimeLogs.includes(log.id)}
               user={user.user}

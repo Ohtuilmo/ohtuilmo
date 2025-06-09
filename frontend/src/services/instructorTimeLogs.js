@@ -38,4 +38,16 @@ const moveTimeLog = async (direction, id) => {
   }
 }
 
-export default { getTimeLogs, moveTimeLog }
+const deleteTimeLog = async (id) => {
+  try {
+    const response = await axios.delete(`${urlTimelogs}/${id}`, {
+      headers: { Authorization: `Bearer ${getUserToken()}` }
+    })
+    return response.data
+  } catch (error) {
+    console.error('error in deleteTimeLog', error.response.data)
+    throw error
+  }
+}
+
+export default { getTimeLogs, moveTimeLog, deleteTimeLog }
