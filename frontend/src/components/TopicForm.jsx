@@ -319,7 +319,7 @@ const TopicForm = (props) => {
                   onChange={(e) => setAgreement(e.target.checked)}
                   color="primary"
                 />
-                I agree to the above / sitoudun ylläolevaan
+                I agree to the above and have read the contract / sitoudun ylläolevaan ja olen lukenut sopimuksen
               </div>
             </div>
           </div>
