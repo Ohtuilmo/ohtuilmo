@@ -82,3 +82,16 @@ Development setup includes database management tool called Adminer. With Adminer
 - Username: postgres
 - Password: postgres
 - Database: postgres
+
+## Staging
+
+<https://toska-staging.cs.helsinki.fi/projekti/>
+
+Users
+
+| user | pwd |
+| --------- | ---- |
+| oppilas1       | oppilas1 |
+| oppilas2   | oppilas2 |
+| assari | assari |
+| opettaja  | opettaja |
