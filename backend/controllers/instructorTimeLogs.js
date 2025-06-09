@@ -130,4 +130,24 @@ const moveTimeLogToSprint = (direction) => (async (req, res) => {
 instructorTimeLogsRouter.patch('/:id/moveToPrevious', checkInstructor, moveTimeLogToSprint('previous'))
 instructorTimeLogsRouter.patch('/:id/moveToNext', checkInstructor, moveTimeLogToSprint('next'))
 
+instructorTimeLogsRouter.delete('/:id', checkInstructor, async (req, res) => {
+  const id = parseInt(req.params.id)
+  try {
+    const timeLog = await db.TimeLog.findOne({
+      where: { id: id },
+    })
+    if (!timeLog) {
+      res
+        .status(404)
+        .json({ error: 'Time log not found' })
+    }
+    await db.TimeLog.destroy({ where: { id: id } })
+    const timeLogs = await fetchAllFromDb()
+    res.status(200).json(timeLogs)
+  } catch (error) {
+    console.error('Error deleting time log:', error)
+    res.status(500).send(`${error.name}: ${error.message}`)
+  }
+})
+
 module.exports = instructorTimeLogsRouter
