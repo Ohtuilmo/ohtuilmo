@@ -143,7 +143,7 @@ const TopicForm = (props) => {
                   checked={props.content.ipRights === 'nonopen'}
                   value="nonopen"
                 />
-                The company holds all rights for the software / Yritykselle siirretään kaikki oikeudet tuotokseen
+                All rights to the outcome are transferred to the company / Yritykselle siirretään kaikki oikeudet tuotokseen
               </div>
             </RadioGroup>
           </div>
@@ -305,7 +305,7 @@ const TopicForm = (props) => {
                 )}
                 {props.content.ipRights === 'nonopen' && (
                   <li style={{ marginTop: 10 }}>
-                    The company holds all rights for the software / Yritykselle siirretään kaikki oikeudet tuotokseen
+                    All rights to the outcome are transferred to the company / Yritykselle siirretään kaikki oikeudet tuotokseen
                   </li>
                 )}
                 <li>See <a href={contract}>here</a> to see the contract / sopimus <a href={contract}>täällä</a> </li>

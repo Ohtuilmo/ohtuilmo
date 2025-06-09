@@ -226,6 +226,7 @@ const InstructorTimeLogsPage = (props) => {
     isLogs(allLogs) && allLogs.filter((log) => log.studentNumber === selectedStudentNumber && log.sprint === selectedSprintNumber)
 
   if (isLoading) return <LoadingSpinner />
+
   return (
     <div className='timelogs-responsive-grid'>
       <div id='timelogs-container-1'>
@@ -255,9 +256,9 @@ const InstructorTimeLogsPage = (props) => {
           )}
         </div>
         <div id='timelog-rows'>
-          {isLogs(logsByStudentAndSelectedSprint) && (
-            <div>
-              <span className='text' style={{ padding: '0 12px 0 0' }}>
+          {isLogs(logsByStudentAndSelectedSprint) && checkedTimeLogs.length>0 && (
+            <div style={{ paddingTop: 25, paddingBottom: 25 }}>
+              <span className='text' style={{ paddingRight: 12 }}>
                 Move selected logs to
               </span>
               <Button
