@@ -221,12 +221,19 @@ const InstructorTimeLogsPage = (props) => {
     setSelectedSprintNumber(
       nextSprint !== undefined ? nextSprint : selectedSprintNumber
     )
+    setCheckedTimeLogs([])
   }
 
   const handleClickPreviousSprint = () => {
     setSelectedSprintNumber(
       previousSprint !== undefined ? previousSprint : selectedSprintNumber
     )
+    setCheckedTimeLogs([])
+  }
+
+  const handleStudentChange = (studentNumber) => {
+    setSelectedStudentNumber(studentNumber)
+    setCheckedTimeLogs([])
   }
 
   const isLogs = (logs) => logs && logs.length > 0
@@ -247,7 +254,7 @@ const InstructorTimeLogsPage = (props) => {
             handleGroupChange={setSelectedGroup}
             students={allStudents}
             selectedStudentNumber={selectedStudentNumber}
-            handleStudentNumberChange={setSelectedStudentNumber}
+            handleStudentNumberChange={handleStudentChange}
           />
           {selectedGroup && (
             <div>
