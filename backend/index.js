@@ -31,10 +31,6 @@ const shibbolethHeaders = [
 
 // Middleware
 app.use(cors())
-app.use((req, res, next) => {
-  console.log('LOG HEADERS (no middleware)',req.headers)
-  next()
-})
 app.use(bodyParser.json({ limit: '100mb' }))
 app.use(headersMiddleware(shibbolethHeaders))
 isDevelopmentEnvironment() && app.use(fakeshibbo)

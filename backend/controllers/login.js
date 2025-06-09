@@ -35,8 +35,6 @@ const userIsInstructorForCurrentGroup = async (student_number) => {
 }
 
 loginRouter.post('/', async (req, res) => {
-  console.log('Login HEADERS', req.headers)
-
   const student_number = req.headers.hypersonstudentid || req.headers.schacpersonaluniquecode
 
   console.log('Student number from headers:', student_number)
