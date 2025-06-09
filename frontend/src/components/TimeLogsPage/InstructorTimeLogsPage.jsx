@@ -6,8 +6,10 @@ import { TimeLogRow } from './TimeLogRow'
 import TimeLogChart from './TimeLogChart'
 import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintSelect } from './SprintSelect'
+import ConfirmationDialog from '../common/ConfirmationDialog'
 
 import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 
 import userService from '../../services/user'
 import configurationService from '../../services/configuration'
@@ -33,9 +35,12 @@ const InstructorTimeLogsPage = (props) => {
   const [allStudents, setAllStudents] = useState([])
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
   const [allLogs, setAllLogs] = useState(null)
+  const [checkedTimeLogs, setCheckedTimeLogs] = useState([])
+  const [moveToPreviousSprintConfirmOpen, setMoveToPreviousSprintConfirmOpen] = useState(false)
+  const [moveToNextSprintConfirmOpen, setMoveToNextSprintConfirmOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
-  const possibleSprintNumbers = Array.from({length: 101}, (_, i) => i)
+  const possibleSprintNumbers = Array.from({ length: 101 }, (_, i) => i)
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -150,9 +155,38 @@ const InstructorTimeLogsPage = (props) => {
     selectedGroup?.id && fetchChartData(selectedGroup.id)
   }, [selectedGroup])
 
+  const handleTimeLogCheck = (logId) => {
+    setCheckedTimeLogs((prevChecked) => (
+      prevChecked.includes(logId) ? prevChecked.filter(id => id !== logId) : [...prevChecked, logId]
+    ))
+  }
+
+  const handleMoveTimeLog = async (direction) => {
+    if (checkedTimeLogs.length === 0) {
+      props.setError('No time logs selected')
+      return
+    }
+    for (const logId in checkedTimeLogs) {
+      try {
+        const updatedLogs = await instructorTimeLogsService.moveTimeLog(direction, checkedTimeLogs[logId])
+        setAllLogs(updatedLogs)
+        props.setSuccess('Selected time logs moved successfully')
+        setCheckedTimeLogs([])
+      } catch (error) {
+        console.error(
+          'Error moving time log:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        props.setError(error.response.data.error)
+      }
+    }
+  }
+
   const previousSprint = [...possibleSprintNumbers]
-  .reverse()
-  .find((sprint) => sprint < selectedSprintNumber)
+    .reverse()
+    .find((sprint) => sprint < selectedSprintNumber)
 
   const nextSprint = possibleSprintNumbers.find(
     (sprint) => sprint > selectedSprintNumber
@@ -162,12 +196,19 @@ const InstructorTimeLogsPage = (props) => {
     setSelectedSprintNumber(
       nextSprint !== undefined ? nextSprint : selectedSprintNumber
     )
+    setCheckedTimeLogs([])
   }
 
   const handleClickPreviousSprint = () => {
     setSelectedSprintNumber(
       previousSprint !== undefined ? previousSprint : selectedSprintNumber
     )
+    setCheckedTimeLogs([])
+  }
+
+  const handleStudentChange = (studentNumber) => {
+    setSelectedStudentNumber(studentNumber)
+    setCheckedTimeLogs([])
   }
 
   const isLogs = (logs) => logs && logs.length > 0
@@ -188,26 +229,74 @@ const InstructorTimeLogsPage = (props) => {
             handleGroupChange={setSelectedGroup}
             students={allStudents}
             selectedStudentNumber={selectedStudentNumber}
-            handleStudentNumberChange={setSelectedStudentNumber}
+            handleStudentNumberChange={handleStudentChange}
           />
           {selectedGroup && (
-          <div>
-            <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
-            <SprintSelect
-              sprintNumber={selectedSprintNumber}
-              handleClickNextSprint={handleClickNextSprint}
-              handleClickPreviousSprint={handleClickPreviousSprint}
-              nextSprintButtonDisabled={nextSprint === undefined}
-              previousSprintButtonDisabled={previousSprint === undefined}
-            />
-          </div>
-        )}
+            <div>
+              <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
+              <SprintSelect
+                sprintNumber={selectedSprintNumber}
+                handleClickNextSprint={handleClickNextSprint}
+                handleClickPreviousSprint={handleClickPreviousSprint}
+                nextSprintButtonDisabled={nextSprint === undefined}
+                previousSprintButtonDisabled={previousSprint === undefined}
+              />
+            </div>
+          )}
         </div>
         <div id='timelog-rows'>
+          {isLogs(logsByStudentAndSelectedSprint) && (
+            <div>
+              <span className='text' style={{ padding: '0 12px 0 0' }}>
+                Move selected logs to
+              </span>
+              <Button
+                variant="outlined"
+                size="small"
+                id={'timelog-move-button-previous'}
+                className="timelog-move-button"
+                style={{ padding: '0 12px', marginRight: '12px' }}
+                disableRipple
+                onClick={() => setMoveToPreviousSprintConfirmOpen(true)}
+              >
+               previous sprint
+              </Button>
+              <ConfirmationDialog
+                title="Move Time Logs?"
+                open={moveToPreviousSprintConfirmOpen}
+                setOpen={setMoveToPreviousSprintConfirmOpen}
+                onConfirm={() => handleMoveTimeLog('previous')}
+              >
+               Move selected time logs to previous sprint?
+              </ConfirmationDialog>
+              <Button
+                variant="outlined"
+                size="small"
+                id={'timelog-move-button-next'}
+                className="timelog-move-button"
+                style={{ padding: '0 12px' }}
+                disableRipple
+                onClick={() => setMoveToNextSprintConfirmOpen(true)}
+              >
+                next sprint
+              </Button>
+              <ConfirmationDialog
+                title="Move Time Logs?"
+                open={moveToNextSprintConfirmOpen}
+                setOpen={setMoveToNextSprintConfirmOpen}
+                onConfirm={() => handleMoveTimeLog('next')}
+              >
+                Move selected time logs to next sprint?
+              </ConfirmationDialog>
+            </div>
+          )}
           {isLogs(logsByStudentAndSelectedSprint) && logsByStudentAndSelectedSprint.map((log) => (
             <TimeLogRow
               key={log.id}
               log={log}
+              handleTimeLogCheck={() => handleTimeLogCheck(log.id)}
+              isChecked={checkedTimeLogs.includes(log.id)}
+              user={user.user}
             />
           ))}
           {!isLogs(logsByStudentAndSelectedSprint) && (
@@ -227,9 +316,9 @@ const InstructorTimeLogsPage = (props) => {
               <TimeLogChart chartVariant='total' />
             </div>
           </div>
-          }
+        }
       </div>
-  </div>
+    </div>
   )
 }
 

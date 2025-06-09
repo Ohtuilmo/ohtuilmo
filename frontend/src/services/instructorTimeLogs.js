@@ -16,4 +16,26 @@ const getTimeLogs = async () => {
   }
 }
 
-export default { getTimeLogs }
+const moveTimeLog = async (direction, id) => {
+  try {
+    if (direction === 'previous') {
+      const response = await axios.patch(`${urlTimelogs}/${id}/moveToPrevious`, {}, {
+        headers: { Authorization: `Bearer ${getUserToken()}` }
+      })
+      return response.data
+    } else if (direction === 'next') {
+      const response = await axios.patch(`${urlTimelogs}/${id}/moveToNext`, {}, {
+        headers: { Authorization: `Bearer ${getUserToken()}` }
+      })
+      return response.data
+    } else {
+      console.error('Invalid direction:', direction)
+      throw new Error('Invalid direction')
+    }
+  } catch (error) {
+    console.error('error in moveTimeLog', error.response.data.error)
+    throw error
+  }
+}
+
+export default { getTimeLogs, moveTimeLog }

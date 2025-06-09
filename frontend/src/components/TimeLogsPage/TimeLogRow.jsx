@@ -3,12 +3,13 @@ import { minutesToFormattedHoursAndMinutes } from '../../utils/functions'
 import { DeleteOutlineRounded } from '@material-ui/icons'
 import { IconButton, Chip } from '@material-ui/core'
 import ConfirmationDialog from '../common/ConfirmationDialog'
+import Checkbox from '@material-ui/core/Checkbox'
 
 import './TimeLogsPage.css'
 
-export const TimeLogRow = ({ log, handleDelete }) => {
+export const TimeLogRow = ({ log, handleDelete, handleTimeLogCheck, isChecked, user }) => {
   const { hours, minutes } = minutesToFormattedHoursAndMinutes(log.minutes)
-  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
 
   const dateObj = new Date(log.date)
   const formattedDate = dateObj.toLocaleDateString('fi-FI', {
@@ -20,6 +21,13 @@ export const TimeLogRow = ({ log, handleDelete }) => {
   return (
     <div className="timelogs-row-container">
       <div className="timelogs-table-row">
+        {user.instructor && (
+          <Checkbox
+            id={`timelog-checkbox-${log.id}`}
+            checked={isChecked}
+            onChange={handleTimeLogCheck}
+          />
+        )}
         <div className="timelogs-date-and-time">
           <p>
             {hours}:{minutes}
@@ -34,14 +42,14 @@ export const TimeLogRow = ({ log, handleDelete }) => {
           className="timelogs-remove-button"
           style={{ padding: '0 12px' }}
           disableRipple
-          onClick={() => setConfirmOpen(true)}
+          onClick={() => setDeleteConfirmOpen(true)}
         >
           <DeleteOutlineRounded />
         </IconButton>
         <ConfirmationDialog
           title="Delete Time Log?"
-          open={confirmOpen}
-          setOpen={setConfirmOpen}
+          open={deleteConfirmOpen}
+          setOpen={setDeleteConfirmOpen}
           onConfirm={handleDelete}
         >
           Delete this time log? It cannot be restored.
