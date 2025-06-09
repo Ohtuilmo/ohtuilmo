@@ -30,14 +30,14 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) 
       {!allowCretion && (
         <div className="topic-form-page-info-message">{topicMessage}</div>
       )}
-      <span style={{ margin: 10,  color: 'white' }} onClick={() => updateShowInfo(false)}>.</span>
+      {false && <span style={{ margin: 10,  color: 'white' }} onClick={() => updateShowInfo(false)}>.</span>}
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    toggle: state && state.login && state.login.user && state.login.user.user && state.login.user.user.username === 'mluukkai',
+    toggle: true || state && state.login && state.login.user && state.login.user.user && state.login.user.user.username === 'mluukkai2',
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage
   }
