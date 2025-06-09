@@ -123,7 +123,7 @@ const InstructorTimeLogsPage = (props) => {
       )
       const configurationByInstructor = allConfigurations.find(
         configuration =>
-          newestGroupByInstructor.configurationId === configuration.id
+          newestGroupByInstructor && newestGroupByInstructor.configurationId === configuration.id
       )
       setSelectedConfiguration(configurationByInstructor)
       setSelectedGroup(newestGroupByInstructor)
