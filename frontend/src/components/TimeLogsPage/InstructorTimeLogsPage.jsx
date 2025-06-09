@@ -161,51 +161,26 @@ const InstructorTimeLogsPage = (props) => {
     ))
   }
 
-  const handleMoveTimeLogToPreviousSprint = async (logId) => {
-    if (checkedTimeLogs.length > 0) {
-      for (logId in checkedTimeLogs) {
-        try {
-          const updatedLogs = await instructorTimeLogsService.moveTimeLogToPreviousSprint(checkedTimeLogs[logId])
-          setAllLogs(updatedLogs)
-          props.setSuccess('Selected time logs moved to previous sprint successfully')
-          setCheckedTimeLogs([])
-        } catch (error) {
-          console.error(
-            'Error moving time log:',
-            error.message,
-            ' / ',
-            error.response.data.error
-          )
-          props.setError(error.response.data.error)
-        }
-      }
-    }
-    else {
+  const handleMoveTimeLog = async (direction) => {
+    if (checkedTimeLogs.length === 0) {
       props.setError('No time logs selected')
+      return
     }
-  }
-
-  const handleMoveTimeLogToNextSprint = async (logId) => {
-    if (checkedTimeLogs.length > 0) {
-      for (logId in checkedTimeLogs) {
-        try {
-          const updatedLogs = await instructorTimeLogsService.moveTimeLogToNextSprint(checkedTimeLogs[logId])
-          setAllLogs(updatedLogs)
-          props.setSuccess('Selected time logs moved to next sprint successfully')
-          setCheckedTimeLogs([])
-        } catch (error) {
-          console.error(
-            'Error moving time log:',
-            error.message,
-            ' / ',
-            error.response.data.error
-          )
-          props.setError(error.response.data.error)
-        }
+    for (const logId in checkedTimeLogs) {
+      try {
+        const updatedLogs = await instructorTimeLogsService.moveTimeLog(direction, checkedTimeLogs[logId])
+        setAllLogs(updatedLogs)
+        props.setSuccess('Selected time logs moved successfully')
+        setCheckedTimeLogs([])
+      } catch (error) {
+        console.error(
+          'Error moving time log:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        props.setError(error.response.data.error)
       }
-    }
-    else {
-      props.setError('No time logs selected')
     }
   }
 
@@ -290,7 +265,7 @@ const InstructorTimeLogsPage = (props) => {
                 title="Move Time Logs?"
                 open={moveToPreviousSprintConfirmOpen}
                 setOpen={setMoveToPreviousSprintConfirmOpen}
-                onConfirm={() => handleMoveTimeLogToPreviousSprint()}
+                onConfirm={() => handleMoveTimeLog('previous')}
               >
                Move selected time logs to previous sprint?
               </ConfirmationDialog>
@@ -309,7 +284,7 @@ const InstructorTimeLogsPage = (props) => {
                 title="Move Time Logs?"
                 open={moveToNextSprintConfirmOpen}
                 setOpen={setMoveToNextSprintConfirmOpen}
-                onConfirm={() => handleMoveTimeLogToNextSprint()}
+                onConfirm={() => handleMoveTimeLog('next')}
               >
                 Move selected time logs to next sprint?
               </ConfirmationDialog>

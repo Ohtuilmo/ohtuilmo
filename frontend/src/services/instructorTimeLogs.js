@@ -16,28 +16,26 @@ const getTimeLogs = async () => {
   }
 }
 
-const moveTimeLogToPreviousSprint = async (id) => {
+const moveTimeLog = async (direction, id) => {
   try {
-    const response = await axios.patch(`${urlTimelogs}/${id}/moveToPrevious`, {}, {
-      headers: { Authorization: `Bearer ${getUserToken()}` }
-    })
-    return response.data
+    if (direction === 'previous') {
+      const response = await axios.patch(`${urlTimelogs}/${id}/moveToPrevious`, {}, {
+        headers: { Authorization: `Bearer ${getUserToken()}` }
+      })
+      return response.data
+    } else if (direction === 'next') {
+      const response = await axios.patch(`${urlTimelogs}/${id}/moveToNext`, {}, {
+        headers: { Authorization: `Bearer ${getUserToken()}` }
+      })
+      return response.data
+    } else {
+      console.error('Invalid direction:', direction)
+      throw new Error('Invalid direction')
+    }
   } catch (error) {
-    console.error('error in moveTimeLogToPreviousSprint', error.response.data.error)
+    console.error('error in moveTimeLog', error.response.data.error)
     throw error
   }
 }
 
-const moveTimeLogToNextSprint = async (id) => {
-  try {
-    const response = await axios.patch(`${urlTimelogs}/${id}/moveToNext`, {}, {
-      headers: { Authorization: `Bearer ${getUserToken()}` }
-    })
-    return response.data
-  } catch (error) {
-    console.error('error in moveTimeLogToNextSprint', error.response.data.error)
-    throw error
-  }
-}
-
-export default { getTimeLogs, moveTimeLogToPreviousSprint, moveTimeLogToNextSprint }
+export default { getTimeLogs, moveTimeLog }
