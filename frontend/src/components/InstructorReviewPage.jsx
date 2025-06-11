@@ -90,6 +90,14 @@ class InstructorReviewPage extends React.Component {
       return initializeStudent(student)
     })
     initializeAnswerSheet(tempAnswerSheet)
+
+    let savedAnswerSheet = localStorage.getItem('savedAnswerSheet')
+    if (savedAnswerSheet) {
+      initializeAnswerSheet(JSON.parse(savedAnswerSheet))
+    }
+    setInterval(() => {
+        localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
+    }, 5000)
   }
 
   Submit = async (event, answerSheet, groupName, groupId) => {
