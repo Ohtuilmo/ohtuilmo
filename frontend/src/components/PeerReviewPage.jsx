@@ -62,8 +62,17 @@ class PeerReview extends React.Component {
       return peerAnswers
     }
 
+    const projectHours = await peerReviewService.getProjectHoursUsed()
+
     const initializeNumberAnswer = (question, questionId) => {
-      return {
+      if (question.header === 'Kuinka monta tuntia käytit projektin parissa?') {
+        return {
+          type: 'number',
+          questionHeader: question.header,
+          id: questionId,
+          answer: projectHours,
+        }
+      } else return {
         type: 'number',
         questionHeader: question.header,
         id: questionId,
