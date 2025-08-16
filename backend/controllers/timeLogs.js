@@ -272,4 +272,25 @@ timeLogsRouter.delete('/:id', checkLogin, async (req, res) => {
   }
 })
 
+timeLogsRouter.get('/projectHoursUsed', checkLogin, async (req, res) => {
+  const studentNumber = req.user.id
+  try {
+    const hours = await db.TimeLog.findAll({
+      where: {
+        student_number: studentNumber,
+      },
+    })
+
+    let totalHours = 0
+    hours.forEach((hour) => {
+      totalHours += hour.minutes / 60
+    })
+
+    return res.status(200).json(totalHours)
+  } catch (error) {
+    console.error('Error fetching project hours:', error)
+    return res.status(500).json({ error: 'Error fetching project hours' })
+  }
+})
+
 module.exports = timeLogsRouter
