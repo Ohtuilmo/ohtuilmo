@@ -46,6 +46,17 @@ class PeerReview extends React.Component {
   }
 
   async fetchPeerReviewQuestions(peers, questionObject) {
+    const projectHours = await peerReviewService.getProjectHoursUsed()
+
+    const initializeProjectHours = (question, questionId) => {
+      return {
+        type: 'number',
+        questionHeader: question.header,
+        id: questionId,
+        answer: projectHours,
+      }
+    }
+
     const initializeRadioAnswer = (question, questionId) => {
       let peerAnswers = {
         type: 'radio',
@@ -62,17 +73,8 @@ class PeerReview extends React.Component {
       return peerAnswers
     }
 
-    const projectHours = await peerReviewService.getProjectHoursUsed()
-
     const initializeNumberAnswer = (question, questionId) => {
-      if (question.header === 'Kuinka monta tuntia käytit projektin parissa?') {
-        return {
-          type: 'number',
-          questionHeader: question.header,
-          id: questionId,
-          answer: projectHours,
-        }
-      } else return {
+      return {
         type: 'number',
         questionHeader: question.header,
         id: questionId,
@@ -108,7 +110,9 @@ class PeerReview extends React.Component {
 
     const tempAnswerSheet = questionObject.questions.map(
       (question, questionID) => {
-        if (question.type === 'radio') {
+        if (question.header === 'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?') {
+          return initializeProjectHours(question, questionID)
+        } else if (question.type === 'radio') {
           return initializeRadioAnswer(question, questionID)
         } else if (question.type === 'peerReview') {
           return initializePeerReview(question, questionID)
