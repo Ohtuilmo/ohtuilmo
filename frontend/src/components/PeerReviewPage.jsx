@@ -53,7 +53,7 @@ class PeerReview extends React.Component {
         type: 'number',
         questionHeader: question.header,
         id: questionId,
-        answer: projectHours,
+        answer: Math.round(projectHours),
       }
     }
 
