@@ -296,7 +296,7 @@ timeLogsRouter.get('/projectHoursByStudent', checkLogin, async (req, res) => {
 
     const sprintIds = sprints.map(sprint => sprint.id)
 
-    if (!sprintIds.length) {
+    if (sprintIds.length === 0) {
       return res.status(200).json(0)
     }
 
