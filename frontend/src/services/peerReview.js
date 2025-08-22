@@ -36,15 +36,4 @@ const getReviewQuestions = async (configurationId, reviewRound) => {
   return response.data
 }
 
-const getProjectHoursByStudent = async () => {
-  const response = await axios.get(
-    `${BACKEND_API_BASE}/timelogs/projectHoursByStudent`,
-    {
-      headers: { Authorization: 'Bearer ' + getUserToken() }
-    }
-  )
-
-  return response.data
-}
-
-export default { get, create, getReviewQuestions, getAnswersByInstructor, getProjectHoursByStudent }
+export default { get, create, getReviewQuestions, getAnswersByInstructor }

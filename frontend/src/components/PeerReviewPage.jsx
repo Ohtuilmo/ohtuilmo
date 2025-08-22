@@ -15,6 +15,7 @@ import peerReviewPageActions from '../reducers/actions/peerReviewPageActions.js'
 // Services
 import peerReviewService from '../services/peerReview'
 import groupManagementService from '../services/groupManagement'
+import timeLogService from '../services/timeLogs'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
@@ -46,7 +47,7 @@ class PeerReview extends React.Component {
   }
 
   async fetchPeerReviewQuestions(peers, questionObject) {
-    const projectHours = await peerReviewService.getProjectHoursByStudent()
+    const projectHours = await timeLogService.getProjectHoursByStudent()
 
     const initializeProjectHours = (question, questionId) => {
       return {
