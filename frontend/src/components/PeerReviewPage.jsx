@@ -46,7 +46,7 @@ class PeerReview extends React.Component {
   }
 
   async fetchPeerReviewQuestions(peers, questionObject) {
-    const projectHours = await peerReviewService.getProjectHoursUsed()
+    const projectHours = await peerReviewService.getProjectHoursByStudent()
 
     const initializeProjectHours = (question, questionId) => {
       return {

@@ -272,7 +272,7 @@ timeLogsRouter.delete('/:id', checkLogin, async (req, res) => {
   }
 })
 
-timeLogsRouter.get('/projectHoursUsed', checkLogin, async (req, res) => {
+timeLogsRouter.get('/projectHoursByStudent', checkLogin, async (req, res) => {
   const studentNumber = req.user.id
   try {
     const student = await db.User.findByPk(studentNumber, {
