@@ -272,4 +272,48 @@ timeLogsRouter.delete('/:id', checkLogin, async (req, res) => {
   }
 })
 
+timeLogsRouter.get('/projectHoursByStudent', checkLogin, async (req, res) => {
+  const studentNumber = req.user.id
+  try {
+    const student = await db.User.findByPk(studentNumber, {
+      include: {
+        model: db.Group,
+        as: 'groups',
+      },
+    })
+
+    if (!student || !student.groups || student.groups.length === 0) {
+      return res.status(404).json({ error: 'Student is not in any group' })
+    }
+
+    const latestGroup = student.groups.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]
+
+    const sprints = await db.Sprint.findAll({
+      where: {
+        group_id: latestGroup.id,
+      },
+    })
+
+    const sprintIds = sprints.map(sprint => sprint.id)
+
+    if (sprintIds.length === 0) {
+      return res.status(200).json(0)
+    }
+
+    const timeLogs = await db.TimeLog.findAll({
+      where: {
+        student_number: studentNumber,
+        sprint_id: sprintIds,
+      },
+    })
+
+    const totalHours = timeLogs.reduce((sum, timelog) => sum + timelog.minutes / 60, 0)
+
+    return res.status(200).json(totalHours)
+  } catch (error) {
+    console.error('Error fetching project hours:', error)
+    return res.status(500).json({ error: 'Error fetching project hours' })
+  }
+})
+
 module.exports = timeLogsRouter

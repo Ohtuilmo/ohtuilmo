@@ -15,6 +15,7 @@ import peerReviewPageActions from '../reducers/actions/peerReviewPageActions.js'
 // Services
 import peerReviewService from '../services/peerReview'
 import groupManagementService from '../services/groupManagement'
+import timeLogService from '../services/timeLogs'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
@@ -46,6 +47,17 @@ class PeerReview extends React.Component {
   }
 
   async fetchPeerReviewQuestions(peers, questionObject) {
+    const projectHours = await timeLogService.getProjectHoursByStudent()
+
+    const initializeProjectHours = (question, questionId) => {
+      return {
+        type: 'number',
+        questionHeader: question.header,
+        id: questionId,
+        answer: Math.round(projectHours),
+      }
+    }
+
     const initializeRadioAnswer = (question, questionId) => {
       let peerAnswers = {
         type: 'radio',
@@ -99,7 +111,9 @@ class PeerReview extends React.Component {
 
     const tempAnswerSheet = questionObject.questions.map(
       (question, questionID) => {
-        if (question.type === 'radio') {
+        if (question.header === 'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?') {
+          return initializeProjectHours(question, questionID)
+        } else if (question.type === 'radio') {
           return initializeRadioAnswer(question, questionID)
         } else if (question.type === 'peerReview') {
           return initializePeerReview(question, questionID)

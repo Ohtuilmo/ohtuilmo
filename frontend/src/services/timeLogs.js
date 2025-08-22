@@ -54,4 +54,14 @@ const deleteTimeLog = async (id) => {
   }
 }
 
-export default { getGroupSprintSummary, getTimeLogs, createTimeLog, deleteTimeLog }
+const getProjectHoursByStudent = async () => {
+  const response = await axios.get(
+    `${urlTimelogs}/projectHoursByStudent`,
+    {
+      headers: { Authorization: 'Bearer ' + getUserToken() }
+    }
+  )
+  return response.data
+}
+
+export default { getGroupSprintSummary, getTimeLogs, createTimeLog, deleteTimeLog, getProjectHoursByStudent }
