@@ -316,4 +316,50 @@ timeLogsRouter.get('/projectHoursByStudent', checkLogin, async (req, res) => {
   }
 })
 
+timeLogsRouter.get('/tagsByStudent/:id', checkLogin, async (req, res) => {
+  const studentNumber = req.params.id
+  try {
+    const timeLogs = await db.TimeLog.findAll({
+      where: { student_number: studentNumber },
+      include: [
+        {
+          model: db.Tag,
+          as: 'tags',
+          through: { attributes: [] },
+        },
+      ],
+    })
+    const tags = {}
+
+    for (const timeLog of timeLogs) {
+      const sprintId = timeLog.sprint_id
+      const minutes = timeLog.minutes
+
+      for (const tag of timeLog.tags) {
+        const tagTitle = tag.title
+
+        if (!tags[tagTitle]) {
+          tags[tagTitle] = []
+        }
+
+        const existingTagEntry = tags[tagTitle].find(entry => entry.sprint_id === sprintId)
+
+        if (existingTagEntry) {
+          existingTagEntry.minutes += minutes
+        } else {
+          tags[tagTitle].push({
+            sprint_id: sprintId,
+            minutes: minutes,
+          });
+        }
+      }
+    }
+
+    return res.status(200).json(tags)
+  } catch (error) {
+    console.error('Error fetching tags by student:', error)
+    return res.status(500).json({ error: 'Error fetching tags by student' })
+  }
+})
+
 module.exports = timeLogsRouter
