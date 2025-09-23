@@ -28,4 +28,11 @@ const deleteTag = async (id) => {
   return response.data
 }
 
-export default { getTags, createTag, deleteTag }
+const getTagsByStudent = async (studentId) => {
+  const response = await axios.get(`${url}/tagsByStudent/${studentId}`, {
+    headers: { Authorization: `Bearer ${getUserToken()}` }
+  })
+  return response.data
+}
+
+export default { getTags, createTag, deleteTag, getTagsByStudent }
