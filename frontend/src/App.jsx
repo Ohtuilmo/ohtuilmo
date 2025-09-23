@@ -34,6 +34,7 @@ import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
 import InstructorTimeLogsPage from './components/TimeLogsPage/InstructorTimeLogsPage'
 import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
 import TagsDashboard from './components/TagManagementPage/TagsDashboard'
+import StudentTagPage from './components/TagPage/StudentTagPage'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -276,6 +277,11 @@ const App = (props) => {
               exact
               path="/sprints"
               render={renderWithLoadingCheck(<SprintsDashboard />)}
+            />
+            <LoginRoute
+              exact
+              path="/student-tags"
+              render={renderWithLoadingCheck(<StudentTagPage />)}
             />
             <Route component={NotFound} />
           </Switch>
