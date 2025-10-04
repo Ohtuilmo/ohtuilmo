@@ -1,5 +1,5 @@
 # Set base image
-FROM registry.access.redhat.com/ubi8/nodejs-12
+FROM registry.access.redhat.com/ubi8/nodejs-18
 
 # Set timezone and working directory for the app in container
 ENV TZ="Europe/Helsinki"
