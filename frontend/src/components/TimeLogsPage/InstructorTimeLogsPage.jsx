@@ -12,6 +12,7 @@ import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
 import userService from '../../services/user'
+import sprintService from '../../services/sprints'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import timeLogsService from '../../services/timeLogs'
@@ -33,6 +34,7 @@ const InstructorTimeLogsPage = (props) => {
   const [allGroups, setAllGroups] = useState([])
   const [selectedGroup, setSelectedGroup] = useState(null)
   const [allStudents, setAllStudents] = useState([])
+  const [allSprints, setAllSprints] = useState([])
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
   const [allLogs, setAllLogs] = useState(null)
   const [checkedTimeLogs, setCheckedTimeLogs] = useState([])
@@ -147,9 +149,25 @@ const InstructorTimeLogsPage = (props) => {
       }
     }
 
+    const fetchSprintData = async (group_id) => {
+      try {
+        const sprintData = await sprintService.getSprintsByGroup(group_id);
+        setAllSprints(sprintData);
+      } catch (error) {
+        console.error(
+          'Error fetching all sprints:',
+          error.message,
+          ' / ',
+          error.message.data.error
+        )
+        notificationActions.setError(error.response.data.error)
+      }
+    }
+
     const fetchChartData = async (selectedGroupId) => {
       setIsLoading(true)
       await fetchGroupSprintSummary(selectedGroupId)
+      await fetchSprintData(selectedGroupId)
       setIsLoading(false)
     }
     selectedGroup?.id && fetchChartData(selectedGroup.id)
@@ -202,6 +220,18 @@ const InstructorTimeLogsPage = (props) => {
     (sprint) => sprint > selectedSprintNumber
   )
 
+  const selectedSprintData = allSprints.find(sprint => sprint.sprint === selectedSprintNumber)
+
+  const formatSprintDate = (sprintDate) => {
+    const dateObj = new Date(sprintDate);
+    const formattedSprintDate = dateObj.toLocaleDateString('fi-FI', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).replace(/\./g, '/')
+    return formattedSprintDate
+  }
+
   const handleClickNextSprint = () => {
     setSelectedSprintNumber(
       nextSprint !== undefined ? nextSprint : selectedSprintNumber
@@ -252,6 +282,9 @@ const InstructorTimeLogsPage = (props) => {
                 nextSprintButtonDisabled={nextSprint === undefined}
                 previousSprintButtonDisabled={previousSprint === undefined}
               />
+              { allSprints && selectedSprintData && (
+                <p>{formatSprintDate(selectedSprintData.start_date)} - {formatSprintDate(selectedSprintData.end_date)}</p>
+              )}
             </div>
           )}
         </div>
