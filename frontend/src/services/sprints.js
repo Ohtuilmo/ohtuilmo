@@ -11,6 +11,13 @@ const getSprints = async () => {
   return response.data
 }
 
+const getSprintsByGroup = async (groupId) => {
+  const response = await axios.get(`${url}/sprintsByGroup/${groupId}`, {
+    headers: { Authorization: `Bearer ${getUserToken()}` },
+  })
+  return response.data
+}
+
 const createSprint = async (sprintData) => {
   const response = await axios.post(url, sprintData, {
     headers: { Authorization: `Bearer ${getUserToken()}` },
@@ -25,4 +32,4 @@ const deleteSprint = async (id) => {
   return response.data
 }
 
-export default { getSprints, createSprint, deleteSprint }
+export default { getSprints, getSprintsByGroup, createSprint, deleteSprint }
