@@ -37,7 +37,7 @@ const userIsInstructorForCurrentGroup = async (student_number) => {
 loginRouter.post('/', async (req, res) => {
   const student_number = req.headers.hypersonstudentid || req.headers.schacpersonaluniquecode
 
-  console.log('Student number from headers:', student_number)
+  console.log('[Login] Student number from headers:', student_number)
 
   if (!student_number)
     return res
@@ -51,18 +51,21 @@ loginRouter.post('/', async (req, res) => {
   })
     .then((foundUser) => {
       if (foundUser) {
+        console.log('[Login] user found')
         //user already in database, no need to add
         const token = jwt.sign(
           { id: foundUser.student_number, admin: foundUser.admin,
             instructor: userIsInstructorForCurrentGroup(foundUser.student_number) },
           config.secret
         )
+        console.log('[Login] return')
         return res.status(200).set('Cache-Control', 'no-store').json({
           token,
           user: foundUser,
         })
       } else {
         //user not in database, add user
+        console.log('[Login] user not found')
         db.User.create({
           username: req.headers.uid,
           student_number,
@@ -76,6 +79,7 @@ loginRouter.post('/', async (req, res) => {
               { id: savedUser.student_number, admin: savedUser.admin },
               config.secret
             )
+            console.log('[Login] return')
             return res.status(200).set('Cache-Control', 'no-store').json({
               token,
               user: savedUser,
