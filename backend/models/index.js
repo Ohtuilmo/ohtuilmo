@@ -3,8 +3,7 @@ const Sequelize = require('sequelize')
 const db = {}
 
 db.connect = () => {
-
-  const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
+  const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: console.log })
 
   ;(async () => {
     console.log('connectiong to ', process.env.DATABASE_URL)
