@@ -6,16 +6,15 @@ db.connect = () => {
 
   const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
 
-  console.log('connectiong to ', process.env.DATABASE_URL)
-
-  sequelize
-    .authenticate()
-    .then(() => {
+  ;(async () => {
+    console.log('connectiong to ', process.env.DATABASE_URL)
+    try {
+      await sequelize.authenticate()
       console.log('Connection has been established successfully.')
-    })
-    .catch((err) => {
+    } catch (err) {
       console.error('Unable to connect to the database:', err)
-    })
+    }
+  })()
 
   const UserModel = require('./user')
   const GroupModel = require('./group')
