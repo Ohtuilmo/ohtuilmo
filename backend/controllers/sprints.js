@@ -1,5 +1,5 @@
 const express = require('express')
-const { checkLogin } = require('../middleware')
+const { checkLogin, checkInstructor } = require('../middleware')
 
 const sprintsRouter = express.Router()
 const db = require('../models/index')
@@ -57,12 +57,14 @@ const validateSprint = ({ start_date, end_date, sprint }, latest) => {
   }
 }
 
-const fetchSprintsFromDb = async (studentNumber) => {
-  const latestGroupId = await findLatestGroupId(studentNumber)
+const fetchSprintsFromDbByGroup = async (groupId) => {
+  if (!groupId) {
+    throw new Error('Group id is missing.')
+  }
 
   const groupSprints = await db.Sprint.findAll({
-    where: { group_id: latestGroupId },
-    //add group_id to attributes if needed for frontend
+    where: { group_id: groupId },
+    // add group_id to attributes if needed for frontend
     attributes: ['id', 'start_date', 'end_date', 'sprint'],
     raw: true
   })
@@ -72,10 +74,18 @@ const fetchSprintsFromDb = async (studentNumber) => {
     start_date: new Date(sprint.start_date).toISOString().slice(0, 10),
     end_date: new Date(sprint.end_date).toISOString().slice(0, 10),
     sprint: sprint.sprint,
-    user_id: studentNumber
   }))
 
   return formattedSprints
+}
+
+const fetchSprintsFromDbByStudent = async (studentNumber) => {
+  if (!studentNumber) {
+    throw new Error('Student number is missing.')
+  }
+
+  const latestGroupId = await findLatestGroupId(studentNumber)
+  return await fetchSprintsFromDbByGroup(latestGroupId)
 }
 
 sprintsRouter.get('/', checkLogin, async (req, res) => {
@@ -86,10 +96,32 @@ sprintsRouter.get('/', checkLogin, async (req, res) => {
   }
 
   try {
-    const sprints = await fetchSprintsFromDb(user_id)
-    res.status(200).json(sprints)
+    const sprints = await fetchSprintsFromDbByStudent(user_id)
+    return res.status(200).json(sprints)
   } catch (error) {
     const errorMessage = 'Error fetching sprints: ' + error.message
+    console.error(errorMessage)
+    return res.status(500).json({ error: errorMessage })
+  }
+})
+
+sprintsRouter.get('/sprintsByGroup/:group_id', checkInstructor, async (req, res) => {
+  const user_id = req.user.id
+  const groupId = parseInt(req.params.group_id)
+
+  if (!user_id) {
+    return res.status(400).json({ error: 'User id is missing.' })
+  }
+
+  if (!groupId) {
+    return res.status(400).json({ error: 'Group id is missing.' })
+  }
+
+  try {
+    const sprints = await fetchSprintsFromDbByGroup(groupId)
+    res.status(200).json(sprints)
+  } catch (error) {
+    const errorMessage = 'Error fetching sprints for group ' + groupId + ': ' + error.message
     console.error(errorMessage)
     return res.status(500).json({ error: errorMessage })
   }
@@ -117,7 +149,7 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
       sprint,
       group_id: groupId
     })
-    const sprints = await fetchSprintsFromDb(user_id)
+    const sprints = await fetchSprintsFromDbByStudent(user_id)
     res.status(201).json(sprints)
   } catch (error) {
     const errorMessage = 'Error creating sprint:' + error.message
@@ -149,7 +181,7 @@ sprintsRouter.delete('/:id', checkLogin, async (req, res) => {
     }
 
     await sprint.destroy()
-    const sprints = await fetchSprintsFromDb(user_id)
+    const sprints = await fetchSprintsFromDbByStudent(user_id)
     res.status(200).json(sprints)
   } catch (error) {
     const errorMessage = 'Error deleting sprint:' + error.message
