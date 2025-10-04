@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8081
 
 # Launch application
-CMD node index.js
+CMD [ "node", "index.js" ]
