@@ -7,34 +7,24 @@ import {
   NoSprintsPlaceholder,
 } from '../common/Placeholders'
 
-import tagService from '../../services/tags'
 import sprintService from '../../services/sprints'
 import * as notificationActions from '../../reducers/actions/notificationActions'
+import tagsActions from '../../reducers/actions/tagActions'
 
 const StudentTagPage = (props) => {
-  const { user, group } = props
+  const {
+    user,
+    group,
+    availableTags,
+    studentTags,
+    fetchAvailableTags,
+    fetchTagsByStudent,
+  } = props
 
   const [isLoading, setIsLoading] = useState(true)
-  const [availableTags, setAvailableTags] = useState([])
-  const [studentTags, setStudentTags] = useState([])
   const [allSprints, setAllSprints] = useState([])
 
   useEffect(() => {
-    const fetchTagsByStudent = async () => {
-      try {
-        const studentTags = await tagService.getTagsByStudent(user.studentNumber)
-        setStudentTags(studentTags)
-        console.log('student tags:', studentTags)
-      } catch (error) {
-        console.error(
-          'Error fetching student tags:',
-          error.message,
-          ' / ',
-          error.response.data.error
-        )
-        notificationActions.setError(error.response.data.error)
-      }
-    }
     const fetchSprints = async () => {
       try {
         const fetchedData = await sprintService.getSprints()
@@ -50,32 +40,17 @@ const StudentTagPage = (props) => {
         notificationActions.setError(error.response.data.error)
       }
     }
-    const fetchTags = async () => {
-      try {
-        const rawTagData = await tagService.getTags()
-        const availableTagData = rawTagData.map((tag) => tag.title)
-        setAvailableTags(availableTagData)
-        console.log('available tags:', availableTagData)
-      } catch (error) {
-        console.error(
-          'Error fetching tags:',
-          error.message,
-          ' / ',
-          error.response.data.error
-        )
-        notificationActions.setError(error.response.data.error)
-      }
-    }
+
     const fetchData = async () => {
       setIsLoading(true)
       group?.id && await fetchSprints()
-      await fetchTagsByStudent()
-      await fetchTags()
+      await fetchTagsByStudent(user.studentNumber)
+      await fetchAvailableTags()
       setIsLoading(false)
     }
 
     fetchData()
-  }, [setStudentTags])
+  }, [fetchAvailableTags, fetchTagsByStudent, user.studentNumber, group?.id])
 
   if (isLoading) return <LoadingSpinner />
   if (!group) return <NotInGroupPlaceholder />
@@ -147,11 +122,15 @@ const mapStateToProps = (state) => ({
     name: `${state.login.user.user.first_name} ${state.login.user.user.last_name}`
   },
   group: state.registrationDetails.myGroup,
+  availableTags: state.tags.availableTags,
+  studentTags: state.tags.studentTags,
 })
 
 const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
+  fetchAvailableTags: tagsActions.fetchAvailableTags,
+  fetchTagsByStudent: tagsActions.fetchTagsByStudent,
 }
 
 export default withRouter(

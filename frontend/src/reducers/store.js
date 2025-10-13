@@ -27,6 +27,7 @@ import viewCustomerReviewsPageReducer from './viewCustomerReviewsPageReducer'
 import loginReducer from './loginReducer'
 import userReducer from './userReducer'
 import timeLogsReducer from './timeLogsReducer'
+import tagsReducer from './tagReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -54,6 +55,7 @@ const reducer = combineReducers({
   login: loginReducer,
   users: userReducer,
   timeLogs: timeLogsReducer,
+  tags: tagsReducer,
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
