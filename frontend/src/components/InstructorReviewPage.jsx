@@ -93,8 +93,14 @@ class InstructorReviewPage extends React.Component {
 
     let savedAnswerSheet = localStorage.getItem('savedAnswerSheet')
     if (savedAnswerSheet) {
+      console.info("Found previously edited sheet from localStorage.")
       initializeAnswerSheet(JSON.parse(savedAnswerSheet))
+    } else {
+      console.info("Didn't find previously edited sheet. Creating new...")
+      localStorage.setItem('savedAnswerSheet', JSON.stringify(emptyAnswerSheet))
     }
+
+    // "Autosave" each 5s
     setInterval(() => {
         localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
     }, 5000)
