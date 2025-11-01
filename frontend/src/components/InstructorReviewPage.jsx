@@ -188,6 +188,10 @@ class InstructorReviewPage extends React.Component {
           </ConfigurationSelectWrapper>
           <h1>{groups[selectedGroup].groupName}</h1>
 
+        {groups[selectedGroup].students.length === 0 && (
+          <h2>No students in this group</h2>
+        )}
+        {groups[selectedGroup].students.length > 0 && (<>
           <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
           <Button
             margin-right="auto"
@@ -206,7 +210,9 @@ class InstructorReviewPage extends React.Component {
           >
             Submit
           </Button>
-        </div>
+          </>
+        )}
+      </div>
       )
     } else {
       return (
@@ -284,7 +290,9 @@ const Review = ({ student, updateAnswer, index }) => {
         onClick={() => setVisible(!visible)}
         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
       >
-        <h2>{student.name.first_names + ' ' + student.name.last_name}</h2>
+        {student && student.name && (
+          <h2>{student.name.first_names + ' ' + student.name.last_name}</h2>
+        )}
         {visible ? <ExpandLess /> : <ExpandMore />}
       </div>
       {
