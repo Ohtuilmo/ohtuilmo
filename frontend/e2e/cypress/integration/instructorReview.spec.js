@@ -41,6 +41,17 @@ describe('Instructor review page', () => {
     cy.visit('/instructorreviewpage')
   })
 
+  it('shows the correct students to give reviews for without waiting', () => {
+    cy.get("h2").should('contain', "Timo *Teppo Tellervo Testaaja")
+    cy.get("h2").should('contain', "Donald John Trump")
+  })
+
+  it('shows the correct students to give reviews for', () => {
+    cy.wait(500)
+    cy.get("h2").should('contain', "Timo *Teppo Tellervo Testaaja")
+    cy.get("h2").should('contain', "Donald John Trump")
+  })
+
   it('requires text fields to be filled', () => {
     submitInstructorReview()
     // submit not successfull, still on same page
