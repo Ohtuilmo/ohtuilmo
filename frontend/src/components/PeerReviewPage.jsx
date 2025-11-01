@@ -254,6 +254,15 @@ const Question = ({
   updateAnswer,
   updatePeerReview,
 }) => {
+
+  if (!questionId === undefined) {
+    console.error("No questionId given")
+    return (
+      <div>
+        <p>No questionId for this question!</p>
+      </div>
+    )
+  }
   if (question.type === 'radio') {
     let temp = question.options
 
