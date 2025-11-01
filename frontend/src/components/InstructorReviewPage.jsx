@@ -69,7 +69,7 @@ class InstructorReviewPage extends React.Component {
         answer: ''
       }
     }
-    const emptyAnswerSheet = questions.questions.map((question, questionId) => {
+    const emptyAnswers = questions.questions.map((question, questionId) => {
       if (question.type === 'text') {
         return initializeTextAnswer(question, questionId)
       } else if (question.type === 'number') {
@@ -80,29 +80,35 @@ class InstructorReviewPage extends React.Component {
     })
 
     const initializeStudent = (name) => {
-      const sheet = emptyAnswerSheet
+      const sheet = emptyAnswers
       return {
         name: name,
         answers: sheet
       }
     }
-    const tempAnswerSheet = students.map((student) => {
-      return initializeStudent(student)
-    })
-    initializeAnswerSheet(tempAnswerSheet)
+
+    let emptyAnswerSheets = []
+    if (students.length > 0) {
+      emptyAnswerSheets = students.map((student) => {
+        return initializeStudent(student)
+      })
+    }
+    initializeAnswerSheet(emptyAnswerSheets)
 
     let savedAnswerSheet = localStorage.getItem('savedAnswerSheet')
-    if (savedAnswerSheet) {
-      console.info("Found previously edited sheet from localStorage.")
+    if (savedAnswerSheet && JSON.parse(savedAnswerSheet).length > 0) {
+      console.info("Found previous saved answer. Loading saved answers.")
       initializeAnswerSheet(JSON.parse(savedAnswerSheet))
     } else {
-      console.info("Didn't find previously edited sheet. Creating new...")
-      localStorage.setItem('savedAnswerSheet', JSON.stringify(emptyAnswerSheet))
+      console.info("Didn't find previously edited sheet. Loading empty sheet.")
+      localStorage.setItem('savedAnswerSheet', JSON.stringify(emptyAnswerSheets))
     }
 
     // "Autosave" each 5s
     setInterval(() => {
-        localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
+        if (this.props.answerSheet.length > 0) {
+          localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
+        }
     }, 5000)
   }
 
