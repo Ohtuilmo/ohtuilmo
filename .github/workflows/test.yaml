@@ -49,6 +49,29 @@ jobs:
           npm install
           npm run lint
 
+  backend-unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read backend node version from package.json
+        uses: skjnldsv/read-package-engines-version-actions@v3
+        with:
+          path: ./backend/
+        id: backend-engines
+
+      - name: Setup Node.js for backend
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
+
+      - name: Install backend dependencies & run unit tests
+        working-directory: ./backend
+        run: |
+          npm install
+          npm run test
+
   cypress:
     runs-on: ubuntu-latest
     steps:
