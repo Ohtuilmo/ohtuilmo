@@ -1,4 +1,4 @@
-const { describe, test } =  require('jest')
+const { describe, test } =  require('@jest/globals')
 
 describe('User\'s email', () => {
   test.todo('should be updated with matching sn')

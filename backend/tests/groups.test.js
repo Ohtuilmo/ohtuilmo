@@ -1,4 +1,4 @@
-const { describe, test } =  require('jest')
+const { describe, test } =  require('@jest/globals')
 
 describe('Groups', () => {
   test.todo('should be gotten with credentials')

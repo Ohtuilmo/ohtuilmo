@@ -1,4 +1,4 @@
-const { describe, test } =  require('jest')
+const { describe, test } =  require('@jest/globals')
 
 describe('Sprints', () => {
   test.todo('should be gotten by sn')
