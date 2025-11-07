@@ -95,15 +95,19 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${config.port}`)
 })
 
-server.on('close', () => {
+server.on('close', async () => {
   // Close database connection
-  db.sequelize
-    .close()
-    .then(() => console.log('client has disconnected'))
-    .catch((err) => console.error('error during disconnection', err.stack))
+  console.log("Closing the server and connection to database")
+  try {
+    await db.sequelize.close()
+    console.log('client has disconnected')
+  } catch(err) {
+    console.error('error during disconnection', err.stack)
+  }
 })
 
 module.exports = {
   app,
   server,
+  db
 }
