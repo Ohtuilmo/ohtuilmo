@@ -8,4 +8,6 @@ COPY package* ./
 
 RUN npm ci
 
+COPY . ./
+
 EXPOSE 3001
