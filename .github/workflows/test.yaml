@@ -99,7 +99,7 @@ jobs:
           npm run db:seed:all
 
       - name: Start backend, frontend and nginx
-        run: docker compose -f compose.ci.yaml up -d
+        run: docker compose -f compose.ci.yaml up backend frontend nginx -d
 
       - name: Setup Node.js for initializing db with backend's npm scripts
         uses: actions/setup-node@v4
