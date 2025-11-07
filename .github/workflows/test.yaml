@@ -66,8 +66,26 @@ jobs:
         with:
           node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
 
-      - name: Run tests inside docker compose
-        run: docker compose -f compose.ci.yaml up db backend-test --exit-code-from backend-test
+      - name: Start db container
+        run: docker compose -f compose.ci.yaml up db -d
+
+      - name: Create and migrate
+        env:
+          DATABASE_URL: postgres://postgres@localhost:5432/dev_postgres
+        run: |
+          cd backend
+          npm install
+          npm run db:create
+          npm run db:migrate
+
+      - name: Run backend unit tests
+        env:
+          DATABASE_URL: postgres://postgres@localhost:5432/dev_postgres
+          SECRET: testsecret
+          PORT: 3001
+        run: |
+          cd backend
+          npm run test
 
   cypress:
     runs-on: ubuntu-latest
