@@ -66,11 +66,8 @@ jobs:
         with:
           node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
 
-      - name: Install backend dependencies & run unit tests
-        working-directory: ./backend
-        run: |
-          npm install
-          npm run test
+      - name: Run tests inside docker compose
+        run: docker compose -f compose.ci.yaml up db backend-test --exit-code-from backend-test
 
   cypress:
     runs-on: ubuntu-latest
