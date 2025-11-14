@@ -2,16 +2,8 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
+const { loginAs } = require('../utils')
 
-const loginAs = async (studentNumber) => {
-  const res = await request(app)
-    .post('/api/login')
-    .set('hypersonstudentid', studentNumber)
-
-  // Sanity-check
-  expect(Object.keys(res.body)).toContain('user', 'token')
-  return { user: res.body.user, token: res.body.token }
-}
 
 const testUser = {
   username: 'Minä',
@@ -49,7 +41,7 @@ describe('Login with token', () => {
   test('of a normal user should pass checkLogin', async () => {
     await db.User.create(testUser)
 
-    const login = await loginAs(123454321123)
+    const login = await loginAs(app, 123454321123)
 
     const res = await request(app)
       .get('/api/tokenCheck/login')
@@ -61,7 +53,7 @@ describe('Login with token', () => {
   test('of a normal user should not pass checkInstructor or checkAdmin', async () => {
     await db.User.create(testUser)
 
-    const login = await loginAs(123454321)
+    const login = await loginAs(app, 123454321)
 
     const resInstructor = await request(app)
       .get('/api/tokenCheck/instructor')
@@ -85,7 +77,7 @@ describe('Login with token', () => {
   test('of an admin should pass checkLogin, checkInstructor and checkAdmin', async () => {
     await db.User.create(testAdmin)
 
-    const login = await loginAs(1234567890)
+    const login = await loginAs(app, 1234567890)
 
     const resUser = await request(app)
       .get('/api/tokenCheck/login')
