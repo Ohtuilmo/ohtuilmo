@@ -2,8 +2,8 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const jwt = require('jsonwebtoken')
 const request = require('supertest')
 
-const config = require('../config/index')
-const { app, server, db } = require('../index')
+const config = require('../../config/index')
+const { app, server, db } = require('../../index')
 
 const testUser = {
   username: 'mluukkai',

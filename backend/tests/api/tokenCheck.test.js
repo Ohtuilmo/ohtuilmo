@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
 const request = require('supertest')
 
-const { app, server, db } = require('../index')
+const { app, server, db } = require('../../index')
 
 const loginAs = async (studentNumber) => {
   const res = await request(app)
