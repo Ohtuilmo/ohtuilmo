@@ -46,49 +46,52 @@ loginRouter.post('/', async (req, res) => {
       .json({ error: 'Student number missing from headers.' })
       .end()
 
-  db.User.findOne({
-    where: { student_number },
-  })
-    .then((foundUser) => {
-      if (foundUser) {
-        console.log('[Login] user found')
-        //user already in database, no need to add
-        const token = jwt.sign(
-          { id: foundUser.student_number, admin: foundUser.admin,
-            instructor: userIsInstructorForCurrentGroup(foundUser.student_number) },
-          config.secret
-        )
-        console.log('[Login] return')
-        return res.status(200).set('Cache-Control', 'no-store').json({
-          token,
-          user: foundUser,
-        })
-      } else {
-        //user not in database, add user
-        console.log('[Login] user not found')
-        db.User.create({
-          username: req.headers.uid,
-          student_number,
-          first_names: req.headers.givenname,
-          last_name: req.headers.sn,
-          email: req.headers.mail,
-          admin: false,
-        })
-          .then((savedUser) => {
-            const token = jwt.sign(
-              { id: savedUser.student_number, admin: savedUser.admin },
-              config.secret
-            )
-            console.log('[Login] return')
-            return res.status(200).set('Cache-Control', 'no-store').json({
-              token,
-              user: savedUser,
-            })
-          })
-          .catch((error) => handleDatabaseError(res, error))
-      }
+  try {
+    const foundUser = await db.User.findOne({
+      where: { student_number },
     })
-    .catch((error) => handleDatabaseError(res, error))
+
+    if (foundUser) {
+      console.log('[Login] user found')
+      //user already in database, no need to add
+      const token = jwt.sign(
+        { id: foundUser.student_number, admin: foundUser.admin,
+          instructor: await userIsInstructorForCurrentGroup(foundUser.student_number) },
+        config.secret
+      )
+      console.log('[Login] return')
+      return res.status(200).set('Cache-Control', 'no-store').json({
+        token,
+        user: foundUser,
+      })
+    } else {
+      //user not in database, add user
+      console.log('[Login] user not found')
+      const savedUser = await db.User.create({
+        username: req.headers.uid,
+        student_number,
+        first_names: req.headers.givenname,
+        last_name: req.headers.sn,
+        email: req.headers.mail,
+        admin: false,
+      })
+      const token = jwt.sign(
+        {
+          id: savedUser.student_number,
+          admin: savedUser.admin,
+          instructor: await userIsInstructorForCurrentGroup(savedUser.student_number),
+        },
+        config.secret
+      )
+      console.log('[Login] return')
+      return res.status(200).set('Cache-Control', 'no-store').json({
+        token,
+        user: savedUser,
+      })
+    }
+  } catch(error) {
+    handleDatabaseError(res, error)
+  }
 })
 
 module.exports = loginRouter

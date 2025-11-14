@@ -44,12 +44,12 @@ describe('Login', () => {
     expect(resHyPersonId.statusCode).toEqual(200)
     expect(resHyPersonId.headers['cache-control']).toEqual('no-store')
     expect(Object.keys(resHyPersonId.body)).toContain('user', 'token')
-    expect(tokenHyPersonId).toEqual({ id: testUser.student_number, admin: testUser.admin, instructor: {} })
+    expect(tokenHyPersonId).toEqual({ id: testUser.student_number, admin: testUser.admin, instructor: false })
 
     expect(resSchacCode.statusCode).toEqual(200)
     expect(resSchacCode.headers['cache-control']).toEqual('no-store')
     expect(Object.keys(resSchacCode.body)).toContain('user', 'token')
-    expect(tokenSchacCode).toEqual({ id: testUser.student_number, admin: testUser.admin, instructor: {} })
+    expect(tokenSchacCode).toEqual({ id: testUser.student_number, admin: testUser.admin, instructor: false })
   })
   test('is successful with new student number', async () => {
     // user doesn't exist in database
