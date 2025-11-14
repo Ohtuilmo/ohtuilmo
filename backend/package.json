@@ -8,6 +8,7 @@
     "watch:test": "cross-env NODE_ENV=test nodemon index.js",
     "start": "cross-env NODE_ENV=production node index.js",
     "test": "jest --verbose",
+    "test:docker": "docker compose -f ../compose.local-test.yaml down && docker compose -f ../compose.local-test.yaml  --profile backend-test up --exit-code-from backend-test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "db:create": "sequelize db:create",
