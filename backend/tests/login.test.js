@@ -22,21 +22,6 @@ const filterOutIatJWT = (verifiedToken) => {
 }
 
 describe('Login', () => {
-  beforeAll(async () => {
-    await db.sequelize.truncate({ cascade: true, restartIdentity: true })
-  })
-  beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
-    await db.User.create(testUser)
-  })
-  afterAll(async () => {
-    server.close()
-    // https://github.com/forwardemail/supertest/issues/520#issuecomment-1242761766
-    await new Promise((res) => {
-      setTimeout(res, 1)
-    })
-  })
-
   test('fails with missing student number', async () => {
     const res = await request(app).post('/api/login')
 
@@ -83,9 +68,24 @@ describe('Login', () => {
     expect(res.statusCode).toEqual(200)
     expect(res.headers['cache-control']).toEqual('no-store')
     expect(Object.keys(res.body)).toContain('user', 'token')
-    expect(token).toEqual({ id: '13355557777777', admin: testUser.admin })
+    expect(token).toEqual({ id: '13355557777777', admin: testUser.admin, instructor: false })
 
     // User is created after query
     expect(await db.User.findAll({ where: { student_number: '13355557777777' } })).not.toHaveLength(0)
+  })
+
+  beforeAll(async () => {
+    await db.sequelize.truncate({ cascade: true, restartIdentity: true })
+  })
+  beforeEach(async () => {
+    await db.User.truncate({ cascade: true })
+    await db.User.create(testUser)
+  })
+  afterAll(async () => {
+    server.close()
+    // https://github.com/forwardemail/supertest/issues/520#issuecomment-1242761766
+    await new Promise((res) => {
+      setTimeout(res, 1)
+    })
   })
 })
