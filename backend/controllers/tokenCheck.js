@@ -9,8 +9,8 @@ tokenCheckRouter.get('/admin', checkAdmin, (_req, res) => {
   res.status(200).json({ message: 'success' })
 })
 
-tokenCheckRouter.get("/instructor", checkInstructor, (_req, res) => {
-  res.status(200).json({ message: "success" })
+tokenCheckRouter.get('/instructor', checkInstructor, (_req, res) => {
+  res.status(200).json({ message: 'success' })
 })
 
 module.exports = tokenCheckRouter
