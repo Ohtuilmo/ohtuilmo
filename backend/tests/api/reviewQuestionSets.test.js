@@ -2,21 +2,18 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { loginAs, adminTemplate } = require('../utils')
+const { createAndLoginAs, testAdmin } = require('../utils/login')
 
 
 describe('Review question sets', () => {
   test('should be created with name and correct permissions', async () => {
     expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(0)
 
-    const userId = 120948710
-    await db.User.create(adminTemplate(userId))
-
-    const login = await loginAs(app, userId)
+    const login = await createAndLoginAs(db, app, testAdmin)
     const res = await request(app)
       .post('/api/reviewQuestions')
       .set('Authorization', `bearer ${login.token}`)
-      .send({ name: 'Vaikeat kysymykset', questions: { 'type': 'scale', 'question': 'Osaatko koodata?' } })
+      .send({ name: 'Vaikeat kysymykset', questions: [ { 'type': 'scale', 'question': 'Ossaakkonää koodata?' }, { 'type': 'text', 'question': 'Mitä muuta ossaat?' } ] })
 
     expect(res.statusCode).toEqual(200)
     expect(Object.keys(res.body)).toContain('questionSet')
@@ -26,10 +23,7 @@ describe('Review question sets', () => {
   test('should not be created with missing or pre-existing name', async () => {
     expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(0)
 
-    const userId = 10329472340
-    await db.User.create(adminTemplate(userId))
-
-    const login = await loginAs(app, userId)
+    const login = await createAndLoginAs(db, app, testAdmin)
     const res = await request(app)
       .post('/api/reviewQuestions')
       .set('Authorization', `bearer ${login.token}`)
@@ -50,15 +44,20 @@ describe('Review question sets', () => {
     expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(1)
   })
 
-  beforeAll(async () => {
-    await db.sequelize.truncate({ cascade: true, restartIdentity: true })
+  beforeEach(async () => {
+    await db.ReviewQuestionSet.truncate({ cascade: true })
+    await db.User.truncate({ cascade: true })
   })
-  beforeEach(async () => { await db.ReviewQuestionSet.truncate({ cascade: true })})
-  afterAll(async () => {
-    server.close()
-    // https://github.com/forwardemail/supertest/issues/520#issuecomment-1242761766
-    await new Promise((res) => {
-      setTimeout(res, 1)
-    })
+})
+
+
+beforeAll(async () => {
+  await db.sequelize.truncate({ cascade: true, restartIdentity: true })
+})
+afterAll(async () => {
+  server.close()
+  // https://github.com/forwardemail/supertest/issues/520#issuecomment-1242761766
+  await new Promise((res) => {
+    setTimeout(res, 1)
   })
 })

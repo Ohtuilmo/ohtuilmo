@@ -4,6 +4,7 @@ const request = require('supertest')
 
 const config = require('../../config/index')
 const { app, server, db } = require('../../index')
+const { createTestUser } = require('../utils/login')
 
 const testUser = {
   username: 'mluukkai',
@@ -79,7 +80,7 @@ describe('Login', () => {
   })
   beforeEach(async () => {
     await db.User.truncate({ cascade: true })
-    await db.User.create(testUser)
+    await createTestUser(db, testUser)
   })
   afterAll(async () => {
     server.close()
