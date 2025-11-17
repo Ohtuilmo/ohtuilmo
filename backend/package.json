@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "test": "jest --runInBand",
     "test:local": "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_postgres SECRET=testsecret EMAIL_ENABLED=false npm run test",
-    "test-setup": "docker compose -f ../compose.local-test.yaml up db -d",
+    "test-setup": "docker compose -f ../compose.local-test.yaml --profile db up -d",
     "test-setup:down": "docker compose -f ../compose.local-test.yaml down",
     "test:docker": "docker compose -f ../compose.local-test.yaml down && docker compose -f ../compose.local-test.yaml  --profile backend-test up --exit-code-from backend-test",
     "lint": "eslint .",

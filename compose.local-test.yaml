@@ -5,7 +5,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=test_postgres
     container_name: test-db
-    profiles: [test-setup, backend-test, cypress]
+    profiles: [db, test-setup, backend-test, cypress]
     ports:
       - 5432:5432
     healthcheck:
@@ -18,6 +18,32 @@ services:
     # databases is not persisted across restarts, nor does it need to be.
     - type: tmpfs
       target: /data/test
+
+  migrate-db:
+    build:
+      context: './backend'
+      dockerfile: Dockerfile.dev
+    restart: no
+    profiles: [db]
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/test_postgres
+      - SECRET=testsecret
+      - EMAIL_ENABLED=false
+      - PORT=3001
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cd /usr/src/app
+        npm install
+        npm run db:create
+        npm run db:migrate
 
   backend:
     build:
