@@ -74,6 +74,7 @@ services:
       db:
         condition: service_healthy
     volumes:
+      - ./backend:/usr/src/app
       - /usr/src/app/node_modules
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/test_postgres
