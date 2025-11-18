@@ -2,26 +2,8 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { loginAs } = require('../utils')
+const { createAndLoginAs, testUser, testAdmin } = require('../utils/login')
 
-
-const testUser = {
-  username: 'Minä',
-  student_number: '123454321123',
-  first_names: 'Minä',
-  last_name: 'Sukunimi',
-  email: 'minä@me.fi',
-  admin: false
-}
-
-const testAdmin = {
-  username: 'mluukkai',
-  student_number: '1234567890',
-  first_names: 'Matti',
-  last_name: 'Luukkainen',
-  email: 'jokutosihassu@sähköposti.fi',
-  admin: true
-}
 
 describe('Login with token', () => {
   test('of a not-logined user should not pass any checkRole', async () => {
@@ -39,9 +21,7 @@ describe('Login with token', () => {
   })
 
   test('of a normal user should pass checkLogin', async () => {
-    await db.User.create(testUser)
-
-    const login = await loginAs(app, 123454321123)
+    const login = await createAndLoginAs(db, app, testUser)
 
     const res = await request(app)
       .get('/api/tokenCheck/login')
@@ -51,9 +31,7 @@ describe('Login with token', () => {
     expect(res.body).toEqual({ 'message': 'success' })
   })
   test('of a normal user should not pass checkInstructor or checkAdmin', async () => {
-    await db.User.create(testUser)
-
-    const login = await loginAs(app, 123454321)
+    const login = await createAndLoginAs(db, app, testUser)
 
     const resInstructor = await request(app)
       .get('/api/tokenCheck/instructor')
@@ -75,9 +53,7 @@ describe('Login with token', () => {
   test.todo('of an instructor should not pass checkAdmin')
 
   test('of an admin should pass checkLogin, checkInstructor and checkAdmin', async () => {
-    await db.User.create(testAdmin)
-
-    const login = await loginAs(app, 1234567890)
+    const login = await createAndLoginAs(db, app, testAdmin)
 
     const resUser = await request(app)
       .get('/api/tokenCheck/login')
