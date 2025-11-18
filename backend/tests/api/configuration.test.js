@@ -3,7 +3,7 @@ const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { createAndLoginAs, testAdmin } = require('../utils/login')
-const { createTestRegistrationQuestionSets } = require('../utils/registrationQuestionSet')
+const { createTestRegistrationQuestionSet } = require('../utils/registrationQuestionSet')
 
 describe('Configurations', () => {
   test('should not be created with missing data', async () => {
@@ -18,7 +18,7 @@ describe('Configurations', () => {
   })
 
   test('should be created with valid data', async () => {
-    const registrationQuestionSetId = await createTestRegistrationQuestionSets(db)
+    const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
     const login = await createAndLoginAs(db, app, testAdmin)
 
     const res = await request(app)
@@ -31,7 +31,7 @@ describe('Configurations', () => {
     expect(res.body.configuratio).toEqual()
   })
   test('should not be created with duplicate name', async () => {
-    const registrationQuestionSetId = await createTestRegistrationQuestionSets(db)
+    const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
     const login = await createAndLoginAs(db, app, testAdmin)
 
     const res = await request(app)

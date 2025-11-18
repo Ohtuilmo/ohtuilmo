@@ -1,4 +1,4 @@
-const createTestRegistrationQuestionSets = async (db) => {
+const createTestRegistrationQuestionSet = async (db) => {
   await db.RegistrationQuestionSet.create({
     name: 'Testikysymyksiä',
     questions: [
@@ -10,5 +10,5 @@ const createTestRegistrationQuestionSets = async (db) => {
 }
 
 module.exports = {
-  createTestRegistrationQuestionSets
+  createTestRegistrationQuestionSet
 }
