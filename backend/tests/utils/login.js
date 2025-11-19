@@ -7,6 +7,14 @@ const createTestUser = async (db, user) => {
   return user
 }
 
+const createTestUsers = async (db, users) => {
+  let createdUsers = []
+  users.forEach(async user => {
+    createdUsers.push(await createTestUser(db, user))
+  })
+  return createdUsers
+}
+
 const createAndLoginAs = async (db, app, user) => {
   await db.User.create(user)
   return await loginAs(app, user.student_number)
@@ -60,4 +68,4 @@ const testUsers = [
   }
 ]
 
-module.exports = { loginAs, createTestUser, createAndLoginAs, testUser, testAdmin, testUsers }
+module.exports = { loginAs, createTestUser, createTestUsers, createAndLoginAs, testUser, testAdmin, testUsers }
