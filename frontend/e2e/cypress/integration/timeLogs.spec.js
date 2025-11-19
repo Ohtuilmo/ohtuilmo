@@ -1,5 +1,15 @@
 /* eslint-disable */
-import { addWeeksToDate, addDaysToDate } from '../../../src/utils/functions'
+const addWeeksToDate = (date, weeks) => {
+  const newDate = new Date(date)
+  newDate.setDate(newDate.getDate() + weeks * 7)
+  return newDate
+}
+
+const addDaysToDate = (date, days) => {
+  const newDate = new Date(date)
+  newDate.setDate(newDate.getDate() + days)
+  return newDate
+}
 
 const formatDate = (date) => date.toISOString().slice(0, 10)
 
