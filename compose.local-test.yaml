@@ -42,7 +42,7 @@ services:
       - |
         cd /usr/src/app
         npm install
-        npm run db:create
+        npm run db:recreate
         npm run db:migrate
 
   test-backend:
