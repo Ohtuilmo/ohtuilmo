@@ -148,6 +148,25 @@ describe('GET /api/groups', () => {
     expect(resUser.statusCode).toEqual(401)
     expect(resUser.body).toEqual({ error: 'not instructor' })
   })
+  test('should succeed as an instructor or admin', async () => {
+    const instructorSN = await createTestInstructor(db)
+
+    const loginInstructor = await loginAs(app, instructorSN)
+    const loginAdmin = await createAndLoginAs(db, app, testAdmin)
+
+    const resInstructor = await request(app)
+      .get('/api/groups')
+      .set('Authorization', `bearer ${loginInstructor.token}`)
+    const resAdmin = await request(app)
+      .get('/api/groups')
+      .set('Authorization', `bearer ${loginAdmin.token}`)
+
+    expect(resInstructor.statusCode).toEqual(200)
+    expect(resInstructor.body).not.toHaveLength(0)
+
+    expect(resAdmin.statusCode).toEqual(200)
+    expect(resAdmin.body).not.toHaveLength(0)
+  })
 
 
   beforeEach(async () => {
