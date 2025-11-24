@@ -132,8 +132,8 @@ describe('POST Groups', () => {
   })
 })
 
-describe("GET /api/groups", () => {
-  test("should fail as non-logined user or as a student", async () => {
+describe('GET /api/groups', () => {
+  test('should fail as non-logined user or as a student', async () => {
     const login = await createAndLoginAs(db, app, testUsers[0])
 
     const resNonLogin = await request(app)
@@ -144,10 +144,10 @@ describe("GET /api/groups", () => {
       .set('Authorization', `bearer ${login.token}`)
 
     expect(resNonLogin.statusCode).toEqual(401)
-    expect(resNonLogin.body).toEqual({ error: "token missing or invalid" })
+    expect(resNonLogin.body).toEqual({ error: 'token missing or invalid' })
 
     expect(resUser.statusCode).toEqual(401)
-    expect(resUser.body).toEqual({ error: "not instructor" })
+    expect(resUser.body).toEqual({ error: 'not instructor' })
   })
 
 
