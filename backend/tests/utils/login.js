@@ -20,6 +20,10 @@ const createAndLoginAs = async (db, app, user) => {
   return await loginAs(app, user.student_number)
 }
 
+const resetUsers = async (db) => {
+  await db.User.truncate({ cascade: true, restartIdentity: true })
+}
+
 const loginAs = async (app, studentNumber) => {
   const res = await request(app)
     .post('/api/login')
@@ -68,4 +72,4 @@ const testUsers = [
   }
 ]
 
-module.exports = { loginAs, createTestUser, createTestUsers, createAndLoginAs, testUser, testAdmin, testUsers }
+module.exports = { loginAs, createTestUser, createTestUsers, createAndLoginAs, testUser, testAdmin, testUsers, resetUsers }

@@ -4,7 +4,7 @@ const request = require('supertest')
 
 const config = require('../../config/index')
 const { app, server, db } = require('../../index')
-const { createTestUser } = require('../utils/login')
+const { createTestUser, resetUsers } = require('../utils/login')
 
 const testUser = {
   username: 'mluukkai',
@@ -79,7 +79,7 @@ describe('Login', () => {
     await db.sequelize.truncate({ cascade: true, restartIdentity: true })
   })
   beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
+    await resetUsers(db)
     await createTestUser(db, testUser)
   })
   afterAll(async () => {

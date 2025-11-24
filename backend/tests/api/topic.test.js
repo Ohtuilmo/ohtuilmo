@@ -2,8 +2,9 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { createAndLoginAs, testAdmin } = require('../utils/login')
-const { createTestRegistrationManagement } = require('../utils/registrationManagement')
+const { createAndLoginAs, testAdmin, resetUsers } = require('../utils/login')
+const { createTestRegistrationManagement, resetRegistrationManagements } = require('../utils/registrationManagement')
+const { createTestConfiguration, resetConfigurations } = require('../utils/configuration')
 const { testContent } = require('../utils/topic')
 
 
@@ -44,8 +45,8 @@ describe('Topics', () => {
   })
   test('should be created with correct data', async () => {
     const login = await createAndLoginAs(db, app, testAdmin)
-    await createTestRegistrationManagement(db)
-    const configuration_id = (await db.Configuration.findAll({}))[0].id
+    const configuration_id = await createTestConfiguration(db)
+    await createTestRegistrationManagement(db, configuration_id)
 
     const res = await request(app)
       .post('/api/topics')
@@ -57,11 +58,10 @@ describe('Topics', () => {
 
 
   beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
+    await resetUsers(db)
+    await resetConfigurations(db)
+    await resetRegistrationManagements(db)
     await db.Topic.truncate({ cascade: true })
-    await db.RegistrationManagement.truncate({ cascade: true, restartIdentity: true  })
-    await db.Configuration.truncate({ cascade: true })
-    await db.RegistrationQuestionSet.truncate({ cascade: true })
   })
 })
 

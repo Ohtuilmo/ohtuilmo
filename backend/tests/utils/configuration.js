@@ -1,4 +1,5 @@
 const { createTestRegistrationQuestionSet } = require('./registrationQuestionSet')
+const { resetRegistrationQuestionSets } = require('./registrationQuestionSet')
 
 const createTestConfiguration = async (db) => {
   const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
@@ -9,6 +10,12 @@ const createTestConfiguration = async (db) => {
   return createdConfiguration.id
 }
 
+const resetConfigurations = async (db) => {
+  await resetRegistrationQuestionSets(db)
+  await db.Configuration.truncate({ cascade: true, restartIdentity: true })
+}
+
 module.exports = {
-  createTestConfiguration
+  createTestConfiguration,
+  resetConfigurations
 }

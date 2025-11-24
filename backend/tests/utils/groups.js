@@ -1,6 +1,6 @@
-const { createTestUsers, testUsers } = require('./login')
-const { createTestConfiguration } = require('./configuration')
-const { createTestTopic } = require('./topic')
+const { createTestUsers, resetUsers, testUsers } = require('./login')
+const { createTestConfiguration, resetConfigurations } = require('./configuration')
+const { createTestTopic, resetTopics } = require('./topic')
 
 
 const testGroup = {
@@ -42,9 +42,21 @@ const createTestGroup = async (db, users=testUsers, instructor=testInstructor) =
   return createdGroup.id
 }
 
+const resetGroups = async (db) => {
+  await resetUsers(db)
+  await resetConfigurations(db)
+  await resetTopics(db)
+}
+
+const resetInstructor = async (db) => {
+  await resetGroups(db)
+}
+
 module.exports = {
   testGroup,
   createTestGroup,
   createTestInstructor,
-  testInstructor
+  testInstructor,
+  resetGroups,
+  resetInstructor
 }

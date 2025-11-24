@@ -1,4 +1,4 @@
-const { createTestConfiguration } = require('./configuration')
+const { createTestConfiguration, resetConfigurations } = require('./configuration')
 
 const testContent = {
   email: 'aasia@kas',
@@ -24,7 +24,14 @@ const createTestTopic = async (db, configurationId=0) => {
   return createdTopic.id
 }
 
+const resetTopics = async (db) => {
+  // Might get called multiple times if configuration was given as a parameter
+  await resetConfigurations(db)
+  await db.Topic.truncate({ cascade: true, restartIdentity: true })
+}
+
 module.exports = {
   testContent,
-  createTestTopic
+  createTestTopic,
+  resetTopics
 }

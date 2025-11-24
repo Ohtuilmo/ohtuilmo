@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { createAndLoginAs, testAdmin } = require('../utils/login')
+const { createAndLoginAs, testAdmin, resetUsers } = require('../utils/login')
 
 
 describe('Registration question sets', () => {
@@ -50,8 +50,8 @@ describe('Registration question sets', () => {
   })
 
   beforeEach(async () => {
+    await resetUsers(db)
     await db.RegistrationQuestionSet.truncate({ cascade: true })
-    await db.User.truncate({ cascade: true })
   })
 })
 

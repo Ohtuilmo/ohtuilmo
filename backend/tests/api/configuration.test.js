@@ -2,8 +2,8 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { createAndLoginAs, testAdmin } = require('../utils/login')
-const { createTestRegistrationQuestionSet } = require('../utils/registrationQuestionSet')
+const { createAndLoginAs, testAdmin, resetUsers } = require('../utils/login')
+const { createTestRegistrationQuestionSet, resetRegistrationQuestionSets } = require('../utils/registrationQuestionSet')
 
 describe('Configurations', () => {
   test('should not be created with missing data', async () => {
@@ -54,9 +54,9 @@ describe('Configurations', () => {
   })
 
   beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
+    await resetUsers(db)
+    await resetRegistrationQuestionSets(db)
     await db.Configuration.truncate({ cascade: true })
-    await db.RegistrationQuestionSet.truncate({ cascade: true })
   })
 })
 

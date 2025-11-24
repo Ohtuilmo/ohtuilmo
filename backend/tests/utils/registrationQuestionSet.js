@@ -9,6 +9,11 @@ const createTestRegistrationQuestionSet = async (db) => {
   return createdRegistrationQuestionSet.id
 }
 
+const resetRegistrationQuestionSets = async (db) => {
+  await db.RegistrationQuestionSet.truncate({ cascade: true, restartIdentity: true })
+}
+
 module.exports = {
-  createTestRegistrationQuestionSet
+  createTestRegistrationQuestionSet,
+  resetRegistrationQuestionSets
 }

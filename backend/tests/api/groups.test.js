@@ -1,10 +1,11 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { createAndLoginAs, createTestUsers, testAdmin, testUsers } = require('../utils/login')
-const { createTestTopic } = require('../utils/topic')
-const { createTestConfiguration } = require('../utils/configuration')
+const { loginAs, createAndLoginAs, createTestUsers, testAdmin, testUsers, resetUsers } = require('../utils/login')
+const { createTestTopic, resetTopics } = require('../utils/topic')
+const { createTestConfiguration, resetConfigurations } = require('../utils/configuration')
+const { createTestInstructor, resetInstructor } = require('../utils/groups')
 
 
 describe('POST Groups', () => {
@@ -123,12 +124,10 @@ describe('POST Groups', () => {
 
 
   beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
-    await db.Topic.truncate({ cascade: true })
-    await db.RegistrationManagement.truncate({ cascade: true, restartIdentity: true  })
-    await db.Configuration.truncate({ cascade: true })
-    await db.RegistrationQuestionSet.truncate({ cascade: true })
-    await db.Group.truncate({ cascade: true })
+    await resetUsers(db)
+    await resetTopics(db)
+    await resetConfigurations(db)
+    await db.Group.truncate({ cascade: true, restartIdentity: true })
   })
 })
 
@@ -152,7 +151,9 @@ describe('GET /api/groups', () => {
 
 
   beforeEach(async () => {
-    await db.sequelize.truncate({ cascade: true, restartIdentity: true })
+    await resetUsers(db)
+    await resetInstructor(db)
+    await db.Group.truncate({ cascade: true, restartIdentity: true })
   })
 })
 

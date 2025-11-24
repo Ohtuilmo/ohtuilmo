@@ -3,7 +3,7 @@ const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { loginAs, createAndLoginAs, testUser, testAdmin } = require('../utils/login')
-const { testInstructor, createTestInstructor } = require('../utils/groups')
+const { testInstructor, createTestInstructor, resetInstructor } = require('../utils/groups')
 
 
 describe('Login with token', () => {
@@ -107,17 +107,18 @@ describe('Login with token', () => {
     expect(resAdmin.body.message).toEqual('success')
   })
 
-  beforeAll(async () => {
-    await db.sequelize.truncate({ cascade: true, restartIdentity: true })
-  })
   beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
+    await resetInstructor(db)
   })
-  afterAll(async () => {
-    server.close()
-    // https://github.com/forwardemail/supertest/issues/520#issuecomment-1242761766
-    await new Promise((res) => {
-      setTimeout(res, 1)
-    })
+})
+
+beforeAll(async () => {
+  await db.sequelize.truncate({ cascade: true, restartIdentity: true })
+})
+afterAll(async () => {
+  server.close()
+  // https://github.com/forwardemail/supertest/issues/520#issuecomment-1242761766
+  await new Promise((res) => {
+    setTimeout(res, 1)
   })
 })

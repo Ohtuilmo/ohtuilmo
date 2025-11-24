@@ -2,9 +2,9 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { createAndLoginAs, testUser, testAdmin } = require('../utils/login')
-const { createTestConfiguration } = require('../utils/configuration')
-const { testRegistrationManagement } = require('../utils/registrationManagement')
+const { createAndLoginAs, testUser, testAdmin, resetUsers } = require('../utils/login')
+const { createTestConfiguration, resetConfigurations } = require('../utils/configuration')
+const { testRegistrationManagement, resetRegistrationManagements } = require('../utils/registrationManagement')
 
 
 describe('Registration management', () => {
@@ -103,9 +103,9 @@ describe('Registration management', () => {
   })
 
   beforeEach(async () => {
-    await db.User.truncate({ cascade: true })
-    await db.Configuration.truncate({ cascade: true, restartIdentity: true  })
-    await db.RegistrationManagement.truncate({ cascade: true })
+    await resetUsers(db)
+    await resetConfigurations(db)
+    await resetRegistrationManagements(db)
   })
 })
 

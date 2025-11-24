@@ -28,7 +28,12 @@ const createTestRegistrationManagement = async (db, configurationId=0) => {
   return createdRegistrationManagement.id
 }
 
+const resetRegistrationManagements = async (db) => {
+  await db.RegistrationManagement.truncate({ cascade: true, restartIdentity: true })
+}
+
 module.exports = {
   createTestRegistrationManagement,
-  testRegistrationManagement
+  testRegistrationManagement,
+  resetRegistrationManagements
 }
