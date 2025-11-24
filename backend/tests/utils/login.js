@@ -3,8 +3,8 @@ const request = require('supertest')
 
 
 const createTestUser = async (db, user) => {
-  await db.User.create(user)
-  return user
+  const createdUser = await db.User.create(user)
+  return createdUser
 }
 
 const createTestUsers = async (db, users) => {

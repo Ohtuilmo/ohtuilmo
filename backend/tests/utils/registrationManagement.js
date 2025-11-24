@@ -20,12 +20,12 @@ const updateRegManConfigurationId = (testRegMan, confId) => {
   return testRegMan
 }
 
-const createTestRegistrationManagement = async (db) => {
-  const configurationId = await createTestConfiguration(db)
+const createTestRegistrationManagement = async (db, configurationId=0) => {
+  const actualConfigurationId = configurationId === 0 ? await createTestConfiguration(db) : configurationId
   const testRegManCopy = JSON.parse(JSON.stringify(testRegistrationManagement))
 
-  await db.RegistrationManagement.create(updateRegManConfigurationId(testRegManCopy, configurationId))
-  return (await db.RegistrationManagement.findAll({}))[0].id
+  const createdRegistrationManagement = await db.RegistrationManagement.create(updateRegManConfigurationId(testRegManCopy, actualConfigurationId))
+  return createdRegistrationManagement.id
 }
 
 module.exports = {

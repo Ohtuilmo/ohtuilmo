@@ -1,4 +1,4 @@
-const { createTestRegistrationManagement } = require('./registrationManagement')
+const { createTestConfiguration } = require('./configuration')
 
 const testContent = {
   email: 'aasia@kas',
@@ -10,11 +10,10 @@ const testContent = {
   specialRequests: 'Joku hyvä erityistoive'
 }
 
-const createTestTopic = async (db) => {
-  await createTestRegistrationManagement(db)
-  const configuration_id = (await db.Configuration.findAll({}))[0].id
+const createTestTopic = async (db, configurationId=0) => {
+  const configuration_id = configurationId === 0 ? await createTestConfiguration(db) : configurationId
 
-  await db.Topic.create({
+  const createdTopic = await db.Topic.create({
     active: true,
     configuration_id,
     content: testContent,
@@ -22,7 +21,7 @@ const createTestTopic = async (db) => {
     secret_id: 'jokutosisalanenid',
   })
 
-  return (await db.Topic.findAll({}))[0].id
+  return createdTopic.id
 }
 
 module.exports = {
