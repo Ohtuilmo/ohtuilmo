@@ -27,7 +27,7 @@ const userIsInstructorForCurrentGroup = async (student_number) => {
         instructor_id: student_number
       }
     })
-    return group
+    return group ? group : false
   } catch (error) {
     console.error('Error checking if active instructor:', error)
     return false
