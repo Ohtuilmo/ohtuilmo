@@ -133,7 +133,8 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
   try {
     const groupId = await findLatestGroupId(user_id)
     let latestSprint = await findLatestSprint(groupId)
-    if (!latestSprint) latestSprint = { end_date: null, sprint: null }
+    if (!latestSprint)
+      latestSprint = { end_date: null, sprint: null }
 
     try {
       validateSprint(req.body, latestSprint)

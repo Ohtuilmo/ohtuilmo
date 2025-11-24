@@ -26,8 +26,82 @@ describe.only('Sprints', () => {
     expect(Object.keys(res.body)).toContain('error')
     expect(res.body.error).toEqual('Error creating sprint: User does not belong to any group or not found.')
   })
-  test.todo('should not be created with incorrect dates')
-  test.todo('should be created with correct data')
+  test('should not be created with incorrect dates', async () => {
+    await createTestGroup(db)
+    const login = await loginAs(app, testUsers[0].student_number)
+
+    const testSprintStartGreEnd = {
+      sprint: 3,
+      start_date: new Date(10),
+      end_date: new Date(5),
+      user_id: login.user.student_number
+    }
+    const testSprintInvalidDates = {
+      sprint: 3,
+      start_date: 'hi',
+      end_date: -123049,
+      user_id: login.user.student_number
+    }
+
+    const resStartGreEnd = await request(app)
+      .post('/api/sprints')
+      .set('Authorization', `bearer ${login.token}`)
+      .send(testSprintStartGreEnd)
+
+    const resInvalidDates = await request(app)
+      .post('/api/sprints')
+      .set('Authorization', `bearer ${login.token}`)
+      .send(testSprintInvalidDates)
+
+    expect(resStartGreEnd.statusCode).toEqual(400)
+    expect(Object.keys(resStartGreEnd.body)).toContain('error')
+    expect(resStartGreEnd.body.error).toEqual('Error validating sprint: Start date must be before end date.')
+
+    expect(resInvalidDates.statusCode).toEqual(400)
+    expect(Object.keys(resInvalidDates.body)).toContain('error')
+    expect(resInvalidDates.body.error).toEqual('Error validating sprint: Start date or end date is invalid.')
+
+  })
+  test('should not be created with invalid sprint', async () => {
+    await createTestGroup(db)
+    const login = await loginAs(app, testUsers[0].student_number)
+
+    const testSprintInvalidSprint = {
+      sprint: 'kolme',
+      start_date: new Date(5),
+      end_date: new Date(10),
+      user_id: login.user.student_number
+    }
+
+    const resInvalidSprint = await request(app)
+      .post('/api/sprints')
+      .set('Authorization', `bearer ${login.token}`)
+      .send(testSprintInvalidSprint)
+
+    expect(resInvalidSprint.statusCode).toEqual(400)
+    expect(Object.keys(resInvalidSprint.body)).toContain('error')
+    expect(resInvalidSprint.body.error).toEqual('Error validating sprint: Sprint must be a valid number.')
+  })
+  test('should be created with correct data', async () => {
+    await createTestGroup(db)
+    const login = await loginAs(app, testUsers[0].student_number)
+
+    const testSprint = {
+      sprint: 1,
+      start_date: new Date(5),
+      end_date: new Date(10),
+      user_id: login.user.student_number
+    }
+
+    const res = await request(app)
+      .post('/api/sprints')
+      .set('Authorization', `bearer ${login.token}`)
+      .send(testSprint)
+
+    expect(res.statusCode).toEqual(201)
+    expect(Object.keys(res.body[0])).toContain('id', 'start_date', 'end_date', 'sprint')
+    expect(res.body[0].sprint).toEqual(1)
+  })
 
   beforeEach(async () => {
     await resetUsers(db)
