@@ -132,6 +132,30 @@ describe('POST Groups', () => {
   })
 })
 
+describe("GET /api/groups", () => {
+  test("should fail as non-logined user or as a student", async () => {
+    const login = await createAndLoginAs(db, app, testUsers[0])
+
+    const resNonLogin = await request(app)
+      .get('/api/groups')
+
+    const resUser = await request(app)
+      .get('/api/groups')
+      .set('Authorization', `bearer ${login.token}`)
+
+    expect(resNonLogin.statusCode).toEqual(401)
+    expect(resNonLogin.body).toEqual({ error: "token missing or invalid" })
+
+    expect(resUser.statusCode).toEqual(401)
+    expect(resUser.body).toEqual({ error: "not instructor" })
+  })
+
+
+  beforeEach(async () => {
+    await db.sequelize.truncate({ cascade: true, restartIdentity: true })
+  })
+})
+
 
 beforeAll(async () => {
   await db.sequelize.truncate({ cascade: true, restartIdentity: true })
