@@ -2,8 +2,8 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { loginAs, createAndLoginAs, testAdmin, testUsers } = require('../utils/login')
-const { createTestGroup } = require('../utils/groups')
+const { loginAs, createAndLoginAs, resetUsers, testAdmin, testUsers } = require('../utils/login')
+const { createTestGroup, resetGroups } = require('../utils/groups')
 
 const testSprint = {
   start_date: null,
@@ -12,8 +12,8 @@ const testSprint = {
   group_id: null
 }
 
-describe('Sprints', () => {
-  test.skip('should not be created with user without a group', async () => {
+describe.only('Sprints', () => {
+  test('should not be created with user without a group', async () => {
     const login = await loginAs(app, testUsers[2].student_number)
     await createTestGroup(db, testUsers)
 
@@ -24,16 +24,14 @@ describe('Sprints', () => {
 
     expect(res.statusCode).toEqual(500)
     expect(Object.keys(res.body)).toContain('error')
-    expect(res.body.error).toEqual('User does not belong to any group or not found.')
+    expect(res.body.error).toEqual('Error creating sprint: User does not belong to any group or not found.')
   })
   test.todo('should not be created with incorrect dates')
   test.todo('should be created with correct data')
 
   beforeEach(async () => {
-    await db.Group.truncate({ cascade: true })
-    await db.Topic.truncate({ cascade: true })
-    await db.Configuration.truncate({ cascade: true })
-    await db.User.truncate({ cascade: true })
+    await resetUsers(db)
+    await resetGroups(db)
   })
 })
 
@@ -63,10 +61,8 @@ describe('PUT /api/sprints', () => {
   test.todo('should warn with long gaps between sprints')
 
   beforeEach(async () => {
-    await db.Group.truncate({ cascade: true })
-    await db.Topic.truncate({ cascade: true })
-    await db.Configuration.truncate({ cascade: true })
-    await db.User.truncate({ cascade: true })
+    await resetUsers(db)
+    await resetGroups(db)
   })
 })
 

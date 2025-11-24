@@ -11,7 +11,7 @@ const findLatestGroupId = async (studentNumber) => {
     include: [{
       model: db.User,
       as: 'students',
-      where: { student_number: studentNumber }
+      where: { student_number: studentNumber.toString() }
     }],
     order: [['createdAt', 'DESC']]
   })
@@ -138,7 +138,7 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     try {
       validateSprint(req.body, latestSprint)
     } catch (error) {
-      const errorMessage = 'Error validating sprint:' + error.message
+      const errorMessage = 'Error validating sprint: ' + error.message
       console.error(errorMessage)
       return res.status(400).json({ error: errorMessage })
     }
@@ -152,7 +152,7 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     const sprints = await fetchSprintsFromDbByStudent(user_id)
     res.status(201).json(sprints)
   } catch (error) {
-    const errorMessage = 'Error creating sprint:' + error.message
+    const errorMessage = 'Error creating sprint: ' + error.message
     console.error(errorMessage)
     return res.status(500).json({ error: errorMessage })
   }
