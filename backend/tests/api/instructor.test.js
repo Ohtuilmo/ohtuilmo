@@ -1,11 +1,10 @@
 const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
-const request = require('supertest')
 const jwt = require('jsonwebtoken')
 
 const config = require('../../config/index')
 const { app, server, db } = require('../../index')
-const { loginAs, createTestUser, resetUsers, testUser } = require("../utils/login")
-const { createTestGroup, resetGroups, testInstructor } = require("../utils/groups")
+const { loginAs, createTestUser, resetUsers, testUser } = require('../utils/login')
+const { createTestGroup, resetGroups, testInstructor } = require('../utils/groups')
 
 
 // jwt.verify(resHyPersonId.body.token, config.secret)
@@ -34,7 +33,7 @@ describe('Instructor flag', () => {
 
     const decodedToken = jwt.verify(login.token, config.secret)
     expect(decodedToken.instructor).not.toEqual(false)
-    expect(Object.keys(decodedToken.instructor)).toContain("id", "name", "instructorId", "configurationId")
+    expect(Object.keys(decodedToken.instructor)).toContain('id', 'name', 'instructorId', 'configurationId')
   })
 
 
