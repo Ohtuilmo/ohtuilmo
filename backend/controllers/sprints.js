@@ -1,5 +1,5 @@
 const express = require('express')
-const { checkLogin, checkInstructor } = require('../middleware')
+const { checkLogin, checkInstructor, checkAdmin } = require('../middleware')
 
 const sprintsRouter = express.Router()
 const db = require('../models/index')
@@ -153,6 +153,32 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     res.status(201).json(sprints)
   } catch (error) {
     const errorMessage = 'Error creating sprint:' + error.message
+    console.error(errorMessage)
+    return res.status(500).json({ error: errorMessage })
+  }
+})
+
+sprintsRouter.put('/:id', checkAdmin, async (req, res) => {
+  const id = parseInt(req.params.id)
+  const user_id = req.user.id
+
+  try {
+    const sprint = await db.Sprint.findOne({ where: { id } })
+    if (!sprint) {
+      return res.status(404).json({ error: 'Sprint not found.' })
+    }
+    const group = await db.Group.findOne({ where: { id: sprint.group_id } })
+    if (!group) {
+      return res.status(404).json({ error: 'Group not found for the sprint.' })
+    }
+    const groupSprints = await fetchSprintsFromDbByGroup(group.id)
+    console.log(user_id, groupSprints)
+
+    return res.status(200).json({ 'message': 'TODO jotain fiksua' })
+
+
+  } catch (error) {
+    const errorMessage = 'Error updating sprint:' + error.message
     console.error(errorMessage)
     return res.status(500).json({ error: errorMessage })
   }
