@@ -1,5 +1,5 @@
 const express = require('express')
-const { checkLogin, checkInstructor } = require('../middleware')
+const { checkLogin, checkInstructor, checkAdmin } = require('../middleware')
 
 const sprintsRouter = express.Router()
 const db = require('../models/index')
@@ -11,7 +11,7 @@ const findLatestGroupId = async (studentNumber) => {
     include: [{
       model: db.User,
       as: 'students',
-      where: { student_number: studentNumber }
+      where: { student_number: studentNumber.toString() }
     }],
     order: [['createdAt', 'DESC']]
   })
@@ -133,12 +133,13 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
   try {
     const groupId = await findLatestGroupId(user_id)
     let latestSprint = await findLatestSprint(groupId)
-    if (!latestSprint) latestSprint = { end_date: null, sprint: null }
+    if (!latestSprint)
+      latestSprint = { end_date: null, sprint: null }
 
     try {
       validateSprint(req.body, latestSprint)
     } catch (error) {
-      const errorMessage = 'Error validating sprint:' + error.message
+      const errorMessage = 'Error validating sprint: ' + error.message
       console.error(errorMessage)
       return res.status(400).json({ error: errorMessage })
     }
@@ -152,7 +153,33 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
     const sprints = await fetchSprintsFromDbByStudent(user_id)
     res.status(201).json(sprints)
   } catch (error) {
-    const errorMessage = 'Error creating sprint:' + error.message
+    const errorMessage = 'Error creating sprint: ' + error.message
+    console.error(errorMessage)
+    return res.status(500).json({ error: errorMessage })
+  }
+})
+
+sprintsRouter.put('/:id', checkAdmin, async (req, res) => {
+  const id = parseInt(req.params.id)
+  const user_id = req.user.id
+
+  try {
+    const sprint = await db.Sprint.findOne({ where: { id } })
+    if (!sprint) {
+      return res.status(404).json({ error: 'Sprint not found.' })
+    }
+    const group = await db.Group.findOne({ where: { id: sprint.group_id } })
+    if (!group) {
+      return res.status(404).json({ error: 'Group not found for the sprint.' })
+    }
+    const groupSprints = await fetchSprintsFromDbByGroup(group.id)
+    console.log(user_id, groupSprints)
+
+    return res.status(200).json({ 'message': 'TODO jotain fiksua' })
+
+
+  } catch (error) {
+    const errorMessage = 'Error updating sprint:' + error.message
     console.error(errorMessage)
     return res.status(500).json({ error: errorMessage })
   }
