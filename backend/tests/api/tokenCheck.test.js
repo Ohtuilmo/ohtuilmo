@@ -2,7 +2,8 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { createAndLoginAs, testUser, testAdmin } = require('../utils/login')
+const { loginAs, createAndLoginAs, testUser, testAdmin } = require('../utils/login')
+const { testInstructor, createTestInstructor } = require('../utils/groups')
 
 
 describe('Login with token', () => {
@@ -48,9 +49,35 @@ describe('Login with token', () => {
     expect(Object.keys(resAdmin.body)).toContain('error')
   })
 
-  // TODO needs groups to work
-  test.todo('of an instructor should pass checkLogin and checkInstructor')
-  test.todo('of an instructor should not pass checkAdmin')
+  test('of an instructor should pass checkLogin and checkInstructor', async () => {
+    await createTestInstructor(db)
+    const login = await loginAs(app, testInstructor.student_number)
+
+    const resLogin = await request(app)
+      .get('/api/tokenCheck/login')
+      .set('Authorization', `bearer ${login.token}`)
+    const resInstructor = await request(app)
+      .get('/api/tokenCheck/instructor')
+      .set('Authorization', `bearer ${login.token}`)
+
+    expect(resLogin.statusCode).toEqual(200)
+    expect(resLogin.body).toEqual({ 'message': 'success' })
+
+    expect(resInstructor.body).toEqual({ 'message': 'success' })
+    expect(resInstructor.statusCode).toEqual(200)
+  })
+  test('of an instructor should not pass checkAdmin', async () => {
+    await createTestInstructor(db)
+    const login = await loginAs(app, testInstructor.student_number)
+
+    const resAdmin = await request(app)
+      .get('/api/tokenCheck/admin')
+      .set('Authorization', `bearer ${login.token}`)
+
+    expect(resAdmin.statusCode).toEqual(401)
+    expect(resAdmin.body).toEqual({ 'error': 'not admin' })
+  })
+
 
   test('of an admin should pass checkLogin, checkInstructor and checkAdmin', async () => {
     const login = await createAndLoginAs(db, app, testAdmin)
