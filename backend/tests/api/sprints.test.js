@@ -4,6 +4,7 @@ const request = require('supertest')
 const { app, server, db } = require('../../index')
 const { loginAs, createAndLoginAs, resetUsers, testAdmin, testUsers } = require('../utils/login')
 const { createTestGroup, resetGroups } = require('../utils/groups')
+const { createTestSprint, resetSprints } = require('../utils/sprints')
 
 const testSprint = {
   start_date: null,
@@ -12,7 +13,7 @@ const testSprint = {
   group_id: null
 }
 
-describe.only('Sprints', () => {
+describe('Sprints', () => {
   test('should not be created with user without a group', async () => {
     const login = await loginAs(app, testUsers[2].student_number)
     await createTestGroup(db, testUsers)
@@ -106,6 +107,48 @@ describe.only('Sprints', () => {
   beforeEach(async () => {
     await resetUsers(db)
     await resetGroups(db)
+  })
+})
+
+
+describe("GET /api/sprints", () => {
+  test("should fail without any permissions", async () => {
+    const res = await request(app)
+      .get("/api/sprints")
+
+    expect(res.statusCode).toEqual(401)
+    expect(Object.keys(res.body)).toContain("error")
+    expect(res.body.error).toEqual("token missing or invalid")
+  })
+  test("should return only user's sprints when loggen in as an user", async () => {
+    const login = await loginAs(app, testUsers[0].student_number)
+
+    const res = await request(app)
+      .get("/api/sprints")
+      .set('Authorization', `bearer ${login.token}`)
+
+    expect(res.statusCode).toEqual(200)
+    expect(res.body).not.toHaveLength(0)
+    expect(Object.keys(res.body[0])).toContain("start_date", "end_date", "sprint", "group_id")
+  })
+  test("should not return anything for user not in the group with sprints", async () => {
+    const login = await loginAs(app, testUsers[2].student_number)
+
+    const res = await request(app)
+      .get("/api/sprints")
+      .set('Authorization', `bearer ${login.token}`)
+
+    expect(res.statusCode).toEqual(500)
+    expect(Object.keys(res.body)).toContain("error")
+    expect(res.body.error).toEqual("Error fetching sprints: User does not belong to any group or not found.")
+  })
+
+  beforeEach(async () => {
+    await resetUsers(db)
+    await resetSprints(db)
+
+    const groupId = await createTestGroup(db)
+    await createTestSprint(db, groupId)
   })
 })
 
