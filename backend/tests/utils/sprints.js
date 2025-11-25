@@ -1,4 +1,4 @@
-const { createTestGroup, resetGroups } = require("./groups")
+const { createTestGroup, resetGroups } = require('./groups')
 
 const testSprint = {
   sprint: 1,
