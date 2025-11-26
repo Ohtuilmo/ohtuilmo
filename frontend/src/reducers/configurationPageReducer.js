@@ -127,7 +127,7 @@ const configurationPageReducer = (state = initialState, action) => {
           action.payload.customer_review_question_set_id
       }
     }
-  case "UPDATE_ACTIVE":
+  case 'UPDATE_ACTIVE':
     return {
       ...state,
       form: {

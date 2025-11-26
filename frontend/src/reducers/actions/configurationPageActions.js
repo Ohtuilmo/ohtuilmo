@@ -92,7 +92,7 @@ const updateConfigForm = (configuration) => {
 
 const updateActive = (active) => {
   return {
-    type: "UPDATE_ACTIVE",
+    type: 'UPDATE_ACTIVE',
     payload: active
   }
 }
