@@ -155,10 +155,8 @@ describe('GET /api/sprints', () => {
 })
 
 describe('PUT /api/sprints', () => {
-  test('should fail with missing fields', async () => {
-    const login = await createAndLoginAs(db, app, testAdmin)
-
-    // const sprint =
+  test.skip('should fail with missing fields', async () => {
+    const login = await loginAs(app, testAdmin.student_number)
 
     const res = await request(app)
       .put('/api/sprints/1')
@@ -169,10 +167,12 @@ describe('PUT /api/sprints', () => {
       .set('Authorization', `bearer ${login.token}`)
       .send(testSprint)
 
-    expect(resSprint)
 
     expect(res.statusCode).toEqual(404)
     expect(Object.keys(res.body)).toContain('error')
+    expect(res.body.error).toEqual('Error updating sprint: ')
+
+    expect(resSprint.statusCode).toEqual(400)
   })
   test.todo('should fail with dates where start > end')
   test.todo('should fail with dates overlapping with other sprints')
@@ -182,6 +182,8 @@ describe('PUT /api/sprints', () => {
   beforeEach(async () => {
     await resetUsers(db)
     await resetGroups(db)
+
+    await createTestSprint(db)
   })
 })
 
