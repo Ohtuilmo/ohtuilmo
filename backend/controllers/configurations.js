@@ -82,6 +82,7 @@ const createConfiguration = (req, res) => {
   db.Configuration.create({
     name: req.body.name,
     content: req.body.content,
+    active: true
   })
     .then((created) => setForeignKeys(created, req, res))
     .catch((error) => handleDatabaseError(res, error))
@@ -92,6 +93,7 @@ const updateConfiguration = (configuration, req, res) => {
     .update({
       name: req.body.name,
       content: req.body.content,
+      active: req.body.active,
       customerReviewQuestionSetId: req.body.customer_review_question_set_id,
       registrationQuestionSetId: req.body.registration_question_set_id,
       reviewQuestionSet1Id: req.body.review_question_set_1_id,

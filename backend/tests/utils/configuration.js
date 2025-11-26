@@ -4,7 +4,8 @@ const createTestConfiguration = async (db) => {
   const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
   const createdConfiguration = await db.Configuration.create({
     name: 'Konfiguraatiolainen',
-    content: { registrationQuestionSetId }
+    content: { registrationQuestionSetId },
+    active: true,
   })
   return createdConfiguration.id
 }

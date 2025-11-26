@@ -63,6 +63,11 @@ describe('Instructor flag', () => {
     await createTestGroup(db, [testUsers[1], testUsers[2]], testInstructor, false)
     await createTestGroup(db, [testUsers[0]], anotherInstructor, false)
 
+    await db.Configuration.update(
+      { active: false },
+      { where: { id: 1 } }
+    )
+
     const login = await loginAs(app, testInstructor.student_number)
 
     const decodedToken = jwt.verify(login.token, config.secret)

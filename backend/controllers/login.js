@@ -12,19 +12,16 @@ const handleDatabaseError = (res, error) => {
 
 const userIsInstructorForCurrentGroup = async (student_number) => {
   try {
-    const latestConfigurationId = await db.Configuration.findOne({
-      order: [['created_at', 'DESC']],
-      attributes: ['id']
-    })
-
-    if (!latestConfigurationId) {
-      return false
-    }
-
     const group = await db.Group.findOne({
       where: {
-        configuration_id: latestConfigurationId.id,
         instructor_id: student_number
+      },
+      include: {
+        model: db.Configuration,
+        as: 'configuration',
+        where: {
+          active: true
+        }
       }
     })
     return group ? true : false
