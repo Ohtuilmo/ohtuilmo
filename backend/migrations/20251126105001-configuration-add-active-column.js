@@ -12,7 +12,8 @@ module.exports = {
       }
     )
   },
-  down: async (queryInterface, _Sequelize) => {
+  // eslint-disable-next-line no-unused-vars
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('configurations', 'active')
   }
 }
