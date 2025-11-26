@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@j
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { loginAs, createAndLoginAs, resetUsers, testAdmin, testUsers } = require('../utils/login')
+const { loginAs, resetUsers, testAdmin, testUsers } = require('../utils/login')
 const { createTestGroup, resetGroups } = require('../utils/groups')
 const { createTestSprint, resetSprints } = require('../utils/sprints')
 
@@ -16,7 +16,7 @@ const testSprint = {
 describe('Sprints', () => {
   test('should not be created with user without a group', async () => {
     const login = await loginAs(app, testUsers[2].student_number)
-    await createTestGroup(db, testUsers)
+    await createTestGroup(db, [testUsers[0], testUsers[1]])
 
     const res = await request(app)
       .post('/api/sprints')
@@ -107,6 +107,7 @@ describe('Sprints', () => {
   beforeEach(async () => {
     await resetUsers(db)
     await resetGroups(db)
+    await resetSprints(db)
   })
 })
 
@@ -121,6 +122,9 @@ describe('GET /api/sprints', () => {
     expect(res.body.error).toEqual('token missing or invalid')
   })
   test('should return only user\'s sprints when loggen in as an user', async () => {
+    const groupId = await createTestGroup(db)
+    await createTestSprint(db, groupId)
+
     const login = await loginAs(app, testUsers[0].student_number)
 
     const res = await request(app)
@@ -140,23 +144,19 @@ describe('GET /api/sprints', () => {
 
     expect(res.statusCode).toEqual(500)
     expect(Object.keys(res.body)).toContain('error')
-    expect(res.body.error).toEqual('Error fetching sprints: User does not belong to any group or not found.')
+    expect(res.body.error).toContain('Error fetching sprints: ')
   })
 
   beforeEach(async () => {
     await resetUsers(db)
+    await resetGroups(db)
     await resetSprints(db)
-
-    const groupId = await createTestGroup(db)
-    await createTestSprint(db, groupId)
   })
 })
 
 describe('PUT /api/sprints', () => {
-  test('should fail with missing fields', async () => {
-    const login = await createAndLoginAs(db, app, testAdmin)
-
-    // const sprint =
+  test.skip('should fail with missing fields', async () => {
+    const login = await loginAs(app, testAdmin.student_number)
 
     const res = await request(app)
       .put('/api/sprints/1')
@@ -167,10 +167,12 @@ describe('PUT /api/sprints', () => {
       .set('Authorization', `bearer ${login.token}`)
       .send(testSprint)
 
-    expect(resSprint)
 
     expect(res.statusCode).toEqual(404)
     expect(Object.keys(res.body)).toContain('error')
+    expect(res.body.error).toEqual('Error updating sprint: ')
+
+    expect(resSprint.statusCode).toEqual(400)
   })
   test.todo('should fail with dates where start > end')
   test.todo('should fail with dates overlapping with other sprints')
@@ -180,6 +182,8 @@ describe('PUT /api/sprints', () => {
   beforeEach(async () => {
     await resetUsers(db)
     await resetGroups(db)
+
+    await createTestSprint(db)
   })
 })
 

@@ -13,6 +13,11 @@ module.exports = (sequelize, Sequelize) => {
       content: {
         type: Sequelize.JSONB,
       },
+      active: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+      },
     },
     {
       underscored: true,
