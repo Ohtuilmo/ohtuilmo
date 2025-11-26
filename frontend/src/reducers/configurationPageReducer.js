@@ -10,6 +10,7 @@ const initialState = {
   selectedCustomerReview: null,
   form: {
     name: '',
+    active: true,
     content: '',
     registration_question_set_id: null,
     review_question_set_1_id: null,
@@ -100,6 +101,7 @@ const configurationPageReducer = (state = initialState, action) => {
       form: {
         name: '',
         content: '',
+        active: true,
         registration_question_set_id: null,
         review_question_set_1_id: null,
         review_question_set_2_id: null,
@@ -116,12 +118,21 @@ const configurationPageReducer = (state = initialState, action) => {
       form: {
         name: action.payload.name,
         content: action.payload.content,
+        active: action.payload.active,
         registration_question_set_id:
           action.payload.registration_question_set_id,
         review_question_set_1_id: action.payload.review_question_set_1_id,
         review_question_set_2_id: action.payload.review_question_set_2_id,
         customer_review_question_set_id:
           action.payload.customer_review_question_set_id
+      }
+    }
+  case "UPDATE_ACTIVE":
+    return {
+      ...state,
+      form: {
+        ...state.form,
+        active: action.payload
       }
     }
   case 'UPDATE_CONFIG_NAME':

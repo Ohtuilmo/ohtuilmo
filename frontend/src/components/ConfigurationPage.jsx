@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Switch from '@material-ui/core/Switch'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -356,6 +357,16 @@ const ConfigurationPage = (props) => {
             </Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
+        <div style={{ marginTop: '10px'}}>
+          <Switch
+            style={{ marginRight: '10px', height: '40px' }}
+            color="primary"
+            variant="contained"
+            checked={props.form.active}
+            onChange={(e) => props.updateActive(e.target.checked)}
+          />
+          <p style={{ display: "inline" }}>{props.form.active ? "Active" : "Closed"}</p>
+        </div>
       </div>
       <Button
         color="primary"
