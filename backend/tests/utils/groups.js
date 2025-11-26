@@ -1,4 +1,4 @@
-const { createTestUsers, resetUsers, testUsers } = require('./login')
+const { createTestUsers, createTestUser, resetUsers, testUsers } = require('./login')
 const { createTestConfiguration, resetConfigurations } = require('./configuration')
 const { createTestTopic, resetTopics } = require('./topic')
 
@@ -26,8 +26,9 @@ const createTestInstructor = async (db) => {
   return testInstructor.student_number
 }
 
-const createTestGroup = async (db, users=testUsers, instructor=testInstructor) => {
-  await createTestUsers(db, [users[0], users[1], instructor])
+const createTestGroup = async (db, users=testUsers, instructor=testInstructor, createUsers=true) => {
+  const createdUsers = createUsers ? await createTestUsers(db, users) : users
+  const createdInstructor = createUsers ? await createTestUser(db, instructor) : instructor
 
   const configurationId = await createTestConfiguration(db)
   const topicId = await createTestTopic(db, configurationId)
@@ -36,9 +37,9 @@ const createTestGroup = async (db, users=testUsers, instructor=testInstructor) =
     name: 'Testigrouppi',
     topicId: topicId,
     configurationId: configurationId,
-    instructorId: testInstructor.student_number,
+    instructorId: createdInstructor.student_number,
   })
-  await createdGroup.setStudents([testUsers[0].student_number, testUsers[1].student_number])
+  await createdGroup.setStudents(createdUsers.map(user => user.student_number))
   return createdGroup.id
 }
 
@@ -46,6 +47,7 @@ const resetGroups = async (db) => {
   await resetUsers(db)
   await resetConfigurations(db)
   await resetTopics(db)
+  await db.Group.truncate({ cascade: true, restartIdentity: true })
 }
 
 const resetInstructor = async (db) => {

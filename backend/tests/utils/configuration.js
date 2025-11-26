@@ -1,5 +1,4 @@
-const { createTestRegistrationQuestionSet } = require('./registrationQuestionSet')
-const { resetRegistrationQuestionSets } = require('./registrationQuestionSet')
+const { createTestRegistrationQuestionSet, resetRegistrationQuestionSets } = require('./registrationQuestionSet')
 
 const createTestConfiguration = async (db) => {
   const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
