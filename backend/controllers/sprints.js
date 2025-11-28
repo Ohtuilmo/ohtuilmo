@@ -57,6 +57,38 @@ const validateSprint = ({ start_date, end_date, sprint }, latest) => {
   }
 }
 
+const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_id }, originalSprint, groupSprints) => {
+  if (!start_date || !end_date)
+    throw new Error('Start date or end date is invalid.')
+
+  const startDate = new Date(start_date)
+  const endDate = new Date(end_date)
+
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Start date or end date is invalid.')
+  }
+  if (startDate >= endDate) {
+    throw new Error('Start date must be before end date.')
+  }
+
+  const sprintNumbers = groupSprints.map(sprint => sprint.sprint).filter(sprintNum => sprintNum !== originalSprint.sprint)
+  if (sprintNumbers.includes(sprintNumber))
+    throw new Error('Invalid sprint number, sprint already exists.')
+
+  const previousSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint-1)
+  const nextSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint+1)
+
+  if (previousSprint && new Date(previousSprint.end_date) >= startDate)
+    throw new Error('Start date is before the end date of the previous sprint.')
+
+  if (nextSprint && new Date(nextSprint.start_date) <= endDate)
+    throw new Error('End date is after the start date of the next sprint.')
+
+  const group = await db.Group.findByPk(group_id)
+  if (!group)
+    throw new Error('New group doesn\'t exist.')
+}
+
 const fetchSprintsFromDbByGroup = async (groupId) => {
   if (!groupId) {
     throw new Error('Group id is missing.')
@@ -160,26 +192,42 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
 })
 
 sprintsRouter.put('/:id', checkAdmin, async (req, res) => {
-  const id = parseInt(req.params.id)
-  const user_id = req.user.id
+  const { start_date, end_date, sprint, group_id } = req.body
 
   try {
-    const sprint = await db.Sprint.findOne({ where: { id } })
-    if (!sprint) {
+    const id = parseInt(req.params.id)
+
+    const originalSprint = await db.Sprint.findOne({ where: { id } })
+    if (!originalSprint) {
       return res.status(404).json({ error: 'Sprint not found.' })
     }
-    const group = await db.Group.findOne({ where: { id: sprint.group_id } })
+
+    const group = await db.Group.findOne({ where: { id: originalSprint.group_id } })
     if (!group) {
       return res.status(404).json({ error: 'Group not found for the sprint.' })
     }
-    const groupSprints = await fetchSprintsFromDbByGroup(group.id)
-    console.log(user_id, groupSprints)
 
-    return res.status(200).json({ 'message': 'TODO jotain fiksua' })
+    const groupSprints = await db.Sprint.findAll({
+      where: { group_id: group.id },
+      attributes: ['id', 'start_date', 'end_date', 'sprint']
+    })
 
+    await validateSprintUpdate({ start_date, end_date, sprintNumber: sprint, group_id }, originalSprint, groupSprints)
 
+    await db.Sprint.update(
+      {
+        start_date,
+        end_date,
+        sprint,
+        group_id
+      },
+      {
+        where: { id }
+      }
+    )
+    return res.status(200).json({ message: 'Update successful' })
   } catch (error) {
-    const errorMessage = 'Error updating sprint:' + error.message
+    const errorMessage = 'Error updating sprint: ' + error.message
     console.error(errorMessage)
     return res.status(500).json({ error: errorMessage })
   }
