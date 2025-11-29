@@ -4,6 +4,11 @@ const assertIsOnLandingPage = () => {
   cy.get('[data-cy=registrationlink]').should('be.visible')
 }
 
+const assertIsUnauthorized = () => {
+  cy.get("[class=unauthorized-page]").should('be.visible')
+  cy.contains("Unauthorized.")
+}
+
 const assertIsOnLoginPage = () => {
   cy.url().should('include', '/login')
   cy.contains('Software engineering project')
@@ -22,117 +27,55 @@ const assertIsAlreadyRegistered = () => {
 }
 
 describe('Page access and redirect tests', () => {
-  describe('Page access without authentication', () => {
-    it.skip('/administration/configuration redirects user to login page', () => {
-      cy.visit('/administration/configuration')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/customer-review-questions redirects user to login page', () => {
-      cy.visit('/administration/customer-review-questions')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/groups redirects user to login page', () => {
-      cy.visit('/administration/groups')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/participants redirects user to login page', () => {
-      cy.visit('/administration/participants')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/peer-review-questions redirects user to login page', () => {
-      cy.visit('/administration/peer-review-questions')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/registration-questions redirects user to login page', () => {
-      cy.visit('/administration/registration-questions')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/registrationmanagement redirects user to login page', () => {
-      cy.visit('/administration/registrationmanagement')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/administration/email-templates redirects user to login page', () => {
-      cy.visit('/administration/email-templates')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/peerreview redirects user to login page', () => {
-      cy.visit('/peerreview')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/registrationdetails redirects user to login page', () => {
-      cy.visit('/registrationdetails')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/register redirects user to login page', () => {
-      cy.visit('/register')
-      assertIsOnLoginPage()
-    })
-
-    it.skip('/topics redirects user to login page', () => {
-      cy.visit('/topics')
-      assertIsOnLoginPage()
-    })
-  })
-
   describe('Page access for user', () => {
     beforeEach(() => {
       cy.loginAsUnregisteredUser()
       cy.visit('/')
     })
 
-    it.skip('/administration/configuration redirects user to landing page', () => {
+    it('/administration/configuration redirects user to landing page', () => {
       cy.visit('/administration/configuration')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/customer-review-questions redirects user to landing page', () => {
+    it('/administration/customer-review-questions redirects user to landing page', () => {
       cy.visit('/administration/customer-review-questions')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/groups redirects user to landing page', () => {
+    it('/administration/groups redirects user to landing page', () => {
       cy.visit('/administration/groups')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/participants redirects user to landing page', () => {
+    it('/administration/participants redirects user to landing page', () => {
       cy.visit('/administration/participants')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/peer-review-questions redirects user to landing page', () => {
+    it('/administration/peer-review-questions redirects user to landing page', () => {
       cy.visit('/administration/peer-review-questions')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/registration-questions redirects user to landing page', () => {
+    it('/administration/registration-questions redirects user to landing page', () => {
       cy.visit('/administration/registration-questions')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/registrationmanagement redirects user to landing page', () => {
+    it('/administration/registrationmanagement redirects user to landing page', () => {
       cy.visit('/administration/registrationmanagement')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/administration/email-templates redirects user to login page', () => {
+    it('/administration/email-templates redirects user to login page', () => {
       cy.visit('/administration/email-templates')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
-    it.skip('/topics redirects user to landing page', () => {
+    it('/topics redirects user to landing page', () => {
       cy.visit('/topics')
-      assertIsOnLandingPage()
+      assertIsUnauthorized()
     })
 
     it('renders /peerreview when visited', () => {
@@ -239,11 +182,11 @@ describe('Page access and redirect tests', () => {
       cy.get('.not-found-page').contains('Page not found')
     })
 
-    it.skip('redirects to / when clicking the return link', () => {
+    it('redirects to / when clicking the return link', () => {
       cy.visit('/amksfmkafg-qfq435tefds')
       cy.get('.not-found-page').find('[data-cy="return-link"]').click()
 
-      assertIsOnLoginPage()
+      cy.url().should('include', '/registrationdetails')
     })
   })
 })
