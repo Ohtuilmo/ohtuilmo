@@ -24,6 +24,11 @@ class PeerReview extends React.Component {
     try {
       const group = await groupManagementService.getByStudent()
       if (group) {
+        // NOTE: Because in App.jsx fetchRegistrationManagement takes so long
+        // this runs once before reviewConf is set by the above
+        // function, we get one call to /api/configurations/0/...
+        // which obviously fails. This happens only when navigating
+        // straight to this page and fixes itself right after.
         const reviewQuestionsSet = await peerReviewService.getReviewQuestions(
           this.props.reviewConf,
           this.props.reviewRound
