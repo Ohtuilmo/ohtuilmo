@@ -111,6 +111,11 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/groups'),
     },
     {
+      className: 'sprint-management-menu-item',
+      text: 'Sprint Management',
+      handler: () => history.push('/administration/sprints'),
+    },
+    {
       text: 'Participants',
       handler: () => history.push('/administration/participants'),
     },
