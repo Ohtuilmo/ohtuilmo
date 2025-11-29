@@ -97,7 +97,7 @@ export const SprintListItem = (props) => {
       <td className="sprint-list-sprint-number">{sprint.sprint}</td>
       <td>{!isEditing ? formatDate(startDate) : 
         <TextField
-          errors={!!startDateErrorMessage}
+          errors={(!!startDateErrorMessage).toString()}
           helperText={startDateErrorMessage}
           className="date"
           id="date"
@@ -114,7 +114,7 @@ export const SprintListItem = (props) => {
       }</td>
       <td>{!isEditing ? formatDate(endDate) : 
         <TextField
-          errors={!!endDateErrorMessage}
+          errors={(!!endDateErrorMessage).toString()}
           helperText={endDateErrorMessage}
           className="date"
           id="date"
