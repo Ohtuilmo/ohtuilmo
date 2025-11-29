@@ -25,6 +25,13 @@ const createSprint = async (sprintData) => {
   return response.data
 }
 
+const updateSprint = async (sprintData) => {
+  const response = await axios.put(`${url}/${sprintData.id}`, sprintData, {
+    headers: { Authorization: `Bearer ${getUserToken()}` },
+  })
+  return response.data
+}
+
 const deleteSprint = async (id) => {
   const response = await axios.delete(`${url}/${id}`, {
     headers: { Authorization: `Bearer ${getUserToken()}` },
@@ -32,4 +39,4 @@ const deleteSprint = async (id) => {
   return response.data
 }
 
-export default { getSprints, getSprintsByGroup, createSprint, deleteSprint }
+export default { getSprints, getSprintsByGroup, createSprint, updateSprint, deleteSprint }

@@ -248,11 +248,11 @@ describe('PUT /api/sprints', () => {
 
     expect(resEnd.statusCode).toEqual(500)
     expect(Object.keys(resEnd.body)).toContain('error')
-    expect(resEnd.body.error).toEqual('Error updating sprint: Start date is before the end date of the previous sprint.')
+    expect(resEnd.body.error).toEqual('Error updating sprint: End date is after the start date of the next sprint.')
 
     expect(resStart.statusCode).toEqual(500)
     expect(Object.keys(resStart.body)).toContain('error')
-    expect(resStart.body.error).toEqual('Error updating sprint: End date is after the start date of the next sprint.')
+    expect(resStart.body.error).toEqual('Error updating sprint: Start date is before the end date of the previous sprint.')
 
     // check that sprint has not been updated
     const updatedSprint1 = await db.Sprint.findOne({ where: { id: sprintId1 } })
