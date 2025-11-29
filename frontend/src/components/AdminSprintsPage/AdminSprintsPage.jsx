@@ -51,7 +51,6 @@ const AdminSprintsPage = (props) => {
       try {
         const allGroups = await groupManagementService.get()
         setAllGroups(allGroups)
-        console.log(allGroups)
       } catch (error) {
         console.error(
           'Error fetching groups:',
@@ -88,10 +87,7 @@ const AdminSprintsPage = (props) => {
     }
     const fetchData = async (selectedGroupId) => {
       setIsLoading(true)
-      console.log("Group:", selectedGroup)
-      console.log("Configuration:", selectedConfiguration)
       await fetchSprints(selectedGroupId)
-      console.log("Sprints:", allSprints)
       setIsLoading(false)
     }
     selectedGroup?.id && fetchData(selectedGroup.id)

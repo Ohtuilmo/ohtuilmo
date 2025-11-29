@@ -34,8 +34,6 @@ export const SprintListItem = (props) => {
 
       setNewStartDate(sprint.start_date)
       setNewEndDate(sprint.end_date)
-
-      console.log("Formatted vs non-formatted", formatDate(sprint.start_date), sprint.start_date)
     }
   }, [sprint])
 
@@ -85,7 +83,7 @@ export const SprintListItem = (props) => {
         setEndDate(newEndDate)
         setIsEditing(false)
       } catch (error) {
-        console.log(error.response?.data?.error)
+        console.error(error.response?.data?.error)
         setError(error.response?.data?.error, 15*1000)
       }
     }
