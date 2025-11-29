@@ -91,7 +91,7 @@ export const SprintListItem = (props) => {
 
 
   return (
-    <tr key={sprint.id}>
+    <tr>
       <td className="sprint-list-sprint-number">{sprint.sprint}</td>
       <td>{!isEditing ? formatDate(startDate) : 
         <TextField

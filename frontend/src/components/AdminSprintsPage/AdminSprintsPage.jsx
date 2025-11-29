@@ -24,8 +24,8 @@ const AdminSprintsPage = (props) => {
   const [allConfigurations, setAllConfigurations] = useState([])
   const [allGroups, setAllGroups] = useState([])
   const [allSprints, setAllSprints] = useState([])
-  const [selectedConfiguration, setSelectedConfiguration] = useState(null)
-  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedConfiguration, setSelectedConfiguration] = useState({})
+  const [selectedGroup, setSelectedGroup] = useState({})
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -101,10 +101,10 @@ const AdminSprintsPage = (props) => {
   <div>
     <SprintsSelectForm
       configurations={allConfigurations}
-      selectedConfiguration={selectedConfiguration}
-      handleConfigurationChange={setSelectedConfiguration}
       groups={allGroups}
+      selectedConfiguration={selectedConfiguration}
       selectedGroup={selectedGroup}
+      handleConfigurationChange={setSelectedConfiguration}
       handleGroupChange={setSelectedGroup}
     />
     {selectedGroup && (
@@ -123,7 +123,7 @@ const AdminSprintsPage = (props) => {
             </thead>
             <tbody id="sprint-list-rows">
               {allSprints.sort((a, b) => b.sprint - a.sprint).map((sprint) => {
-                return <SprintListItem sprint={sprint} setError={setError} setSuccess={setSuccess}/>
+                return <SprintListItem sprint={sprint} setError={setError} setSuccess={setSuccess} key={sprint.id}/>
               })}
             </tbody>
           </table>

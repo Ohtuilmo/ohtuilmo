@@ -26,7 +26,7 @@ export const SprintsSelectForm = ({
         value={selectedConfiguration}
         onChange={(e) => {
           handleConfigurationChange(e.target.value)
-          handleGroupChange(null)
+          handleGroupChange({})
         }}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
@@ -82,7 +82,7 @@ export const SprintsSelectForm = ({
             handleGroupChange={handleGroupChange}
           />
         </SelectorWrapper>
-        {selectedConfiguration &&
+        {Object.keys(selectedConfiguration).length !== 0 &&
           <SelectorWrapper label="Select group">
             <GroupSelect
               selectedGroup={selectedGroup}
