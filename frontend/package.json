@@ -29,8 +29,8 @@
     "test-setup:down": "docker compose -f ../compose.local-test.yaml --profile local-e2e down",
     "test:docker": "docker compose -f ../compose.local-test.yaml --profile e2e up --force-recreate --exit-code-from cypress",
     "test:docker:down": "docker compose -f ../compose.local-test.yaml --profile e2e down",
-    "test": "CYPRESS_baseUrl=http://localhost:3002 npx cypress open",
-    "test:headless": "CYPRESS_VIDEO=false CYPRESS_baseUrl=http://localhost:3002 npx cypress run",
+    "test": "CYPRESS_baseUrl=http://localhost:5000 npx cypress open",
+    "test:headless": "CYPRESS_VIDEO=false CYPRESS_baseUrl=http://localhost:5000 npx cypress run",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/"
   },
