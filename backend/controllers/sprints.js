@@ -61,6 +61,7 @@ const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_
   if (!start_date || !end_date)
     throw new Error('Start date or end date is invalid.')
 
+
   const startDate = new Date(start_date)
   const endDate = new Date(end_date)
 
@@ -75,8 +76,8 @@ const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_
   if (sprintNumbers.includes(sprintNumber))
     throw new Error('Invalid sprint number, sprint already exists.')
 
-  const previousSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint-1)
-  const nextSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint+1)
+  const previousSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint+1)
+  const nextSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint-1)
 
   if (previousSprint && new Date(previousSprint.end_date) >= startDate)
     throw new Error('Start date is before the end date of the previous sprint.')
@@ -84,9 +85,11 @@ const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_
   if (nextSprint && new Date(nextSprint.start_date) <= endDate)
     throw new Error('End date is after the start date of the next sprint.')
 
-  const group = await db.Group.findByPk(group_id)
-  if (!group)
-    throw new Error('New group doesn\'t exist.')
+  if (group_id && typeof group_id === 'number') {
+    const group = await db.Group.findByPk(group_id)
+    if (!group)
+      throw new Error('New group doesn\'t exist.')
+  }
 }
 
 const fetchSprintsFromDbByGroup = async (groupId) => {
