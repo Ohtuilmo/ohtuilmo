@@ -30,7 +30,9 @@ const postLogin = (user) => {
 const loginAsUser = (user) => {
   postLogin(user).then((res) => {
     const userData = res.body
-    window.localStorage.setItem('loggedInUser', JSON.stringify(userData))
+    cy.window().then(win => {
+      win.localStorage.setItem('loggedInUser', JSON.stringify(userData))
+    })
   })
 }
 
