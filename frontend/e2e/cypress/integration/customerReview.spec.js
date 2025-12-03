@@ -53,7 +53,7 @@ const answerOnelinerInput = (text) => {
 
 const answerNumberInput = (number) => {
   cy.get(
-    '[data-cy="numberInput-Monta tuntia viikossa olit yhteydessä tiimiin?"]'
+    '[data-cy="numberInput-Tekninen kontribuutio: arvosana"]'
   )
     .clear()
     .type(number)

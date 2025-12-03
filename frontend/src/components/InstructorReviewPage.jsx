@@ -261,6 +261,7 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
+      data-cy="group-selector"
       value={selectedGroup}
       onChange={(e) =>
         groupSelectHandler(
@@ -273,7 +274,7 @@ const ConfigurationSelect = ({
       }
     >
       {groups.map((group, index) => (
-        <MenuItem key={index} value={index}>
+        <MenuItem key={index} value={index} data-cy={`"group-list-${group.id}"`}>
           {group.groupName}
         </MenuItem>
       ))}
