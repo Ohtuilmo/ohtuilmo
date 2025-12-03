@@ -41,6 +41,8 @@ const TopicSelect = ({
 }
 
 const mapStateToProps = (state) => {
+  // if no configuration id is set for the group (e.g. user is admin):
+  // pick the configuration with the highest id (~newest)
   const id =  state.groupPage.groupConfigurationID
   const ids = state.configurationPage.configurations.map(config => config.id)
   return {
