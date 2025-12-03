@@ -10,7 +10,7 @@ const updateIsInstructor = (user, isInstructor) => ({
 export const loginUser = (userCredentials) => {
   return async (dispatch) => {
     if (!userCredentials) {
-      console.warn("Login failed: No credentials given")
+      console.warn('Login failed: No credentials given')
       return
     }
 
