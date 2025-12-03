@@ -117,10 +117,10 @@ const App = (props) => {
 
     fetchData()
 
-    const loginInterval = setInterval(() => {
+    const loginInterval = setInterval(async () => {
       if (!isCustomerReviewPage) {
         try {
-          loginService.login()
+          await loginUser()
         } catch (err) {
           console.log(err)
         }
