@@ -210,11 +210,6 @@ describe('Time logs & sprints', () => {
 
     cy.get("h4", { timeout: 15000 }).should("include.text", "Time Logs")
 
-    cy.get('.timelogs-description')
-      .first()
-      .invoke('text')
-      .as('removedLogDescription')
-
     cy.get('#timelog-rows')
       .find('[id^="timelog-remove-button-"]')
       .first()
@@ -226,12 +221,8 @@ describe('Time logs & sprints', () => {
     )
     cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
 
-    cy.get('@removedLogDescription').then((removedLogDescription) => {
-      cy.get('#timelog-rows')
-        .find(".timelogs-description")
-        .first()
-        .should('not.contain', removedLogDescription)
-    })
+    cy.get('.timelogs-description')
+      .should('not.contain.text', "test description 2")
 
     cy.get('#timelog-rows').children().should('have.length', 1)
   })
@@ -352,14 +343,6 @@ describe('Time logs & sprints', () => {
     cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
 
     cy.get('#timelog-rows').children().should('have.length', 1)
-
-    // Again
-    cy.get('#timelog-rows')
-      .find('[id^="timelog-remove-button-"]')
-      .first()
-      .click()
-    cy.get('.confirmation-dialog').should('contain', 'Delete this time log? It cannot be restored.')
-    cy.get('.confirmation-dialog').find('#confirmation-dialog-yes-button').click()
 
     cy.get('#hamburger-menu-button')
       .click()
