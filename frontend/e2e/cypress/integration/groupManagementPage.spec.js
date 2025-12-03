@@ -74,12 +74,12 @@ describe('Group Management Page', () => {
       cy.get('.group-name').eq(0).should('contain', 'Ryhmä B')
     })
 
-    /*
     it('changes topic', () => {
       cy.get('.edit-group-form-topic__selector')
         .should('be.visible')
         .click()
       cy.get('.topic-menu-item')
+        .first()
         .should('be.visible')
         .within(() => {
           cy.wait(500)
@@ -94,7 +94,6 @@ describe('Group Management Page', () => {
         .eq(0)
         .should('contain', 'Aihe B')
     })
-    */
 
     it('changes instructor', () => {
       cy.get('.edit-group-instructor').click()

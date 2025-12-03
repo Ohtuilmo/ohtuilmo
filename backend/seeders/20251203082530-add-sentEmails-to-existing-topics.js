@@ -1,4 +1,5 @@
 'use strict'
+const { Op } = require('sequelize')
 
 const sentEmails = [
   {
@@ -13,6 +14,12 @@ const sentEmails = [
     updated_at: new Date(),
     topic_id: 1
   },
+  {
+    email_template_name: 'topic_accepted_fin',
+    created_at: new Date(),
+    updated_at: new Date(),
+    topic_id: 2
+  },
 ]
 
 module.exports = {
@@ -21,6 +28,6 @@ module.exports = {
   },
 
   down: async (query) => {
-    await query.bulkDelete('sent_topic_emails', { topic_id: 1 }, {})
+    await query.bulkDelete('sent_topic_emails', { [Op.or]: [{ topic_id: 1 }, { topic_id: 2 }] }, {})
   }
 }
