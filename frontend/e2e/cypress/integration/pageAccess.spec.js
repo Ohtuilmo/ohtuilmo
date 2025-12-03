@@ -96,11 +96,6 @@ describe('Page access and redirect tests', () => {
       cy.visit('/')
     })
 
-    it.skip('/login redirects to /registrationdetails', () => {
-      cy.visit('/login')
-      assertIsOnRegistrationDetailsPage()
-    })
-
     it('/register shows "already registered" message', () => {
       cy.visit('/register')
       assertIsAlreadyRegistered()
