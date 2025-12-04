@@ -13,7 +13,7 @@ const login = async (credentials) => {
       return response.data
     }
 
-    const savedUser = localStorage.getItem("loggedInUser")
+    const savedUser = localStorage.getItem('loggedInUser')
     if (savedUser) {
       return JSON.parse(savedUser)
     }
