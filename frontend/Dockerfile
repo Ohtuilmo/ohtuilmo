@@ -16,10 +16,11 @@ RUN npm install -g serve@10.1.2
 # same, we can re-use the layer cache from our previous build --> no need to
 # install a gigantic amount of dependencies.
 COPY package*.json .
+
 # Run "ci" instead of "install" to make sure we get exact deps we think we're
 # getting. Downside is that dev deps are downloaded as well.
 # As "ci" uses the $HOME/.npm package cache, we can tell Travis to cache that.
-RUN npm ci
+RUN npm ci --production=false
 
 COPY . .
 
