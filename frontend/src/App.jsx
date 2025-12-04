@@ -127,7 +127,7 @@ const App = (props) => {
         try {
           await loginUser()
         } catch (err) {
-          console.log(err)
+          console.error(err)
         }
       }
     }, 60 * 1000)
