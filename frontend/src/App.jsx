@@ -81,6 +81,11 @@ const App = (props) => {
   } = props
 
   useEffect(() => {
+    // NODE_ENV
+    console.log("MODE:", import.meta.env.MODE)
+  },[])
+
+  useEffect(() => {
     const isCustomerReviewPage = window.location.href.includes('customer-review/')
     const fetchRegistrationManagementData = async () => {
       try {

@@ -1,6 +1,7 @@
 FROM registry.access.redhat.com/ubi8/nodejs-20
 
 USER root
+ENV NODE_ENV="development"
 
 WORKDIR /usr/src/app
 

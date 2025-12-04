@@ -2,6 +2,7 @@
 FROM registry.access.redhat.com/ubi9/nodejs-20
 
 ENV TZ="Europe/Helsinki"
+ENV NODE_ENV="production"
 
 WORKDIR /opt/app-root/src
 

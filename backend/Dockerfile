@@ -3,6 +3,7 @@ FROM registry.access.redhat.com/ubi8/nodejs-20
 
 # Set timezone and working directory for the app in container
 ENV TZ="Europe/Helsinki"
+ENV NODE_ENV="production"
 
 WORKDIR /opt/app-root/src
 

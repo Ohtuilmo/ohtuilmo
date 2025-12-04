@@ -84,6 +84,9 @@ app.use('/api/sprints', sprintRouter)
 app.use('/api/groupSprintSummary', groupSprintSummaryRouter)
 app.use('/api/tags', tagsRouter)
 
+
+console.log('NODE_ENV:', process.env.NODE_ENV)
+
 // Database connection
 const db = require('./models')
 db.connect()
