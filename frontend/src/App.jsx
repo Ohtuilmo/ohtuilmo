@@ -91,7 +91,7 @@ const App = (props) => {
       try {
         await fetchRegistrationManagement()
       } catch (e) {
-        console.log('error happened', e)
+        console.error('error happened', e)
         setError('Error fetching registration management configuration', 5000)
       }
     }
@@ -100,7 +100,7 @@ const App = (props) => {
       try {
         await initializeMyGroup()
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
@@ -108,7 +108,7 @@ const App = (props) => {
       try {
         await loginUser()
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
