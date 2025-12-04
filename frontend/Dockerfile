@@ -1,8 +1,12 @@
 # specify base image
 FROM registry.access.redhat.com/ubi9/nodejs-20
 
+# npm run build needs this set when building so
+# it needs to be set as a build argument, not only as env var
+ARG NODE_ENV="production"
+
 ENV TZ="Europe/Helsinki"
-ENV NODE_ENV="production"
+ENV NODE_ENV=$NODE_ENV
 
 WORKDIR /opt/app-root/src
 
