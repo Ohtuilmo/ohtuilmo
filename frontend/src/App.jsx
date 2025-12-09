@@ -125,6 +125,8 @@ const App = (props) => {
     const loginInterval = setInterval(async () => {
       if (!isCustomerReviewPage) {
         try {
+          // This has to be the service login and not await loginUser(), because
+          // loginUser updates redux state which forces a reload => breaks things!
           await loginService.login()
         } catch (err) {
           console.error(err)
