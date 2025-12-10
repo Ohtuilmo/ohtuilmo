@@ -21,7 +21,7 @@ const PeerReviewQuestionsTableRow = ({
     </TableCell>
     <TableCell>{description}</TableCell>
     <TableCell>{type}</TableCell>
-    <TableCell>{JSON.stringify(options)}</TableCell>
+    <TableCell>{options ? JSON.stringify(options) : ""}</TableCell>
   </TableRow>
 )
 

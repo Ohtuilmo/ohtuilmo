@@ -17,7 +17,7 @@ export const peerReviewQuestionShape = PropTypes.shape({
   header: PropTypes.string,
   type: PropTypes.string,
   description: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.string)
+  options: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
 })
 
 export const peerReviewQuestionSetShape = PropTypes.shape({
