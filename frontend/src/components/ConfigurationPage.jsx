@@ -74,13 +74,18 @@ const ConfigurationPage = (props) => {
 
   const handleQuestionSetChange = (event) => {
     if (event.target.name === 'registration') {
-      props.updateSelectedRegistrationQuestions(event.target.value)
+      const value = props.allRegistrationQuestions.find(questions => questions.id === event.target.value)
+      console.log("VALUE FOR REGISTRATION:", value, event.target.value, props.allRegistrationQuestions)
+      props.updateSelectedRegistrationQuestions(value)
     } else if (event.target.name === 'review1') {
-      props.updateSelectedReviewQuestions1(event.target.value)
+      const value = props.allReviewQuestions.find(questions => questions.id === event.target.value)
+      props.updateSelectedReviewQuestions1(value)
     } else if (event.target.name === 'review2') {
-      props.updateSelectedReviewQuestions2(event.target.value)
+      const value = props.allReviewQuestions.find(questions => questions.id === event.target.value)
+      props.updateSelectedReviewQuestions2(value)
     } else if (event.target.name === 'customer-review') {
-      props.updateSelectedCustomerReviewQuestions(event.target.value)
+      const value = props.allCustomerReviewQuestions.find(questions => questions.id === event.target.value)
+      props.updateSelectedCustomerReviewQuestions(value)
     }
   }
 
@@ -181,7 +186,9 @@ const ConfigurationPage = (props) => {
             <Select
               name="registration"
               value={
-                props.selectedRegister ? props.selectedRegister : 'default'
+                props.selectedRegister
+                  ? props.selectedRegister.id
+                  : 'default'
               }
               onChange={handleQuestionSetChange}
             >
@@ -189,7 +196,7 @@ const ConfigurationPage = (props) => {
                 Pick registration questions
               </MenuItem>
               {props.allRegistrationQuestions.map((item) => (
-                <MenuItem key={item.id} value={item}>
+                <MenuItem key={item.id} value={item.id}>
                   {item.name}
                 </MenuItem>
               ))}
@@ -231,7 +238,9 @@ const ConfigurationPage = (props) => {
             <Select
               data-cy="select-review-questions-1"
               name="review1"
-              value={props.selectedReview1 ? props.selectedReview1 : 'default'}
+              value={props.selectedReview1
+                ? props.selectedReview1.id
+                : 'default'}
               onChange={handleQuestionSetChange}
             >
               <MenuItem value="default" disabled>
@@ -240,7 +249,7 @@ const ConfigurationPage = (props) => {
               {props.allReviewQuestions.map((item) => (
                 <MenuItem
                   key={item.id}
-                  value={item}
+                  value={item.id}
                   data-cy="menu-item-review-questions-1"
                 >
                   {item.name}
@@ -283,14 +292,16 @@ const ConfigurationPage = (props) => {
           <ExpansionPanelActions>
             <Select
               name="review2"
-              value={props.selectedReview2 ? props.selectedReview2 : 'default'}
+              value={props.selectedReview2
+                ? props.selectedReview2.id
+                : 'default'}
               onChange={handleQuestionSetChange}
             >
               <MenuItem value="default" disabled>
                 Pick review 2 questions
               </MenuItem>
               {props.allReviewQuestions.map((item) => (
-                <MenuItem key={item.id} value={item}>
+                <MenuItem key={item.id} value={item.id}>
                   {item.name}
                 </MenuItem>
               ))}
@@ -333,7 +344,7 @@ const ConfigurationPage = (props) => {
               name="customer-review"
               value={
                 props.selectedCustomerReview
-                  ? props.selectedCustomerReview
+                  ? props.selectedCustomerReview.id
                   : 'default'
               }
               onChange={handleQuestionSetChange}
@@ -342,7 +353,7 @@ const ConfigurationPage = (props) => {
                 Pick customer review questions
               </MenuItem>
               {props.allCustomerReviewQuestions.map((item) => (
-                <MenuItem key={item.id} value={item}>
+                <MenuItem key={item.id} value={item.id}>
                   {item.name}
                 </MenuItem>
               ))}
