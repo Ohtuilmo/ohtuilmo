@@ -62,8 +62,8 @@ describe('Customer review is shown', () => {
       name: 'Konfiguraatio A',
       content: '',
       registration_question_set_id: null,
-      review_question_set_1_id: null,
-      review_question_set_2_id: null,
+      review_question_set1_id: null,
+      review_question_set2_id: null,
       customer_review_question_set_id: null,
     }).as('conf1')
 
@@ -71,8 +71,8 @@ describe('Customer review is shown', () => {
       name: 'Conf 2',
       content: '',
       registration_question_set_id: null,
-      review_question_set_1_id: null,
-      review_question_set_2_id: null,
+      review_question_set1_id: null,
+      review_question_set2_id: null,
       customer_review_question_set_id: null,
     }).as('conf2')
 

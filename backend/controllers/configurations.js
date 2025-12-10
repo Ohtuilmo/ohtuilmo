@@ -30,9 +30,9 @@ const returnPopulatedConfiguration = (req, res, unPopulatedConfiguration) => {
 
 const setForeignKeys = async (configuration, req, res) => {
   try {
-    if (req.body.review_question_set_1_id) {
+    if (req.body.review_question_set1_id) {
       const foundSet = await db.ReviewQuestionSet.findOne({
-        where: { id: req.body.review_question_set_1_id },
+        where: { id: req.body.review_question_set1_id },
       })
       if (!foundSet)
         return res
@@ -42,13 +42,13 @@ const setForeignKeys = async (configuration, req, res) => {
     }
     if (req.body.review_question_set2_id) {
       const foundSet = await db.ReviewQuestionSet.findOne({
-        where: { id: req.body.review_question_set_2_id },
+        where: { id: req.body.review_question_set2_id },
       })
       if (!foundSet)
         return res
           .status(400)
           .json({ error: 'no peer review question set with that id' })
-      await configuration.setRegistration_question_set2(foundSet)
+      await configuration.setReview_question_set2(foundSet)
     }
     if (req.body.registration_question_set_id) {
       const foundSet = await db.RegistrationQuestionSet.findOne({
@@ -96,8 +96,8 @@ const updateConfiguration = (configuration, req, res) => {
       active: req.body.active,
       customerReviewQuestionSetId: req.body.customer_review_question_set_id,
       registrationQuestionSetId: req.body.registration_question_set_id,
-      reviewQuestionSet1Id: req.body.review_question_set_1_id,
-      reviewQuestionSet2Id: req.body.review_question_set_2_id,
+      reviewQuestionSet1Id: req.body.review_question_set1_id,
+      reviewQuestionSet2Id: req.body.review_question_set2_id,
     })
     .then((updated) => setForeignKeys(updated, req, res))
     .catch((error) => handleDatabaseError(res, error))
