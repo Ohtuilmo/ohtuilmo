@@ -122,7 +122,7 @@ class ParticipantsPage extends React.Component {
             <Table className="participants-table">
               <TableHead>
                 <TableRow>
-                  <TableCell numeric>id</TableCell>
+                  <TableCell align="center">id</TableCell>
                   <TableCell>Preferred Topic #1</TableCell>
                   <TableCell>Preferred Topic #2</TableCell>
                   <TableCell>Preferred Topic #3</TableCell>
@@ -136,7 +136,7 @@ class ParticipantsPage extends React.Component {
                 {testRows.map((row) => {
                   return (
                     <TableRow key={row.id}>
-                      <TableCell numeric component="th" scope="row">
+                      <TableCell align="center" component="th" scope="row">
                         {row.id}
                       </TableCell>
                       <TableCell>{row.preferredTopics[0].topic}</TableCell>
