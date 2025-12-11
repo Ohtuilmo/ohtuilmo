@@ -42,7 +42,7 @@ class InstructorReviewPage extends React.Component {
       }
 
     } catch (e) {
-      console.log('error happened', e.response)
+      console.error('Error happened:', e.response?.data?.error)
       this.props.setError('Something is wrong... try reloading the page')
     }
   }
