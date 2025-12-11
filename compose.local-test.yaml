@@ -67,6 +67,7 @@ services:
       - SECRET=yoursecrethere
       - EMAIL_ENABLED=false
       - DATABASE_URL=postgres://postgres:postgres@test-db:5432/test_postgres
+      - NODE_ENV=test
     container_name: test-backend
     profiles: [local-e2e, e2e]
     depends_on:
@@ -109,6 +110,7 @@ services:
       - SECRET=testsecret
       - EMAIL_ENABLED=false
       - PORT=3001
+      - NODE_ENV=test
     command:
       - /bin/sh
       - -c
