@@ -4,16 +4,16 @@ module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkUpdate(
       'configurations',
-      { name: 'Konfiguraatio 1' },
-      { active: true }
+      { active: true },
+      { name: 'Konfiguraatio 1' }
     )
   },
 
   down: async (queryInterface) => {
     await queryInterface.bulkUpdate(
       'configurations',
-      { name: 'Konfiguraatio 1' },
-      { active: false }
+      { active: false },
+      { name: 'Konfiguraatio 1' }
     )
   }
 }
