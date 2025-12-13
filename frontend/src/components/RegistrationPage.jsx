@@ -27,7 +27,53 @@ import * as notificationActions from '../reducers/actions/notificationActions'
 import registrationActions from '../reducers/actions/registrationActions'
 import registrationmanagementActions from '../reducers/actions/registrationManagementActions'
 
+const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
+  return (
+    <div
+      style={{
+        fontWeight: 'bold',
+        marginBottom: 30,
+        border: 'solid',
+        padding: 20,
+        borderRadius: 10,
+      }}
+
+    >
+      <div style={{ marginBottom: '10px' }}>
+        Projektin <a href='https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/blob/master/README.md#arvosteluperusteet'>
+        arvosteluperusteissa</a> erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely. Vaatimuksena noin 200 tuntia työtä koko kurssin aikana, mikä on noin 15 tuntia viikossa.
+      </div>
+      <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '10px' }}>
+        <input
+          type="checkbox"
+          checked={checkbox1}
+          onChange={onToggle1}
+          style={{ marginRight: '8px' }}
+        />
+        olen tutustunut projektin arvosteluperustesiin
+      </label>
+      <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+        <input
+          type="checkbox"
+          checked={checkbox2}
+          onChange={onToggle2}
+          style={{ marginRight: '8px' }}
+        />
+        sitoudun työskentelemään koko projektin ajan tasaisesti
+      </label>
+    </div>
+  )
+}
+
 class RegistrationPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      checkbox1: false,
+      checkbox2: false
+    }
+  }
+
   async componentDidMount() {
     /**
      * If user goes straight to /register, registrationmanagement needs to be fetched first.
@@ -113,8 +159,21 @@ class RegistrationPage extends React.Component {
     }
   }
 
+  toggleCheckbox1 = () => {
+    this.setState({ checkbox1: !this.state.checkbox1 })
+  }
+
+  toggleCheckbox2 = () => {
+    this.setState({ checkbox2: !this.state.checkbox2 })
+  }
+
   submitRegistration = async (e) => {
     e.preventDefault()
+
+    if (!this.state.checkbox1 || !this.state.checkbox2) {
+      this.props.setError('Please check both boxes to enable submission', 3000)
+      return
+    }
 
     const answer = window.confirm(
       'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?'
@@ -240,13 +299,12 @@ class RegistrationPage extends React.Component {
               }}
             >
               Huomaa, että projektiin osallistuminen edellyttää että kaikki
-              esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä
-              kaksi kurssia seuraavista (Tietokannat ja Web-ohjelmointi,
-              Tietokantasovellus, Ohjelmistotekniikka, Full stack
-              -websovelluskehitys, Aineopintojen harjoitustyö: Algoritmit ja
+              esitietona olevat opintojaksot eli kurssit Ohjelmistotuotanto ja Tietokannat ja Web-ohjelmointi sekä
+              yksi seuraavista (Aineopintojen harjoitustyö: Ohjelmistotekniikka, Aineopintojen harjoitustyö: Algoritmit ja
               teköäly, Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit,
-              Aineopintojen harjoitustyö: Tietoliikenne) on tehtynä (suoritettu
-              tai palautettu arvosteltavaksi) projektin alkuun mennessä.
+              Aineopintojen harjoitustyö: Tietoliikenne, Full stack
+              -websovelluskehitys) on suoritettu
+              tai palautettu arvosteltavaksi projektin alkuun mennessä.
             </div>
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
@@ -294,12 +352,21 @@ class RegistrationPage extends React.Component {
             <p>Please answer all questions</p>
             {questions}
           </div>
+
+          <Prerequisites 
+            checkbox1={this.state.checkbox1} 
+            checkbox2={this.state.checkbox2}
+            onToggle1={this.toggleCheckbox1} 
+            onToggle2={this.toggleCheckbox2}
+          />
+
           <Button
             type="submit"
             variant="outlined"
             style={{ backgroundColor: 'white' }}
+            disabled={!this.state.checkbox1 || !this.state.checkbox2}
           >
-            Submit
+            Submit your registration
           </Button>
         </form>
       </div>
