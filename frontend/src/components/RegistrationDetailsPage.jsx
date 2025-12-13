@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 
 import registrationActions from '../reducers/actions/registrationActions'
+import { setError } from '../reducers/actions/notificationActions'
 
 import peerReviewService from '../services/peerReview'
 
@@ -260,7 +261,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  fetchRegistrations: registrationActions.fetchRegistrations
+  fetchRegistrations: registrationActions.fetchRegistrations,
+  setError
 }
 
 const ConnectedRegistrationDetailsPage = connect(
