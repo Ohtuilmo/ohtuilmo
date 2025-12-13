@@ -390,7 +390,7 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
       })
     )
   } catch (error) {
-    console.error('Error while updating group', error)
+    console.error('Error while getting group', error)
     return res.status(500).json({ error: 'Internal server error' })
   }
 })
