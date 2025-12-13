@@ -1,6 +1,7 @@
 // @ts-check
 const jwt = require('jsonwebtoken')
 const config = require('./config')
+const { test_user } = require('./config/dev')
 
 /**
  * @typedef {import("express").Request} Request
@@ -100,42 +101,14 @@ const checkAdmin = (req, res, next) => {
 
 /** @type {RequestHandler} */
 const fakeshibbo = (req, res, next) => {
-  const test_users = {
-    student: {
-      employeenumber: '',
-      mail: '',
-      hypersonstudentid: '112345701',
-      uid: 'johnsmith',
-      givenname: 'John',
-      sn: 'Smith',
-    },
-    instructor: {
-      employeenumber: '',
-      mail: '',
-      hypersonstudentid: '112345699',
-      uid: 'olliohj',
-      givenname: 'Olli',
-      sn: 'Ohjaaja',
-    },
-    admin: {
-      employeenumber: '',
-      mail: '',
-      hypersonstudentid: '011120775',
-      uid: 'mluukkai',
-      givenname: 'Matti',
-      sn: 'Luukkainen',
-    },
-  }
+  const user = test_user.test_user
 
-  // select one of the following: student, instructor, admin
-  const test_user = test_users.admin
-
-  req.headers.employeenumber = test_user.employeenumber
-  req.headers.mail = test_user.mail
-  req.headers.hypersonstudentid = test_user.hypersonstudentid
-  req.headers.uid = test_user.uid
-  req.headers.givenname = test_user.givenname
-  req.headers.sn = test_user.sn
+  req.headers.employeenumber = user.employeenumber
+  req.headers.mail = user.mail
+  req.headers.hypersonstudentid = user.hypersonstudentid
+  req.headers.uid = user.uid
+  req.headers.givenname = user.givenname
+  req.headers.sn = user.sn
   next()
 }
 
