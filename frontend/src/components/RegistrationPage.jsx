@@ -41,7 +41,7 @@ const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
     >
       <div style={{ marginBottom: '10px' }}>
         Projektin <a href='https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/blob/master/README.md#arvosteluperusteet'>
-        arvosteluperusteissa</a> erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely. Vaatimuksena noin 200 tuntia työtä koko kurssin aikana, mikä on noin 15 tuntia viikossa.
+        arvosteluperusteissa</a> erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely. Vaatimuksena on noin 200 tuntia työtä koko kurssin aikana, mikä on noin 15 tuntia viikossa.
       </div>
       <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '10px' }}>
         <input
@@ -50,7 +50,7 @@ const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
           onChange={onToggle1}
           style={{ marginRight: '8px' }}
         />
-        olen tutustunut projektin arvosteluperustesiin
+        olen tutustunut projektin arvosteluperusteisiin
       </label>
       <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
         <input
