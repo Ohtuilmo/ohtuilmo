@@ -353,10 +353,10 @@ class RegistrationPage extends React.Component {
             {questions}
           </div>
 
-          <Prerequisites 
-            checkbox1={this.state.checkbox1} 
+          <Prerequisites
+            checkbox1={this.state.checkbox1}
             checkbox2={this.state.checkbox2}
-            onToggle1={this.toggleCheckbox1} 
+            onToggle1={this.toggleCheckbox1}
             onToggle2={this.toggleCheckbox2}
           />
 
