@@ -33,12 +33,12 @@ const InstructorTimeLogsPage = (props) => {
   } = props
 
   const [allConfigurations, setAllConfigurations] = useState([])
-  const [selectedConfiguration, setSelectedConfiguration] = useState(null)
+  const [selectedConfigurationId, setSelectedConfigurationId] = useState(0)
   const [allGroups, setAllGroups] = useState([])
-  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedGroupId, setSelectedGroupId] = useState(0)
   const [allStudents, setAllStudents] = useState([])
   const [allSprints, setAllSprints] = useState([])
-  const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
+  const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
   const [allLogs, setAllLogs] = useState(null)
   const [checkedTimeLogs, setCheckedTimeLogs] = useState([])
   const [moveToPreviousSprintConfirmOpen, setMoveToPreviousSprintConfirmOpen] = useState(false)
@@ -128,10 +128,10 @@ const InstructorTimeLogsPage = (props) => {
       )
       const configurationByInstructor = allConfigurations.find(
         configuration =>
-          newestGroupByInstructor && newestGroupByInstructor.configurationId === configuration.id
+          newestGroupByInstructor?.configurationId === configuration.id
       )
-      setSelectedConfiguration(configurationByInstructor)
-      setSelectedGroup(newestGroupByInstructor)
+      setSelectedConfigurationId(configurationByInstructor?.id ?? 0)
+      setSelectedGroupId(newestGroupByInstructor?.id ?? 0)
     }
   }, [allConfigurations, allGroups])
 
@@ -174,8 +174,8 @@ const InstructorTimeLogsPage = (props) => {
       await fetchSprintData(selectedGroupId)
       setIsLoading(false)
     }
-    selectedGroup?.id && fetchChartData(selectedGroup.id)
-  }, [selectedGroup])
+    selectedGroupId && fetchChartData(selectedGroupId)
+  }, [selectedGroupId])
 
   const handleTimeLogCheck = (logId) => {
     setCheckedTimeLogs((prevChecked) => (
@@ -261,24 +261,34 @@ const InstructorTimeLogsPage = (props) => {
 
   if (isLoading) return <LoadingSpinner />
 
+  const handleConfigurationChange = (configuration_id) => {
+    const configurationById = allConfigurations.find(conf => conf.id === configuration_id)
+    setSelectedConfigurationId(configurationById.id ?? 0)
+  }
+
+  const handleGroupChange = (group_id) => {
+    const groupById = allGroups.find(grp => grp.id === group_id)
+    setSelectedGroupId(groupById?.id ?? 0)
+  }
+
   return (
     <div className='timelogs-responsive-grid'>
       <div id='timelogs-container-1'>
         <div>
           <TimeLogsSelectForm
             configurations={allConfigurations}
-            selectedConfiguration={selectedConfiguration}
-            handleConfigurationChange={setSelectedConfiguration}
+            selectedConfigurationId={selectedConfigurationId}
+            handleConfigurationChange={handleConfigurationChange}
             groups={allGroups}
-            selectedGroup={selectedGroup}
-            handleGroupChange={setSelectedGroup}
+            selectedGroupId={selectedGroupId}
+            handleGroupChange={handleGroupChange}
             students={allStudents}
             selectedStudentNumber={selectedStudentNumber}
             handleStudentNumberChange={handleStudentChange}
           />
-          {selectedGroup && (
+          {selectedGroupId !== 0 && (
             <div>
-              <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
+              <Typography variant='h5'>Timelogs by {selectedGroupId?.name}</Typography>
               <SprintSelect
                 sprintNumber={selectedSprintNumber}
                 handleClickNextSprint={handleClickNextSprint}
@@ -354,7 +364,7 @@ const InstructorTimeLogsPage = (props) => {
         </div>
       </div>
       <div id='chart-container'>
-        {selectedGroup &&
+        {selectedGroupId !== 0 &&
           <div className='timelogs-charts-container'>
             <div className='timelogs-chart-and-title-container'>
               <Typography variant='h5'>Sprint Chart</Typography>

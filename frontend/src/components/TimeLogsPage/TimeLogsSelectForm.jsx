@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 
 export const TimeLogsSelectForm = ({
-  configurations, selectedConfiguration, handleConfigurationChange,
-  groups, selectedGroup, handleGroupChange,
+  configurations, selectedConfigurationId, handleConfigurationChange,
+  groups, selectedGroupId, handleGroupChange,
   students, selectedStudentNumber, handleStudentNumberChange }) => {
 
   const SelectorWrapper = ({ label, children }) => (
@@ -18,7 +18,7 @@ export const TimeLogsSelectForm = ({
 
   const ConfigurationSelect = ({
     configurations,
-    selectedConfiguration,
+    selectedConfigurationId,
     handleConfigurationChange,
     handleGroupChange,
     handleStudentNumberChange
@@ -26,7 +26,7 @@ export const TimeLogsSelectForm = ({
     return (
       <Select
         data-cy="configuration-selector"
-        value={selectedConfiguration}
+        value={selectedConfigurationId}
         onChange={(e) => {
           handleConfigurationChange(e.target.value)
           handleGroupChange(null)
@@ -38,7 +38,7 @@ export const TimeLogsSelectForm = ({
           <MenuItem
             key={configuration.id}
             className="configuration-menu-item"
-            value={configuration}
+            value={configuration.id}
           >
             {configuration.name}
           </MenuItem>
@@ -46,31 +46,32 @@ export const TimeLogsSelectForm = ({
       </Select>
     )}
 
-  const GroupIsInConfiguration = ( group, configuration ) => {
-    return group.configurationId === configuration.id
+  const GroupIsInConfiguration = ( group, configurationId ) => {
+    return group.configurationId === configurationId
   }
 
   const GroupSelect = ({
     groups,
-    selectedGroup,
+    selectedGroupId,
     handleGroupChange
   }) => {
     return (
       <Select
         data-cy="group-selector"
-        value={selectedGroup}
+        value={selectedGroupId}
         onChange={(e) => {
           handleGroupChange(e.target.value)
           handleStudentNumberChange(null)
         }}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
-        {groups.filter(group => GroupIsInConfiguration(group, selectedConfiguration))
+        <MenuItem key="0" className="group-menu-item" value="0" disabled>Pick a group</MenuItem>
+        {groups.filter(group => GroupIsInConfiguration(group, selectedConfigurationId))
           .map((group) => (
             <MenuItem
               key={group.id}
               className="group-menu-item"
-              value={group}
+              value={group.id}
             >
               {group.name}
             </MenuItem>
@@ -78,12 +79,12 @@ export const TimeLogsSelectForm = ({
       </Select>
     )}
 
-  const StudentIsInGroup = ( student, group ) => {
-    return group.studentIds.includes(student.student_number)
+  const StudentIsInGroup = ( student, group_id ) => {
+    return groups.find(g => g.id === group_id)?.studentIds.includes(student.student_number)
   }
 
   const StudentSelect = ({
-    selectedGroup,
+    selectedGroupId,
     students,
     selectedStudentNumber,
     handleStudentNumberChange
@@ -95,10 +96,11 @@ export const TimeLogsSelectForm = ({
         onChange={(e) => {
           handleStudentNumberChange(e.target.value)
         }}
-        disabled={!selectedGroup}
+        disabled={!selectedGroupId}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
-        {students.filter(student => StudentIsInGroup(student, selectedGroup))
+        <MenuItem key={0} className="student-menu-item" value={0}>Pick a student</MenuItem>
+        {students.filter(student => StudentIsInGroup(student, selectedGroupId))
           .map((student) => (
             <MenuItem
               key={student.student_number}
@@ -118,26 +120,26 @@ export const TimeLogsSelectForm = ({
         <SelectorWrapper label="Select configuration">
           <ConfigurationSelect
             configurations={configurations}
-            selectedConfiguration={selectedConfiguration}
+            selectedConfigurationId={selectedConfigurationId}
             handleConfigurationChange={handleConfigurationChange}
             handleGroupChange={handleGroupChange}
             handleStudentNumberChange={handleStudentNumberChange}
           />
         </SelectorWrapper>
-        {selectedConfiguration &&
+        {selectedConfigurationId !== 0 &&
           <SelectorWrapper label="Select group">
             <GroupSelect
-              selectedGroup={selectedGroup}
+              selectedGroupId={selectedGroupId}
               handleGroupChange={handleGroupChange}
               groups={groups}
               handleStudentNumberChange={handleStudentNumberChange}
             />
           </SelectorWrapper>
         }
-        {selectedGroup &&
+        {selectedGroupId !== 0 &&
           <SelectorWrapper label="Select student">
             <StudentSelect
-              selectedGroup={selectedGroup}
+              selectedGroupId={selectedGroupId}
               selectedStudentNumber={selectedStudentNumber}
               handleStudentNumberChange={handleStudentNumberChange}
               students={students}
