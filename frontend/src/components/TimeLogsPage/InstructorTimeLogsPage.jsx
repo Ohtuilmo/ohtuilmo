@@ -23,9 +23,12 @@ import timeLogsActions from '../../reducers/actions/timeLogsActions'
 
 const InstructorTimeLogsPage = (props) => {
   const {
+    setError,
+    setSuccess,
     selectedSprintNumber,
     setSelectedSprintNumber,
     setGroupSprintSummary,
+    resetGroupSprintSummary,
     user,
   } = props
 
@@ -56,7 +59,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -71,7 +74,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -86,7 +89,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -101,7 +104,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -145,7 +148,8 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
+        resetGroupSprintSummary()
       }
     }
 
@@ -160,7 +164,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.message.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -181,14 +185,14 @@ const InstructorTimeLogsPage = (props) => {
 
   const handleMoveTimeLog = async (direction) => {
     if (checkedTimeLogs.length === 0) {
-      props.setError('No time logs selected')
+      setError('No time logs selected')
       return
     }
     for (const logId in checkedTimeLogs) {
       try {
         const updatedLogs = await instructorTimeLogsService.moveTimeLog(direction, checkedTimeLogs[logId])
         setAllLogs(updatedLogs)
-        props.setSuccess('Selected time logs moved successfully')
+        setSuccess('Selected time logs moved successfully')
         setCheckedTimeLogs([])
       } catch (error) {
         console.error(
@@ -197,7 +201,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        props.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
   }
@@ -206,9 +210,9 @@ const InstructorTimeLogsPage = (props) => {
     try {
       const updatedLogs = await instructorTimeLogsService.deleteTimeLog(logId)
       setAllLogs(updatedLogs)
-      props.setSuccess('Time log deleted successfully')
+      setSuccess('Time log deleted successfully')
     } catch (error) {
-      props.setError('Error deleting time log')
+      setError('Error deleting time log')
     }
   }
 
@@ -377,6 +381,7 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   setGroupSprintSummary: timeLogsActions.setGroupSprintSummary,
+  resetGroupSprintSummary: timeLogsActions.resetGroupSprintSummary,
   setSelectedSprintNumber: timeLogsActions.setSelectedSprintNumber,
 }
 
