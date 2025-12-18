@@ -36,6 +36,7 @@ const InstructorTimeLogsPage = (props) => {
   const [selectedConfigurationId, setSelectedConfigurationId] = useState(0)
   const [allGroups, setAllGroups] = useState([])
   const [selectedGroupId, setSelectedGroupId] = useState(0)
+  const [selectedGroup, setSelectedGroup] = useState(null)
   const [allStudents, setAllStudents] = useState([])
   const [allSprints, setAllSprints] = useState([])
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
@@ -132,6 +133,7 @@ const InstructorTimeLogsPage = (props) => {
       )
       setSelectedConfigurationId(configurationByInstructor?.id ?? 0)
       setSelectedGroupId(newestGroupByInstructor?.id ?? 0)
+      setSelectedGroup(newestGroupByInstructor?.id ? newestGroupByInstructor : null)
     }
   }, [allConfigurations, allGroups])
 
@@ -269,6 +271,7 @@ const InstructorTimeLogsPage = (props) => {
   const handleGroupChange = (group_id) => {
     const groupById = allGroups.find(grp => grp.id === group_id)
     setSelectedGroupId(groupById?.id ?? 0)
+    setSelectedGroup(groupById?.id ? groupById : null)
   }
 
   return (
@@ -288,7 +291,7 @@ const InstructorTimeLogsPage = (props) => {
           />
           {selectedGroupId !== 0 && (
             <div>
-              <Typography variant='h5'>Timelogs by {selectedGroupId?.name}</Typography>
+              <Typography variant='h5'>Timelogs by {selectedGroup?.name}</Typography>
               <SprintSelect
                 sprintNumber={selectedSprintNumber}
                 handleClickNextSprint={handleClickNextSprint}
