@@ -39,7 +39,7 @@ router.get('/', checkInstructor, async (req, res) => {
     ]
   })
   const deserialized = groups.map(formatGroup)
-  res.json(deserialized)
+  res.status(200).json(deserialized)
 })
 
 const isNil = (obj) => obj === null || obj === undefined
