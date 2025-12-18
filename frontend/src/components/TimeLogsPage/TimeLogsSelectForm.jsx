@@ -29,8 +29,8 @@ export const TimeLogsSelectForm = ({
         value={selectedConfigurationId}
         onChange={(e) => {
           handleConfigurationChange(e.target.value)
-          handleGroupChange(null)
-          handleStudentNumberChange(null)
+          handleGroupChange(0)
+          handleStudentNumberChange(0)
         }}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
@@ -61,7 +61,7 @@ export const TimeLogsSelectForm = ({
         value={selectedGroupId}
         onChange={(e) => {
           handleGroupChange(e.target.value)
-          handleStudentNumberChange(null)
+          handleStudentNumberChange(0)
         }}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
