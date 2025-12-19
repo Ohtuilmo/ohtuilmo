@@ -224,7 +224,7 @@ const TimeLogChart = (props) => {
       return
 
     const { mappedData, sprintDates } = mapSprintSummaryData(groupSprintSummary)
-    if (!mappedData)
+    if (mappedData.length === 0)
       return
 
     setSprints([...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1))])
@@ -241,7 +241,7 @@ const TimeLogChart = (props) => {
     if (!sprintDates)
       return
 
-    if (Object.keys(sprintDates).includes(selectedSprintNumber.toString())) {
+    if (selectedSprintNumber !== null && Object.keys(sprintDates).includes(selectedSprintNumber.toString())) {
       const sprintDuration = durationInDays(sprintDates[selectedSprintNumber].start_date, sprintDates[selectedSprintNumber].end_date)
       setSelectedSprintDuration(sprintDuration)
     } else {
@@ -373,7 +373,7 @@ const TimeLogChart = (props) => {
             </BarChart>}
         </ResponsiveContainer>
       </div>)
-      : sprints.includes(selectedSprintNumber)
+      : selectedSprintNumber !== null && sprints.includes(selectedSprintNumber)
         ? (<div className='timelogs-chart-container'>
           <ResponsiveContainer>
             {!alternativeView
