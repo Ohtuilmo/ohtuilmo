@@ -143,6 +143,7 @@ const InstructorTimeLogsPage = (props) => {
         const summaryData = await timeLogsService.getGroupSprintSummary(group_id)
         setGroupSprintSummary(JSON.parse(summaryData))
         setSelectedSprintNumber(0)
+        console.log("SUMMARY DATA:", JSON.parse(summaryData))
       } catch (error) {
         console.error(
           'Error fetching group sprint summary:',
