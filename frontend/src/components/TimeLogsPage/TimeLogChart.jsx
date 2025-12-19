@@ -143,7 +143,6 @@ const checkStudentProgress = (mappedData, allSprintDates) => {
 
 
 const TimeLogChart = (props) => {
-  const alternativeView = false
   const {
     groupSprintSummary,
     selectedSprintNumber,
@@ -315,22 +314,51 @@ const TimeLogChart = (props) => {
     return chartVariant === 'total'
       ? (<div className='timelogs-chart-container'>
         <ResponsiveContainer>
-          {!alternativeView
-            ? <BarChart
+          <BarChart
+            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+            id='timelogs-chart-total'
+            className='timelogs-chart'
+            data={chartData.filter((entry) => entry.sprint === -1)}
+          >
+            <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
+            <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}/>
+            <ReferenceLine
+              y={idealHours(projectDuration)}
+              label={{ value: "Ideal total hours at the end of latest sprint", position: 'insideTopRight'}}
+              stroke="red"
+              strokeDasharray="3 3"
+            />
+            <Tooltip content={showTotalTooltip} />
+            <Bar
+              dataKey='altHours'
+              background={false}
+            >
+              <LabelList dataKey='defaultLabel' position='top' />
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>)
+      : selectedSprintNumber !== null && sprints.includes(selectedSprintNumber)
+        ? (<div className='timelogs-chart-container'>
+          <ResponsiveContainer>
+            <BarChart
               margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-              id='timelogs-chart-total'
+              id='timelogs-chart-sprint'
               className='timelogs-chart'
-              data={chartData.filter((entry) => entry.sprint === -1)}
+              data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
             >
               <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-              <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}/>
+              <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration))]}/>
               <ReferenceLine
-                y={idealHours(projectDuration)}
+                y={idealHours(selectedSprintDuration)}
                 label={{ value: "Ideal total hours at the end of latest sprint", position: 'insideTopRight'}}
                 stroke="red"
                 strokeDasharray="3 3"
               />
-              <Tooltip content={showTotalTooltip} />
+              <Tooltip content={showSprintTooltip} />
               <Bar
                 dataKey='altHours'
                 background={false}
@@ -341,97 +369,6 @@ const TimeLogChart = (props) => {
                 ))}
               </Bar>
             </BarChart>
-            : <BarChart
-              margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-              id='timelogs-chart-total'
-              className='timelogs-chart'
-              data={chartData.filter((entry) => entry.sprint === -1)}
-            >
-              <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-              <YAxis yAxisId='leftHours' label={<Label value='hours' angle={270} />} />
-              <YAxis yAxisId='rightMinutes' orientation='right' label={<Label value='minutes' angle={270} />} />
-              <Bar
-                yAxisId='leftHours'
-                dataKey='hours'
-                background={false}
-              >
-                <LabelList dataKey='hLabel' position='top' />
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-                ))}
-              </Bar>
-              <Bar
-                yAxisId='rightMinutes'
-                dataKey='minutes'
-                background={false}
-              >
-                <LabelList dataKey='mLabel' position='top' />
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-                ))}
-              </Bar>
-            </BarChart>}
-        </ResponsiveContainer>
-      </div>)
-      : selectedSprintNumber !== null && sprints.includes(selectedSprintNumber)
-        ? (<div className='timelogs-chart-container'>
-          <ResponsiveContainer>
-            {!alternativeView
-              ? <BarChart
-                margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-                id='timelogs-chart-sprint'
-                className='timelogs-chart'
-                data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
-              >
-                <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-                <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration))]}/>
-                <ReferenceLine
-                  y={idealHours(selectedSprintDuration)}
-                  label={{ value: "Ideal total hours at the end of latest sprint", position: 'insideTopRight'}}
-                  stroke="red"
-                  strokeDasharray="3 3"
-                />
-                <Tooltip content={showSprintTooltip} />
-                <Bar
-                  dataKey='altHours'
-                  background={false}
-                >
-                  <LabelList dataKey='defaultLabel' position='top' />
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-              : <BarChart
-                margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-                id='timelogs-chart-sprint'
-                className='timelogs-chart'
-                data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
-              >
-                <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-                <YAxis yAxisId='leftHours' label={<Label value='hours' angle={270} />} />
-                <YAxis yAxisId='rightMinutes' orientation='right' label={<Label value='minutes' angle={270} />} />
-                <Bar
-                  yAxisId='leftHours'
-                  dataKey='hours'
-                  background={false}
-                >
-                  <LabelList dataKey='hLabel' position='top' />
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-                  ))}
-                </Bar>
-                <Bar
-                  yAxisId='rightMinutes'
-                  dataKey='minutes'
-                  background={false}
-                >
-                  <LabelList dataKey='mLabel' position='top' />
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-                  ))}
-                </Bar>
-              </BarChart>}
           </ResponsiveContainer>
         </div>)
         : (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderSprint /></div>)
