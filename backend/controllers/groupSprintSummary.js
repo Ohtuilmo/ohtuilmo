@@ -20,7 +20,9 @@ const getGroupSprintSummary = async (groupId) => {
     where: { group_id: groupId },
     attributes: [
       'id',
-      'sprint'
+      'sprint',
+      'start_date',
+      'end_date'
     ]
   })
 
@@ -69,6 +71,10 @@ const getGroupSprintSummary = async (groupId) => {
     [sprint.sprint]: Object.entries(logsMap[sprint.id] || {}).map(([name, total_minutes]) => ({
       [name]: parseInt(total_minutes, 10) || 0
     }))
+      .concat({
+        start_date: sprint.start_date,
+        end_date: sprint.end_date
+      })
   }))
 
   result.push({
@@ -101,7 +107,6 @@ groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
     return res.status(500).json({ error: 'Error in fetching group sprint summary' })
   }
 
-  //console.log('result: ', result)
   return res.status(200).json(result)
 })
 
