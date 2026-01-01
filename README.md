@@ -11,7 +11,7 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 ### How to start development
 
-1.  Make sure you have docker and docker-compose installed.
+1.  Make sure you have docker and docker compose installed.
 
 2.  Clone this repository to your computer.
 
@@ -83,7 +83,9 @@ Development setup includes database management tool called Adminer. With Adminer
 
 <https://toska-staging.cs.helsinki.fi/projekti/>
 
-Users
+After a successful staging build, the new version should appear on the staging-server in 15mins.
+
+### Users
 
 | user      | pwd       |
 | --------- | --------- |
