@@ -55,8 +55,11 @@ const durationInDays = (start_date, end_date) => {
 }
 
 // The ideal hours per project is 200h
-// The approximation for calculations is that 14h/week is a ideal pace.
-// 12h/week will lead to 180h, 10h/week to 150h, if less that that... good luck
+// The approximation for calculations is:
+// 14h/week is a ideal pace.
+// 12h/week will lead to 180h,
+// 10h/week to 150h
+// if less that that... good luck
 const idealHoursPerWeek = 14
 const idealHoursPerDay = idealHoursPerWeek / 7
 
@@ -79,20 +82,37 @@ const idealHours = (durationDays) => {
   return durationDays*idealHoursPerDay
 }
 
+const barBorderColorByPace = (pace) => {
+  switch (pace) {
+    case "Ideal":
+      return "none"
+    case "Ok":
+      return "none"
+    case "Dangerous":
+      return "orange"
+    case "Panic":
+      return "red"
+    default:
+      console.error("Student pace not matched:", studentName, pace, "- skipping.")
+      return "none"
+  }
+}
+
 const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDuration) => {
   const totalHours = allStudentHours.find(sprint => sprint.name === studentName && sprint.sprint === -1)?.hours
 
   let pace = ""
-  if (totalHours > totalDuration*idealHoursPerDay) {
+  if (totalHours >= totalDuration*idealHoursPerDay) {
     pace = "Ideal"
-  } else if (totalHours > totalDuration*okHoursPerDay) {
+  } else if (totalHours >= totalDuration*okHoursPerDay) {
     pace = "Ok"
-  } else if (totalHours > totalDuration*dangerousHoursPerDay) {
+  } else if (totalHours >= totalDuration*dangerousHoursPerDay) {
     pace = "Dangerous"
   } else {
     pace = "Panic"
   }
-  return { pace, totalHours, idealHours: idealHours(totalDuration) }
+  const paceColor = barBorderColorByPace(pace)
+  return { pace, paceColor, totalHours, idealHours: idealHours(totalDuration) }
 }
 
 const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSprintDates) => {
@@ -123,7 +143,8 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
       pace = "Panic"
     }
 
-    sprintPaces[student.sprint] = { pace, hours: studentHours, idealHours: idealHours(sprintDuration) }
+    const paceColor = barBorderColorByPace(pace)
+    sprintPaces[student.sprint] = { pace, paceColor, hours: studentHours, idealHours: idealHours(sprintDuration) }
   })
   return sprintPaces
 }
@@ -233,6 +254,7 @@ const TimeLogChart = (props) => {
     const duration = projectDurationFromSprints(sprintDates)
     setProjectDuration(duration)
     const paces = checkStudentProgress(mappedData, sprintDates)
+    console.log("PACES:", paces)
     setStudentPaces(paces)
   }, [groupSprintSummary])
 
@@ -334,9 +356,13 @@ const TimeLogChart = (props) => {
               background={false}
             >
               <LabelList dataKey='defaultLabel' position='top' />
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-              ))}
+              {chartData.filter((entry) => entry.sprint === -1).map((entry, index) => {
+                const paceColor = entry.sprint === -1
+                  ? studentPaces[entry.name].total.paceColor
+                  : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
+                console.log("things:", entry.name, entry.sprint, paceColor, studentPaces[entry.name])
+                return (<Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} stroke={paceColor} strokeWidth={1} />)
+              })}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
@@ -364,9 +390,12 @@ const TimeLogChart = (props) => {
                 background={false}
               >
                 <LabelList dataKey='defaultLabel' position='top' />
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} />
-                ))}
+                {chartData.filter((entry) => entry.sprint === selectedSprintNumber).map((entry, index) => {
+                  const paceColor = entry.sprint === -1
+                    ? studentPaces[entry.name].total.paceColor
+                    : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
+                  return (<Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} stroke={paceColor} strokeWidth={1} />)
+                })}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
