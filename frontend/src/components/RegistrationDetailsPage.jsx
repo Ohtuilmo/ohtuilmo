@@ -204,8 +204,23 @@ class RegistrationDetailsPage extends React.Component {
       groupDetails,
       ownRegistrations,
       peerReviewConf,
-      projectRegistrationConf
+      projectRegistrationConf,
+      peerReviewOpen,
+      peerReviewRound
     } = this.props
+
+    if (groupDetails) {
+      return (
+        <div className="registration-details-container">
+          <GroupDetails groupDetails={groupDetails} />
+          <PeerReviewInfo
+            peerReviewOpen={peerReviewOpen}
+            peerReviewRound={peerReviewRound}
+            groupDetails={groupDetails}
+          />
+        </div>
+      )
+    }
 
     if (ownRegistrations.length === 0) {
       return <h2>loading...</h2>
@@ -223,7 +238,6 @@ class RegistrationDetailsPage extends React.Component {
     const registration = reviewConf ? reviewConf : projectReg
 
     const { student, preferred_topics, questions, createdAt } = registration
-    const { peerReviewOpen, peerReviewRound } = this.props
 
     return (
       <div className="registration-details-container">
