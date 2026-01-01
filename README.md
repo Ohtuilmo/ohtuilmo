@@ -1,18 +1,11 @@
 # Ohtuilmo
 
+[![PROD](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/production.yaml/badge.svg)](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/staging.yaml)
 [![CI](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/staging.yaml/badge.svg)](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/staging.yaml)
 [![Ohtuilmo](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/2e43ni/main&style=flat&logo=cypress)](https://cloud.cypress.io/projects/2e43ni/runs)
 
 Registration, administration and review tool for University of Helsinki's software engineering project course.
 
-### Project links
-
-- [Definition of Done](/documentation/definition_of_done.md)
-- [Work schedule](/documentation/work_schedule.md)
-- [Team practices](/documentation/team_practices.md)
-- [Product backlog](https://github.com/orgs/Ohtuilmo/projects/1)
-- [Worked hours](https://docs.google.com/spreadsheets/d/e/2PACX-1vRnlawBu2lDWxWYNQsZnKCnWiG41CknVIywZnWhlX3j-18jG2Kyh2MxMxhKrqqTQkDnvm0NPfUBslDE/pubhtml)
-- [Developer workflow instructions](/documentation/developer_workflow.md)
 
 ## Development
 
@@ -51,23 +44,24 @@ If frontend or backend dependencies change, ie. there is change in frontend or b
 
 ### How to change user roles in dev environment
 
-In development environment, login is faked in backend using fakeshibbo middleware. You can run software in different user roles by modifying faceshibbo in ./backend/middleware.js file.
+In development environment, login is faked in backend using fakeshibbo middleware. You can run software in different user roles by modifying faceshibbo in `./backend/middleware.js` file.
 
-Modify line `const test_user = test_users.student` to correspond user role desired (student, instructor, or admin). Changes take effect immediately when you save your changes and reload the page.
+To modify the currently used user, you can press one of the Role buttons on the Navbar. After that all requests to the backend will made be as an user with the selected role.
 
 ## How to run Cypress tests
 
 1. Switch to frontend folder.
 
-2. Start test setup with command `npm run test-setup`. This will create 3 containers inside project _ohtuilmo-local-test_:
+2. Start test setup with command `npm run test-setup`. This will create 4 containers:
 
    | Container | Port |
    | --------- | :--: |
-   | db        |  -   |
-   | backend   |  -   |
-   | frontend  | 3002 |
+   | db        | 6543 |
+   | backend   | 5001 |
+   | frontend  | 5000 |
+   | adminer   | 9090 |
 
-3. Run tests with graphic interface with command `npm run test` or in headless mode with command `npm run test:headless`.
+3. Run tests with graphic interface with command `npm run test` or in headless mode with command `npm run test:headless`. (for headless you can specify the browser (e.g. firefox) with `npm run test:headless -- --browser firefox`)
 
 4. If you want to restore test setup and the database to their initial stage, just run `npm run test-setup` again.
 
@@ -77,11 +71,13 @@ Modify line `const test_user = test_users.student` to correspond user role desir
 
 Development setup includes database management tool called Adminer. With Adminer, you can easily inspect and modify database by using your browser. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
 
-- System: PostgreSQL
-- Server: db
-- Username: postgres
-- Password: postgres
-- Database: postgres
+| Field     | Value                                         |
+| --------- | --------------------------------------------- |
+| System    | PostgreSQL (important: otherwise login hangs) |
+| Server    | db (or test-db when using test environment)   |
+| Username  | postgres                                      |
+| Password  | postgres                                      |
+| Database  | postgres                                      |
 
 ## Staging
 
@@ -89,9 +85,19 @@ Development setup includes database management tool called Adminer. With Adminer
 
 Users
 
-| user | pwd |
-| --------- | ---- |
-| oppilas1       | oppilas1 |
-| oppilas2   | oppilas2 |
-| assari | assari |
-| opettaja  | opettaja |
+| user      | pwd       |
+| --------- | --------- |
+| oppilas1  | oppilas1  |
+| oppilas2  | oppilas2  |
+| assari    | assari    |
+| opettaja  | opettaja  |
+
+
+### Project links (legacy)
+
+- [Definition of Done](/documentation/definition_of_done.md)
+- [Work schedule](/documentation/work_schedule.md)
+- [Team practices](/documentation/team_practices.md)
+- [Product backlog](https://github.com/orgs/Ohtuilmo/projects/1)
+- [Worked hours](https://docs.google.com/spreadsheets/d/e/2PACX-1vRnlawBu2lDWxWYNQsZnKCnWiG41CknVIywZnWhlX3j-18jG2Kyh2MxMxhKrqqTQkDnvm0NPfUBslDE/pubhtml)
+- [Developer workflow instructions](/documentation/developer_workflow.md)
