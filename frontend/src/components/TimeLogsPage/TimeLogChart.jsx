@@ -254,7 +254,6 @@ const TimeLogChart = (props) => {
     const duration = projectDurationFromSprints(sprintDates)
     setProjectDuration(duration)
     const paces = checkStudentProgress(mappedData, sprintDates)
-    console.log("PACES:", paces)
     setStudentPaces(paces)
   }, [groupSprintSummary])
 
@@ -360,7 +359,6 @@ const TimeLogChart = (props) => {
                 const paceColor = entry.sprint === -1
                   ? studentPaces[entry.name].total.paceColor
                   : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
-                console.log("things:", entry.name, entry.sprint, paceColor, studentPaces[entry.name])
                 return (<Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} stroke={paceColor} strokeWidth={1} />)
               })}
             </Bar>
