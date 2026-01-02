@@ -94,8 +94,8 @@ if (process.env.NODE_ENV === 'development')
 console.log('NODE_ENV:', process.env.NODE_ENV)
 
 // Database connection
-const db = require('./models')
-db.connect()
+import { createDbConnection, db } from './models'
+createDbConnection()
 
 // Initialize server
 const PORT = config.port
@@ -108,7 +108,7 @@ server.on('close', async () => {
   // Close database connection
   console.log('Closing the server and connection to database')
   try {
-    await db.sequelize.close()
+    await db.sequelize!.close()
     console.log('client has disconnected')
   } catch(err) {
     if (err instanceof Error) {
@@ -118,7 +118,7 @@ server.on('close', async () => {
   }
 })
 
-module.exports = {
+export default {
   app,
   server,
   db

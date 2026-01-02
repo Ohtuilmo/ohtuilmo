@@ -1,19 +1,47 @@
-const Sequelize = require('sequelize')
+import { Sequelize } from 'sequelize'
+import { dbUrl } from "../config"
 
-const db = {}
+interface Db {
+  User?: any
+  Group?: any
+  Topic?: any
+  TopicDate?: any
+  Registration?: any
+  Configuration?: any
+  RegistrationQuestionSet?: any
+  ReviewQuestionSet?: any
 
-db.connect = () => {
+  CustomerReviewQuestionSet?: any
 
-  const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
+  RegistrationManagement?: any
+  PeerReview?: any
+  EmailTemplate?: any
+  InstructorReview?: any
 
-  console.log('connecting to db ' + process.env.DATABASE_URL)
+  CustomerReview?: any
+  SentTopicEmail?: any
+
+  Sprint?: any
+  Tag?: any
+  TimeLog?: any
+  TimeLogTag?: any
+
+  sequelize?: Sequelize
+}
+
+export const db: Db = {}
+
+export const createDbConnection = (): void => {
+  const sequelize = new Sequelize(dbUrl, { logging: false })
+
+  console.log('connecting to db ' + dbUrl)
 
   sequelize
     .authenticate()
     .then(() => {
       console.log('Connection has been established successfully.')
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       console.error('Unable to connect to the database:', err)
     })
 
@@ -72,142 +100,145 @@ db.connect = () => {
   const TimeLog = TimeLogModel(sequelize, Sequelize)
   const TimeLogTag = TimeLogTagModel(sequelize, Sequelize)
 
-  db.User = User
-  db.Group = Group
-  db.Topic = Topic
-  db.TopicDate = TopicDate
-  db.Registration = Registration
-  db.Configuration = Configuration
-  db.RegistrationQuestionSet = RegistrationQuestionSet
-  db.ReviewQuestionSet = ReviewQuestionSet
+  const db: Db = {
+    User,
+    Group,
+    Topic,
+    TopicDate,
+    Registration,
+    Configuration,
+    RegistrationQuestionSet,
+    ReviewQuestionSet,
 
-  db.CustomerReviewQuestionSet = CustomerReviewQuestionSet
+    CustomerReviewQuestionSet,
 
-  db.RegistrationManagement = RegistrationManagement
-  db.PeerReview = PeerReview
-  db.EmailTemplate = EmailTemplate
-  db.InstructorReview = InstructorReview
+    RegistrationManagement,
+    PeerReview,
+    EmailTemplate,
+    InstructorReview,
 
-  db.CustomerReview = CustomerReview
-  db.SentTopicEmail = SentTopicEmail
+    CustomerReview,
+    SentTopicEmail,
 
-  db.Sprint = Sprint
-  db.Tag = Tag
-  db.TimeLog = TimeLog
-  db.TimeLogTag = TimeLogTag
+    Sprint,
+    Tag,
+    TimeLog,
+    TimeLogTag,
 
-  Group.belongsTo(Topic, {
+    sequelize 
+  }
+  db.Group.belongsTo(Topic, {
     as: 'topic',
   })
-  Group.belongsTo(Configuration, {
+  db.Group.belongsTo(Configuration, {
     as: 'configuration',
   })
-  Group.belongsToMany(User, {
+  db.Group.belongsToMany(User, {
     through: 'group_students',
     as: 'students',
   })
-  User.belongsToMany(Group, {
+  db.User.belongsToMany(Group, {
     through: 'group_students',
     as: 'groups',
   })
-  Group.belongsTo(User, {
+  db.Group.belongsTo(User, {
     as: 'instructor',
     foreignKey: 'instructorId',
   })
 
-  PeerReview.belongsTo(User, {
+  db.PeerReview.belongsTo(User, {
     as: 'user',
     foreignKey: 'user_id',
   })
 
-  PeerReview.belongsTo(Configuration, {
+  db.PeerReview.belongsTo(Configuration, {
     as: 'configuration',
     foreignKey: 'configuration_id',
   })
 
-  CustomerReview.belongsTo(Group, {
+  db.CustomerReview.belongsTo(Group, {
     as: 'group',
     foreignKey: 'group_id',
   })
-  CustomerReview.belongsTo(Topic, {
+  db.CustomerReview.belongsTo(Topic, {
     as: 'topic',
     foreignKey: 'topic_id',
   })
-  Topic.hasMany(CustomerReview, {
+  db.Topic.hasMany(CustomerReview, {
     as: 'customer_review',
     foreignKey: 'topic_id',
   })
-  CustomerReview.belongsTo(Configuration, {
+  db.CustomerReview.belongsTo(Configuration, {
     as: 'configuration',
     foreignKey: 'configuration_id',
   })
 
-  Configuration.hasOne(RegistrationManagement, {
+  db.Configuration.hasOne(RegistrationManagement, {
     as: 'peer_review_configuration',
     foreignKey: 'peer_review_conf',
   })
 
-  Configuration.hasOne(RegistrationManagement, {
+  db.Configuration.hasOne(RegistrationManagement, {
     as: 'project_registration_configuration',
     foreignKey: 'project_registration_conf',
   })
 
-  Configuration.hasOne(RegistrationManagement, {
+  db.Configuration.hasOne(RegistrationManagement, {
     as: 'topic_registration_configuration',
     foreignKey: 'topic_registration_conf',
   })
 
-  Topic.belongsTo(Configuration, {
+  db.Topic.belongsTo(Configuration, {
     as: 'configuration',
     foreignKey: 'configuration_id',
   })
 
-  InstructorReview.belongsTo(User, {
+  db.InstructorReview.belongsTo(User, {
     as: 'user',
     foreignKey: 'user_id',
   })
 
-  SentTopicEmail.belongsTo(Topic, {
+  db.SentTopicEmail.belongsTo(Topic, {
     as: 'topic',
     foreignKey: 'topic_id',
   })
-  Topic.hasMany(SentTopicEmail, {
+  db.Topic.hasMany(SentTopicEmail, {
     as: 'sent_emails',
     foreignKey: 'topic_id',
   })
 
-  Group.hasMany(Sprint, {
+  db.Group.hasMany(Sprint, {
     foreignKey: 'group_id',
     as: 'sprints',
   })
 
-  Sprint.belongsTo(Group, {
+  db.Sprint.belongsTo(Group, {
     foreignKey: 'group_id',
     as: 'group',
   })
 
-  TimeLog.belongsTo(Sprint, {
+  db.TimeLog.belongsTo(Sprint, {
     foreignKey: 'sprint_id',
     as: 'sprint',
   })
 
-  Sprint.hasMany(TimeLog, {
+  db.Sprint.hasMany(TimeLog, {
     foreignKey: 'sprint_id',
     as: 'timeLogs',
   })
 
-  TimeLog.belongsTo(User, {
+  db.TimeLog.belongsTo(User, {
     foreignKey: 'student_number',
     as: 'student',
   })
 
-  Tag.belongsToMany(TimeLog, {
+  db.Tag.belongsToMany(TimeLog, {
     through: 'time_log_tags',
     foreignKey: 'tag_id',
     as: 'timeLogs',
   })
 
-  TimeLog.belongsToMany(Tag, {
+  db.TimeLog.belongsToMany(Tag, {
     through: 'time_log_tags',
     foreignKey: 'time_log_id',
     as: 'tags',
@@ -216,9 +247,7 @@ db.connect = () => {
   db.Configuration.associate(db)
   db.Registration.associate(db)
 
-  db.sequelize = sequelize
-  db.Sequelize = Sequelize
-  sequelize.sync()
+  db.sequelize!.sync()
 }
 
-module.exports = db
+export default { db, createDbConnection }
