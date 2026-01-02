@@ -261,14 +261,16 @@ const TimeLogChart = (props) => {
     if (!sprintDates)
       return
 
+    console.log("SelectedSprintNumber:", selectedSprintNumber !== null, Object.keys(sprintDates), selectedSprintNumber.toString(), sprintDates)
     if (selectedSprintNumber !== null && Object.keys(sprintDates).includes(selectedSprintNumber.toString())) {
       const sprintDuration = durationInDays(sprintDates[selectedSprintNumber].start_date, sprintDates[selectedSprintNumber].end_date)
       setSelectedSprintDuration(sprintDuration)
     } else {
       setSelectedSprintDuration(0)
     }
-  }, [selectedSprintNumber])
+  }, [selectedSprintNumber, sprintDates])
 
+  console.log(selectedSprintNumber, projectDuration, idealHours(projectDuration))
 
 
   const showSprintTooltip = ({ payload, label, active }) => {
