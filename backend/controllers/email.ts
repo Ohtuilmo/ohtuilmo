@@ -1,18 +1,22 @@
-const util = require('util')
-const emailRouter = require('express').Router()
-const nodemailer = require('nodemailer')
-const db = require('../models/index')
-const { email: emailConfig, urls } = require('../config/')
-const { checkAdmin } = require('../middleware')
-const { emailTypeToTemplateName } = require('../utils')
+import util from 'util'
+import express, { Request, Response, NextFunction } from "express"
+import nodemailer from 'nodemailer'
+import Mail from "nodemailer/lib/mailer"
+import SMTPTransport from "nodemailer/lib/smtp-transport"
+import db from '../models/index'
+import { email as emailConfig, urls } from '../config/'
+import { checkAdmin } from '../middleware'
+import { TemplateName, emailTypeToTemplateName } from '../utils'
 
-const sendSecretLink = (secretId, address) => {
+export const emailRouter = express.Router()
+
+const sendSecretLink = (secretId: string, address: string) => {
   const url = urls.forSecretTopicLink(secretId)
   const html = `Thank you for the project proposal. You can use the below link to view or edit your proposal. <br /> <a href="${url}">Edit your submission</a>`
   send(address, emailConfig.subjects.secretLink, html)
 }
 
-const send = async (to, subject, html, text) => {
+const send = async (to: string, subject: string, html: string, text: string = "") => {
   const transporter = nodemailer.createTransport({
     host: emailConfig.general.host,
     port: emailConfig.general.port,
@@ -34,7 +38,7 @@ const send = async (to, subject, html, text) => {
     return
   }
 
-  const sendMailAsync = util.promisify(transporter.sendMail.bind(transporter))
+  const sendMailAsync = util.promisify<Mail.Options, SMTPTransport.SentMessageInfo>(transporter.sendMail.bind(transporter))
 
   try {
     const info = await sendMailAsync(mailOptions)
@@ -56,8 +60,11 @@ const send = async (to, subject, html, text) => {
   }
 }
 
-const bodyValidator = (validator) => (req, res, next) => {
-  const error = validator(req.body)
+const bodyValidator = (validator: (body: Record<string, any>, error: { message: string }) => boolean) => (req: Request, res: Response, next: NextFunction) => {
+  // Passing error by reference, because type guards don't allow returning values
+  // https://github.com/microsoft/TypeScript/issues/46650
+  const error = { message: "" }
+  validator(req.body, error)
   if (error) {
     return res.status(400).json({ error })
   }
@@ -65,9 +72,17 @@ const bodyValidator = (validator) => (req, res, next) => {
   next()
 }
 
-const validateSendBody = (body) => {
+
+interface SendBody {
+  messageType: "topicAccepted" | "topicRejected" | "customerReviewLink"
+  messageLanguage: "finnish" | "english"
+  topicId: number
+}
+
+const validateSendBody = (body: Record<string, any>, err: { message: string }): body is SendBody => {
   if (!body) {
-    return 'All attributes must be defined'
+    err.message = 'All attributes must be defined'
+    return false
   }
 
   if (
@@ -75,21 +90,24 @@ const validateSendBody = (body) => {
     body.messageType !== 'topicRejected' &&
     body.messageType !== 'customerReviewLink'
   ) {
-    return 'invalid messageType'
+    err.message = 'invalid messageType'
+    return false
   }
 
   if (
     body.messageLanguage !== 'finnish' &&
     body.messageLanguage !== 'english'
   ) {
-    return 'invalid messageLanguage'
+    err.message = 'invalid messageLanguage'
+    return false
   }
 
   if (!body.topicId) {
-    return 'topicId required'
+    err.message = 'topicId required'
+    return false
   }
 
-  return null
+  return true
 }
 
 const validatePreviewBody = validateSendBody
@@ -99,7 +117,7 @@ emailRouter.post(
   checkAdmin,
   bodyValidator(validatePreviewBody),
   async (req, res) => {
-    const { topicId, messageType, messageLanguage } = req.body
+    const { topicId, messageType, messageLanguage }: SendBody = req.body
 
     try {
       const topic = await db.Topic.findByPk(topicId)
@@ -131,7 +149,9 @@ emailRouter.post(
 
       return res.status(200).json({ subject, to, email: renderedEmail })
     } catch (e) {
-      res.status(500).json({ error: e.message, details: e })
+      if (e instanceof Error)
+        return res.status(500).json({ error: e.message, details: e })
+      return res.status(500).json({ error: e })
     }
   }
 )
@@ -141,7 +161,7 @@ emailRouter.post(
   checkAdmin,
   bodyValidator(validateSendBody),
   async (req, res) => {
-    const { topicId, messageType, messageLanguage } = req.body
+    const { topicId, messageType, messageLanguage }: SendBody = req.body
 
     try {
       const topic = await db.Topic.findByPk(topicId)
@@ -170,7 +190,7 @@ emailRouter.post(
       const renderedEmail = templates.render(dbTemplateName, { topic })
       const subject = emailConfig.subjects[messageType][messageLanguage]
 
-      await send(topic.content.email, subject, null, renderedEmail)
+      await send(topic.content.email, subject, "", renderedEmail)
       const createdModel = await db.SentTopicEmail.create({
         topic_id: topic.id,
         email_template_name: dbTemplateName
@@ -179,12 +199,14 @@ emailRouter.post(
     } catch (e) {
       console.error('Mailing failed')
       console.error(e)
-      res.status(500).json({ error: e.message, details: e })
+      if (e instanceof Error)
+        return res.status(500).json({ error: e.message, details: e })
+      return res.status(500).json({ error: e })
     }
   }
 )
 
-emailRouter.delete('/sent-emails', checkAdmin, async (req, res) => {
+emailRouter.delete('/sent-emails', checkAdmin, async (_req, res) => {
   await db.SentTopicEmail.destroy({ where: {} })
   res.status(204).end()
 })
@@ -198,6 +220,15 @@ const defaultEmailTemplates = {
   customer_review_link_eng: ''
 }
 
+interface EmailTemplate {
+  topic_accepted_fin: string
+  topic_rejected_fin: string
+  topic_accepted_eng: string
+  topic_rejected_eng: string
+  customer_review_link_fin: string
+  customer_review_link_eng: string
+}
+
 const serializeTemplatesByLanguage = ({
   topic_accepted_fin,
   topic_rejected_fin,
@@ -205,7 +236,7 @@ const serializeTemplatesByLanguage = ({
   topic_rejected_eng,
   customer_review_link_fin,
   customer_review_link_eng
-}) => ({
+}: EmailTemplate) => ({
   topicAccepted: {
     finnish: topic_accepted_fin,
     english: topic_accepted_eng
@@ -224,7 +255,7 @@ const deserializeTemplatesByLanguage = ({
   topicAccepted,
   topicRejected,
   customerReviewLink
-}) => ({
+}: Record<string, Record<string, TemplateName>>) => ({
   topic_accepted_fin: topicAccepted.finnish,
   topic_rejected_fin: topicRejected.finnish,
   topic_accepted_eng: topicAccepted.english,
@@ -247,11 +278,12 @@ emailRouter.get('/templates', checkAdmin, async (req, res) => {
   }
 })
 
-const isNil = (value) => value === undefined || value === null
+const isNil = (value: unknown) => value === undefined || value === null
 
-const validateTemplates = (body) => {
+const validateTemplates = (body: any, err: { message: string }): body is EmailTemplate => {
   if (!body) {
-    return 'All attributes must be defined'
+    err.message = 'All attributes must be defined'
+    return false
   }
 
   const { topicAccepted, topicRejected, customerReviewLink } = body
@@ -267,13 +299,14 @@ const validateTemplates = (body) => {
     isNil(customerReviewLink.finnish) ||
     isNil(customerReviewLink.english)
   ) {
-    return 'All attributes must be defined'
+    err.message = 'All attributes must be defined'
+    return false
   }
 
-  return null
+  return true
 }
 
-const parseTemplates = (req, res, next) => {
+const parseTemplates = (req: Request, res: Response, next: NextFunction) => {
   try {
     const deserialized = deserializeTemplatesByLanguage(req.body)
     req.locals = {
@@ -322,7 +355,7 @@ emailRouter.delete('/templates', checkAdmin, async (req, res) => {
   res.status(204).end()
 })
 
-module.exports = {
+export default {
   emailRouter,
   sendSecretLink
 }
