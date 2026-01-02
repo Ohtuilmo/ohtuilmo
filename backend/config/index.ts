@@ -17,7 +17,7 @@ export const secret = process.env.SECRET ?? warnEnvNotDefined("SECRET", "superse
 const makeSubjectFin = (subject: string | number) => `[Ohjelmistotuotantoprojekti] ${subject}`
 const makeSubjectEng = (subject: string | number) => `[Software engineering project] ${subject}`
 
-const email = {
+export const email = {
   isEnabled: process.env.EMAIL_ENABLED === 'true',
   general: {
     sender: 'Ohtuilmo Robot <noreply@helsinki.fi>',
@@ -44,7 +44,7 @@ const email = {
   }
 }
 
-const urls = {
+export const urls = {
   forSecretTopicLink: (secretId: string | number) =>
     `https://study.cs.helsinki.fi/projekti/topics/${secretId}`,
   forCustomerReviewLink: (secretId: string | number) =>
