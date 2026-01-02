@@ -345,7 +345,6 @@ const TimeLogChart = (props) => {
             <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}/>
             <ReferenceLine
               y={idealHours(projectDuration)}
-              label={{ value: "Ideal total hours at the end of latest sprint", position: 'insideTopRight'}}
               stroke="red"
               strokeDasharray="3 3"
             />
@@ -378,7 +377,6 @@ const TimeLogChart = (props) => {
               <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration))]}/>
               <ReferenceLine
                 y={idealHours(selectedSprintDuration)}
-                label={{ value: "Ideal total hours at the end of latest sprint", position: 'insideTopRight'}}
                 stroke="red"
                 strokeDasharray="3 3"
               />
