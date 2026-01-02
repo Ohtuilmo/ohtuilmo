@@ -7,12 +7,12 @@ const warnEnvNotDefined = (envName: string, value: string): string => {
   return value
 }
 
-const port = process.env.PORT ?? warnEnvNotDefined("PORT", "3000")
-const dbUrl = process.env.DATABASE_URI ?? warnEnvNotDefined("DATABASE_URI", "postgres://postgres:postgres@db:5432/postgres")
+export const port = process.env.PORT ?? warnEnvNotDefined("PORT", "3000")
+export const dbUrl = process.env.DATABASE_URI ?? warnEnvNotDefined("DATABASE_URI", "postgres://postgres:postgres@db:5432/postgres")
 
-const login = 'http://opetushallinto.cs.helsinki.fi/login'
+export const login = 'http://opetushallinto.cs.helsinki.fi/login'
 
-const secret = process.env.SECRET ?? warnEnvNotDefined("SECRET", "supersecretthatyoushoulddefine")
+export const secret = process.env.SECRET ?? warnEnvNotDefined("SECRET", "supersecretthatyoushoulddefine")
 
 const makeSubjectFin = (subject: string | number) => `[Ohjelmistotuotantoprojekti] ${subject}`
 const makeSubjectEng = (subject: string | number) => `[Software engineering project] ${subject}`
@@ -51,7 +51,7 @@ const urls = {
     `https://study.cs.helsinki.fi/projekti/customer-review/${secretId}`
 }
 
-module.exports = {
+export default {
   dbUrl,
   port,
   login,
