@@ -56,7 +56,7 @@ const authenticateToken = (req: Request) => {
   }
 }
 
-const checkLogin = (req: Request, res: Response, next: NextFunction) => {
+export const checkLogin = (req: Request, res: Response, next: NextFunction) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
     return res.status(status).json({ error })
@@ -66,7 +66,7 @@ const checkLogin = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-const checkInstructor = (req: Request, res: Response, next: NextFunction) => {
+export const checkInstructor = (req: Request, res: Response, next: NextFunction) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
     return res.status(status).json({ error })
@@ -80,7 +80,7 @@ const checkInstructor = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
     return res.status(status).json({ error })
