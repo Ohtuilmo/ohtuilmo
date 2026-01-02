@@ -1,6 +1,31 @@
 import { Sequelize } from 'sequelize'
 import { dbUrl } from "../config"
 
+import UserModel from './user'
+import GroupModel from './group'
+import TopicModel from './topic'
+import TopicDateModel from './topic_date'
+import RegistrationModel from './registration'
+import ConfigurationModel from './configuration'
+import RegistrationQuestionSetModel from './registration_question_set'
+import ReviewQuestionSetModel from './review_question_set'
+
+import CustomerReviewQuestionSetModel from './customer_review_question_set'
+
+import Review from './review'
+import Review_answer from './review_answer'
+import RegistrationManagementModel from './registration_management'
+import PeerReviewModel from './peer_review'
+import EmailTemplateModel from './email_template'
+import InstructorReviewModel from './instructor_review'
+import CustomerReviewModel from './customer_review'
+import SentTopicEmailModel from './sent_topic_email'
+
+import SprintModel from './sprint'
+import TagModel from './tag'
+import TimeLogModel from './time_log'
+import TimeLogTagModel from './time_log_tag'
+
 interface Db {
   User?: any
   Group?: any
@@ -44,31 +69,6 @@ export const createDbConnection = (): void => {
     .catch((err: Error) => {
       console.error('Unable to connect to the database:', err)
     })
-
-  const UserModel = require('./user')
-  const GroupModel = require('./group')
-  const TopicModel = require('./topic')
-  const TopicDateModel = require('./topic_date')
-  const RegistrationModel = require('./registration')
-  const ConfigurationModel = require('./configuration')
-  const RegistrationQuestionSetModel = require('./registration_question_set')
-  const ReviewQuestionSetModel = require('./review_question_set')
-
-  const CustomerReviewQuestionSetModel = require('./customer_review_question_set')
-
-  //const Review = require('./review')
-  //const Review_answer = require('./review_answer')
-  const RegistrationManagementModel = require('./registration_management')
-  const PeerReviewModel = require('./peer_review')
-  const EmailTemplateModel = require('./email_template')
-  const InstructorReviewModel = require('./instructor_review')
-  const CustomerReviewModel = require('./customer_review')
-  const SentTopicEmailModel = require('./sent_topic_email')
-
-  const SprintModel = require('./sprint')
-  const TagModel = require('./tag')
-  const TimeLogModel = require('./time_log')
-  const TimeLogTagModel = require('./time_log_tag')
 
   const User = UserModel(sequelize, Sequelize)
   const Group = GroupModel(sequelize, Sequelize)
@@ -250,4 +250,4 @@ export const createDbConnection = (): void => {
   db.sequelize!.sync()
 }
 
-export default { db, createDbConnection }
+export default db
