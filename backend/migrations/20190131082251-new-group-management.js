@@ -1,4 +1,3 @@
-// @ts-check
 /// <reference lib="es2017" />
 'use strict'
 /**
