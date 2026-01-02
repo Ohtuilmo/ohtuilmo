@@ -1,28 +1,25 @@
-// @ts-check
-const jwt = require('jsonwebtoken')
-const config = require('./config')
-const { test_user } = require('./config/dev')
+import { Request, Response, NextFunction } from "express"
+import jwt from 'jsonwebtoken'
+import config from './config/index'
+import { test_user } from './config/dev'
 
-/**
- * @typedef {import("express").Request} Request
- * @typedef {import("express").RequestHandler} RequestHandler
- */
+interface TokenQuery {
+  token: string
+}
 
-/**
- * @param {Request} req
- * @returns {string | null}
- */
-const getTokenFrom = (req) => {
-  const authorization = req.headers.authorization || req.query.token
+const isTokenQuery = (query: unknown): query is TokenQuery => {
+  return !!query && typeof query === "object" && "token" in query && typeof query.token === "string"
+}
+
+const getTokenFrom = (req: Request<unknown, unknown, unknown, unknown>) => {
+  const authorization = req.headers.authorization || (isTokenQuery(req.query) ? req.query.token : undefined)
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     return authorization.substring('bearer '.length)
   }
-
   return null
 }
 
-/** @param {Request} req */
-const authenticateToken = (req) => {
+const authenticateToken = (req: Request) => {
   const token = getTokenFrom(req)
   if (token === null) {
     return {
@@ -33,7 +30,7 @@ const authenticateToken = (req) => {
 
   try {
     const decodedToken = jwt.verify(token, config.secret)
-    if (!decodedToken || !decodedToken.id) {
+    if (!decodedToken || (typeof decodedToken !== "string" && !decodedToken.id)) {
       return {
         error: 'token missing or invalid',
         status: 401,
@@ -42,9 +39,10 @@ const authenticateToken = (req) => {
 
     return {
       token: decodedToken,
+      status: 200
     }
   } catch (error) {
-    if (error.name === 'JsonWebTokenError') {
+    if (error instanceof Error && error.name === 'JsonWebTokenError') {
       return {
         error: error.message,
         status: 401,
@@ -58,8 +56,7 @@ const authenticateToken = (req) => {
   }
 }
 
-/** @type {RequestHandler} */
-const checkLogin = (req, res, next) => {
+const checkLogin = (req: Request, res: Response, next: NextFunction) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
     return res.status(status).json({ error })
@@ -69,14 +66,13 @@ const checkLogin = (req, res, next) => {
   next()
 }
 
-/** @type {RequestHandler} */
-const checkInstructor = (req, res, next) => {
+const checkInstructor = (req: Request, res: Response, next: NextFunction) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
     return res.status(status).json({ error })
   }
 
-  if (!token.instructor && !token.admin) {
+  if (typeof token !== "string" && !token.instructor && !token.admin) {
     return res.status(401).json({ error: 'not instructor' })
   }
 
@@ -84,14 +80,13 @@ const checkInstructor = (req, res, next) => {
   next()
 }
 
-/** @type {RequestHandler} */
-const checkAdmin = (req, res, next) => {
+const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
   const { error, status, token } = authenticateToken(req)
   if (!token) {
     return res.status(status).json({ error })
   }
 
-  if (!token.admin) {
+  if (typeof token !== "string" && !token.admin) {
     return res.status(401).json({ error: 'not admin' })
   }
 
@@ -99,8 +94,7 @@ const checkAdmin = (req, res, next) => {
   next()
 }
 
-/** @type {RequestHandler} */
-const fakeshibbo = (req, res, next) => {
+export const fakeshibbo = (req: Request, _res: Response, next: NextFunction) => {
   const user = test_user.test_user
 
   req.headers.employeenumber = user.employeenumber
@@ -112,8 +106,7 @@ const fakeshibbo = (req, res, next) => {
   next()
 }
 
-/** @type {RequestHandler} */
-const logger = (request, response, next) => {
+export const logger = (request: Request, _response: Response, next: NextFunction) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
   console.log('Body:  ', request.body)
@@ -121,7 +114,7 @@ const logger = (request, response, next) => {
   next()
 }
 
-module.exports = {
+export default {
   checkLogin,
   checkInstructor,
   checkAdmin,

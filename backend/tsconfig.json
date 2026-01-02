@@ -9,7 +9,8 @@
     "allowJs": true,
     "checkJs": false,
     "strict": true,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "include": [ "./**/*.js", "./**/*.ts"],
   "exclude": [
