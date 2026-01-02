@@ -32,7 +32,7 @@ describe('Time logs & sprints', () => {
     cy.get("h4", { timeout: 15000 })
       .should("include.text", "Brand New Group")
       .should("include.text", "testertester3")
-      .should("include.text", "Registration details")
+    cy.get(".registration-details-container").should("exist")
   })
 
   it('add 2 sprints', () => {
