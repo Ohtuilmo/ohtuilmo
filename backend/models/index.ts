@@ -12,8 +12,8 @@ import ReviewQuestionSetModel from './review_question_set'
 
 import CustomerReviewQuestionSetModel from './customer_review_question_set'
 
-import Review from './review'
-import Review_answer from './review_answer'
+// import Review from './review'
+// import Review_answer from './review_answer'
 import RegistrationManagementModel from './registration_management'
 import PeerReviewModel from './peer_review'
 import EmailTemplateModel from './email_template'
@@ -54,8 +54,9 @@ interface Db {
   sequelize?: Sequelize
 }
 
-export const db: Db = {}
+export let db: Db = {}
 
+// Populates the global db variable (above) with all models
 export const createDbConnection = (): void => {
   const sequelize = new Sequelize(dbUrl, { logging: false })
 
@@ -100,7 +101,7 @@ export const createDbConnection = (): void => {
   const TimeLog = TimeLogModel(sequelize, Sequelize)
   const TimeLogTag = TimeLogTagModel(sequelize, Sequelize)
 
-  const db: Db = {
+  db = {
     User,
     Group,
     Topic,
