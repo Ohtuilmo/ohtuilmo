@@ -54,7 +54,9 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "cross-env": "^5.2.0",
     "eslint": "^5.14.1",
     "husky": "^1.2.0",

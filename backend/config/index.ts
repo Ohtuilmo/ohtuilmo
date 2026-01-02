@@ -2,15 +2,20 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-const port = process.env.PORT
-const dbUrl = process.env.DATABASE_URI
+const warnEnvNotDefined = (envName: string, value: string): string => {
+  console.warn(`${envName} not defined, defaulting to ${value}`)
+  return value
+}
+
+const port = process.env.PORT ?? warnEnvNotDefined("PORT", "3000")
+const dbUrl = process.env.DATABASE_URI ?? warnEnvNotDefined("DATABASE_URI", "postgres://postgres:postgres@db:5432/postgres")
 
 const login = 'http://opetushallinto.cs.helsinki.fi/login'
 
-const secret = process.env.SECRET
+const secret = process.env.SECRET ?? warnEnvNotDefined("SECRET", "supersecretthatyoushoulddefine")
 
-const makeSubjectFin = (subject) => `[Ohjelmistotuotantoprojekti] ${subject}`
-const makeSubjectEng = (subject) => `[Software engineering project] ${subject}`
+const makeSubjectFin = (subject: string | number) => `[Ohjelmistotuotantoprojekti] ${subject}`
+const makeSubjectEng = (subject: string | number) => `[Software engineering project] ${subject}`
 
 const email = {
   isEnabled: process.env.EMAIL_ENABLED === 'true',
@@ -40,9 +45,9 @@ const email = {
 }
 
 const urls = {
-  forSecretTopicLink: (secretId) =>
+  forSecretTopicLink: (secretId: string | number) =>
     `https://study.cs.helsinki.fi/projekti/topics/${secretId}`,
-  forCustomerReviewLink: (secretId) =>
+  forCustomerReviewLink: (secretId: string | number) =>
     `https://study.cs.helsinki.fi/projekti/customer-review/${secretId}`
 }
 
