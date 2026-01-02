@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize')
 const groupSprintSummaryRouter = require('express').Router()
 const { checkLogin } = require('../middleware')
 const db = require('../models/index')
@@ -29,18 +30,18 @@ const getGroupSprintSummary = async (groupId) => {
   const sprintIds = sprints.map(sprint => sprint.id)
 
   const rawLogs = await db.TimeLog.findAll({
-    where: { sprint_id: { [db.Sequelize.Op.in]: sprintIds } },
+    where: { sprint_id: { [Sequelize.Op.in]: sprintIds } },
     attributes: [
       'sprint_id',
       'student_number',
-      [db.Sequelize.fn('sum', db.Sequelize.col('minutes')), 'total_minutes']
+      [Sequelize.fn('sum', Sequelize.col('minutes')), 'total_minutes']
     ],
     group: ['sprint_id', 'student_number']
   })
 
   const studentNumbers = rawLogs.map(log => log.student_number)
   const users = await db.User.findAll({
-    where: { student_number: { [db.Sequelize.Op.in]: studentNumbers } },
+    where: { student_number: { [Sequelize.Op.in]: studentNumbers } },
     attributes: ['student_number', 'first_names', 'last_name']
   })
 
