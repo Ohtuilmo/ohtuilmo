@@ -8,7 +8,7 @@ const warnEnvNotDefined = (envName: string, value: string): string => {
 }
 
 export const port = process.env.PORT ?? warnEnvNotDefined("PORT", "3000")
-export const dbUrl = process.env.DATABASE_URI ?? warnEnvNotDefined("DATABASE_URI", "postgres://postgres:postgres@db:5432/postgres")
+export const dbUrl = process.env.DATABASE_URL ?? warnEnvNotDefined("DATABASE_URI", "postgres://postgres:postgres@db:5432/postgres")
 
 export const login = 'http://opetushallinto.cs.helsinki.fi/login'
 
