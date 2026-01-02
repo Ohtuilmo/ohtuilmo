@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
     "build": "npm run tsc",
     "watch": "cross-env NODE_ENV=development nodemon index.ts",
     "watch:test": "cross-env NODE_ENV=test nodemon index.ts",
