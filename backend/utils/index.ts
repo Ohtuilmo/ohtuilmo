@@ -1,15 +1,11 @@
 const randomstring = require('randomstring')
 
-/**
- * @typedef {'topicAccepted' | 'topicRejected' | 'customerReviewLink'} MessageType
- * @typedef {'finnish' | 'english'} MessageLanguage
- * @typedef {'topic_accepted_fin' | 'topic_accepted_eng' | 'topic_rejected_fin' | 'topic_rejected_eng' | 'customer_review_link_fin' | 'customer_review_link_eng'} TemplateName
- */
+export type MessageType = "topicAccepted" | 'topicRejected' | 'customerReviewLink'
+export type MessageLanguage = 'finnish' | 'english'
+export type TemplateName = 'topic_accepted_fin' | 'topic_accepted_eng' | 'topic_rejected_fin' | 'topic_rejected_eng' | 'customer_review_link_fin' | 'customer_review_link_eng'
 
-/**
- * @type {{[key: string]: { [key: string]: TemplateName }}}
- */
-const msgTypeToDbColumn = {
+
+const msgTypeToDbColumn: Record<string, Record<string, TemplateName>> = {
   topicAccepted: {
     finnish: 'topic_accepted_fin',
     english: 'topic_accepted_eng',
@@ -27,7 +23,7 @@ const msgTypeToDbColumn = {
 /**
  * @type {{[key: string]: {type: MessageType, language: MessageLanguage}}}
  */
-const dbColumnToMsgType = {
+const dbColumnToMsgType: Record<string, { type: MessageType, language: MessageLanguage }> = {
   topic_accepted_fin: { type: 'topicAccepted', language: 'finnish' },
   topic_accepted_eng: { type: 'topicAccepted', language: 'english' },
   topic_rejected_fin: { type: 'topicRejected', language: 'finnish' },
@@ -36,19 +32,10 @@ const dbColumnToMsgType = {
   customer_review_link_eng: { type: 'customerReviewLink', language: 'english' },
 }
 
-/**
- * @param {MessageType} messageType
- * @param {MessageLanguage} messageLanguage
- * @returns {TemplateName}
- */
-const emailTypeToTemplateName = (messageType, messageLanguage) =>
+export const emailTypeToTemplateName = (messageType: MessageType, messageLanguage: MessageLanguage): TemplateName =>
   msgTypeToDbColumn[messageType][messageLanguage]
 
-/**
- * @param {TemplateName} templateName
- * @returns {{type: MessageType, language: MessageLanguage}}
- */
-const templateNameToEmailType = (templateName) =>
+export const templateNameToEmailType = (templateName: TemplateName): { type: MessageType, language: MessageLanguage } =>
   dbColumnToMsgType[templateName]
 
 /**
@@ -56,19 +43,19 @@ const templateNameToEmailType = (templateName) =>
  *   is same as  ↓
  * pipe(trim, uppercase, reverse)(str)
  */
-const pipe =
-  (...fns) =>
-    (value) =>
+export const pipe =
+  (...fns: any[]) =>
+    (value: any) =>
       fns.reduce((v, fn) => fn(v), value)
 
-const getRandomId = () => {
+export const getRandomId = () => {
   return 'a' + randomstring.generate(16)
 }
 
-const isDevelopmentEnvironment = () => process.env.NODE_ENV === 'development'
-const isProductionEnvironment = () => process.env.NODE_ENV === 'production'
+export const isDevelopmentEnvironment = () => process.env.NODE_ENV === 'development'
+export const isProductionEnvironment = () => process.env.NODE_ENV === 'production'
 
-module.exports = {
+export default {
   emailTypeToTemplateName,
   templateNameToEmailType,
   pipe,
