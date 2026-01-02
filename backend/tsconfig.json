@@ -2,9 +2,13 @@
   "compilerOptions": {
     "outDir": "./dist",
     "target": "es6",
-    "module": "commonjs",
+    "module": "nodenext",
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "allowJs": true,
+    "checkJs": false,
+    "strict": true,
     "noEmitOnError": true
   },
   "include": [ "./**/*.js", "./**/*.ts"],

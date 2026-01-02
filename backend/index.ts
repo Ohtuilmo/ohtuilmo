@@ -1,15 +1,18 @@
-const http = require('http')
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const { logger, fakeshibbo } = require('./middleware')
-const { isDevelopmentEnvironment } = require('./utils/index')
-const headersMiddleware = require('unfuck-utf8-headers-middleware')
-const config = require('./config/')
+import http from 'http'
+import express from 'express'
+import type { Request, Response, NextFunction, RequestHandler } from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import { logger, fakeshibbo } from './middleware'
+import { isDevelopmentEnvironment } from './utils/index'
+import headersMiddleware from 'unfuck-utf8-headers-middleware'
+import config from './config/'
+
 const app = express()
 
-var unless = (path, middleware) => {
-  return (req, res, next) => {
+
+var unless = (path: string, middleware: RequestHandler) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     if (path === req.path) {
       return next()
     } else {
@@ -108,7 +111,10 @@ server.on('close', async () => {
     await db.sequelize.close()
     console.log('client has disconnected')
   } catch(err) {
-    console.error('error during disconnection', err.stack)
+    if (err instanceof Error) {
+      return console.error('error during disconnection', err.stack)
+    }
+    console.error("Unknown error:", err)
   }
 })
 
