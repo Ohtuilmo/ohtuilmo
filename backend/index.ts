@@ -40,30 +40,30 @@ isDevelopmentEnvironment() && app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
 
 // Routers
-const loginRouter = require('./controllers/login')
-const logoutRouter = require('./controllers/logout')
-const topicsRouter = require('./controllers/topics')
-const topicDatesrouter = require('./controllers/topicDates')
-const tokenCheckRouter = require('./controllers/tokenCheck')
-const registrationRouter = require('./controllers/registrations')
-const usersRouter = require('./controllers/users')
-const configurationsRouter = require('./controllers/configurations')
-const registrationQuestionSetsRouter = require('./controllers/registrationQuestionSets')
-const reviewQuestionSetsRouter = require('./controllers/reviewQuestionSets')
-const customerReviewQuestionSetsRouter = require('./controllers/customerReviewQuestionSets')
-const emailRouter = require('./controllers/email').emailRouter
-const registrationManagementRouter = require('./controllers/registrationManagement')
-const groupRouter = require('./controllers/groups')
-const peerReview = require('./controllers/peerReview')
-const customerReview = require('./controllers/customerReview')
-const autoCompleteRouter = require('./controllers/autocomplete')
-const instructorReviewRouter = require('./controllers/instructorReview')
-const timeLogsRouter = require('./controllers/timeLogs')
-const instructorTimeLogsRouter = require('./controllers/instructorTimeLogs')
-const sprintRouter = require('./controllers/sprints')
-const groupSprintSummaryRouter = require('./controllers/groupSprintSummary')
-const tagsRouter = require('./controllers/tags')
-const devRouter = require('./controllers/dev')
+import loginRouter from './controllers/login'
+import logoutRouter from './controllers/logout'
+import topicsRouter from './controllers/topics'
+import topicDatesrouter from './controllers/topicDates'
+import tokenCheckRouter from './controllers/tokenCheck'
+import registrationRouter from './controllers/registrations'
+import usersRouter from './controllers/users'
+import configurationsRouter from './controllers/configurations'
+import registrationQuestionSetsRouter from './controllers/registrationQuestionSets'
+import reviewQuestionSetsRouter from './controllers/reviewQuestionSets'
+import customerReviewQuestionSetsRouter from './controllers/customerReviewQuestionSets'
+import { emailRouter } from './controllers/email'
+import registrationManagementRouter from './controllers/registrationManagement'
+import groupRouter from './controllers/groups'
+import peerReview from './controllers/peerReview'
+import customerReview from './controllers/customerReview'
+import autoCompleteRouter from './controllers/autocomplete'
+import instructorReviewRouter from './controllers/instructorReview'
+import timeLogsRouter from './controllers/timeLogs'
+import instructorTimeLogsRouter from './controllers/instructorTimeLogs'
+import sprintRouter from './controllers/sprints'
+import groupSprintSummaryRouter from './controllers/groupSprintSummary'
+import tagsRouter from './controllers/tags'
+import devRouter from './controllers/dev'
 app.use('/api/login', loginRouter)
 app.use('/api/logout', logoutRouter)
 app.use('/api/topics', topicsRouter)
