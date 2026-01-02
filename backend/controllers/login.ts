@@ -1,16 +1,19 @@
-const loginRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
-const config = require('../config/')
-const db = require('../models/index')
+import { Request, Response } from "express"
+import express from 'express'
+import jwt from 'jsonwebtoken'
+import config from '../config/index'
+import db from '../models/index'
 
-const handleDatabaseError = (res, error) => {
+const loginRouter = express.Router()
+
+const handleDatabaseError = (res: Response, error: unknown) => {
   console.log(error)
   res
     .status(500)
     .json({ error: 'Something is wrong... try reloading the page' })
 }
 
-const userIsInstructorForCurrentGroup = async (student_number) => {
+const userIsInstructorForCurrentGroup = async (student_number: string | number) => {
   try {
     const group = await db.Group.findOne({
       where: {
@@ -31,7 +34,7 @@ const userIsInstructorForCurrentGroup = async (student_number) => {
   }
 }
 
-loginRouter.post('/', async (req, res) => {
+loginRouter.post('/', async (req: Request, res: Response) => {
   const student_number = req.headers.hypersonstudentid || req.headers.schacpersonaluniquecode
 
   console.log('[Login] Student number from headers:', student_number)
@@ -91,4 +94,4 @@ loginRouter.post('/', async (req, res) => {
   }
 })
 
-module.exports = loginRouter
+export default loginRouter
