@@ -1,8 +1,8 @@
 import { Sequelize } from 'sequelize'
 import { dbUrl } from "../config"
 
-import UserModel from './user'
-import GroupModel from './group'
+import UserModel, { UserStatic } from './user'
+import GroupModel, { GroupStatic } from './group'
 import TopicModel from './topic'
 import TopicDateModel from './topic_date'
 import RegistrationModel from './registration'
@@ -26,9 +26,9 @@ import TagModel from './tag'
 import TimeLogModel from './time_log'
 import TimeLogTagModel from './time_log_tag'
 
-interface Db {
-  User?: any
-  Group?: any
+export interface Db {
+  User?: UserStatic
+  Group?: GroupStatic
   Topic?: any
   TopicDate?: any
   Registration?: any
@@ -52,12 +52,13 @@ interface Db {
   TimeLogTag?: any
 
   sequelize?: Sequelize
+  connect?: () => void
 }
 
-export let db: Db = {}
+let db: Db = {}
 
 // Populates the global db variable (above) with all models
-export const createDbConnection = (): void => {
+db.connect = (): void => {
   const sequelize = new Sequelize(dbUrl, { logging: false })
 
   console.log('connecting to db ' + dbUrl)
@@ -101,6 +102,7 @@ export const createDbConnection = (): void => {
   const TimeLog = TimeLogModel(sequelize, Sequelize)
   const TimeLogTag = TimeLogTagModel(sequelize, Sequelize)
 
+  /*
   db = {
     User,
     Group,
@@ -126,23 +128,51 @@ export const createDbConnection = (): void => {
     TimeLog,
     TimeLogTag,
 
-    sequelize 
+    sequelize,
   }
-  db.Group.belongsTo(Topic, {
+  */
+  db.User = User
+  db.Group = Group
+  db.Topic = Topic
+  db.TopicDate = TopicDate
+  db.Registration = Registration
+  db.Configuration = Configuration
+  db.RegistrationQuestionSet = RegistrationQuestionSet
+  db.ReviewQuestionSet = ReviewQuestionSet
+
+  db.CustomerReviewQuestionSet = CustomerReviewQuestionSet
+
+  db.RegistrationManagement = RegistrationManagement
+  db.PeerReview = PeerReview
+  db.EmailTemplate = EmailTemplate
+  db.InstructorReview = InstructorReview
+
+  db.CustomerReview = CustomerReview
+  db.SentTopicEmail = SentTopicEmail
+
+  db.Sprint = Sprint
+  db.Tag = Tag
+  db.TimeLog = TimeLog
+  db.TimeLogTag = TimeLogTag
+
+  db.sequelize = sequelize
+
+  console.log("DB updated,", db)
+  db.Group!.belongsTo(Topic, {
     as: 'topic',
   })
-  db.Group.belongsTo(Configuration, {
+  db.Group!.belongsTo(Configuration, {
     as: 'configuration',
   })
-  db.Group.belongsToMany(User, {
+  db.Group!.belongsToMany(User, {
     through: 'group_students',
     as: 'students',
   })
-  db.User.belongsToMany(Group, {
+  db.User!.belongsToMany(Group, {
     through: 'group_students',
     as: 'groups',
   })
-  db.Group.belongsTo(User, {
+  db.Group!.belongsTo(User, {
     as: 'instructor',
     foreignKey: 'instructorId',
   })
@@ -208,7 +238,7 @@ export const createDbConnection = (): void => {
     foreignKey: 'topic_id',
   })
 
-  db.Group.hasMany(Sprint, {
+  db.Group!.hasMany(Sprint, {
     foreignKey: 'group_id',
     as: 'sprints',
   })
@@ -251,4 +281,6 @@ export const createDbConnection = (): void => {
   db.sequelize!.sync()
 }
 
-export default db
+// All variables are non-null after db.connect() is called
+export default db as Required<Db>
+// export default db

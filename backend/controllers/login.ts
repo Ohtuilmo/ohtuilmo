@@ -13,19 +13,21 @@ const handleDatabaseError = (res: Response, error: unknown) => {
     .json({ error: 'Something is wrong... try reloading the page' })
 }
 
+console.log("DB:", db.Group, typeof db.Group)
+
 const userIsInstructorForCurrentGroup = async (student_number: string | number) => {
   try {
     const group = await db.Group.findOne({
       where: {
         instructor_id: student_number
       },
-      include: {
+      include: [{
         model: db.Configuration,
         as: 'configuration',
         where: {
           active: true
         }
-      }
+      }]
     })
     return group ? true : false
   } catch (error) {
@@ -47,7 +49,7 @@ loginRouter.post('/', async (req: Request, res: Response) => {
       .end()
 
   try {
-    const foundUser = await db.User.findOne({
+    const foundUser = await db.User!.findOne({
       where: { student_number },
     })
 
@@ -67,7 +69,7 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     } else {
       //user not in database, add user
       console.log('[Login] user not found')
-      const savedUser = await db.User.create({
+      const savedUser = await db.User!.create({
         username: req.headers.uid,
         student_number,
         first_names: req.headers.givenname,

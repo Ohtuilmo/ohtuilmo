@@ -1,9 +1,13 @@
-const router = require('express').Router()
-const { Op } = require('sequelize')
-const db = require('../models')
-const { checkAdmin, checkInstructor, checkLogin } = require('../middleware')
+import express from "express"
+import { Op } from 'sequelize'
+import db from '../models'
+import { Group } from "../models/group"
+import { User } from "../models/user"
+import { checkAdmin, checkInstructor, checkLogin } from '../middleware'
 
-const formatGroup = (dbGroup) => {
+const router = express.Router()
+
+const formatGroup = (dbGroup: Group) => {
   // pluck only fields we know and need, map student object to student_number
   const {
     id,
@@ -42,33 +46,33 @@ router.get('/', checkInstructor, async (req, res) => {
   res.status(200).json(deserialized)
 })
 
-const isNil = (obj) => obj === null || obj === undefined
-const isNotNil = (obj) => {
+const isNil = (obj: unknown) => obj === null || obj === undefined
+const isNotNil = (obj: unknown) => {
   return !isNil(obj)
 }
 
-const hasDuplicates = (arr) => {
+const hasDuplicates = <T>(arr: T[]) => {
   const noDuplicates = new Set(arr)
   return arr.length !== noDuplicates.size
 }
 
-const topicDoesNotExist = async (topicId) => {
+const topicDoesNotExist = async (topicId: number) => {
   const foundTopic = await db.Topic.findByPk(topicId)
   return !foundTopic
 }
 
-const configDoesNotExist = async (configId) => {
+const configDoesNotExist = async (configId: number) => {
   const config = await db.Configuration.findByPk(configId)
   return !config
 }
 
-const instructorDoesNotExist = async (studentNumber) => {
+const instructorDoesNotExist = async (studentNumber: number) => {
   const user = await db.User.findByPk(studentNumber)
   return !user
 }
 
-const findNonExistingStudents = async (studentNumbers) => {
-  const students = await db.User.findAll({
+const findNonExistingStudents = async (studentNumbers: number[]) => {
+  const students: User[] = await db.User.findAll({
     where: {
       student_number: {
         [Op.in]: studentNumbers
@@ -85,8 +89,19 @@ const findNonExistingStudents = async (studentNumbers) => {
   )
 }
 
-const validateGroup = async (body) => {
-  if (!body) return 'POST body is missing'
+const validateGroup = async (body: unknown) => {
+  if (!body || typeof body !== "object") return 'POST body is missing'
+
+  if (
+    !(
+      "name" in body
+      && "topicId" in body
+      && "configurationId" in body
+      && "instructorId" in body
+      && "studentIds" in body
+    )
+  )
+    return "POST body is missing fields"
 
   const { name, topicId, configurationId, instructorId, studentIds } = body
 
@@ -96,15 +111,15 @@ const validateGroup = async (body) => {
     return 'configurationId is missing'
   if (isNil(studentIds) || !Array.isArray(studentIds))
     return 'studentIds is missing'
-  if (studentIds.some((id) => isNil(id) || typeof id !== 'string'))
+  if (studentIds.some((id) => isNil(id) || typeof id !== 'number'))
     return 'students has invalid student numbers'
 
   if (hasDuplicates(studentIds)) {
     return 'duplicate student numbers'
   }
 
-  if (isNotNil(instructorId) && typeof instructorId !== 'string') {
-    return 'instructorId should be a string'
+  if (isNotNil(instructorId) && typeof instructorId !== 'number') {
+    return 'instructorId should be a number'
   }
 
   if (await topicDoesNotExist(topicId)) {
@@ -129,7 +144,7 @@ const validateGroup = async (body) => {
   return null
 }
 
-const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
+const formatCreatedGroup = (dbGroup: Group, dbGroupStudents: any) => {
   const {
     id,
     name,
@@ -148,7 +163,7 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     instructorId,
     configurationId,
     studentIds: dbGroupStudents.map(
-      ({ userStudentNumber }) => userStudentNumber
+      ({ userStudentNumber }: { userStudentNumber: number }) => userStudentNumber
     )
   }
 }
@@ -198,7 +213,7 @@ router.post('/', checkAdmin, async (req, res) => {
     // array seems to be wrappend in another array too? if no students were
     // passed, i.e. an empty array was passed to setStudents, it just returns
     // an empty array!
-    const students = groupStudents.length > 0 ? groupStudents[0] : []
+    const students: User[] = groupStudents.length > 0 ? groupStudents[0] : []
 
     res.json(formatCreatedGroup(createdGroup, students))
   } catch (err) {
@@ -301,7 +316,7 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
 
     // return users groups where configuration is either on current
     // peerreview or project registration configuration
-    const allGroups = await user.getGroups({
+    const allGroups: Group[] = await user.getGroups({
       where: {
         [Op.or]: [
           { configurationId: peerReviewConf },
@@ -329,16 +344,17 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
       (group) => group.configurationId === projectConf
     )
 
+    // Group should be one of the options below
     const usersGroup = peerReviewGroup ? peerReviewGroup : projectGroup
 
-    const extractCallingName = (firstNames) => {
+    const extractCallingName = (firstNames: string) => {
       if (firstNames.includes('*')) {
         return firstNames.split('*')[1].split(' ')[0]
       }
       return firstNames.split(' ')[0]
     }
 
-    const instructorName = await db.User.findByPk(usersGroup.instructorId)
+    const instructorName = await db.User.findByPk(usersGroup!.instructorId)
     const instructorString = instructorName
       ? extractCallingName(instructorName.first_names) +
         ' ' +
@@ -346,10 +362,10 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
       : ''
 
     return res.status(200).json({
-      id: usersGroup.id,
-      configurationId: usersGroup.configurationId,
-      groupName: usersGroup.name,
-      students: usersGroup.students,
+      id: usersGroup?.id,
+      configurationId: usersGroup?.configurationId,
+      groupName: usersGroup?.name,
+      students: usersGroup?.students,
       instructor: instructorString
     })
   } catch (error) {
@@ -364,7 +380,7 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
   }
 
   try {
-    const groups = await db.Group.findAll({
+    const groups: Group[] = await db.Group.findAll({
       where: { instructorId: req.params.instructor },
       include: [
         {
@@ -395,4 +411,4 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
   }
 })
 
-module.exports = router
+export default router

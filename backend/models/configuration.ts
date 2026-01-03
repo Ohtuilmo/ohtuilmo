@@ -1,5 +1,27 @@
-module.exports = (sequelize, Sequelize) => {
-  const Configuration = sequelize.define(
+import { Sequelize, Model, ModelCtor, Association, BuildOptions } from "sequelize"
+import { Db } from "./index"
+
+export interface Configuration extends Model {
+  readonly id: number
+  readonly name: string
+  readonly type: string
+  readonly content: any
+  readonly active: boolean
+
+  readonly registrations?: any
+
+  associations: {
+    registration: Association<Configuration, any>
+  }
+}
+
+export type ConfigurationStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): Configuration;
+  associate: (models: Db) => void
+}
+
+export default (sequelize: Sequelize, Sequelize: any) => {
+  const Configuration = <ConfigurationStatic>sequelize.define(
     'configuration',
     {
       id: {
@@ -33,7 +55,7 @@ module.exports = (sequelize, Sequelize) => {
       as: 'review_question_set2',
     })
     Configuration.belongsTo(models.RegistrationQuestionSet)
-    Configuration.belongsTo(models.CustomerReviewQuestionSet)
+    Configuration.belongsTo<Configuration, any>(models.CustomerReviewQuestionSet)
   }
 
   return Configuration

@@ -39,6 +39,13 @@ app.use(headersMiddleware(shibbolethHeaders))
 isDevelopmentEnvironment() && app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
 
+// Node env
+console.log('NODE_ENV:', process.env.NODE_ENV)
+
+// Database connection
+import db from './models'
+db.connect()
+
 // Routers
 import loginRouter from './controllers/login'
 import logoutRouter from './controllers/logout'
@@ -90,12 +97,6 @@ app.use('/api/tags', tagsRouter)
 if (process.env.NODE_ENV === 'development')
   app.use('/api/role', devRouter)
 
-
-console.log('NODE_ENV:', process.env.NODE_ENV)
-
-// Database connection
-import { createDbConnection, db } from './models'
-createDbConnection()
 
 // Initialize server
 const PORT = config.port

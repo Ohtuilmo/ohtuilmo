@@ -1,8 +1,10 @@
-const usersRouter = require('express').Router()
-const db = require('../models/index')
-const { checkLogin, checkInstructor } = require('../middleware')
+import express, { Request, Response } from "express"
+import db from '../models/index'
+import { checkLogin, checkInstructor } from '../middleware'
 
-usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
+const usersRouter = express.Router()
+
+usersRouter.put('/:studentNumber', checkLogin, async (req: Request, res: Response) => {
   const { email } = req.body
   const { studentNumber } = req.params
 
@@ -36,7 +38,7 @@ usersRouter.put('/:studentNumber', checkLogin, async (req, res) => {
 // If the user is an instructor, the get all of the student numbers for
 // the students in the current configuration, then gets the corresponding
 // users from the database.
-usersRouter.get('/', checkInstructor, async (req, res) => {
+usersRouter.get('/', checkInstructor, async (req: Request, res: Response) => {
   if (req.user.admin || req.user.instructor) {
     try {
       const users = await db.User.findAll()
@@ -50,7 +52,7 @@ usersRouter.get('/', checkInstructor, async (req, res) => {
   }
 })
 
-usersRouter.get('/isInstructor', checkLogin, async (req, res) => {
+usersRouter.get('/isInstructor', checkLogin, async (req: Request, res: Response) => {
   try {
     const instructedGroups = await db.Group.findAll({
       where: { instructorId: req.user.id },
@@ -68,4 +70,4 @@ usersRouter.get('/isInstructor', checkLogin, async (req, res) => {
   }
 })
 
-module.exports = usersRouter
+export default usersRouter
