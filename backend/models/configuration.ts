@@ -18,7 +18,7 @@ export interface Configuration extends Model {
 
 export type ConfigurationStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): Configuration;
-  associate: (models: Db) => void
+  associate: (models: Required<Db>) => void
 }
 
 export default (sequelize: Sequelize, Sequelize: any) => {
