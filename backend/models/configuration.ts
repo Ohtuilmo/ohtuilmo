@@ -1,5 +1,6 @@
 import { Sequelize, Model, ModelCtor, Association, BuildOptions } from "sequelize"
 import { Db } from "./index"
+import { Registration } from "./registration"
 
 export interface Configuration extends Model {
   readonly id: number
@@ -8,10 +9,10 @@ export interface Configuration extends Model {
   readonly content: any
   readonly active: boolean
 
-  readonly registrations?: any
+  readonly registrations?: Registration[]
 
   associations: {
-    registration: Association<Configuration, any>
+    registration: Association<Configuration, Registration>
   }
 }
 

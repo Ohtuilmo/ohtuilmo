@@ -1,5 +1,18 @@
-module.exports = (sequelize, Sequelize) => {
-  const Registration = sequelize.define('registration', {
+import { Sequelize, Model, BuildOptions, Association } from "sequelize"
+import { Db } from "./index"
+
+export interface Registration extends Model {
+  readonly id: number
+
+}
+
+export type RegistrationStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): Registration;
+  associate: (models: Required<Db>) => void
+}
+
+export default (sequelize: Sequelize, Sequelize: any) => {
+  const Registration = <RegistrationStatic>sequelize.define('registration', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
