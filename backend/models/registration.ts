@@ -5,7 +5,7 @@ import { User } from "./user"
 export interface Registration extends Model {
   readonly id: number
   readonly preferred_topics: any
-  readonly questions: any
+  readonly questions: RegistationQuestion[]
 
   readonly configuration_id: number
 
@@ -14,6 +14,20 @@ export interface Registration extends Model {
     registration: Association<Registration, User>
   }
 }
+
+interface RegistationQuestionText {
+  type: "text"
+  question: string
+  answer: string
+}
+
+interface RegistationQuestionScale {
+  type: "scale"
+  question: string
+  answer: number
+}
+
+type RegistationQuestion = RegistationQuestionText | RegistationQuestionScale
 
 export type RegistrationStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): Registration;
