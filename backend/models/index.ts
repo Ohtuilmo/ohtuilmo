@@ -157,7 +157,6 @@ db.connect = (): void => {
 
   db.sequelize = sequelize
 
-  console.log("DB updated,", db)
   db.Group!.belongsTo(Topic, {
     as: 'topic',
   })
