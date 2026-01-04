@@ -1,14 +1,18 @@
-const { Op } = require('sequelize')
-const registrationsRouter = require('express').Router()
-const db = require('../models/index')
-const { checkAdmin, checkLogin } = require('../middleware')
+import { Op } from 'sequelize'
+import express, { Request, Response, NextFunction } from "express"
+import db from '../models/index'
+import { Topic } from '../models/topic'
+import { Registration } from "../models/registration"
+import { checkAdmin, checkLogin } from '../middleware'
 
-const handleDatabaseError = (res, error) => {
+const registrationsRouter = express.Router()
+
+const handleDatabaseError = (res: Response, error: unknown) => {
   console.log(error)
   res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
-const registrationCheck = async (req, res, next) => {
+const registrationCheck = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const latestConfig = await db.RegistrationManagement.findOne({
       order: [['createdAt', 'DESC']]
@@ -33,7 +37,7 @@ registrationsRouter.post(
   '/',
   checkLogin,
   registrationCheck,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     if (!req.body.questions)
       return res.status(400).json({ error: 'questions missing' })
     if (!req.body.preferred_topics)
@@ -91,23 +95,26 @@ registrationsRouter.post(
   }
 )
 
-registrationsRouter.get('/current', checkAdmin, async (req, res) => {
-  const formatJson = (registration) => {
-    registration.preferred_topics.forEach((topic) => {
-      delete topic.content.description
-      delete topic.content.environment
-      delete topic.content.additionalInfo
-      delete topic.content.specialRequests
-      delete topic.createdAt
-      delete topic.updatedAt
+registrationsRouter.get('/current', checkAdmin, async (req: Request, res: Response) => {
+  const formatJson = (registration: Registration) => {
+    const formattedTopics = registration.preferred_topics.map<Partial<Topic>>((topic) => {
+      const { content, createdAt, updatedAt, ...rest } = topic
+      return {
+        ...rest,
+        content: {
+          email: content.email,
+          title: content.title,
+          customerName: content.customerName
+        }
+      }
     })
 
     return {
       student_number: registration.studentStudentNumber,
-      last_name: registration.student.last_name,
-      first_names: registration.student.first_names,
-      email: registration.student.email,
-      preferred_topics: registration.preferred_topics,
+      last_name: registration.student!.last_name,
+      first_names: registration.student!.first_names,
+      email: registration.student!.email,
+      preferred_topics: formattedTopics,
       questions: registration.questions
     }
   }
@@ -138,7 +145,7 @@ registrationsRouter.get('/current', checkAdmin, async (req, res) => {
   }
 })
 
-registrationsRouter.get('/', checkLogin, async (req, res) => {
+registrationsRouter.get('/', checkLogin, async (req: Request, res: Response) => {
   const loggedInUserStudentNumber = req.user.id
 
   try {
@@ -169,4 +176,4 @@ registrationsRouter.get('/', checkLogin, async (req, res) => {
   }
 })
 
-module.exports = registrationsRouter
+export default registrationsRouter
