@@ -1,9 +1,18 @@
 import { Sequelize, Model, BuildOptions, Association } from "sequelize"
 import { Db } from "./index"
+import { User } from "./user"
 
 export interface Registration extends Model {
   readonly id: number
+  readonly preferred_topics: any
+  readonly questions: any
 
+  readonly configuration_id: number
+
+  readonly student?: User
+  associations: {
+    registration: Association<Registration, User>
+  }
 }
 
 export type RegistrationStatic = typeof Model & {
