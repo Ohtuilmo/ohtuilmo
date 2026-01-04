@@ -1,13 +1,15 @@
 import { Sequelize, Model, BuildOptions, Association } from "sequelize"
 import { Db } from "./index"
 import { User } from "./user"
+import { Topic } from "./topic"
 
 export interface Registration extends Model {
   readonly id: number
-  readonly preferred_topics: any
+  readonly preferred_topics: Topic[]
   readonly questions: RegistationQuestion[]
 
   readonly configuration_id: number
+  readonly studentStudentNumber: number
 
   readonly student?: User
   associations: {
