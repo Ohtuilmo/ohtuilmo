@@ -7,24 +7,27 @@ export interface RegistrationManagement extends Model {
   readonly peer_review_open: boolean
   readonly peer_review_round: 1 | 2
 
-  readonly project_registation_open: boolean
-  readonly project_registation_message: string
-  readonly project_registation_info: string
+  readonly project_registration_open: boolean
+  readonly project_registration_message: string
+  readonly project_registration_info: string
 
-  readonly topic_registation_open: boolean
-  readonly topic_registation_message: string
+  readonly topic_registration_open: boolean
+  readonly topic_registration_message: string
 
   readonly summer_project: boolean
   readonly summer_dates: any
+
+  readonly project_registration_conf: number
+  readonly peer_review_conf: number
+  readonly topic_registration_conf: number
 }
 
 export type RegistrationManagementStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): RegistrationManagement;
-  associate: (models: Required<Db>) => void
 }
 
 export default (sequelize: Sequelize, Sequelize: any) => {
-  const Registration_management = sequelize.define('registration_management', {
+  const Registration_management = <RegistrationManagementStatic>sequelize.define('registration_management', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
