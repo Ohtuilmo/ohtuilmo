@@ -1,5 +1,5 @@
 import { Sequelize, Model, BuildOptions, Association } from "sequelize"
-import { Db } from "./index"
+import { Database } from "./index"
 import { User } from "./user"
 import { Topic } from "./topic"
 
@@ -33,7 +33,7 @@ type RegistationQuestion = RegistationQuestionText | RegistationQuestionScale
 
 export type RegistrationStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): Registration;
-  associate: (models: Required<Db>) => void
+  associate: (models: Database) => void
 }
 
 export default (sequelize: Sequelize, Sequelize: any) => {

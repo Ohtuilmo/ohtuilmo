@@ -42,9 +42,9 @@ app.use(unless('/api/login', logger))
 // Node env
 console.log('NODE_ENV:', process.env.NODE_ENV)
 
-// Database connection
-import db from './models'
-db.connect()
+// Ensure database connection is made
+import { Database } from './models'
+Database.connect()
 
 // Routers
 import loginRouter from './controllers/login'

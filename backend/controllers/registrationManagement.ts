@@ -1,13 +1,17 @@
-const registrationManagementRouter = require('express').Router()
-const db = require('../models/index')
-const { checkAdmin } = require('../middleware')
+import express, { Request, Response } from "express"
+import db from '../models/index'
+import { RegistrationManagement } from '../models/registration_management'
+import { Configuration } from '../models/configuration'
+import { checkAdmin } from '../middleware'
 
-const handleDatabaseError = (res, error) => {
+const registrationManagementRouter = express.Router()
+
+const handleDatabaseError = (res: Response, error: unknown) => {
   console.log(error)
   res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
-const create = async (req, res) => {
+const create = async (req: Request, res: Response) => {
   const { registrationManagement } = req.body
 
   try {
@@ -20,9 +24,9 @@ const create = async (req, res) => {
   }
 }
 
-const isNil = (value) => value === undefined || value === null
+const isNil = (value: unknown) => value === undefined || value === null
 
-const validateRegistrationManagement = async (registrationManagement) => {
+const validateRegistrationManagement = async (registrationManagement: RegistrationManagement) => {
   if (!registrationManagement) {
     return 'All attributes must be defined'
   }
@@ -67,7 +71,7 @@ const validateRegistrationManagement = async (registrationManagement) => {
     return 'Message must be provided when topic registration is closed'
   }
 
-  const allConfigurations = await db.Configuration.findAll({})
+  const allConfigurations: Configuration[] = await db.Configuration.findAll({})
 
   const projectRegistrationConf = allConfigurations.find(
     (configuration) => configuration.id === project_registration_conf
@@ -126,4 +130,4 @@ registrationManagementRouter.get('/', async (req, res) => {
   }
 })
 
-module.exports = registrationManagementRouter
+export default registrationManagementRouter

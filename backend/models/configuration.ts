@@ -1,5 +1,5 @@
-import { Sequelize, Model, ModelCtor, Association, BuildOptions } from "sequelize"
-import { Db } from "./index"
+import { Sequelize, Model, Association, BuildOptions } from "sequelize"
+import { Database } from "./index"
 import { Registration } from "./registration"
 
 export interface Configuration extends Model {
@@ -18,7 +18,7 @@ export interface Configuration extends Model {
 
 export type ConfigurationStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): Configuration;
-  associate: (models: Required<Db>) => void
+  associate: (models: Database) => void
 }
 
 export default (sequelize: Sequelize, Sequelize: any) => {
