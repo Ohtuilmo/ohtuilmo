@@ -160,7 +160,7 @@ const SprintsPage = (props) => {
                 }).replace(/\./g, '/')
 
                 return (
-                  <tr key={sprint.id}>
+                  <tr key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
                     <td className="sprint-list-sprint-number">{sprint.sprint}</td>
                     <td>{formattedStartDate}</td>
                     <td>{formattedEndDate}</td>

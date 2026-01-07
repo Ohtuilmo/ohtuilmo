@@ -39,7 +39,7 @@ router.get('/', checkInstructor, async (req, res) => {
     ]
   })
   const deserialized = groups.map(formatGroup)
-  res.json(deserialized)
+  res.status(200).json(deserialized)
 })
 
 const isNil = (obj) => obj === null || obj === undefined
@@ -376,7 +376,7 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
       ]
     })
     if (groups.length === 0) {
-      return res.status(404).json({ error: 'Not an instructor' })
+      return res.status(404).json({ error: 'Querying user not an instructor' })
     }
 
     return res.status(200).json(
@@ -390,7 +390,7 @@ router.get('/byinstructor/:instructor', checkLogin, async (req, res) => {
       })
     )
   } catch (error) {
-    console.error('Error while updating group', error)
+    console.error('Error while getting group', error)
     return res.status(500).json({ error: 'Internal server error' })
   }
 })

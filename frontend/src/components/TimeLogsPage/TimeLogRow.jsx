@@ -18,8 +18,6 @@ export const TimeLogRow = ({ log, handleDelete, handleTimeLogCheck, isChecked, u
     year: 'numeric',
   }).replace(/\./g, '/')
 
-  console.log(user)
-
   return (
     <div className="timelogs-row-container">
       <div className="timelogs-table-row">

@@ -1,20 +1,51 @@
-version: '3'
 services:
-  db:
+  test-db:
     image: postgres:16-alpine
     environment:
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test_postgres
     container_name: test-db
-    profiles: [test-setup, cypress]
-    expose:
-      - 5432
+    profiles: [local-api, api, local-e2e, e2e]
+    ports:
+      - 6543:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 1s
       timeout: 10s
       retries: 60
+    volumes:
+    # Uses a tmpfs volume to make tests extremely fast. The data in test
+    # databases is not persisted across restarts, nor does it need to be.
+    - type: tmpfs
+      target: /data/test
 
-  backend:
+  migrate-db:
+    build:
+      context: './backend'
+      dockerfile: Dockerfile.dev
+    restart: no
+    profiles: [local-api]
+    depends_on:
+      test-db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@test-db:5432/test_postgres
+      - SECRET=testsecret
+      - EMAIL_ENABLED=false
+      - PORT=5001
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cd /usr/src/app
+        npm install
+        npm run db:nuke
+        npm run db:migrate
+
+  test-backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -22,13 +53,12 @@ services:
       - /bin/sh
       - -c
       - |
-        npm run db:migrate
-        npm run db:seed:all
+        npm run db:recreate
         npm run watch:test
         while ! curl -fsS http://localhost:3001/api >/dev/null; sleep 1; done
         echo "Test setup is now up!"
-    expose:
-      - 3001
+    ports:
+      - 5001:3001
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
@@ -36,40 +66,83 @@ services:
       - PORT=3001
       - SECRET=yoursecrethere
       - EMAIL_ENABLED=false
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - DATABASE_URL=postgres://postgres:postgres@test-db:5432/test_postgres
+      - NODE_ENV=test
     container_name: test-backend
-    profiles: [test-setup, cypress]
+    profiles: [local-e2e, e2e]
     depends_on:
-      db:
+      test-db:
         condition: service_healthy
 
-  frontend:
+  test-frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
     command: npm run dev
     ports:
-      - 3002:3000
+      - 5000:3000
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
+    environment:
+      - VITE_PORT=3000
+      - VITE_BACKEND_URL=http://test-backend:3001
     container_name: test-frontend
-    profiles: [test-setup, cypress]
+    profiles: [local-e2e, e2e]
     depends_on:
-      - backend
-      - db
+      - test-backend
+      - test-db
+
+  api-test:
+    build:
+      context: './backend'
+      dockerfile: Dockerfile.dev
+    profiles: [api]
+    restart: no
+    depends_on:
+      test-db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@test-db:5432/test_postgres
+      - SECRET=testsecret
+      - EMAIL_ENABLED=false
+      - PORT=3001
+      - NODE_ENV=test
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cd /usr/src/app
+        npm install
+        npm run db:migrate
+        npm run test
   
   cypress:
-    image: cypress/included:13.8.0
+    image: cypress/included:15.6.0
     container_name: cypress
-    profiles: [cypress]
+    profiles: [e2e]
     volumes:
       - ./frontend/e2e:/e2e
       - ./frontend/cypress.config.js:/cypress.config.js
     environment:
-      - CYPRESS_baseUrl=http://frontend:3000
+      - CYPRESS_baseUrl=http://test-frontend:3000
       - CYPRESS_VIDEO=false
     depends_on:
-      - db
-      - backend
-      - frontend
+      - test-db
+      - test-backend
+      - test-frontend
+
+  adminer:
+    image: adminer
+    container_name: test-adminer
+    profiles: [local-api, local-e2e]
+    environment:
+      - ADMINER_DESIGN=galkaev
+    ports:
+      - 9090:8080
+    depends_on:
+      test-db:
+        condition: service_healthy

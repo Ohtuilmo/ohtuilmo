@@ -10,10 +10,11 @@ const initialState = {
   selectedCustomerReview: null,
   form: {
     name: '',
+    active: true,
     content: '',
     registration_question_set_id: null,
-    review_question_set_1_id: null,
-    review_question_set_2_id: null,
+    review_question_set1_id: null,
+    review_question_set2_id: null,
     customer_review_question_set_id: null
   },
   isNew: true
@@ -68,7 +69,7 @@ const configurationPageReducer = (state = initialState, action) => {
       selectedReview1: action.payload,
       form: {
         ...state.form,
-        review_question_set_1_id: action.payload.id
+        review_question_set1_id: action.payload.id
       }
     }
   case 'UPDATE_SELECTED_REVIEW_QUESTIONS_2':
@@ -77,7 +78,7 @@ const configurationPageReducer = (state = initialState, action) => {
       selectedReview2: action.payload,
       form: {
         ...state.form,
-        review_question_set_2_id: action.payload.id
+        review_question_set2_id: action.payload.id
       }
     }
   case 'UPDATE_SELECTED_CUSTOMER_REVIEW_QUESTIONS':
@@ -100,9 +101,10 @@ const configurationPageReducer = (state = initialState, action) => {
       form: {
         name: '',
         content: '',
+        active: true,
         registration_question_set_id: null,
-        review_question_set_1_id: null,
-        review_question_set_2_id: null,
+        review_question_set1_id: null,
+        review_question_set2_id: null,
         customer_review_question_set_id: null
       }
     }
@@ -110,18 +112,29 @@ const configurationPageReducer = (state = initialState, action) => {
     return {
       ...state,
       selectedRegister: action.payload.registration_question_set,
-      selectedReview1: action.payload.review_question_set_1,
-      selectedReview2: action.payload.review_question_set_2,
+      selectedReview1: action.payload.review_question_set1,
+      selectedReview2: action.payload.review_question_set2,
       selectedCustomerReview: action.payload.customer_review_question_set,
       form: {
         name: action.payload.name,
         content: action.payload.content,
+        active: action.payload.active,
         registration_question_set_id:
-          action.payload.registration_question_set_id,
-        review_question_set_1_id: action.payload.review_question_set_1_id,
-        review_question_set_2_id: action.payload.review_question_set_2_id,
+        action.payload.registration_question_set ? action.payload.registration_question_set.id : null,
+        review_question_set1_id:
+        action.payload.review_question_set1 ? action.payload.review_question_set1.id : null,
+        review_question_set2_id:
+      action.payload.review_question_set2 ? action.payload.review_question_set2.id : null,
         customer_review_question_set_id:
-          action.payload.customer_review_question_set_id
+        action.payload.customer_review_question_set_id
+      }
+    }
+  case 'UPDATE_ACTIVE':
+    return {
+      ...state,
+      form: {
+        ...state.form,
+        active: action.payload
       }
     }
   case 'UPDATE_CONFIG_NAME':

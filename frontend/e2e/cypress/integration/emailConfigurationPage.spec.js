@@ -205,7 +205,7 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
     })
 
-    it.skip('simultaneously updates all email templates successfully', () => {
+    it('simultaneously updates all email templates successfully', () => {
       const texts = [
         [
           'Topic proposal accepted',
@@ -245,8 +245,9 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
+      cy.get("h1").should("contain.text", "Configure email templates", { timeout: 15000 })
       texts.forEach(([templateTitle, templateLanguage, text]) => {
-        findTemplateTextarea(templateTitle, templateLanguage).contains(text)
+        findTemplateTextarea(templateTitle, templateLanguage).should("contain.text", text)
       })
     })
   })

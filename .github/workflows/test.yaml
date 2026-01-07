@@ -2,8 +2,6 @@ name: Run tests
 
 on:
   workflow_call:
-  schedule:
-    - cron: "50 3 * * *"
   pull_request:
     types: [opened, synchronize]
   push:
@@ -51,6 +49,44 @@ jobs:
           npm install
           npm run lint
 
+  backend-unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read backend node version from package.json
+        uses: skjnldsv/read-package-engines-version-actions@v3
+        with:
+          path: ./backend/
+        id: backend-engines
+
+      - name: Setup Node.js for backend
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
+
+      - name: Start db container
+        run: docker compose -f compose.ci.yaml up db -d
+
+      - name: Create and migrate
+        env:
+          DATABASE_URL: postgres://postgres@localhost:5432/dev_postgres
+        run: |
+          cd backend
+          npm install
+          npm run db:create
+          npm run db:migrate
+
+      - name: Run backend unit tests
+        env:
+          DATABASE_URL: postgres://postgres@localhost:5432/dev_postgres
+          SECRET: testsecret
+          PORT: 3001
+        run: |
+          cd backend
+          npm run test
+
   cypress:
     runs-on: ubuntu-latest
     steps:
@@ -81,7 +117,7 @@ jobs:
           npm run db:seed:all
 
       - name: Start backend, frontend and nginx
-        run: docker compose -f compose.ci.yaml up -d
+        run: docker compose -f compose.ci.yaml up backend frontend nginx -d
 
       - name: Setup Node.js for initializing db with backend's npm scripts
         uses: actions/setup-node@v4

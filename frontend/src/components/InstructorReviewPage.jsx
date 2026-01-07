@@ -42,7 +42,7 @@ class InstructorReviewPage extends React.Component {
       }
 
     } catch (e) {
-      console.log('error happened', e.response)
+      console.error('Error happened:', e.response?.data?.error)
       this.props.setError('Something is wrong... try reloading the page')
     }
   }
@@ -69,7 +69,7 @@ class InstructorReviewPage extends React.Component {
         answer: ''
       }
     }
-    const emptyAnswerSheet = questions.questions.map((question, questionId) => {
+    const emptyAnswers = questions.questions.map((question, questionId) => {
       if (question.type === 'text') {
         return initializeTextAnswer(question, questionId)
       } else if (question.type === 'number') {
@@ -80,16 +80,36 @@ class InstructorReviewPage extends React.Component {
     })
 
     const initializeStudent = (name) => {
-      const sheet = emptyAnswerSheet
+      const sheet = emptyAnswers
       return {
         name: name,
         answers: sheet
       }
     }
-    const tempAnswerSheet = students.map((student) => {
-      return initializeStudent(student)
-    })
-    initializeAnswerSheet(tempAnswerSheet)
+
+    let emptyAnswerSheets = []
+    if (students.length > 0) {
+      emptyAnswerSheets = students.map((student) => {
+        return initializeStudent(student)
+      })
+    }
+    initializeAnswerSheet(emptyAnswerSheets)
+
+    let savedAnswerSheet = localStorage.getItem('savedAnswerSheet')
+    if (savedAnswerSheet && JSON.parse(savedAnswerSheet).length > 0) {
+      console.info("Found previous saved answer. Loading saved answers.")
+      initializeAnswerSheet(JSON.parse(savedAnswerSheet))
+    } else {
+      console.info("Didn't find previously edited sheet. Loading empty sheet.")
+      localStorage.setItem('savedAnswerSheet', JSON.stringify(emptyAnswerSheets))
+    }
+
+    // "Autosave" each 5s
+    setInterval(() => {
+        if (this.props.answerSheet.length > 0) {
+          localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
+        }
+    }, 5000)
   }
 
   Submit = async (event, answerSheet, groupName, groupId) => {
@@ -168,6 +188,10 @@ class InstructorReviewPage extends React.Component {
           </ConfigurationSelectWrapper>
           <h1>{groups[selectedGroup].groupName}</h1>
 
+        {groups[selectedGroup].students.length === 0 && (
+          <h2>No students in this group</h2>
+        )}
+        {groups[selectedGroup].students.length > 0 && (<>
           <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
           <Button
             margin-right="auto"
@@ -186,7 +210,9 @@ class InstructorReviewPage extends React.Component {
           >
             Submit
           </Button>
-        </div>
+          </>
+        )}
+      </div>
       )
     } else {
       return (
@@ -235,6 +261,7 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
+      data-cy="group-selector"
       value={selectedGroup}
       onChange={(e) =>
         groupSelectHandler(
@@ -247,7 +274,7 @@ const ConfigurationSelect = ({
       }
     >
       {groups.map((group, index) => (
-        <MenuItem key={index} value={index}>
+        <MenuItem key={index} value={index} data-cy={`"group-list-${group.id}"`}>
           {group.groupName}
         </MenuItem>
       ))}
@@ -264,7 +291,9 @@ const Review = ({ student, updateAnswer, index }) => {
         onClick={() => setVisible(!visible)}
         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
       >
-        <h2>{student.name.first_names + ' ' + student.name.last_name}</h2>
+        {student && student.name && (
+          <h2>{student.name.first_names + ' ' + student.name.last_name}</h2>
+        )}
         {visible ? <ExpandLess /> : <ExpandMore />}
       </div>
       {

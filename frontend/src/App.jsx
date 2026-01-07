@@ -34,6 +34,7 @@ import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
 import InstructorTimeLogsPage from './components/TimeLogsPage/InstructorTimeLogsPage'
 import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
 import TagsDashboard from './components/TagManagementPage/TagsDashboard'
+import AdminSprintsPage from "./components/AdminSprintsPage/AdminSprintsPage"
 import StudentTagPage from './components/TagPage/StudentTagPage'
 
 // Actions
@@ -81,12 +82,17 @@ const App = (props) => {
   } = props
 
   useEffect(() => {
+    // NODE_ENV
+    console.log("MODE:", import.meta.env.MODE)
+  },[])
+
+  useEffect(() => {
     const isCustomerReviewPage = window.location.href.includes('customer-review/')
     const fetchRegistrationManagementData = async () => {
       try {
         await fetchRegistrationManagement()
       } catch (e) {
-        console.log('error happened', e)
+        console.error('error happened', e)
         setError('Error fetching registration management configuration', 5000)
       }
     }
@@ -95,7 +101,7 @@ const App = (props) => {
       try {
         await initializeMyGroup()
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
@@ -103,7 +109,7 @@ const App = (props) => {
       try {
         await loginUser()
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
@@ -117,12 +123,14 @@ const App = (props) => {
 
     fetchData()
 
-    const loginInterval = setInterval(() => {
+    const loginInterval = setInterval(async () => {
       if (!isCustomerReviewPage) {
         try {
-          loginService.login()
+          // This has to be the service login and not await loginUser(), because
+          // loginUser updates redux state which forces a reload => breaks things!
+          await loginService.login()
         } catch (err) {
-          console.log(err)
+          console.error(err)
         }
       }
     }, 60 * 1000)
@@ -222,6 +230,11 @@ const App = (props) => {
               exact
               path="/administration/tags"
               render={renderWithLoadingCheck(<TagsDashboard />)}
+            />
+            <AdminRoute
+              exact
+              path="/administration/sprints"
+              render={renderWithLoadingCheck(<AdminSprintsPage />)}
             />
             <Route
               exact

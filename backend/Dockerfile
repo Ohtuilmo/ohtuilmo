@@ -1,8 +1,12 @@
 # Set base image
-FROM registry.access.redhat.com/ubi8/nodejs-12
+FROM registry.access.redhat.com/ubi8/nodejs-20
+
+# Set NODE_ENV to the image at the build stage
+ARG NODE_ENV="production"
 
 # Set timezone and working directory for the app in container
 ENV TZ="Europe/Helsinki"
+ENV NODE_ENV=$NODE_ENV
 
 WORKDIR /opt/app-root/src
 
@@ -15,4 +19,4 @@ COPY . .
 EXPOSE 8081
 
 # Launch application
-CMD node index.js
+CMD [ "node", "index.js" ]

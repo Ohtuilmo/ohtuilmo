@@ -1,7 +1,7 @@
 
 const initialState = {
-  currentSprintNumber: undefined,
-  selectedSprintNumber: undefined,
+  currentSprintNumber: null,
+  selectedSprintNumber: null,
   groupSprintSummary: []
 }
 

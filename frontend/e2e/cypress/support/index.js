@@ -30,7 +30,9 @@ const postLogin = (user) => {
 const loginAsUser = (user) => {
   postLogin(user).then((res) => {
     const userData = res.body
-    window.localStorage.setItem('loggedInUser', JSON.stringify(userData))
+    cy.window().then(win => {
+      win.localStorage.setItem('loggedInUser', JSON.stringify(userData))
+    })
   })
 }
 
@@ -245,7 +247,7 @@ Cypress.Commands.add(
           headers: authHeaders,
           body: {
             name: configurationName,
-            review_question_set_1_id: setId
+            review_question_set1_id: setId
           }
         })
         cy.request({
@@ -446,8 +448,8 @@ Cypress.Commands.add(
             customer_review_question_set_id: questionSet.id,
             name: 'Konfiguraatio 1',
             registration_question_set_id: null,
-            review_question_set_1_id: null,
-            review_question_set_2_id: null
+            review_question_set1_id: null,
+            review_question_set2_id: null
           }
         })
       })
@@ -529,8 +531,8 @@ Cypress.Commands.add('createConfiguration', (configurationData) => {
       name,
       content,
       registration_question_set_id,
-      review_question_set_1_id,
-      review_question_set_2_id,
+      review_question_set1_id,
+      review_question_set2_id,
       customer_review_question_set_id
     } = configurationData
 
@@ -543,8 +545,8 @@ Cypress.Commands.add('createConfiguration', (configurationData) => {
           name,
           content,
           registration_question_set_id,
-          review_question_set_1_id,
-          review_question_set_2_id,
+          review_question_set1_id,
+          review_question_set2_id,
           customer_review_question_set_id
         }
       })

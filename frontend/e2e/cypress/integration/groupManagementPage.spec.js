@@ -8,7 +8,7 @@ describe('Group Management Page', () => {
   })
 
   describe('Creating a group', () => {
-    it.skip('is successful when all necessary details are provided', () => {
+    it('is successful when all necessary details are provided', () => {
       cy.get('.configuration-selector').click()
       cy.get('.configuration-1').click()
       cy.get('.create-group-form-topic__selector').click()
@@ -41,7 +41,7 @@ describe('Group Management Page', () => {
       cy.get('.configuration-1').click()
     })
 
-    it.skip('deletes a student', () => {
+    it('deletes a student', () => {
       cy.get('[data-cy=delete-student-button]').eq(1).click()
       cy.get('.group-students').eq(0).should('not.contain', '012345688')
       cy.get('.notification').should('have.text', 'Student deleted!')
@@ -74,12 +74,12 @@ describe('Group Management Page', () => {
       cy.get('.group-name').eq(0).should('contain', 'Ryhmä B')
     })
 
-    /*
     it('changes topic', () => {
       cy.get('.edit-group-form-topic__selector')
         .should('be.visible')
         .click()
       cy.get('.topic-menu-item')
+        .first()
         .should('be.visible')
         .within(() => {
           cy.wait(500)
@@ -94,9 +94,8 @@ describe('Group Management Page', () => {
         .eq(0)
         .should('contain', 'Aihe B')
     })
-    */
 
-    it.skip('changes instructor', () => {
+    it('changes instructor', () => {
       cy.get('.edit-group-instructor').click()
 
       cy.get('.edit-group-instructor')

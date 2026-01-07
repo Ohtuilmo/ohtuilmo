@@ -21,6 +21,9 @@ const customTheme = createMuiTheme({
   link: {
     color: 'darkOrange',
   },
+  typography: {
+    useNextVariants: true
+  }
 })
 
 const TopicDetailsLink = ({ topicId, ...props }) => (

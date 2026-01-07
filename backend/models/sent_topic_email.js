@@ -2,6 +2,14 @@
 
 const { templateNameToEmailType } = require('../utils')
 
+// Email template name has to be one of:
+// topic_accepted_fin
+// topic_accepted_eng
+// topic_rejected_fin
+// topic_rejected_eng
+// customer_review_link_fin
+// customer_review_link_eng
+
 module.exports = (sequelize, Sequelize) => {
   const SentTopicEmail = sequelize.define(
     'sent_topic_email',

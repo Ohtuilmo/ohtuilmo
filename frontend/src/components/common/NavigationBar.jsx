@@ -1,6 +1,10 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { updateRole } from "../../services/dev"
+import * as userActions from '../../reducers/actions/userActions'
+import myGroupActions from '../../reducers/actions/myGroupActions'
+import registrationmanagementActions from '../../reducers/actions/registrationManagementActions'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
@@ -17,8 +21,7 @@ import {
 } from './MenuItemLists'
 import './NavigationBar.css'
 
-const NavigationBar = ({ group, user, history, logout }) => {
-
+const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistrationManagement, history, logout }) => {
   const getAppropriateMenuItemList = () => {
     if (user === null) {
       return { items: regularItems(history) }
@@ -91,6 +94,34 @@ const NavigationBar = ({ group, user, history, logout }) => {
       ''
     )
 
+  const handleClick = async (role) => {
+    try {
+      console.log("New role:", await updateRole(role))
+      await loginUser()
+      await initializeMyGroup()
+      await fetchRegistrationManagement()
+    } catch (e) {
+      console.error("Failed to update role:", e)
+    }
+  }
+
+  let select_role =
+    import.meta.env.MODE === "development"
+      ? (
+        <div style={{ marginRight: "10px"}}>
+          <Button variant="outlined" onClick={async () => await handleClick("student")}>
+            Student
+          </Button>
+          <Button variant="outlined" onClick={async () => await handleClick("instructor")}>
+            Instructor
+          </Button>
+          <Button variant="outlined" onClick={async () => await handleClick("admin")}>
+            Admin
+          </Button>
+        </div>
+      )
+      : ""
+
   return (
     <div className="navigation-bar-container">
       <AppBar position="static">
@@ -104,6 +135,7 @@ const NavigationBar = ({ group, user, history, logout }) => {
           >
             Software engineering project
           </Typography>
+          {select_role}
           {loggedIn}
           <Button
             className="navigation-bar-logout-button"
@@ -126,6 +158,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedNavigationBar = connect(mapStateToProps)(NavigationBar)
+const mapDispatchToProps = {
+  loginUser: userActions.loginUser,
+  initializeMyGroup: myGroupActions.initializeMyGroup,
+  fetchRegistrationManagement: registrationmanagementActions.fetchRegistrationManagement,
+}
+
+const ConnectedNavigationBar = connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
 
 export default withRouter(ConnectedNavigationBar)

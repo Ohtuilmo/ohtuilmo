@@ -6,6 +6,8 @@ db.connect = () => {
 
   const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
 
+  console.log('connecting to db ' + process.env.DATABASE_URL)
+
   sequelize
     .authenticate()
     .then(() => {

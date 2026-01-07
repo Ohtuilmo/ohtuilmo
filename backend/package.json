@@ -7,15 +7,19 @@
     "watch": "cross-env NODE_ENV=development nodemon index.js",
     "watch:test": "cross-env NODE_ENV=test nodemon index.js",
     "start": "cross-env NODE_ENV=production node index.js",
-    "test": "npm run lint",
+    "test": "jest --runInBand",
+    "test:local": "DATABASE_URL=postgres://postgres:postgres@localhost:6543/test_postgres SECRET=testsecret EMAIL_ENABLED=false NODE_ENV=test npm run test",
+    "test-setup": "docker compose -f ../compose.local-test.yaml --profile local-api up -d --force-recreate",
+    "test-setup:down": "docker compose -f ../compose.local-test.yaml --profile local-api down",
+    "test:docker": "docker compose -f ../compose.local-test.yaml down && docker compose -f ../compose.local-test.yaml  --profile api up --exit-code-from api-test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "db:create": "sequelize db:create",
     "db:drop": "sequelize db:drop",
     "db:migrate": "sequelize db:migrate",
     "db:seed:all": "sequelize db:seed:all",
-    "db:nuke": "npx npm-run-all -s db:drop db:create",
-    "db:recreate": "npx npm-run-all -s db:nuke db:migrate db:seed:all"
+    "db:nuke": "npm run db:drop && npm run db:create",
+    "db:recreate": "npm run db:nuke && npm run db:migrate && npm run db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -38,8 +42,8 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
     "nodemailer": "^6.4.17",
-    "pg": "^7.14.0",
-    "pg-hstore": "^2.3.2",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
     "randomstring": "^1.1.5",
     "sequelize": "^5.21.2",
     "sequelize-cli": "^5.4.0",
@@ -50,14 +54,16 @@
     "cross-env": "^5.2.0",
     "eslint": "^5.14.1",
     "husky": "^1.2.0",
-    "nodemon": "^1.18.7"
+    "jest": "^30.2.0",
+    "nodemon": "^1.18.7",
+    "supertest": "^7.1.4"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test"
+      "pre-commit": "npm run lint"
     }
   },
   "engines": {
-    "node": "12"
+    "node": "20"
   }
 }

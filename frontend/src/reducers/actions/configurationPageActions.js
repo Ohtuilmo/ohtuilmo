@@ -90,6 +90,13 @@ const updateConfigForm = (configuration) => {
   }
 }
 
+const updateActive = (active) => {
+  return {
+    type: 'UPDATE_ACTIVE',
+    payload: active
+  }
+}
+
 const updateConfigName = (name) => {
   return {
     type: 'UPDATE_CONFIG_NAME',
@@ -117,6 +124,7 @@ export default {
   updateSelectedReviewQuestions2,
   updateSelectedCustomerReviewQuestions,
   selectNewConfig,
+  updateActive,
   updateConfigForm,
   updateConfigName,
   updateNewStatus

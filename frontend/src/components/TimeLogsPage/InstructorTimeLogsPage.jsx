@@ -12,6 +12,7 @@ import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
 import userService from '../../services/user'
+import sprintService from '../../services/sprints'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import timeLogsService from '../../services/timeLogs'
@@ -22,18 +23,23 @@ import timeLogsActions from '../../reducers/actions/timeLogsActions'
 
 const InstructorTimeLogsPage = (props) => {
   const {
+    setError,
+    setSuccess,
     selectedSprintNumber,
     setSelectedSprintNumber,
     setGroupSprintSummary,
+    resetGroupSprintSummary,
     user,
   } = props
 
   const [allConfigurations, setAllConfigurations] = useState([])
-  const [selectedConfiguration, setSelectedConfiguration] = useState(null)
+  const [selectedConfigurationId, setSelectedConfigurationId] = useState(0)
   const [allGroups, setAllGroups] = useState([])
+  const [selectedGroupId, setSelectedGroupId] = useState(0)
   const [selectedGroup, setSelectedGroup] = useState(null)
   const [allStudents, setAllStudents] = useState([])
-  const [selectedStudentNumber, setSelectedStudentNumber] = useState(null)
+  const [allSprints, setAllSprints] = useState([])
+  const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
   const [allLogs, setAllLogs] = useState(null)
   const [checkedTimeLogs, setCheckedTimeLogs] = useState([])
   const [moveToPreviousSprintConfirmOpen, setMoveToPreviousSprintConfirmOpen] = useState(false)
@@ -54,7 +60,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -69,7 +75,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -84,7 +90,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -99,7 +105,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
 
@@ -123,10 +129,11 @@ const InstructorTimeLogsPage = (props) => {
       )
       const configurationByInstructor = allConfigurations.find(
         configuration =>
-          newestGroupByInstructor && newestGroupByInstructor.configurationId === configuration.id
+          newestGroupByInstructor?.configurationId === configuration.id
       )
-      setSelectedConfiguration(configurationByInstructor)
-      setSelectedGroup(newestGroupByInstructor)
+      setSelectedConfigurationId(configurationByInstructor?.id ?? 0)
+      setSelectedGroupId(newestGroupByInstructor?.id ?? 0)
+      setSelectedGroup(newestGroupByInstructor?.id ? newestGroupByInstructor : null)
     }
   }, [allConfigurations, allGroups])
 
@@ -143,17 +150,34 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
+        resetGroupSprintSummary()
+      }
+    }
+
+    const fetchSprintData = async (group_id) => {
+      try {
+        const sprintData = await sprintService.getSprintsByGroup(group_id);
+        setAllSprints(sprintData);
+      } catch (error) {
+        console.error(
+          'Error fetching all sprints:',
+          error.message,
+          ' / ',
+          error.message.data.error
+        )
+        setError(error.response.data.error)
       }
     }
 
     const fetchChartData = async (selectedGroupId) => {
       setIsLoading(true)
       await fetchGroupSprintSummary(selectedGroupId)
+      await fetchSprintData(selectedGroupId)
       setIsLoading(false)
     }
-    selectedGroup?.id && fetchChartData(selectedGroup.id)
-  }, [selectedGroup])
+    selectedGroupId && fetchChartData(selectedGroupId)
+  }, [selectedGroupId])
 
   const handleTimeLogCheck = (logId) => {
     setCheckedTimeLogs((prevChecked) => (
@@ -163,14 +187,14 @@ const InstructorTimeLogsPage = (props) => {
 
   const handleMoveTimeLog = async (direction) => {
     if (checkedTimeLogs.length === 0) {
-      props.setError('No time logs selected')
+      setError('No time logs selected')
       return
     }
     for (const logId in checkedTimeLogs) {
       try {
         const updatedLogs = await instructorTimeLogsService.moveTimeLog(direction, checkedTimeLogs[logId])
         setAllLogs(updatedLogs)
-        props.setSuccess('Selected time logs moved successfully')
+        setSuccess('Selected time logs moved successfully')
         setCheckedTimeLogs([])
       } catch (error) {
         console.error(
@@ -179,7 +203,7 @@ const InstructorTimeLogsPage = (props) => {
           ' / ',
           error.response.data.error
         )
-        props.setError(error.response.data.error)
+        setError(error.response.data.error)
       }
     }
   }
@@ -188,9 +212,9 @@ const InstructorTimeLogsPage = (props) => {
     try {
       const updatedLogs = await instructorTimeLogsService.deleteTimeLog(logId)
       setAllLogs(updatedLogs)
-      props.setSuccess('Time log deleted successfully')
+      setSuccess('Time log deleted successfully')
     } catch (error) {
-      props.setError('Error deleting time log')
+      setError('Error deleting time log')
     }
   }
 
@@ -201,6 +225,18 @@ const InstructorTimeLogsPage = (props) => {
   const nextSprint = possibleSprintNumbers.find(
     (sprint) => sprint > selectedSprintNumber
   )
+
+  const selectedSprintData = allSprints.find(sprint => sprint.sprint === selectedSprintNumber)
+
+  const formatSprintDate = (sprintDate) => {
+    const dateObj = new Date(sprintDate);
+    const formattedSprintDate = dateObj.toLocaleDateString('fi-FI', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).replace(/\./g, '/')
+    return formattedSprintDate
+  }
 
   const handleClickNextSprint = () => {
     setSelectedSprintNumber(
@@ -227,24 +263,35 @@ const InstructorTimeLogsPage = (props) => {
 
   if (isLoading) return <LoadingSpinner />
 
+  const handleConfigurationChange = (configuration_id) => {
+    const configurationById = allConfigurations.find(conf => conf.id === configuration_id)
+    setSelectedConfigurationId(configurationById.id ?? 0)
+  }
+
+  const handleGroupChange = (group_id) => {
+    const groupById = allGroups.find(grp => grp.id === group_id)
+    setSelectedGroupId(groupById?.id ?? 0)
+    setSelectedGroup(groupById?.id ? groupById : null)
+  }
+
   return (
     <div className='timelogs-responsive-grid'>
       <div id='timelogs-container-1'>
         <div>
           <TimeLogsSelectForm
             configurations={allConfigurations}
-            selectedConfiguration={selectedConfiguration}
-            handleConfigurationChange={setSelectedConfiguration}
+            selectedConfigurationId={selectedConfigurationId}
+            handleConfigurationChange={handleConfigurationChange}
             groups={allGroups}
-            selectedGroup={selectedGroup}
-            handleGroupChange={setSelectedGroup}
+            selectedGroupId={selectedGroupId}
+            handleGroupChange={handleGroupChange}
             students={allStudents}
             selectedStudentNumber={selectedStudentNumber}
             handleStudentNumberChange={handleStudentChange}
           />
-          {selectedGroup && (
+          {selectedGroupId !== 0 && (
             <div>
-              <Typography variant='h5'>Timelogs by {selectedGroup.name}</Typography>
+              <Typography variant='h5'>Timelogs by {selectedGroup?.name}</Typography>
               <SprintSelect
                 sprintNumber={selectedSprintNumber}
                 handleClickNextSprint={handleClickNextSprint}
@@ -252,6 +299,9 @@ const InstructorTimeLogsPage = (props) => {
                 nextSprintButtonDisabled={nextSprint === undefined}
                 previousSprintButtonDisabled={previousSprint === undefined}
               />
+              { allSprints && selectedSprintData && (
+                <p>{formatSprintDate(selectedSprintData.start_date)} - {formatSprintDate(selectedSprintData.end_date)}</p>
+              )}
             </div>
           )}
         </div>
@@ -317,7 +367,7 @@ const InstructorTimeLogsPage = (props) => {
         </div>
       </div>
       <div id='chart-container'>
-        {selectedGroup &&
+        {selectedGroupId !== 0 &&
           <div className='timelogs-charts-container'>
             <div className='timelogs-chart-and-title-container'>
               <Typography variant='h5'>Sprint Chart</Typography>
@@ -344,6 +394,7 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   setGroupSprintSummary: timeLogsActions.setGroupSprintSummary,
+  resetGroupSprintSummary: timeLogsActions.resetGroupSprintSummary,
   setSelectedSprintNumber: timeLogsActions.setSelectedSprintNumber,
 }
 

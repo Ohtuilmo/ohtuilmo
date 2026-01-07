@@ -60,6 +60,7 @@ const instructorTimeLogsRouter = require('./controllers/instructorTimeLogs')
 const sprintRouter = require('./controllers/sprints')
 const groupSprintSummaryRouter = require('./controllers/groupSprintSummary')
 const tagsRouter = require('./controllers/tags')
+const devRouter = require('./controllers/dev')
 app.use('/api/login', loginRouter)
 app.use('/api/logout', logoutRouter)
 app.use('/api/topics', topicsRouter)
@@ -83,6 +84,11 @@ app.use('/api/instructorTimeLogs', instructorTimeLogsRouter)
 app.use('/api/sprints', sprintRouter)
 app.use('/api/groupSprintSummary', groupSprintSummaryRouter)
 app.use('/api/tags', tagsRouter)
+if (process.env.NODE_ENV === 'development')
+  app.use('/api/role', devRouter)
+
+
+console.log('NODE_ENV:', process.env.NODE_ENV)
 
 // Database connection
 const db = require('./models')
@@ -95,15 +101,19 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${config.port}`)
 })
 
-server.on('close', () => {
+server.on('close', async () => {
   // Close database connection
-  db.sequelize
-    .close()
-    .then(() => console.log('client has disconnected'))
-    .catch((err) => console.error('error during disconnection', err.stack))
+  console.log('Closing the server and connection to database')
+  try {
+    await db.sequelize.close()
+    console.log('client has disconnected')
+  } catch(err) {
+    console.error('error during disconnection', err.stack)
+  }
 })
 
 module.exports = {
   app,
   server,
+  db
 }

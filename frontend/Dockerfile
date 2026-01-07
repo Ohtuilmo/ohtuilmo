@@ -1,7 +1,12 @@
 # specify base image
 FROM registry.access.redhat.com/ubi9/nodejs-20
 
+# npm run build needs this set when building so
+# it needs to be set as a build argument, not only as env var
+ARG NODE_ENV="production"
+
 ENV TZ="Europe/Helsinki"
+ENV NODE_ENV=$NODE_ENV
 
 WORKDIR /opt/app-root/src
 
@@ -15,10 +20,11 @@ RUN npm install -g serve@10.1.2
 # same, we can re-use the layer cache from our previous build --> no need to
 # install a gigantic amount of dependencies.
 COPY package*.json .
+
 # Run "ci" instead of "install" to make sure we get exact deps we think we're
 # getting. Downside is that dev deps are downloaded as well.
 # As "ci" uses the $HOME/.npm package cache, we can tell Travis to cache that.
-RUN npm ci
+RUN npm ci --production=false
 
 COPY . .
 

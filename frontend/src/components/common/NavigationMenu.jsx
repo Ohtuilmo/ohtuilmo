@@ -95,6 +95,7 @@ class NavigationMenu extends React.Component {
               >
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
+                    <>
                     {menuItemsArray.map((group, index) =>
                       group.title ? (
                         <React.Fragment key={`group-${index}`}>
@@ -107,6 +108,7 @@ class NavigationMenu extends React.Component {
                         renderMenuItems(group)
                       )
                     )}
+                    </>
                   </ClickAwayListener>
                 </Paper>
               </Grow>

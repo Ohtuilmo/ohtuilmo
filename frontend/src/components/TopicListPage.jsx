@@ -40,6 +40,9 @@ const redGreenTheme = createMuiTheme({
     primary: green,
     secondary: red,
   },
+  typography: {
+    useNextVariants: true
+  }
 })
 
 const orangeTheme = createMuiTheme({
@@ -47,6 +50,9 @@ const orangeTheme = createMuiTheme({
     primary: orange,
     secondary: orange,
   },
+  typography: {
+    useNextVariants: true
+  }
 })
 
 const ThemedButton = ({ theme, ...props }) => (

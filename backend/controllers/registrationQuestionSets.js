@@ -4,16 +4,19 @@ const { checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+  return res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
-const createRegistrationQuestionSet = (req, res) => {
-  db.RegistrationQuestionSet.create({
-    name: req.body.name,
-    questions: req.body.questions
-  })
-    .then((createdSet) => res.status(200).json({ questionSet: createdSet }))
-    .catch((error) => handleDatabaseError(res, error))
+const createRegistrationQuestionSet = async (req, res) => {
+  try {
+    const createdSet = await db.RegistrationQuestionSet.create({
+      name: req.body.name,
+      questions: req.body.questions
+    })
+    res.status(200).json({ questionSet: createdSet })
+  } catch(error) {
+    return handleDatabaseError(res, error)
+  }
 }
 
 const updateRegistrationQuestionSet = (req, res, questionSet) => {
@@ -33,15 +36,18 @@ const updateRegistrationQuestionSet = (req, res, questionSet) => {
     .catch((error) => handleDatabaseError(res, error))
 }
 
-const createChecks = (req, res) => {
-  if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
-  db.RegistrationQuestionSet.findOne({ where: { name: req.body.name } })
-    .then((foundSet) => {
-      if (foundSet)
-        return res.status(400).json({ error: 'name already in use' })
-      createRegistrationQuestionSet(req, res)
-    })
-    .catch((error) => handleDatabaseError(res, error))
+const createChecks = async (req, res) => {
+  if (!req.body.name)
+    return res.status(400).json({ error: 'name undefined' })
+
+  try {
+    const foundSet = await db.RegistrationQuestionSet.findOne({ where: { name: req.body.name } })
+    if (foundSet)
+      return res.status(400).json({ error: 'name already in use' })
+    await createRegistrationQuestionSet(req, res)
+  } catch(error) {
+    return handleDatabaseError(res, error)
+  }
 }
 
 const updateChecks = (req, res) => {
@@ -64,8 +70,8 @@ const updateChecks = (req, res) => {
   )
 }
 
-registrationQuestionSetsRouter.post('/', checkAdmin, (req, res) => {
-  createChecks(req, res)
+registrationQuestionSetsRouter.post('/', checkAdmin, async (req, res) => {
+  await createChecks(req, res)
 })
 
 registrationQuestionSetsRouter.put('/:id', checkAdmin, (req, res) => {

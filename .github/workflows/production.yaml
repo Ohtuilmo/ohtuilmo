@@ -20,6 +20,7 @@ jobs:
           context: backend/
           containerfiles: |
             backend/Dockerfile
+          build-args: NODE_ENV="production"
 
       - name: Build frontend
         id: build-frontend
@@ -30,6 +31,7 @@ jobs:
           context: frontend/
           containerfiles: |
             frontend/Dockerfile
+          build-args: NODE_ENV="production"
 
       - name: Push backend to quay.io
         uses: redhat-actions/push-to-registry@v2

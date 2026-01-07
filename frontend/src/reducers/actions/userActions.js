@@ -10,7 +10,6 @@ const updateIsInstructor = (user, isInstructor) => ({
 export const loginUser = (userCredentials) => {
   return async (dispatch) => {
     const { user, token } = await loginService.login(userCredentials)
-
     const { isInstructor } = await userService.checkInstructor(token)
 
     dispatch({
