@@ -261,7 +261,6 @@ const TimeLogChart = (props) => {
     if (!sprintDates)
       return
 
-    console.log("SelectedSprintNumber:", selectedSprintNumber !== null, Object.keys(sprintDates), selectedSprintNumber.toString(), sprintDates)
     if (selectedSprintNumber !== null && Object.keys(sprintDates).includes(selectedSprintNumber.toString())) {
       const sprintDuration = durationInDays(sprintDates[selectedSprintNumber].start_date, sprintDates[selectedSprintNumber].end_date)
       setSelectedSprintDuration(sprintDuration)
