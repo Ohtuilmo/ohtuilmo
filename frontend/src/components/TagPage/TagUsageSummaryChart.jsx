@@ -34,8 +34,7 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="tapaaminen" />
-        <Line type="monotone" dataKey="koodaus" />
+        {availableTags.map(tag => <Line type="monotone" dataKey={tag} />)}
       </LineChart>
     </ResponsiveContainer>
   )
