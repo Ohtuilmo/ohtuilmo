@@ -95,6 +95,9 @@ tagsRouter.get('/tagsByStudent/:id', checkLogin, async (req, res) => {
     for (const timeLog of timeLogs) {
       const sprintId = timeLog.sprint_id
       const minutes = timeLog.minutes
+      const sprintData = await db.Sprint.findOne({
+        where: { id: sprintId },
+       })
 
       for (const tag of timeLog.tags) {
         const tagTitle = tag.title
@@ -111,6 +114,7 @@ tagsRouter.get('/tagsByStudent/:id', checkLogin, async (req, res) => {
           tags[tagTitle].push({
             sprint_id: sprintId,
             minutes: minutes,
+            sprint_number: sprintData.sprint
           });
         }
       }

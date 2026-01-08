@@ -85,7 +85,7 @@ const StudentTagPage = (props) => {
                 <ul>
                   {entries.map((entry, index) => (
                     <li key={index}>
-                      Sprint {entry.sprint_id}: {entry.minutes} min
+                      Sprint {entry.sprint_number}: {entry.minutes} min
                     </li>
                   ))}
                 </ul>
