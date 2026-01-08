@@ -9,6 +9,23 @@ import {
   Legend,
 } from 'recharts'
 
+const colourSet = [
+  '#9258c8',
+  '#3a75c4',
+  '#8c0032',
+  '#15bef0',
+  '#00b08c',
+  '#fca311',
+  '#009e60',
+  '#e5053a',
+  '#5bbf21',
+  '#00a39a',
+  '#e63375',
+  '#256ec7',
+  '#e95c55',
+  '#a3af07'
+]
+
 const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
   const data = allSprints.map(sprint => {
     const dataEntry = {name: sprint.sprint}
@@ -34,7 +51,7 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        {availableTags.map(tag => <Line type="monotone" dataKey={tag} />)}
+        {availableTags.map((tag, index) => <Line type="monotone" dataKey={tag} stroke={colourSet[index % colourSet.length]} />)}
       </LineChart>
     </ResponsiveContainer>
   )
