@@ -11,7 +11,7 @@ import {
 
 const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
   const data = allSprints.map(sprint => {
-    const dataEntry = {name: sprint.sprint}
+    const dataEntry = {name: `Sprint ${sprint.sprint}`}
     for (const tag of availableTags) {
       if (!Object.hasOwn(tagData, tag) || !tagData[tag].map(tagSprint => tagSprint.sprint_id).includes(sprint.id)) {
         dataEntry[tag] = 0
@@ -30,10 +30,16 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
-        <YAxis />
+        <YAxis
+          label={{
+            value: 'Time (min)',
+            angle: -90,
+            position: 'insideLeft',
+          }}
+        />
         <Tooltip />
         <Legend />
-        {availableTags.map(tag => <Line type="monotone" dataKey={tag} />)}
+        {availableTags.map(tag => <Line key={tag} type="monotone" dataKey={tag} />)}
       </LineChart>
     </ResponsiveContainer>
   )
