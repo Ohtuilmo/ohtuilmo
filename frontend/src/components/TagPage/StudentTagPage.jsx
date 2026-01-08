@@ -6,6 +6,7 @@ import {
   NotInGroupPlaceholder,
   NoSprintsPlaceholder,
 } from '../common/Placeholders'
+import TagUsageSummaryChart from './TagUsageSummaryChart'
 
 import sprintService from '../../services/sprints'
 import * as notificationActions from '../../reducers/actions/notificationActions'
@@ -108,6 +109,14 @@ const StudentTagPage = (props) => {
             ))}
           </ul>
         )}
+      </section>
+
+      <section>
+        <TagUsageSummaryChart
+          allSprints={allSprints}
+          availableTags={availableTags}
+          tagData={studentTags}
+        />
       </section>
     </div>
   )
