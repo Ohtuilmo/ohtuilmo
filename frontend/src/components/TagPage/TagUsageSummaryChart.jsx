@@ -23,9 +23,8 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
   })
 
   return (
-    <ResponsiveContainer width="100%" aspect={3}>
+    <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
       <LineChart
-        style={{ width: '50%', maxWidth: '700px', aspectRatio: 1.618 }}
         responsive
         data={data}
       >
