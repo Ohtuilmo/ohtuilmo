@@ -23,31 +23,21 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
   })
 
   return (
-    <div>
-    jotain2
-    <ResponsiveContainer>
-    jotain3
-    <LineChart
-      style={{ width: '100%', maxWidth: '700px', height: '500px', maxHeight: '500px', aspectRatio: 1.618 }}
-      responsive
-      data={data}
-      margin={{
-        top: 5,
-        right: 0,
-        left: 0,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis domain={[0, 150]} />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="tapaaminen" stroke="#8884d8" activeDot={{ r: 8 }} />
-      <Line type="monotone" dataKey="koodaus" stroke="#82ca9d" />
-    </LineChart>
+    <ResponsiveContainer width="100%" aspect={3}>
+      <LineChart
+        style={{ width: '50%', maxWidth: '700px', aspectRatio: 1.618 }}
+        responsive
+        data={data}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="tapaaminen" />
+        <Line type="monotone" dataKey="koodaus" />
+      </LineChart>
     </ResponsiveContainer>
-    </div>
   )
 }
 
