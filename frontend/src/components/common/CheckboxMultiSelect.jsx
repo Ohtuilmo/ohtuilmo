@@ -20,7 +20,12 @@ const CheckboxMultiSelect = ({allItems, selectedItems, setSelectedItems, isHoriz
       {allItems.map(item => (
         <FormControlLabel
           key={item}
-          control={<Checkbox onChange={handleChange(item, selectedItems, setSelectedItems)} />}
+          control={
+            <Checkbox
+              checked={selectedItems.includes(item)}
+              onChange={handleChange(item, selectedItems, setSelectedItems)}
+            />
+          }
           label={item}
         />
       ))}
