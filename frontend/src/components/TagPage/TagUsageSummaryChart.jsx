@@ -1,12 +1,12 @@
 import {
-  ResponsiveContainer,
-  LineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
 } from 'recharts'
 
 const colourSet = [
@@ -23,52 +23,60 @@ const colourSet = [
   '#e63375',
   '#256ec7',
   '#e95c55',
-  '#a3af07'
+  '#a3af07',
 ]
 
-const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
-  const data = allSprints.map(sprint => {
-    const dataEntry = {name: `Sprint ${sprint.sprint}`}
+const importTagData = (allSprints, availableTags, tagData) => {
+  const importedData = []
+
+  for (const sprint of allSprints) {
+    const sprintTagMinutes = {}
+
     for (const tag of availableTags) {
-      if (!Object.hasOwn(tagData, tag) || !tagData[tag].map(tagSprint => tagSprint.sprint_id).includes(sprint.id)) {
-        dataEntry[tag] = 0
+      if (!tagData[tag]) {
+        sprintTagMinutes[tag] = 0
       } else {
-        dataEntry[tag] = tagData[tag].filter(tagSprint => tagSprint.sprint_id === sprint.id)[0].minutes
+        const matchingSprints = tagData[tag].filter(x => x.sprint_id === sprint.id)
+        sprintTagMinutes[tag] = matchingSprints ? matchingSprints[0].minutes : 0
       }
     }
-    return dataEntry
-  })
 
-  return (
-    <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
-      <LineChart
-        responsive
-        data={data}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis
-          label={{
-            value: 'Time (min)',
-            angle: -90,
-            position: 'insideLeft',
-          }}
-        />
-        <Tooltip />
-        <Legend />
-        {availableTags.map((tag, index) =>
-          <Line
-            key={tag}
-            type="monotone"
-            dataKey={tag}
-            stroke={colourSet[index % colourSet.length]}
-            strokeWidth={3}
-            dot={false}
-          />
-        )}
-      </LineChart>
-    </ResponsiveContainer>
-  )
+    const dataEntry = {name: `Sprint ${sprint.sprint}`, ...sprintTagMinutes}
+    importedData.push(dataEntry)
+  }
+
+  return importedData
 }
+
+const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => (
+  <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
+    <LineChart
+      responsive
+      data={importTagData(allSprints, availableTags, tagData)}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis
+        label={{
+          value: 'Time (min)',
+          angle: -90,
+          position: 'insideLeft',
+        }}
+      />
+      <Tooltip />
+      <Legend />
+      {availableTags.map((tag, index) =>
+        <Line
+          key={tag}
+          type="monotone"
+          dataKey={tag}
+          stroke={colourSet[index % colourSet.length]}
+          strokeWidth={3}
+          dot={false}
+        />
+      )}
+    </LineChart>
+  </ResponsiveContainer>
+)
 
 export default TagUsageSummaryChart
