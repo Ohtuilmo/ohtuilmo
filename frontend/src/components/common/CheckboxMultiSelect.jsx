@@ -4,34 +4,27 @@ import {
   FormGroup,
 } from '@material-ui/core'
 
-const handleChange = (item, selectedItems, setSelectedItems) => {
-  return (event, checked) => {
-    if (checked) {
-      setSelectedItems([item, ...selectedItems])
-    } else {
-      setSelectedItems(selectedItems.filter(selItem => selItem !== item))
-    }
-  }
-}
-
-const CheckboxMultiSelect = ({allItems, selectedItems, setSelectedItems, isHorizontal}) => {
-  return (
-    <FormGroup row={isHorizontal}>
-      {allItems.map(item => (
-        <FormControlLabel
-          key={item}
-          control={
-            <Checkbox
-              checked={selectedItems.includes(item)}
-              onChange={handleChange(item, selectedItems, setSelectedItems)}
-            />
-          }
-          label={item}
-        />
-      ))}
-    </FormGroup>
-  )
-}
+const CheckboxMultiSelect = ({allItems, selectedItems, setSelectedItems, isHorizontal}) => (
+  <FormGroup row={isHorizontal}>
+    {allItems.map(item =>
+      <FormControlLabel
+        key={item}
+        control={
+          <Checkbox
+            checked={selectedItems.includes(item)}
+            onChange={(event, checked) =>
+              setSelectedItems(checked
+                ? [item, ...selectedItems]
+                : selectedItems.filter(x => x !== item)
+              )
+            }
+          />
+        }
+        label={item}
+      />
+    )}
+  </FormGroup>
+)
 
 CheckboxMultiSelect.defaultProps = {
   isHorizontal: false,
