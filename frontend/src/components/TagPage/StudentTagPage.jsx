@@ -6,6 +6,7 @@ import {
   NotInGroupPlaceholder,
   NoSprintsPlaceholder,
 } from '../common/Placeholders'
+import CheckboxMultiSelect from '../common/CheckboxMultiSelect'
 import TagUsageSummaryChart from './TagUsageSummaryChart'
 
 import sprintService from '../../services/sprints'
@@ -24,6 +25,7 @@ const StudentTagPage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [allSprints, setAllSprints] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
 
   useEffect(() => {
     const fetchSprints = async () => {
@@ -114,8 +116,16 @@ const StudentTagPage = (props) => {
       <section>
         <TagUsageSummaryChart
           allSprints={allSprints}
-          availableTags={availableTags}
+          availableTags={selectedTags}
           tagData={studentTags}
+        />
+      </section>
+
+      <section>
+        <CheckboxMultiSelect
+          allItems={availableTags}
+          selectedItems={selectedTags}
+          setSelectedItems={setSelectedTags}
         />
       </section>
     </div>
