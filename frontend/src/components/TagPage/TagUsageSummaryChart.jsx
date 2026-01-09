@@ -56,7 +56,16 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => {
         />
         <Tooltip />
         <Legend />
-        {availableTags.map((tag, index) => <Line key={tag} type="monotone" dataKey={tag} stroke={colourSet[index % colourSet.length]} />)}
+        {availableTags.map((tag, index) =>
+          <Line
+            key={tag}
+            type="monotone"
+            dataKey={tag}
+            stroke={colourSet[index % colourSet.length]}
+            strokeWidth={3}
+            dot={false}
+          />
+        )}
       </LineChart>
     </ResponsiveContainer>
   )
