@@ -62,7 +62,7 @@ const StudentTagPage = (props) => {
 
   return (
     <div>
-      <h2>Student Tag Page (Debug View)</h2>
+      {/* <h2>Student Tag Page (Debug View)</h2>
 
       <section>
         <h3>Available Tags</h3>
@@ -112,7 +112,7 @@ const StudentTagPage = (props) => {
             ))}
           </ul>
         )}
-      </section>
+      </section> */}
 
       <section>
         <TagUsageSummaryChart
