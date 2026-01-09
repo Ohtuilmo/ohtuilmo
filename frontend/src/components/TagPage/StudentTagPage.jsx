@@ -49,6 +49,7 @@ const StudentTagPage = (props) => {
       group?.id && await fetchSprints()
       await fetchTagsByStudent(user.studentNumber)
       await fetchAvailableTags()
+      setSelectedTags(availableTags)
       setIsLoading(false)
     }
 
