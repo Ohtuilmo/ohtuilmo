@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import LoadingSpinner from "../common/LoadingSpinner"
+import { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import LoadingSpinner from '../common/LoadingSpinner'
 import {
   NotInGroupPlaceholder,
   NoSprintsPlaceholder,
@@ -38,7 +38,7 @@ const StudentTagPage = (props) => {
           'Error fetching sprints:',
           error.message,
           ' / ',
-          error.response.data.error
+          error.response.data.error,
         )
         notificationActions.setError(error.response.data.error)
       }
@@ -46,7 +46,7 @@ const StudentTagPage = (props) => {
 
     const fetchData = async () => {
       setIsLoading(true)
-      group?.id && await fetchSprints()
+      group?.id && (await fetchSprints())
       await fetchTagsByStudent(user.studentNumber)
       await fetchAvailableTags()
       setSelectedTags(availableTags)
@@ -62,58 +62,6 @@ const StudentTagPage = (props) => {
 
   return (
     <div>
-      {/* <h2>Student Tag Page (Debug View)</h2>
-
-      <section>
-        <h3>Available Tags</h3>
-        {availableTags.length === 0 ? (
-          <p>No available tags found.</p>
-        ) : (
-          <ul>
-            {availableTags.map((tag) => (
-              <li key={tag}>{tag}</li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <h3>Student Tags</h3>
-        {Object.keys(studentTags).length === 0 ? (
-          <p>No student tag data found.</p>
-        ) : (
-          <div>
-            {Object.entries(studentTags).map(([tag, entries]) => (
-              <div key={tag}>
-                <strong>{tag}</strong>
-                <ul>
-                  {entries.map((entry, index) => (
-                    <li key={index}>
-                      Sprint {entry.sprint_number}: {entry.minutes} min
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section>
-        <h3>All Sprints</h3>
-        {allSprints.length === 0 ? (
-          <p>No sprints found.</p>
-        ) : (
-          <ul>
-            {allSprints.map((sprint) => (
-              <li key={sprint.id}>
-                Sprint {sprint.sprint}: {sprint.start_date} – {sprint.end_date}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section> */}
-
       <section>
         <TagUsageSummaryChart
           allSprints={allSprints}
@@ -139,7 +87,7 @@ const mapStateToProps = (state) => ({
     studentNumber: state.login.user.user.student_number,
     admin: state.login.user.user.admin,
     instructor: state.login.user.user.instructor,
-    name: `${state.login.user.user.first_name} ${state.login.user.user.last_name}`
+    name: `${state.login.user.user.first_name} ${state.login.user.user.last_name}`,
   },
   group: state.registrationDetails.myGroup,
   availableTags: state.tags.availableTags,
@@ -154,6 +102,5 @@ const mapDispatchToProps = {
 }
 
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(StudentTagPage)
+  connect(mapStateToProps, mapDispatchToProps)(StudentTagPage),
 )
-
