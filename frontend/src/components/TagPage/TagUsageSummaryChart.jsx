@@ -40,14 +40,14 @@ const importTagData = (allSprints, availableTags, tagData) => {
       sprintTagMinutes[tag] = matchingSprint?.minutes ?? 0
     }
 
-    const dataEntry = {name: `Sprint ${sprint.sprint}`, ...sprintTagMinutes}
+    const dataEntry = { name: `Sprint ${sprint.sprint}`, ...sprintTagMinutes }
     importedData.push(dataEntry)
   }
 
   return importedData
 }
 
-const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => (
+const TagUsageSummaryChart = ({ allSprints, availableTags, tagData }) => (
   <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
     <LineChart
       responsive
@@ -64,7 +64,7 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => (
       />
       <Tooltip />
       <Legend />
-      {availableTags.map((tag, index) =>
+      {availableTags.map((tag, index) => (
         <Line
           key={tag}
           type="monotone"
@@ -73,7 +73,7 @@ const TagUsageSummaryChart = ({allSprints, availableTags, tagData}) => (
           strokeWidth={3}
           dot={false}
         />
-      )}
+      ))}
     </LineChart>
   </ResponsiveContainer>
 )
