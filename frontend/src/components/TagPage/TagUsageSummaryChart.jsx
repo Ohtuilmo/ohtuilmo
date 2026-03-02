@@ -33,12 +33,11 @@ const importTagData = (allSprints, availableTags, tagData) => {
     const sprintTagMinutes = {}
 
     for (const tag of availableTags) {
-      if (!tagData[tag]) {
-        sprintTagMinutes[tag] = 0
-      } else {
-        const matchingSprints = tagData[tag].filter(x => x.sprint_id === sprint.id)
-        sprintTagMinutes[tag] = matchingSprints ? matchingSprints[0].minutes : 0
-      }
+      const matchingSprint = tagData[tag]?.find(
+        (x) => x.sprint_id === sprint.id,
+      )
+
+      sprintTagMinutes[tag] = matchingSprint?.minutes ?? 0
     }
 
     const dataEntry = {name: `Sprint ${sprint.sprint}`, ...sprintTagMinutes}
