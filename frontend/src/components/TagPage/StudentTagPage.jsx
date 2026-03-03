@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { Typography } from '@material-ui/core'
 import {
   NotInGroupPlaceholder,
   NoSprintsPlaceholder,
@@ -12,6 +13,7 @@ import TagUsageSummaryChart from './TagUsageSummaryChart'
 import sprintService from '../../services/sprints'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import tagsActions from '../../reducers/actions/tagActions'
+import './TagPage.css'
 
 const StudentTagPage = (props) => {
   const {
@@ -61,22 +63,22 @@ const StudentTagPage = (props) => {
   if (allSprints.length === 0) return <NoSprintsPlaceholder />
 
   return (
-    <div>
-      <section>
-        <TagUsageSummaryChart
-          allSprints={allSprints}
-          availableTags={selectedTags}
-          tagData={studentTags}
-        />
-      </section>
-
-      <section>
+    <div className="tagpage-container">
+      <div className="tagpage-selection-container">
+        <Typography variant="h4">Tags</Typography>
         <CheckboxMultiSelect
           allItems={availableTags}
           selectedItems={selectedTags}
           setSelectedItems={setSelectedTags}
         />
-      </section>
+      </div>
+      <div className="tagpage-charts-container">
+        <TagUsageSummaryChart
+          allSprints={allSprints}
+          availableTags={selectedTags}
+          tagData={studentTags}
+        />
+      </div>
     </div>
   )
 }

@@ -1,0 +1,25 @@
+.tagpage-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 48px;
+
+  @media (min-width: 1160px) {
+    grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+  }
+}
+
+.tagpage-selection-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin-bottom: 26px;
+  gap: 38px;
+}
+
+.tagpage-charts-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 40px;
+}
