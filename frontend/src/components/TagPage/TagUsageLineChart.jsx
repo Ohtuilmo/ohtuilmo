@@ -62,7 +62,7 @@ const TagUsageLineChart = ({ allSprints, availableTags, tagData }) => (
           position: 'insideLeft',
         }}
       />
-      <Tooltip />
+      <Tooltip formatter={(value) => `${value} h`} />
       <Legend />
       {availableTags.map((tag, index) => (
         <Line

@@ -57,7 +57,7 @@ const TagUsageBarChart = ({ availableTags, tagData }) => {
             position: 'insideLeft',
           }}
         />
-        <Tooltip />
+        <Tooltip formatter={(value) => `${value} h`} />
         <Bar dataKey="value">
           {data.map((entry, index) => (
             <Cell
