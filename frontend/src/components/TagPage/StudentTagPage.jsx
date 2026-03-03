@@ -8,7 +8,7 @@ import {
   NoSprintsPlaceholder,
 } from '../common/Placeholders'
 import CheckboxMultiSelect from '../common/CheckboxMultiSelect'
-import TagUsageSummaryChart from './TagUsageSummaryChart'
+import TagUsageLineChart from './TagUsageLineChart'
 import TagUsageBarChart from './TagUsageBarChart'
 
 import sprintService from '../../services/sprints'
@@ -75,7 +75,7 @@ const StudentTagPage = (props) => {
       </div>
       <div className="tagpage-charts-container">
         <TagUsageBarChart availableTags={selectedTags} tagData={studentTags} />
-        <TagUsageSummaryChart
+        <TagUsageLineChart
           allSprints={allSprints}
           availableTags={selectedTags}
           tagData={studentTags}

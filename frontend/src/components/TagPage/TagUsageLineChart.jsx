@@ -47,7 +47,7 @@ const importTagData = (allSprints, availableTags, tagData) => {
   return importedData
 }
 
-const TagUsageSummaryChart = ({ allSprints, availableTags, tagData }) => (
+const TagUsageLineChart = ({ allSprints, availableTags, tagData }) => (
   <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
     <LineChart
       responsive
@@ -78,4 +78,4 @@ const TagUsageSummaryChart = ({ allSprints, availableTags, tagData }) => (
   </ResponsiveContainer>
 )
 
-export default TagUsageSummaryChart
+export default TagUsageLineChart
