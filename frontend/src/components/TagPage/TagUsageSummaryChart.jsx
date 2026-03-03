@@ -30,17 +30,17 @@ const importTagData = (allSprints, availableTags, tagData) => {
   const importedData = []
 
   for (const sprint of allSprints) {
-    const sprintTagMinutes = {}
+    const sprintTagHours = {}
 
     for (const tag of availableTags) {
       const matchingSprint = tagData[tag]?.find(
         (x) => x.sprint_id === sprint.id,
       )
 
-      sprintTagMinutes[tag] = matchingSprint?.minutes ?? 0
+      sprintTagHours[tag] = (matchingSprint?.minutes ?? 0) / 60
     }
 
-    const dataEntry = { name: `Sprint ${sprint.sprint}`, ...sprintTagMinutes }
+    const dataEntry = { name: `Sprint ${sprint.sprint}`, ...sprintTagHours }
     importedData.push(dataEntry)
   }
 
@@ -57,7 +57,7 @@ const TagUsageSummaryChart = ({ allSprints, availableTags, tagData }) => (
       <XAxis dataKey="name" />
       <YAxis
         label={{
-          value: 'Time (min)',
+          value: 'Time (hours)',
           angle: -90,
           position: 'insideLeft',
         }}
