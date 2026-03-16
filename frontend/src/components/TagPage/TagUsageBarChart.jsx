@@ -49,7 +49,16 @@ const TagUsageBarChart = ({ availableTags, tagData }) => {
     <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
       <BarChart responsive data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis
+          dataKey="name"
+          angle={-45}
+          textAnchor="end"
+          interval={0}
+          height={80}
+          tickFormatter={(value) =>
+            value.length > 10 ? `${value.substring(0, 10)}...` : value
+          }
+        />
         <YAxis
           label={{
             value: 'Time (hours)',
