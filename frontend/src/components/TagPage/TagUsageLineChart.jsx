@@ -57,7 +57,7 @@ const TagUsageLineChart = ({ allSprints, availableTags, tagData }) => (
       <XAxis dataKey="name" />
       <YAxis
         label={{
-          value: 'Time (hours)',
+          value: 'Hours',
           angle: -90,
           position: 'insideLeft',
         }}
