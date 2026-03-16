@@ -77,12 +77,21 @@ const StudentTagPage = (props) => {
         />
       </div>
       <div className="tagpage-charts-container">
-        <TagUsageBarChart availableTags={selectedTags} tagData={studentTags} />
-        <TagUsageLineChart
-          allSprints={allSprints}
-          availableTags={selectedTags}
-          tagData={studentTags}
-        />
+        {selectedTags.length === 0 ? (
+          <Typography variant="body1">No tags selected.</Typography>
+        ) : (
+          <>
+            <TagUsageBarChart
+              availableTags={selectedTags}
+              tagData={studentTags}
+            />
+            <TagUsageLineChart
+              allSprints={allSprints}
+              availableTags={selectedTags}
+              tagData={studentTags}
+            />
+          </>
+        )}
       </div>
     </div>
   )
