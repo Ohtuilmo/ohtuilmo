@@ -52,12 +52,15 @@ const StudentTagPage = (props) => {
       group?.id && (await fetchSprints())
       await fetchTagsByStudent(user.studentNumber)
       await fetchAvailableTags()
-      setSelectedTags(availableTags)
       setIsLoading(false)
     }
 
     fetchData()
   }, [fetchAvailableTags, fetchTagsByStudent, user.studentNumber, group?.id])
+
+  useEffect(() => {
+    setSelectedTags(availableTags)
+  }, [availableTags])
 
   if (isLoading) return <LoadingSpinner />
   if (!group) return <NotInGroupPlaceholder />
