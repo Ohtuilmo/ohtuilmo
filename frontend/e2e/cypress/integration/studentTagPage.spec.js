@@ -37,33 +37,20 @@ describe('Student tag page', () => {
     cy.contains('Meeting').should('exist')
     cy.loginAsRegisteredUser()
     cy.visit('/')
-    cy.get('h4', { timeout: 15000 })
-      .should('include.text', 'Brand New Group')
-      .should('include.text', 'testertester3')
-    cy.get('.registration-details-container').should('exist')
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Sprint Dashboard').click()
-      })
-
-    cy.get('h4').should('include.text', 'Add new sprint')
 
     const dateToday = new Date()
     const dateYesterday = addDaysToDate(dateToday, -1)
 
-    cy.get('#sprintNumber').type('1')
-    cy.get('#startDate').type(formatDate(addWeeksToDate(dateYesterday, -1)))
-    cy.get('#endDate').type(formatDate(dateYesterday))
-    cy.get('#add-sprint-button').click()
-    cy.get('[data-cy=sprint-1]').should('exist')
-
-    cy.get('#sprintNumber').type('2')
-    cy.get('#startDate').type(formatDate(dateToday))
-    cy.get('#endDate').type(formatDate(addWeeksToDate(dateToday, 1)))
-    cy.get('#add-sprint-button').click()
-
-    cy.get('[data-cy=sprint-2]').should('exist')
+    cy.createSprint({
+      sprint: 0,
+      start_date: formatDate(addWeeksToDate(dateYesterday, -1)),
+      end_date: formatDate(dateYesterday),
+    })
+    cy.createSprint({
+      sprint: 1,
+      start_date: formatDate(dateToday),
+      end_date: formatDate(addWeeksToDate(dateToday, 1)),
+    })
   })
 
   beforeEach(() => {
@@ -76,14 +63,12 @@ describe('Student tag page', () => {
   })
 
   it('student tag page opens', () => {
-    cy.loginAsRegisteredUser()
-    cy.visit('/')
     cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
         cy.contains('Tags').click()
       })
-    cy.contains('Tagss').should('exist')
+    cy.contains('Tags').should('exist')
   })
 
   after(() => {
