@@ -732,6 +732,8 @@ Cypress.Commands.add('createGroup', (groupData) => {
         instructorId,
         studentIds
       }
+    }).then((res) => {
+      cy.wrap(res.body)
     })
   })
 })
