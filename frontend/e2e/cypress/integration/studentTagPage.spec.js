@@ -64,5 +64,6 @@ describe('Student tag page', () => {
 
   after(() => {
     cy.deleteAllGroups()
+    cy.deleteAllTags()
   })
 })

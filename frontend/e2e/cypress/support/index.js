@@ -911,3 +911,27 @@ Cypress.Commands.add('createTag', (tagTitle) => {
     })
   })
 })
+
+/* DELETE ALL TAGS FOR TESTING */
+
+Cypress.Commands.add('deleteAllTags', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/tags',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allTags = res.body
+      for (const tag of allTags) {
+        cy.request({
+          url: `/api/tags/${tag.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
