@@ -56,6 +56,8 @@ describe('Student tag page', () => {
       .then(() => {
         cy.contains('Tags').click()
       })
+    // Ignore ResizeObserver loop limit error which happens randomly
+    cy.on('uncaught:exception', (err) => !err.message.includes('ResizeObserver loop'))
   })
 
   it('student tag page opens', () => {
