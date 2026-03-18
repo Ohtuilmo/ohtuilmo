@@ -16,31 +16,42 @@ describe('Student tag page', () => {
   before(() => {
     cy.deleteAllGroups()
     cy.loginAsAdmin()
+    cy.visit('/')
+    cy.createTag('Coding')
+    cy.createTag('Meeting')
     cy.createGroup({
       name: 'Brand New Group',
       topicId: 1,
       configurationId: 1,
       instructorId: null,
       studentIds: ['012345698'],
-    })
-    cy.visit('/')
-    cy.createTag('Coding')
-    cy.createTag('Meeting')
-    cy.loginAsRegisteredUser()
-    cy.visit('/')
+    }).then((createdGroup) => {
+      cy.loginAsRegisteredUser()
+      cy.visit('/')
 
-    const dateToday = new Date()
-    const dateYesterday = addDaysToDate(dateToday, -1)
+      const dateToday = new Date()
+      const dateYesterday = addDaysToDate(dateToday, -1)
 
-    cy.createSprint({
-      sprint: 0,
-      start_date: formatDate(addWeeksToDate(dateYesterday, -1)),
-      end_date: formatDate(dateYesterday),
-    })
-    cy.createSprint({
-      sprint: 1,
-      start_date: formatDate(dateToday),
-      end_date: formatDate(addWeeksToDate(dateToday, 1)),
+      cy.createSprint({
+        sprint: 0,
+        start_date: formatDate(addWeeksToDate(dateYesterday, -1)),
+        end_date: formatDate(dateYesterday),
+      })
+      cy.createSprint({
+        sprint: 1,
+        start_date: formatDate(dateToday),
+        end_date: formatDate(addWeeksToDate(dateToday, 1)),
+      })
+
+      cy.addTimelogEntry({
+        studentNumber: '012345698',
+        sprint: 0,
+        date: formatDate(dateYesterday),
+        minutes: 120,
+        description: 'Coding with team',
+        tags: ['Coding'],
+        groupId: createdGroup.id,
+      })
     })
   })
 
