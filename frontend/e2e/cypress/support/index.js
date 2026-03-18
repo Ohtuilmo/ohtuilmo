@@ -757,12 +757,12 @@ Cypress.Commands.add('getGroups', () => {
 /* SPRINT CREATION FOR TESTING */
 
 Cypress.Commands.add('createSprint', (sprintData) => {
-  withLoggedRegisteredUserTokenAlt((token) => {
+  withLoggedRegisteredUserToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
     const { sprint, start_date, end_date } = sprintData
-    const user_id = TEST_USER3.headers.hypersonstudentid
+    const user_id = TEST_USER2.headers.hypersonstudentid
 
     cy.request({
       url: '/api/sprints',
