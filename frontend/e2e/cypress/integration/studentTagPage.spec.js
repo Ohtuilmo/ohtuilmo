@@ -51,15 +51,20 @@ describe('Student tag page', () => {
       .should('include.text', 'Brand New Group')
       .should('include.text', 'testertester3')
     cy.get('.registration-details-container').should('exist')
-  })
-
-  it('student tag page opens', () => {
     cy.get('#hamburger-menu-button')
       .click()
       .then(() => {
         cy.contains('Tags').click()
       })
+  })
+
+  it('student tag page opens', () => {
     cy.contains('Tags').should('exist')
+  })
+
+  it('student can see all available tags', () => {
+    cy.contains('Coding').should('exist')
+    cy.contains('Meeting').should('exist')
   })
 
   after(() => {
