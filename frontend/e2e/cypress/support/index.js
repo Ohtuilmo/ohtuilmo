@@ -824,7 +824,7 @@ Cypress.Commands.add('deleteAllSprintsChartTest', () => {
 /* TIMELOGS ENTRY CREATION FOR TESTING */
 
 Cypress.Commands.add('addTimelogEntry', (timeLogEntryData) => {
-  withLoggedRegisteredUserTokenAlt((token) => {
+  withLoggedRegisteredUserToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
