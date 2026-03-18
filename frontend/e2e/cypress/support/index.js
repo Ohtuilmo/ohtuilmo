@@ -893,3 +893,21 @@ Cypress.Commands.add('deleteAllSprints', () => {
     })
   })
 })
+
+/* TAG CREATION FOR TESTING */
+
+Cypress.Commands.add('createTag', (tagTitle) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/tags',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        title: tagTitle
+      }
+    })
+  })
+})

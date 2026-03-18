@@ -24,17 +24,8 @@ describe('Student tag page', () => {
       studentIds: ['012345698'],
     })
     cy.visit('/')
-    cy.get('#hamburger-menu-button')
-      .click()
-      .then(() => {
-        cy.contains('Tag management').click()
-      })
-    cy.get('#tagTitle').type('Coding')
-    cy.get('.button').click()
-    cy.contains('Coding').should('exist')
-    cy.get('#tagTitle').type('Meeting')
-    cy.get('.button').click()
-    cy.contains('Meeting').should('exist')
+    cy.createTag('Coding')
+    cy.createTag('Meeting')
     cy.loginAsRegisteredUser()
     cy.visit('/')
 
