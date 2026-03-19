@@ -92,7 +92,7 @@ describe('Student tag page', () => {
     cy.contains('Meeting').should('exist')
   })
 
-  it('student can see correct amount of minutes for each tag', () => {
+  it('student can see correct amount of minutes for each tag in bar chart', () => {
     cy.get('#bar-Coding').trigger('mouseover')
     cy.get('.recharts-tooltip-wrapper')
       .should('be.visible')
