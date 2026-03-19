@@ -37,7 +37,7 @@ const TagUsageLineChart = ({
 
   return (
     <ResponsiveContainer width="100%" aspect={2} style={{ maxWidth: 800 }}>
-      <LineChart responsive data={data}>
+      <LineChart responsive data={data} id="tag-usage-line-chart">
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis
