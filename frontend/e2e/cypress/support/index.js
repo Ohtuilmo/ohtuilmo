@@ -732,6 +732,8 @@ Cypress.Commands.add('createGroup', (groupData) => {
         instructorId,
         studentIds
       }
+    }).then((res) => {
+      cy.wrap(res.body)
     })
   })
 })
@@ -757,12 +759,12 @@ Cypress.Commands.add('getGroups', () => {
 /* SPRINT CREATION FOR TESTING */
 
 Cypress.Commands.add('createSprint', (sprintData) => {
-  withLoggedRegisteredUserTokenAlt((token) => {
+  withLoggedRegisteredUserToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
     const { sprint, start_date, end_date } = sprintData
-    const user_id = TEST_USER3.headers.hypersonstudentid
+    const user_id = TEST_USER2.headers.hypersonstudentid
 
     cy.request({
       url: '/api/sprints',
@@ -824,7 +826,7 @@ Cypress.Commands.add('deleteAllSprintsChartTest', () => {
 /* TIMELOGS ENTRY CREATION FOR TESTING */
 
 Cypress.Commands.add('addTimelogEntry', (timeLogEntryData) => {
-  withLoggedRegisteredUserTokenAlt((token) => {
+  withLoggedRegisteredUserToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -887,6 +889,48 @@ Cypress.Commands.add('deleteAllSprints', () => {
           url: `/api/sprints/${sprint.id}`,
           method: 'DELETE',
           failOnStatusCode: false,
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+/* TAG CREATION FOR TESTING */
+
+Cypress.Commands.add('createTag', (tagTitle) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/tags',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        title: tagTitle
+      }
+    })
+  })
+})
+
+/* DELETE ALL TAGS FOR TESTING */
+
+Cypress.Commands.add('deleteAllTags', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/tags',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allTags = res.body
+      for (const tag of allTags) {
+        cy.request({
+          url: `/api/tags/${tag.id}`,
+          method: 'DELETE',
           headers: authHeaders
         })
       }

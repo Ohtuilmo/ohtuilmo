@@ -46,6 +46,10 @@ const loggedInItems = (history) => {
       text: 'Sprint Dashboard',
       handler: () => history.push('/sprints'),
     },
+    {
+      text: 'Tags',
+      handler: () => history.push('/student-tags'),
+    },
   ]
 }
 
