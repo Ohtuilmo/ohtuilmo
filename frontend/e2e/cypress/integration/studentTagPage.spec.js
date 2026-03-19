@@ -54,8 +54,8 @@ describe('Student tag page', () => {
       })
       cy.addTimelogEntry({
         studentNumber: '012345698',
-        sprint: 0,
-        date: formatDate(dateYesterday),
+        sprint: 1,
+        date: formatDate(dateToday),
         minutes: 180,
         description: 'Customer meeting',
         tags: ['Meeting'],
