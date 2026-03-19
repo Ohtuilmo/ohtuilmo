@@ -92,6 +92,18 @@ describe('Student tag page', () => {
     cy.contains('Meeting').should('exist')
   })
 
+  it('student can see correct amount of minutes for each tag', () => {
+    cy.get('#bar-Coding').trigger('mouseover')
+    cy.get('.recharts-tooltip-wrapper')
+      .should('be.visible')
+      .and('contain.text', '2 h')
+
+    cy.get('#bar-Meeting').trigger('mouseover')
+    cy.get('.recharts-tooltip-wrapper')
+      .should('be.visible')
+      .and('contain.text', '3 h')
+  })
+
   after(() => {
     cy.deleteAllGroups()
     cy.deleteAllTags()
