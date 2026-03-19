@@ -43,7 +43,7 @@ const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
             position: 'insideLeft',
           }}
         />
-        <Tooltip formatter={(value) => `${value} h`} />
+        <Tooltip formatter={(value) => `${Math.round(value * 100) / 100} h`} />
         <Bar dataKey="value">
           {data.map((entry) => (
             <Cell

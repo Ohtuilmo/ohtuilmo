@@ -47,7 +47,7 @@ const TagUsageLineChart = ({
             position: 'insideLeft',
           }}
         />
-        <Tooltip formatter={(value) => `${value} h`} />
+        <Tooltip formatter={(value) => `${Math.round(value * 100) / 100} h`} />
         <Legend />
 
         {allTags
