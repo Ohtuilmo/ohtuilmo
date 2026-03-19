@@ -46,7 +46,11 @@ const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
         <Tooltip formatter={(value) => `${value} h`} />
         <Bar dataKey="value">
           {data.map((entry) => (
-            <Cell key={`cell-${entry.name}`} fill={tagColors[entry.name]} />
+            <Cell
+              key={`cell-${entry.name}`}
+              fill={tagColors[entry.name]}
+              id={`bar-${entry.name}`}
+            />
           ))}
         </Bar>
       </BarChart>
