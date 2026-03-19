@@ -83,16 +83,16 @@ describe('Student tag page', () => {
     )
   })
 
-  it('student tag page opens', () => {
+  it('opens student tag page', () => {
     cy.contains('Tags').should('exist')
   })
 
-  it('student can see all available tags', () => {
+  it('displays all available tags to students', () => {
     cy.contains('Coding').should('exist')
     cy.contains('Meeting').should('exist')
   })
 
-  it('student can see correct amount of minutes for each tag in bar chart', () => {
+  it('displays correct amount of minutes for each tag in bar chart', () => {
     cy.get('#bar-Coding').trigger('mouseover')
     cy.get('.recharts-tooltip-wrapper')
       .should('be.visible')
@@ -104,7 +104,7 @@ describe('Student tag page', () => {
       .and('contain.text', '3 h')
   })
 
-  it('student can see correct amount of minutes for each tag in line chart', () => {
+  it('displays correct amount of minutes for each tag in line chart', () => {
     cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger(
       'mouseover',
       'left',
