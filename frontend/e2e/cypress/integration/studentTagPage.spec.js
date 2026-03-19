@@ -104,6 +104,28 @@ describe('Student tag page', () => {
       .and('contain.text', '3 h')
   })
 
+  it('student can see correct amount of minutes for each tag in line chart', () => {
+    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger(
+      'mouseover',
+      'left',
+      { force: true },
+    )
+    cy.get('.recharts-tooltip-wrapper')
+      .should('be.visible')
+      .and('contain.text', 'Coding : 2 h')
+      .and('contain.text', 'Meeting : 0 h')
+
+    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger(
+      'mouseover',
+      'right',
+      { force: true },
+    )
+    cy.get('.recharts-tooltip-wrapper')
+      .should('be.visible')
+      .and('contain.text', 'Coding : 0 h')
+      .and('contain.text', 'Meeting : 3 h')
+  })
+
   after(() => {
     cy.deleteAllGroups()
     cy.deleteAllTags()
