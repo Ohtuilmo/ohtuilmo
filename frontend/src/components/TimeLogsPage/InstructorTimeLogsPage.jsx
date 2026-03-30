@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { TimeLogsSelectForm } from './TimeLogsSelectForm'
+import { StudentSelectionForm } from '../common/StudentSelectionForm'
 import { TimeLogRow } from './TimeLogRow'
 import TimeLogChart from './TimeLogChart'
 import LoadingSpinner from '../common/LoadingSpinner'
@@ -278,7 +278,7 @@ const InstructorTimeLogsPage = (props) => {
     <div className='timelogs-responsive-grid'>
       <div id='timelogs-container-1'>
         <div>
-          <TimeLogsSelectForm
+          <StudentSelectionForm
             configurations={allConfigurations}
             selectedConfigurationId={selectedConfigurationId}
             handleConfigurationChange={handleConfigurationChange}

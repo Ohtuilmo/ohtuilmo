@@ -1,14 +1,20 @@
 import React from 'react'
-import './TimeLogsPage.css'
+import '../TimeLogsPage/TimeLogsPage.css'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 
-export const TimeLogsSelectForm = ({
-  configurations, selectedConfigurationId, handleConfigurationChange,
-  groups, selectedGroupId, handleGroupChange,
-  students, selectedStudentNumber, handleStudentNumberChange }) => {
-
+export const StudentSelectionForm = ({
+  configurations,
+  selectedConfigurationId,
+  handleConfigurationChange,
+  groups,
+  selectedGroupId,
+  handleGroupChange,
+  students,
+  selectedStudentNumber,
+  handleStudentNumberChange,
+}) => {
   const SelectorWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
@@ -21,7 +27,7 @@ export const TimeLogsSelectForm = ({
     selectedConfigurationId,
     handleConfigurationChange,
     handleGroupChange,
-    handleStudentNumberChange
+    handleStudentNumberChange,
   }) => {
     return (
       <Select
@@ -44,17 +50,14 @@ export const TimeLogsSelectForm = ({
           </MenuItem>
         ))}
       </Select>
-    )}
+    )
+  }
 
-  const GroupIsInConfiguration = ( group, configurationId ) => {
+  const GroupIsInConfiguration = (group, configurationId) => {
     return group.configurationId === configurationId
   }
 
-  const GroupSelect = ({
-    groups,
-    selectedGroupId,
-    handleGroupChange
-  }) => {
+  const GroupSelect = ({ groups, selectedGroupId, handleGroupChange }) => {
     return (
       <Select
         data-cy="group-selector"
@@ -65,8 +68,13 @@ export const TimeLogsSelectForm = ({
         }}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
-        <MenuItem key="0" className="group-menu-item" value="0" disabled>Pick a group</MenuItem>
-        {groups.filter(group => GroupIsInConfiguration(group, selectedConfigurationId))
+        <MenuItem key="0" className="group-menu-item" value="0" disabled>
+          Pick a group
+        </MenuItem>
+        {groups
+          .filter((group) =>
+            GroupIsInConfiguration(group, selectedConfigurationId),
+          )
           .map((group) => (
             <MenuItem
               key={group.id}
@@ -77,17 +85,20 @@ export const TimeLogsSelectForm = ({
             </MenuItem>
           ))}
       </Select>
-    )}
+    )
+  }
 
-  const StudentIsInGroup = ( student, group_id ) => {
-    return groups.find(g => g.id === group_id)?.studentIds.includes(student.student_number)
+  const StudentIsInGroup = (student, group_id) => {
+    return groups
+      .find((g) => g.id === group_id)
+      ?.studentIds.includes(student.student_number)
   }
 
   const StudentSelect = ({
     selectedGroupId,
     students,
     selectedStudentNumber,
-    handleStudentNumberChange
+    handleStudentNumberChange,
   }) => {
     return (
       <Select
@@ -99,8 +110,11 @@ export const TimeLogsSelectForm = ({
         disabled={!selectedGroupId}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
-        <MenuItem key={0} className="student-menu-item" value={0}>Pick a student</MenuItem>
-        {students.filter(student => StudentIsInGroup(student, selectedGroupId))
+        <MenuItem key={0} className="student-menu-item" value={0}>
+          Pick a student
+        </MenuItem>
+        {students
+          .filter((student) => StudentIsInGroup(student, selectedGroupId))
           .map((student) => (
             <MenuItem
               key={student.student_number}
@@ -126,7 +140,7 @@ export const TimeLogsSelectForm = ({
             handleStudentNumberChange={handleStudentNumberChange}
           />
         </SelectorWrapper>
-        {selectedConfigurationId !== 0 &&
+        {selectedConfigurationId !== 0 && (
           <SelectorWrapper label="Select group">
             <GroupSelect
               selectedGroupId={selectedGroupId}
@@ -135,8 +149,8 @@ export const TimeLogsSelectForm = ({
               handleStudentNumberChange={handleStudentNumberChange}
             />
           </SelectorWrapper>
-        }
-        {selectedGroupId !== 0 &&
+        )}
+        {selectedGroupId !== 0 && (
           <SelectorWrapper label="Select student">
             <StudentSelect
               selectedGroupId={selectedGroupId}
@@ -145,7 +159,7 @@ export const TimeLogsSelectForm = ({
               students={students}
             />
           </SelectorWrapper>
-        }
+        )}
       </div>
     </div>
   )
