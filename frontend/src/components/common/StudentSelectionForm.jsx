@@ -129,7 +129,7 @@ export const StudentSelectionForm = ({
   }
 
   return (
-    <div className="timelog-select-container">
+    <div>
       <div className="selector-container">
         <SelectorWrapper label="Select configuration">
           <ConfigurationSelect
