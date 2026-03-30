@@ -57,7 +57,6 @@ const StudentTagPage = (props) => {
       try {
         const fetchedData = await sprintService.getSprints()
         setAllSprints(fetchedData)
-        console.log('all sprints:', fetchedData)
       } catch (error) {
         console.error(
           'Error fetching sprints:',
