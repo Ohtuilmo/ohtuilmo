@@ -1,5 +1,4 @@
 import React from 'react'
-import '../TimeLogsPage/TimeLogsPage.css'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
