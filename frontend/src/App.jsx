@@ -304,7 +304,7 @@ const App = (props) => {
             />
             <AdminRoute
               exact
-              path="/administration/tags"
+              path="/administration/tags-statistics"
               render={renderWithLoadingCheck(<StaffTagPage />)}
             />
             <Route component={NotFound} />
