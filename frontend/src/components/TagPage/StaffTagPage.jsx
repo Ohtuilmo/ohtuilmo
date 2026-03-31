@@ -10,6 +10,7 @@ import TagUsageBarChart from './TagUsageBarChart'
 
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
+import sprintService from '../../services/sprints'
 import userService from '../../services/user'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import tagsActions from '../../reducers/actions/tagActions'
@@ -131,6 +132,31 @@ const StaffTagPage = (props) => {
       setSelectedGroup(newestGroupByInstructor?.id ? newestGroupByInstructor : null)
     }
   }, [allConfigurations, allGroups])
+
+  useEffect(() => {
+    if (!selectedGroupId) return
+    const fetchSprints = async () => {
+      try {
+        const sprintData = await sprintService.getSprintsByGroup(selectedGroupId)
+        setAllSprints(sprintData)
+      } catch (error) {
+        console.error(
+          'Error fetching sprints:',
+          error.message,
+          ' / ',
+          error.response.data.error,
+        )
+        notificationActions.setError(error.response.data.error)
+      }
+    }
+
+    const fetchData = async () => {
+      setIsLoading(true)
+      selectedGroupId && (await fetchSprints())
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [selectedGroupId])
 
   useEffect(() => {
     if (!selectedStudentNumber) return
