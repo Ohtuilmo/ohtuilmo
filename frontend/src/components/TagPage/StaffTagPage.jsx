@@ -3,15 +3,14 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import LoadingSpinner from '../common/LoadingSpinner'
 import { Typography } from '@material-ui/core'
-import {
-  NotInGroupPlaceholder,
-  NoSprintsPlaceholder,
-} from '../common/Placeholders'
 import CheckboxMultiSelect from '../common/CheckboxMultiSelect'
+import { StudentSelectionForm } from '../common/StudentSelectionForm'
 import TagUsageLineChart from './TagUsageLineChart'
 import TagUsageBarChart from './TagUsageBarChart'
 
-import sprintService from '../../services/sprints'
+import configurationService from '../../services/configuration'
+import groupManagementService from '../../services/groupManagement'
+import userService from '../../services/user'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import tagsActions from '../../reducers/actions/tagActions'
 import './TagPage.css'
@@ -36,7 +35,6 @@ const colourSet = [
 const StaffTagPage = (props) => {
   const {
     user,
-    group,
     availableTags,
     studentTags,
     fetchAvailableTags,
@@ -47,49 +45,140 @@ const StaffTagPage = (props) => {
   const [allSprints, setAllSprints] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
 
+  const [allConfigurations, setAllConfigurations] = useState([])
+  const [selectedConfigurationId, setSelectedConfigurationId] = useState(0)
+  const [allGroups, setAllGroups] = useState([])
+  const [selectedGroupId, setSelectedGroupId] = useState(0)
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [allStudents, setAllStudents] = useState([])
+  const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
+
   const tagColors = availableTags.reduce((acc, tag, index) => {
     acc[tag] = colourSet[index % colourSet.length]
     return acc
   }, {})
 
   useEffect(() => {
-    const fetchSprints = async () => {
+    const fetchAllConfigurations = async () => {
       try {
-        const fetchedData = await sprintService.getSprints()
-        setAllSprints(fetchedData)
+        const allConfigurations = await configurationService.getAll()
+        setAllConfigurations(allConfigurations.configurations)
       } catch (error) {
         console.error(
-          'Error fetching sprints:',
+          'Error fetching groups:',
           error.message,
           ' / ',
-          error.response.data.error,
+          error.response.data.error
         )
-        notificationActions.setError(error.response.data.error)
+        setError(error.response.data.error)
+      }
+    }
+
+    const fetchAllGroups = async () => {
+      try {
+        const allGroups = await groupManagementService.get()
+        setAllGroups(allGroups)
+      } catch (error) {
+        console.error(
+          'Error fetching groups:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        setError(error.response.data.error)
+      }
+    }
+
+    const fetchAllStudents = async () => {
+      try {
+        const allStudents = await userService.get()
+        setAllStudents(allStudents)
+      } catch (error) {
+        console.error(
+          'Error fetching students:',
+          error.message,
+          ' / ',
+          error.response.data.error
+        )
+        setError(error.response.data.error)
       }
     }
 
     const fetchData = async () => {
       setIsLoading(true)
-      group?.id && (await fetchSprints())
-      await fetchTagsByStudent(user.studentNumber)
+      await fetchAllConfigurations()
+      await fetchAllGroups()
+      await fetchAllStudents()
       await fetchAvailableTags()
       setIsLoading(false)
     }
-
     fetchData()
-  }, [fetchAvailableTags, fetchTagsByStudent, user.studentNumber, group?.id])
+  }, [])
+
+  useEffect(() => {
+    if (allConfigurations.length > 0 && allGroups.length > 0) {
+      const allGroupsInSortedOrder = [...allGroups] // clones the array
+      allGroupsInSortedOrder.sort((a, b) => a.id - b.id)
+      const newestGroupByInstructor = allGroupsInSortedOrder.findLast(
+        group => group.instructorId === user.studentNumber
+      )
+      const configurationByInstructor = allConfigurations.find(
+        configuration =>
+          newestGroupByInstructor?.configurationId === configuration.id
+      )
+      setSelectedConfigurationId(configurationByInstructor?.id ?? 0)
+      setSelectedGroupId(newestGroupByInstructor?.id ?? 0)
+      setSelectedGroup(newestGroupByInstructor?.id ? newestGroupByInstructor : null)
+    }
+  }, [allConfigurations, allGroups])
+
+  useEffect(() => {
+    if (!selectedStudentNumber) return
+    const fetchData = async () => {
+      setIsLoading(true)
+      await fetchTagsByStudent(selectedStudentNumber)
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [selectedStudentNumber])
 
   useEffect(() => {
     setSelectedTags(availableTags)
   }, [availableTags])
 
+  const handleConfigurationChange = (configuration_id) => {
+    const configurationById = allConfigurations.find(conf => conf.id === configuration_id)
+    setSelectedConfigurationId(configurationById.id ?? 0)
+  }
+
+  const handleGroupChange = (group_id) => {
+    const groupById = allGroups.find(grp => grp.id === group_id)
+    setSelectedGroupId(groupById?.id ?? 0)
+    setSelectedGroup(groupById?.id ? groupById : null)
+  }
+
+  const handleStudentChange = async (studentNumber) => {
+    setSelectedStudentNumber(studentNumber)
+  }
+
   if (isLoading) return <LoadingSpinner />
-  if (!group) return <NotInGroupPlaceholder />
-  if (allSprints.length === 0) return <NoSprintsPlaceholder />
+//   if (!group) return <NotInGroupPlaceholder />
+//   if (allSprints.length === 0) return <NoSprintsPlaceholder />
 
   return (
     <div className="tagpage-container">
       <div className="tagpage-selection-container">
+        <StudentSelectionForm
+          configurations={allConfigurations}
+          selectedConfigurationId={selectedConfigurationId}
+          handleConfigurationChange={handleConfigurationChange}
+          groups={allGroups}
+          selectedGroupId={selectedGroupId}
+          handleGroupChange={handleGroupChange}
+          students={allStudents}
+          selectedStudentNumber={selectedStudentNumber}
+          handleStudentNumberChange={handleStudentChange}
+        />
         <Typography variant="h4">Tags</Typography>
         <CheckboxMultiSelect
           allItems={availableTags}
@@ -131,7 +220,6 @@ const mapStateToProps = (state) => ({
     instructor: state.login.user.user.instructor,
     name: `${state.login.user.user.first_name} ${state.login.user.user.last_name}`,
   },
-  group: state.registrationDetails.myGroup,
   availableTags: state.tags.availableTags,
   studentTags: state.tags.studentTags,
 })
