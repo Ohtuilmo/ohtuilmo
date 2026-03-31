@@ -40,6 +40,7 @@ const StaffTagPage = (props) => {
     studentTags,
     fetchAvailableTags,
     fetchTagsByStudent,
+    clearStudentTags,
   } = props
 
   const [isLoading, setIsLoading] = useState(true)
@@ -172,6 +173,10 @@ const StaffTagPage = (props) => {
     setSelectedTags(availableTags)
   }, [availableTags])
 
+  useEffect(() => {
+    clearStudentTags()
+  }, [selectedConfigurationId, selectedGroupId, selectedStudentNumber])
+
   const handleConfigurationChange = (configuration_id) => {
     const configurationById = allConfigurations.find(conf => conf.id === configuration_id)
     setSelectedConfigurationId(configurationById.id ?? 0)
@@ -188,8 +193,7 @@ const StaffTagPage = (props) => {
   }
 
   if (isLoading) return <LoadingSpinner />
-//   if (!group) return <NotInGroupPlaceholder />
-//   if (allSprints.length === 0) return <NoSprintsPlaceholder />
+
 
   return (
     <div className="tagpage-container">
@@ -255,6 +259,7 @@ const mapDispatchToProps = {
   setSuccess: notificationActions.setSuccess,
   fetchAvailableTags: tagsActions.fetchAvailableTags,
   fetchTagsByStudent: tagsActions.fetchTagsByStudent,
+  clearStudentTags: tagsActions.clearStudentTags,
 }
 
 export default withRouter(

@@ -14,6 +14,10 @@ const resetTags = () => ({
   type: 'RESET_TAGS'
 })
 
+const clearStudentTags = () => ({
+  type: 'CLEAR_STUDENT_TAGS'
+})
+
 const fetchAvailableTags = () => {
   return async (dispatch) => {
     const rawTagData = await tagService.getTags()
@@ -33,6 +37,7 @@ export default {
   setAvailableTags,
   setStudentTags,
   resetTags,
+  clearStudentTags,
   fetchAvailableTags,
   fetchTagsByStudent
 }
