@@ -14,6 +14,7 @@ import sprintService from '../../services/sprints'
 import userService from '../../services/user'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import tagsActions from '../../reducers/actions/tagActions'
+import tagService from '../../services/tags'
 import './TagPage.css'
 
 const colourSet = [
@@ -55,10 +56,41 @@ const StaffTagPage = (props) => {
   const [allStudents, setAllStudents] = useState([])
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
 
+  const [wholeGroupTagData, setWholeGroupTagData] = useState(null)
+
   const tagColors = availableTags.reduce((acc, tag, index) => {
     acc[tag] = colourSet[index % colourSet.length]
     return acc
   }, {})
+
+  const showTagStatisticsForWholeGroup = async () => {
+    const studentNumbers = selectedGroup.studentIds
+
+    const groupTags = {}
+
+    for (const studentNumber of studentNumbers) {
+      const studentTags = await tagService.getTagsByStudent(studentNumber)
+
+      for (const tag in studentTags) {
+        if (!groupTags[tag]) {
+          groupTags[tag] = []
+        }
+
+        for (const studentSprint of studentTags[tag]) {
+          let groupSprint = groupTags[tag].find(sprint => sprint.sprint_id === studentSprint.sprint_id)
+
+          if (!groupSprint) {
+            groupSprint = { ...studentSprint, minutes: 0 }
+            groupTags[tag].push(groupSprint)
+          }
+
+          groupSprint.minutes += studentSprint.minutes
+        }
+      }
+    }
+
+    setWholeGroupTagData(groupTags)
+  }
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -157,9 +189,17 @@ const StaffTagPage = (props) => {
       setIsLoading(false)
     }
     fetchData()
+
+    if (selectedStudentNumber === 0) {
+      showTagStatisticsForWholeGroup()
+    }
   }, [selectedGroupId])
 
   useEffect(() => {
+    if (selectedGroupId && selectedStudentNumber === 0) {
+      showTagStatisticsForWholeGroup()
+    }
+
     if (!selectedStudentNumber) return
     const fetchData = async () => {
       setIsLoading(true)
@@ -224,7 +264,7 @@ const StaffTagPage = (props) => {
             <TagUsageBarChart
               allTags={availableTags}
               selectedTags={selectedTags}
-              tagData={studentTags}
+              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTags}
               tagColors={tagColors}
             />
 
@@ -232,7 +272,7 @@ const StaffTagPage = (props) => {
               allSprints={allSprints}
               allTags={availableTags}
               selectedTags={selectedTags}
-              tagData={studentTags}
+              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTags}
               tagColors={tagColors}
             />
           </>
