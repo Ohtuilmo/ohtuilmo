@@ -12,7 +12,7 @@ const tagsReducer = (state = initialState, action) => {
   case 'RESET_TAGS':
     return initialState
   case 'CLEAR_STUDENT_TAGS':
-  return { ...state, studentTags: {} }
+    return { ...state, studentTags: {} }
   default:
     return state
   }
