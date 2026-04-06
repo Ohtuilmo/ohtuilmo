@@ -137,6 +137,14 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
           </Typography>
           {select_role}
           {loggedIn}
+          <label htmlFor="theme-switch">
+            theme
+            <select id="theme-switch">
+              <option value="device"> device </option>
+              <option value="light"> light </option>
+              <option value="dark"> dark </option>
+            </select>
+          </label>
           <Button
             className="navigation-bar-logout-button"
             style={{ marginLeft: '10px' }}
