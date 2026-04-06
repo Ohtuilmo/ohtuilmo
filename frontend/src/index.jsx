@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createContext, useState } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { Provider } from 'react-redux'
@@ -9,18 +9,28 @@ import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
+export const ColorModeContext = createContext({
+  mode: 'device',
+  setMode: () => {}
+})
+
 const Root = () => {
-  const dark = useMediaQuery('(prefers-color-scheme: dark)')
+  const themePreference = useMediaQuery('(prefers-color-scheme: dark)')
+  const [themeMode, setThemeMode] = useState('device')
+
+  const effectiveDark = themeMode === 'device'
+    ? themePreference
+    : themeMode === 'dark'
 
   const theme = createTheme({
     palette: {
-      type: dark ? 'dark' : 'light',
+      type: effectiveDark ? 'dark' : 'light',
       primary: {
         main: '#fdd835',
       },
       secondary: amber,
       text: {
-        primary: dark ? '#ffffff' : '#4d4d4d',
+        primary: effectiveDark ? '#ffffff' : '#4d4d4d',
       },
     },
     typography: {
@@ -51,10 +61,12 @@ const Root = () => {
 
   return (
     <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </MuiThemeProvider>
+      <ColorModeContext.Provider value={{ mode: themeMode, setMode: setThemeMode }}>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+          <App />
+        </MuiThemeProvider>
+      </ColorModeContext.Provider>
     </Provider>
   )
 }
