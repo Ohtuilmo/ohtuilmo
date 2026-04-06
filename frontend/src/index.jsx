@@ -32,9 +32,7 @@ const Root = () => {
       h2: {
         fontSize: '1.5rem',
         fontWeight: 600,
-        lineHeight: 1.25,
-        marginTop: '0.83em',
-        marginBottom: '0.83em',
+        lineHeight: 3,
       },
       h3: {
         marginTop: '1em',

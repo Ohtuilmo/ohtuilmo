@@ -40,7 +40,6 @@ class PeerReviewInfo extends React.Component {
       <div>
         {(peerReviewOpen || submittedReviews.length > 0) && groupDetails ? (
           <div>
-            <h2>Peer reviews</h2>
             <Typography variant="h2">Peer reviews</Typography>
             {submittedReviews.length > 0 && (
               <div>
