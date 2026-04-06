@@ -8,11 +8,7 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'
 import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-
-export const ColorModeContext = createContext({
-  mode: 'device',
-  setMode: () => {}
-})
+import { ColorModeContext } from './context/ColorModeContext'
 
 const Root = () => {
   const themePreference = useMediaQuery('(prefers-color-scheme: dark)')

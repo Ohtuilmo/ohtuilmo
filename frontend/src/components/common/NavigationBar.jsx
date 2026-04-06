@@ -20,7 +20,7 @@ import {
   loggedInUnregisteredItems
 } from './MenuItemLists'
 import './NavigationBar.css'
-import { ColorModeContext } from '../..'
+import { ColorModeContext } from '../../context/ColorModeContext'
 
 const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistrationManagement, history, logout }) => {
   const { mode, setMode } = useContext(ColorModeContext)
