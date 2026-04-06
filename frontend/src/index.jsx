@@ -6,6 +6,7 @@ import App from './App'
 import store from './reducers/store'
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'
 import amber from '@material-ui/core/colors/amber'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const Root = () => {
@@ -17,16 +18,43 @@ const Root = () => {
       primary: {
         main: '#fdd835',
       },
-      secondary: amber
+      secondary: amber,
+      text: {
+        primary: dark ? '#ffffff' : '#4d4d4d',
+      },
     },
     typography: {
-      useNextVariants: true
+      useNextVariants: true,
+      h1: {
+        marginTop: '0.67em',
+        marginBottom: '0.67em',
+      },
+      h2: {
+        fontSize: '1.5rem',
+        fontWeight: 600,
+        lineHeight: 1.25,
+        marginTop: '0.83em',
+        marginBottom: '0.83em',
+      },
+      h3: {
+        marginTop: '1em',
+        marginBottom: '1em',
+      },
+      h4: {
+        marginTop: '1.33em',
+        marginBottom: '1.33em',
+      },
+      h5: {
+        marginTop: '1.67em',
+        marginBottom: '1.67em',
+      },
     },
   })
 
   return (
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
+        <CssBaseline />
         <App />
       </MuiThemeProvider>
     </Provider>

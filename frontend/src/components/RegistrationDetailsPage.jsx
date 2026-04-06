@@ -41,6 +41,7 @@ class PeerReviewInfo extends React.Component {
         {(peerReviewOpen || submittedReviews.length > 0) && groupDetails ? (
           <div>
             <h2>Peer reviews</h2>
+            <Typography variant="h2">Peer reviews</Typography>
             {submittedReviews.length > 0 && (
               <div>
                 {submittedReviews.map((review, index) => {
