@@ -23,7 +23,7 @@ import './NavigationBar.css'
 import { ColorModeContext } from '../../context/ColorModeContext'
 
 const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistrationManagement, history, logout }) => {
-  const { mode, setMode } = useContext(ColorModeContext)
+  const { mode: theme, setMode: setTheme } = useContext(ColorModeContext)
   const getAppropriateMenuItemList = () => {
     if (user === null) {
       return { items: regularItems(history) }
@@ -124,6 +124,11 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
       )
       : ""
 
+  const switchTheme = (theme) => {
+    setTheme(theme)
+    localStorage.setItem('theme', theme)
+  }
+
   return (
     <div className="navigation-bar-container">
       <AppBar position="static">
@@ -143,8 +148,8 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
             theme
             <select
               id="theme-switch"
-              value={mode}
-              onChange={e => setMode(e.target.value)}
+              value={theme}
+              onChange={e => switchTheme(e.target.value)}
             >
               <option value="device"> device </option>
               <option value="light"> light </option>

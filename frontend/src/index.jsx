@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { Provider } from 'react-redux'
@@ -10,9 +10,14 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { ColorModeContext } from './context/ColorModeContext'
 
+const getInitialMode = () => {
+  const stored = localStorage.getItem('theme')
+  return stored ? stored : 'device'
+}
+
 const Root = () => {
   const themePreference = useMediaQuery('(prefers-color-scheme: dark)')
-  const [themeMode, setThemeMode] = useState('device')
+  const [themeMode, setThemeMode] = useState(getInitialMode)
 
   const effectiveDark = themeMode === 'device'
     ? themePreference
