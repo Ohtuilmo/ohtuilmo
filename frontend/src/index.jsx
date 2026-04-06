@@ -6,6 +6,7 @@ import App from './App'
 import store from './reducers/store'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import amber from '@material-ui/core/colors/amber'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const theme = createMuiTheme({
   palette: {
@@ -19,12 +20,21 @@ const theme = createMuiTheme({
   }
 })
 
+const Root = () => {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  console.log(prefersDarkMode)
+
+  return (
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
+    </Provider>
+  )
+}
+
 ReactDOM.render(
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <App />
-    </MuiThemeProvider>
-  </Provider>,
+  <Root />,
   document.getElementById('root')
 )
 
