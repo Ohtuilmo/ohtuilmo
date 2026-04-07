@@ -234,6 +234,10 @@ const StaffTagPage = (props) => {
     setSelectedStudentNumber(studentNumber)
   }
 
+  const selectedStudent = allStudents.find(
+    student => student.student_number === selectedStudentNumber
+  )
+
   if (isLoading) return <LoadingSpinner />
 
 
@@ -263,6 +267,14 @@ const StaffTagPage = (props) => {
           <Typography variant="body1">No tags selected.</Typography>
         ) : (
           <>
+            <Typography variant="h5">
+              {!selectedGroupId
+                ? 'Select a group'
+                : selectedStudentNumber === 0
+                  ? `Tag usage for ${selectedGroup?.name ?? ''}`
+                  : `Tag usage for ${selectedStudent?.first_names ?? ''} ${selectedStudent?.last_name ?? ''}`
+              }
+            </Typography>
             <TagUsageBarChart
               allTags={availableTags}
               selectedTags={selectedTags}
