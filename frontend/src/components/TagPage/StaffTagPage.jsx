@@ -54,7 +54,7 @@ const StaffTagPage = (props) => {
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
 
   const [wholeGroupTagData, setWholeGroupTagData] = useState(null)
-  const [studentTags, setStudentTags] = useState({})
+  const [studentTagData, setStudentTagData] = useState({})
 
   const tagColors = availableTags.reduce((acc, tag, index) => {
     acc[tag] = colourSet[index % colourSet.length]
@@ -165,6 +165,13 @@ const StaffTagPage = (props) => {
   }, [allConfigurations, allGroups])
 
   useEffect(() => {
+    setIsLoading(true)
+    setWholeGroupTagData({})
+    setStudentTagData({})
+    setIsLoading(false)
+  }, [selectedConfigurationId])
+
+  useEffect(() => {
     if (!selectedGroupId) return
     const fetchSprints = async () => {
       try {
@@ -194,15 +201,14 @@ const StaffTagPage = (props) => {
   }, [selectedGroupId])
 
   useEffect(() => {
+    if (!selectedStudentNumber) return
     if (selectedGroupId && selectedStudentNumber === 0) {
       showTagStatisticsForWholeGroup()
     }
-
-    if (!selectedStudentNumber) return
     const fetchData = async () => {
       setIsLoading(true)
       await tagService.getTagsByStudent(selectedStudentNumber).then((data) => {
-        setStudentTags(data)
+        setStudentTagData(data)
       })
       setIsLoading(false)
     }
@@ -212,13 +218,6 @@ const StaffTagPage = (props) => {
   useEffect(() => {
     setSelectedTags(availableTags)
   }, [availableTags])
-
-  useEffect(() => {
-    setIsLoading(true)
-    setWholeGroupTagData({})
-    setStudentTags({})
-    setIsLoading(false)
-  }, [selectedConfigurationId])
 
   const handleConfigurationChange = (configuration_id) => {
     const configurationById = allConfigurations.find(conf => conf.id === configuration_id)
@@ -267,7 +266,7 @@ const StaffTagPage = (props) => {
             <TagUsageBarChart
               allTags={availableTags}
               selectedTags={selectedTags}
-              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTags}
+              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTagData}
               tagColors={tagColors}
             />
 
@@ -275,7 +274,7 @@ const StaffTagPage = (props) => {
               allSprints={allSprints}
               allTags={availableTags}
               selectedTags={selectedTags}
-              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTags}
+              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTagData}
               tagColors={tagColors}
             />
           </>
