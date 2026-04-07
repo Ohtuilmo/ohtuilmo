@@ -5,17 +5,8 @@ const setAvailableTags = (tags) => ({
   payload: tags
 })
 
-const setStudentTags = (tags) => ({
-  type: 'SET_STUDENT_TAGS',
-  payload: tags
-})
-
 const resetTags = () => ({
   type: 'RESET_TAGS'
-})
-
-const clearStudentTags = () => ({
-  type: 'CLEAR_STUDENT_TAGS'
 })
 
 const fetchAvailableTags = () => {
@@ -25,19 +16,8 @@ const fetchAvailableTags = () => {
     dispatch(setAvailableTags(availableTagData))
   }
 }
-
-const fetchTagsByStudent = (studentNumber) => {
-  return async (dispatch) => {
-    const studentTags = await tagService.getTagsByStudent(studentNumber)
-    dispatch(setStudentTags(studentTags))
-  }
-}
-
 export default {
   setAvailableTags,
-  setStudentTags,
   resetTags,
-  clearStudentTags,
-  fetchAvailableTags,
-  fetchTagsByStudent
+  fetchAvailableTags
 }

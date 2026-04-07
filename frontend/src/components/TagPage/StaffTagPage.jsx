@@ -38,10 +38,7 @@ const StaffTagPage = (props) => {
   const {
     user,
     availableTags,
-    studentTags,
     fetchAvailableTags,
-    fetchTagsByStudent,
-    clearStudentTags,
   } = props
 
   const [isLoading, setIsLoading] = useState(true)
@@ -57,6 +54,7 @@ const StaffTagPage = (props) => {
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
 
   const [wholeGroupTagData, setWholeGroupTagData] = useState(null)
+  const [studentTags, setStudentTags] = useState({})
 
   const tagColors = availableTags.reduce((acc, tag, index) => {
     acc[tag] = colourSet[index % colourSet.length]
@@ -203,7 +201,9 @@ const StaffTagPage = (props) => {
     if (!selectedStudentNumber) return
     const fetchData = async () => {
       setIsLoading(true)
-      await fetchTagsByStudent(selectedStudentNumber)
+      await tagService.getTagsByStudent(selectedStudentNumber).then((data) => {
+        setStudentTags(data)
+      })
       setIsLoading(false)
     }
     fetchData()
@@ -214,8 +214,11 @@ const StaffTagPage = (props) => {
   }, [availableTags])
 
   useEffect(() => {
-    clearStudentTags()
-  }, [selectedConfigurationId, selectedGroupId, selectedStudentNumber])
+    setIsLoading(true)
+    setWholeGroupTagData({})
+    setStudentTags({})
+    setIsLoading(false)
+  }, [selectedConfigurationId])
 
   const handleConfigurationChange = (configuration_id) => {
     const configurationById = allConfigurations.find(conf => conf.id === configuration_id)
@@ -291,15 +294,12 @@ const mapStateToProps = (state) => ({
     name: `${state.login.user.user.first_name} ${state.login.user.user.last_name}`,
   },
   availableTags: state.tags.availableTags,
-  studentTags: state.tags.studentTags,
 })
 
 const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchAvailableTags: tagsActions.fetchAvailableTags,
-  fetchTagsByStudent: tagsActions.fetchTagsByStudent,
-  clearStudentTags: tagsActions.clearStudentTags,
 }
 
 export default withRouter(
