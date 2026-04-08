@@ -53,42 +53,13 @@ const StaffTagPage = (props) => {
   const [allStudents, setAllStudents] = useState([])
   const [selectedStudentNumber, setSelectedStudentNumber] = useState(0)
 
-  const [wholeGroupTagData, setWholeGroupTagData] = useState(null)
+  const [groupTagData, setGroupTagData] = useState({})
   const [studentTagData, setStudentTagData] = useState({})
 
   const tagColors = availableTags.reduce((acc, tag, index) => {
     acc[tag] = colourSet[index % colourSet.length]
     return acc
   }, {})
-
-  const showTagStatisticsForWholeGroup = async () => {
-    const studentNumbers = selectedGroup.studentIds
-
-    const groupTags = {}
-
-    for (const studentNumber of studentNumbers) {
-      const studentTags = await tagService.getTagsByStudent(studentNumber)
-
-      for (const tag in studentTags) {
-        if (!groupTags[tag]) {
-          groupTags[tag] = []
-        }
-
-        for (const studentSprint of studentTags[tag]) {
-          let groupSprint = groupTags[tag].find(sprint => sprint.sprint_id === studentSprint.sprint_id)
-
-          if (!groupSprint) {
-            groupSprint = { ...studentSprint, minutes: 0 }
-            groupTags[tag].push(groupSprint)
-          }
-
-          groupSprint.minutes += studentSprint.minutes
-        }
-      }
-    }
-
-    setWholeGroupTagData(groupTags)
-  }
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -166,13 +137,14 @@ const StaffTagPage = (props) => {
 
   useEffect(() => {
     setIsLoading(true)
-    setWholeGroupTagData({})
+    setGroupTagData({})
     setStudentTagData({})
     setIsLoading(false)
   }, [selectedConfigurationId])
 
   useEffect(() => {
     if (!selectedGroupId) return
+
     const fetchSprints = async () => {
       try {
         const sprintData = await sprintService.getSprintsByGroup(selectedGroupId)
@@ -188,23 +160,45 @@ const StaffTagPage = (props) => {
       }
     }
 
+    const fetchGroupTagData = async () => {
+      const fetchedGroupTagData = {}
+
+      for (const studentId of selectedGroup.studentIds) {
+        const singleStudentTagData = await tagService.getTagsByStudent(studentId)
+
+        for (const tag in singleStudentTagData) {
+          if (!fetchedGroupTagData[tag]) {
+            fetchedGroupTagData[tag] = []
+          }
+
+          for (const { sprint_id, minutes } of singleStudentTagData[tag]) {
+            const sprint = fetchedGroupTagData[tag].find(s => s.sprint_id === sprint_id)
+
+            if (sprint) {
+              sprint.minutes += minutes
+            } else {
+              fetchedGroupTagData[tag].push({ sprint_id, minutes })
+            }
+          }
+        }
+      }
+
+      setGroupTagData(fetchedGroupTagData)
+    }
+
     const fetchData = async () => {
       setIsLoading(true)
-      selectedGroupId && (await fetchSprints())
+      if (selectedGroupId) {
+        await fetchSprints()
+        await fetchGroupTagData()
+      }
       setIsLoading(false)
     }
     fetchData()
-
-    if (selectedStudentNumber === 0) {
-      showTagStatisticsForWholeGroup()
-    }
   }, [selectedGroupId])
 
   useEffect(() => {
     if (!selectedStudentNumber) return
-    if (selectedGroupId && selectedStudentNumber === 0) {
-      showTagStatisticsForWholeGroup()
-    }
     const fetchData = async () => {
       setIsLoading(true)
       await tagService.getTagsByStudent(selectedStudentNumber).then((data) => {
@@ -278,7 +272,7 @@ const StaffTagPage = (props) => {
             <TagUsageBarChart
               allTags={availableTags}
               selectedTags={selectedTags}
-              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTagData}
+              tagData={selectedStudentNumber === 0 ? groupTagData : studentTagData}
               tagColors={tagColors}
             />
 
@@ -286,7 +280,7 @@ const StaffTagPage = (props) => {
               allSprints={allSprints}
               allTags={availableTags}
               selectedTags={selectedTags}
-              tagData={wholeGroupTagData && selectedGroupId && selectedStudentNumber === 0 ? wholeGroupTagData : studentTagData}
+              tagData={selectedStudentNumber === 0 ? groupTagData : studentTagData}
               tagColors={tagColors}
             />
           </>
