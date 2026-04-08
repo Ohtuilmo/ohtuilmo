@@ -187,12 +187,10 @@ const StaffTagPage = (props) => {
     }
 
     const fetchData = async () => {
-      setIsLoading(true)
       if (selectedGroupId) {
         await fetchSprints()
         await fetchGroupTagData()
       }
-      setIsLoading(false)
     }
     fetchData()
   }, [selectedGroupId])
@@ -200,11 +198,9 @@ const StaffTagPage = (props) => {
   useEffect(() => {
     if (!selectedStudentNumber) return
     const fetchData = async () => {
-      setIsLoading(true)
       await tagService.getTagsByStudent(selectedStudentNumber).then((data) => {
         setStudentTagData(data)
       })
-      setIsLoading(false)
     }
     fetchData()
   }, [selectedStudentNumber])
