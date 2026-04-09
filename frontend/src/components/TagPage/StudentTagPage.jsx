@@ -12,6 +12,7 @@ import TagUsageLineChart from './TagUsageLineChart'
 import TagUsageBarChart from './TagUsageBarChart'
 
 import sprintService from '../../services/sprints'
+import tagService from '../../services/tags'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import tagsActions from '../../reducers/actions/tagActions'
 import './TagPage.css'
@@ -38,14 +39,13 @@ const StudentTagPage = (props) => {
     user,
     group,
     availableTags,
-    studentTags,
     fetchAvailableTags,
-    fetchTagsByStudent,
   } = props
 
   const [isLoading, setIsLoading] = useState(true)
   const [allSprints, setAllSprints] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
+  const [studentTags, setStudentTags] = useState({})
 
   const tagColors = availableTags.reduce((acc, tag, index) => {
     acc[tag] = colourSet[index % colourSet.length]
@@ -57,7 +57,6 @@ const StudentTagPage = (props) => {
       try {
         const fetchedData = await sprintService.getSprints()
         setAllSprints(fetchedData)
-        console.log('all sprints:', fetchedData)
       } catch (error) {
         console.error(
           'Error fetching sprints:',
@@ -72,13 +71,15 @@ const StudentTagPage = (props) => {
     const fetchData = async () => {
       setIsLoading(true)
       group?.id && (await fetchSprints())
-      await fetchTagsByStudent(user.studentNumber)
+      await tagService.getTagsByStudent(user.studentNumber).then((data) => {
+        setStudentTags(data)
+      })
       await fetchAvailableTags()
       setIsLoading(false)
     }
 
     fetchData()
-  }, [fetchAvailableTags, fetchTagsByStudent, user.studentNumber, group?.id])
+  }, [fetchAvailableTags, user.studentNumber, group?.id])
 
   useEffect(() => {
     setSelectedTags(availableTags)
@@ -134,14 +135,12 @@ const mapStateToProps = (state) => ({
   },
   group: state.registrationDetails.myGroup,
   availableTags: state.tags.availableTags,
-  studentTags: state.tags.studentTags,
 })
 
 const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchAvailableTags: tagsActions.fetchAvailableTags,
-  fetchTagsByStudent: tagsActions.fetchTagsByStudent,
 }
 
 export default withRouter(
