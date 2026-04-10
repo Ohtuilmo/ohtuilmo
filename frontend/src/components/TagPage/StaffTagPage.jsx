@@ -245,7 +245,7 @@ const StaffTagPage = (props) => {
           selectedStudentNumber={selectedStudentNumber}
           handleStudentNumberChange={handleStudentChange}
         />
-        <Typography variant="h4">Tags</Typography>
+        <Typography variant="h5">Tags</Typography>
         <CheckboxMultiSelect
           allItems={availableTags}
           selectedItems={selectedTags}
@@ -258,11 +258,13 @@ const StaffTagPage = (props) => {
         ) : (
           <>
             <Typography variant="h5">
-              {!selectedGroupId
-                ? 'Select a group'
-                : selectedStudentNumber === 0
-                  ? `Tag usage for ${selectedGroup?.name ?? ''}`
-                  : `Tag usage for ${selectedStudent?.first_names ?? ''} ${selectedStudent?.last_name ?? ''}`
+              {!selectedConfigurationId
+                ? 'Select configuration'
+                : !selectedGroupId
+                  ? 'Select a group'
+                  : selectedStudentNumber === 0
+                    ? `Tag usage for ${selectedGroup?.name ?? ''}`
+                    : `Tag usage for ${selectedStudent?.first_names ?? ''} ${selectedStudent?.last_name ?? ''}`
               }
             </Typography>
             <TagUsageBarChart

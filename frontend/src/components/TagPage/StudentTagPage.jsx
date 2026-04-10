@@ -92,7 +92,7 @@ const StudentTagPage = (props) => {
   return (
     <div className="tagpage-container">
       <div className="tagpage-selection-container">
-        <Typography variant="h4">Tags</Typography>
+        <Typography variant="h5">Tags</Typography>
         <CheckboxMultiSelect
           allItems={availableTags}
           selectedItems={selectedTags}
