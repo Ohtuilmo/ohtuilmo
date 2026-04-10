@@ -245,7 +245,7 @@ const StaffTagPage = (props) => {
           selectedStudentNumber={selectedStudentNumber}
           handleStudentNumberChange={handleStudentChange}
         />
-        <Typography variant="h4">Tags</Typography>
+        <Typography variant="h5">Tags</Typography>
         <CheckboxMultiSelect
           allItems={availableTags}
           selectedItems={selectedTags}
