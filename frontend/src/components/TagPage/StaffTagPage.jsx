@@ -258,11 +258,13 @@ const StaffTagPage = (props) => {
         ) : (
           <>
             <Typography variant="h5">
-              {!selectedGroupId
-                ? 'Select a group'
-                : selectedStudentNumber === 0
-                  ? `Tag usage for ${selectedGroup?.name ?? ''}`
-                  : `Tag usage for ${selectedStudent?.first_names ?? ''} ${selectedStudent?.last_name ?? ''}`
+              {!selectedConfigurationId
+                ? 'Select configuration'
+                : !selectedGroupId
+                  ? 'Select a group'
+                  : selectedStudentNumber === 0
+                    ? `Tag usage for ${selectedGroup?.name ?? ''}`
+                    : `Tag usage for ${selectedStudent?.first_names ?? ''} ${selectedStudent?.last_name ?? ''}`
               }
             </Typography>
             <TagUsageBarChart
