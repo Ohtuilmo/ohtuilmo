@@ -6,6 +6,11 @@ import tagService from '../../services/tags'
 import './TagsDashboard.css'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import ConfirmationDialog from '../common/ConfirmationDialog'
 
@@ -24,8 +29,17 @@ const TagsPage = (props) => {
           setAllTags(fetchedData)
         }
       } catch (error) {
-        console.error('Error fetching tags:', error.message, ' / ', error.response.data.error)
-        if (error.response && error.response.data && error.response.data.error) {
+        console.error(
+          'Error fetching tags:',
+          error.message,
+          ' / ',
+          error.response.data.error,
+        )
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
           props.setError(error.response.data.error)
         } else {
           props.setError('An error occurred while fetching tags.')
@@ -49,7 +63,12 @@ const TagsPage = (props) => {
       clearForm()
       props.setSuccess('Tag created successfully.')
     } catch (error) {
-      console.error('Error fetching tags:', error.message, ' / ', error.response.data.error)
+      console.error(
+        'Error fetching tags:',
+        error.message,
+        ' / ',
+        error.response.data.error,
+      )
       props.setError(error.response.data.error, 3000)
     }
   }
@@ -64,7 +83,12 @@ const TagsPage = (props) => {
       setAllTags(updatedTags)
       props.setSuccess('Tag deleted successfully.')
     } catch (error) {
-      console.error('Error fetching tags:', error.message, ' / ', error.response.data.error)
+      console.error(
+        'Error fetching tags:',
+        error.message,
+        ' / ',
+        error.response.data.error,
+      )
       props.setError(error.response.data.error)
     }
   }
@@ -103,33 +127,33 @@ const TagsPage = (props) => {
         Add Tag
       </Button>
       <div className="tag-list-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Tags</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHead>
+            <TableRow hover>
+              <TableCell colSpan={2}>Tags</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {allTags.map((tag) => (
-              <tr key={tag.id}>
-                <td>{tag.title}</td>
-                <td>
+              <TableRow key={tag.id} hover>
+                <TableCell>{tag.title}</TableCell>
+                <TableCell>
                   <Button
                     onClick={() => {
                       setTagToDelete(tag.id)
                       setConfirmOpen(true)
                     }}
-                    className='delete-tag-button'
+                    className="delete-tag-button"
                     variant="contained"
                     color="secondary"
                   >
                     Delete
                   </Button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
         <ConfirmationDialog
           title="Delete Tag?"
           open={confirmOpen}
@@ -153,5 +177,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TagsPage)
+  connect(mapStateToProps, mapDispatchToProps)(TagsPage),
 )

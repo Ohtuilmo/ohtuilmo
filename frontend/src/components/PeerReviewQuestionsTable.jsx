@@ -13,22 +13,22 @@ const PeerReviewQuestionsTableRow = ({
   type,
   header,
   description,
-  options
+  options,
 }) => (
-  <TableRow className="registration-questions-table-row">
+  <TableRow hover className="registration-questions-table-row">
     <TableCell component="th" scope="row">
       {header}
     </TableCell>
     <TableCell>{description}</TableCell>
     <TableCell>{type}</TableCell>
-    <TableCell>{options ? JSON.stringify(options) : ""}</TableCell>
+    <TableCell>{options ? JSON.stringify(options) : ''}</TableCell>
   </TableRow>
 )
 
 const RegistrationQuestionsTable = ({ questions }) => (
   <Table className="registration-questions-table">
     <TableHead>
-      <TableRow>
+      <TableRow hover>
         <TableCell>Header</TableCell>
         <TableCell>Description</TableCell>
         <TableCell>Type</TableCell>
@@ -50,7 +50,7 @@ const RegistrationQuestionsTable = ({ questions }) => (
 )
 
 RegistrationQuestionsTable.propTypes = {
-  questions: PropTypes.arrayOf(peerReviewQuestionShape)
+  questions: PropTypes.arrayOf(peerReviewQuestionShape),
 }
 
 export default RegistrationQuestionsTable

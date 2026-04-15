@@ -19,7 +19,7 @@ const AutocompletedUserSelect = ({
   classNamePrefix,
   selectedUser,
   onSelectedUserChange,
-  defaultUser
+  defaultUser,
 }) => {
   /** @param {AutocompleteResult} selectedOption */
   const handleChange = (selectedOption, { action }) => {
@@ -62,7 +62,7 @@ const AutocompletedUserSelect = ({
 const autosuggestResultShape = PropTypes.shape({
   student_number: PropTypes.string.isRequired,
   first_names: PropTypes.string.isRequired,
-  last_name: PropTypes.string.isRequired
+  last_name: PropTypes.string.isRequired,
 })
 
 AutocompletedUserSelect.propTypes = {
@@ -70,7 +70,7 @@ AutocompletedUserSelect.propTypes = {
   classNamePrefix: PropTypes.string,
   selectedUser: autosuggestResultShape,
   defaultUser: autosuggestResultShape,
-  onSelectedUserChange: PropTypes.func.isRequired
+  onSelectedUserChange: PropTypes.func.isRequired,
 }
 
 export default AutocompletedUserSelect

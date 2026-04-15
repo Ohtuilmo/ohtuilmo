@@ -22,8 +22,8 @@ const customTheme = createMuiTheme({
     color: 'darkOrange',
   },
   typography: {
-    useNextVariants: true
-  }
+    useNextVariants: true,
+  },
 })
 
 const TopicDetailsLink = ({ topicId, ...props }) => (
@@ -74,7 +74,7 @@ const UserTableBody = (props) => {
   if (!users || users.length === 0) {
     return (
       <TableBody>
-        <TableRow>
+        <TableRow hover>
           <TableCell padding="dense" colSpan={4}>
             <Typography variant="overline">No users found</Typography>
           </TableCell>
@@ -86,7 +86,7 @@ const UserTableBody = (props) => {
     <TableBody>
       {users.map((user) => {
         return (
-          <TableRow key={user.username}>
+          <TableRow hover key={user.username}>
             <TableCell padding="dense">
               <Typography variant="body2">
                 {user.last_name} {user.first_names}
@@ -131,7 +131,7 @@ const UserTableBody = (props) => {
 const UserTableHead = () => {
   return (
     <TableHead>
-      <TableRow>
+      <TableRow hover>
         <TableCell padding="dense">Name & student number</TableCell>
         <TableCell padding="dense">Email</TableCell>
         <TableCell padding="dense">Participated</TableCell>
@@ -176,5 +176,5 @@ const mapDispatchToProps = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ViewUsersPage)
+  connect(mapStateToProps, mapDispatchToProps)(ViewUsersPage),
 )

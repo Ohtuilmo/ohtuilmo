@@ -19,9 +19,8 @@ const Root = () => {
   const themePreference = useMediaQuery('(prefers-color-scheme: dark)')
   const [themeMode, setThemeMode] = useState(getInitialMode)
 
-  const effectiveDark = themeMode === 'device'
-    ? themePreference
-    : themeMode === 'dark'
+  const effectiveDark =
+    themeMode === 'device' ? themePreference : themeMode === 'dark'
 
   const theme = createTheme({
     palette: {
@@ -58,11 +57,34 @@ const Root = () => {
         marginBottom: '1.67em',
       },
     },
+    overrides: {
+      MuiTableCell: {
+        head: {
+          backgroundColor: effectiveDark
+            ? 'rgba(255,255,255,0.12)'
+            : 'rgba(0,0,0,0.02)',
+        },
+        body: {
+          backgroundColor: effectiveDark
+            ? 'rgba(255,255,255,0.03)'
+            : 'rgba(0,0,0,0.01)',
+        },
+      },
+      MuiTableRow: {
+        '&:hover': {
+          backgroundColor: effectiveDark
+            ? 'rgba(255,255,255,0.08)'
+            : 'rgba(0,0,0,0.04)',
+        },
+      },
+    },
   })
 
   return (
     <Provider store={store}>
-      <ColorModeContext.Provider value={{ mode: themeMode, setMode: setThemeMode }}>
+      <ColorModeContext.Provider
+        value={{ mode: themeMode, setMode: setThemeMode }}
+      >
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <App />
@@ -72,10 +94,7 @@ const Root = () => {
   )
 }
 
-ReactDOM.render(
-  <Root />,
-  document.getElementById('root')
-)
+ReactDOM.render(<Root />, document.getElementById('root'))
 
 if (window.Cypress) {
   window.store = store
