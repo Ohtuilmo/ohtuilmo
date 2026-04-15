@@ -74,7 +74,11 @@ const instructorItems = (history) => {
     {
       text: 'Time Logs (Instructor)',
       handler: () => history.push('/instructor-timelogs'),
-    }
+    },
+    {
+      text: 'Tags',
+      handler: () => history.push('/instructor-tags'),
+    },
   ]
 }
 
@@ -149,6 +153,11 @@ const adminItems = (history) => {
       text: 'Tag management',
       handler: () => history.push('/administration/tags'),
     },
+    {
+      className: 'tags-statistics-menu-item',
+      text: 'Tag statistics',
+      handler: () => history.push('/administration/tags-statistics'),
+    }
   ]
 }
 

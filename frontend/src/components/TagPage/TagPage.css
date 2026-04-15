@@ -12,9 +12,9 @@
 .tagpage-selection-container {
   display: flex;
   flex-direction: column;
-  max-width: 480px;
+  max-width: 600px;
   margin-bottom: 26px;
-  gap: 38px;
+  gap: 20px;
 }
 
 .tagpage-charts-container {

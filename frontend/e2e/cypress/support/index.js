@@ -849,6 +849,30 @@ Cypress.Commands.add('addTimelogEntry', (timeLogEntryData) => {
   })
 })
 
+Cypress.Commands.add('addTimelogEntryAlt', (timeLogEntryData) => {
+  withLoggedRegisteredUserTokenAlt((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const { studentNumber, sprint, date, minutes, description, tags, groupId } = timeLogEntryData
+
+    cy.request({
+      url: '/api/timelogs',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        studentNumber,
+        sprint,
+        date,
+        minutes,
+        description,
+        tags,
+        groupId
+      }
+    })
+  })
+})
+
 /* DELETE ALL TIMELOGS FOR TESTING */
 
 Cypress.Commands.add('deleteAllTimelogs', () => {
