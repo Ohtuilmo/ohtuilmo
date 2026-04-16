@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import Table from '@material-ui/core/Table'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
-import TableBody from '@material-ui/core/TableBody'
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@material-ui/core'
 
 import { peerReviewQuestionShape } from './common/sharedPropTypes'
 

@@ -37,13 +37,24 @@ const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
         padding: 20,
         borderRadius: 10,
       }}
-
     >
       <div style={{ marginBottom: '10px' }}>
-        Projektin <a href='https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/blob/master/README.md#arvosteluperusteet'>
-        arvosteluperusteissa</a> erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely. Vaatimuksena on noin 200 tuntia työtä koko kurssin aikana, mikä on noin 15 tuntia viikossa.
+        Projektin{' '}
+        <a href="https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/blob/master/README.md#arvosteluperusteet">
+          arvosteluperusteissa
+        </a>{' '}
+        erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely.
+        Vaatimuksena on noin 200 tuntia työtä koko kurssin aikana, mikä on noin
+        15 tuntia viikossa.
       </div>
-      <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '10px' }}>
+      <label
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+          marginBottom: '10px',
+        }}
+      >
         <input
           type="checkbox"
           checked={checkbox1}
@@ -52,7 +63,9 @@ const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
         />
         olen tutustunut projektin arvosteluperusteisiin
       </label>
-      <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+      <label
+        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+      >
         <input
           type="checkbox"
           checked={checkbox2}
@@ -70,7 +83,7 @@ class RegistrationPage extends React.Component {
     super(props)
     this.state = {
       checkbox1: false,
-      checkbox2: false
+      checkbox2: false,
     }
   }
 
@@ -94,7 +107,7 @@ class RegistrationPage extends React.Component {
       console.log('error happened', e)
       this.props.setError(
         'Error fetching registration management configuration',
-        5000
+        5000,
       )
     }
   }
@@ -106,7 +119,7 @@ class RegistrationPage extends React.Component {
       console.log('error happened', e.response)
       this.props.setError(
         'Error fetching own registration... try reloading the page',
-        3000
+        3000,
       )
     }
   }
@@ -176,7 +189,7 @@ class RegistrationPage extends React.Component {
     }
 
     const answer = window.confirm(
-      'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?'
+      'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?',
     )
     if (!answer) return
 
@@ -193,7 +206,7 @@ class RegistrationPage extends React.Component {
       if (e.response.data.error === 'student already registered') {
         this.props.setError(
           'You have already registered for this course',
-          15000
+          15000,
         )
       } else if (e.response.data.error === 'missing email') {
         this.props.setError('Email is missing', 5000)
@@ -209,7 +222,7 @@ class RegistrationPage extends React.Component {
     if (
       ownRegistrations.length > 0 &&
       ownRegistrations.find(
-        (registration) => registration.configuration_id === projectConf
+        (registration) => registration.configuration_id === projectConf,
       )
     ) {
       return <h2>You have already registered to current project.</h2>
@@ -299,12 +312,13 @@ class RegistrationPage extends React.Component {
               }}
             >
               Huomaa, että projektiin osallistuminen edellyttää että kaikki
-              esitietona olevat opintojaksot eli kurssit Ohjelmistotuotanto ja Tietokannat ja Web-ohjelmointi sekä
-              yksi seuraavista (Aineopintojen harjoitustyö: Ohjelmistotekniikka, Aineopintojen harjoitustyö: Algoritmit ja
-              teköäly, Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit,
-              Aineopintojen harjoitustyö: Tietoliikenne, Full stack
-              -websovelluskehitys) on suoritettu
-              tai palautettu arvosteltavaksi projektin alkuun mennessä.
+              esitietona olevat opintojaksot eli kurssit Ohjelmistotuotanto ja
+              Tietokannat ja Web-ohjelmointi sekä yksi seuraavista
+              (Aineopintojen harjoitustyö: Ohjelmistotekniikka, Aineopintojen
+              harjoitustyö: Algoritmit ja teköäly, Aineopintojen harjoitustyö:
+              Tietorakenteet ja algoritmit, Aineopintojen harjoitustyö:
+              Tietoliikenne, Full stack -websovelluskehitys) on suoritettu tai
+              palautettu arvosteltavaksi projektin alkuun mennessä.
             </div>
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
@@ -363,7 +377,6 @@ class RegistrationPage extends React.Component {
           <Button
             type="submit"
             variant="outlined"
-            style={{ backgroundColor: 'white' }}
             disabled={!this.state.checkbox1 || !this.state.checkbox2}
           >
             Submit your registration
@@ -400,7 +413,7 @@ const mapDispatchToProps = {
 
 const ConnectedRegistrationPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(RegistrationPage)
 
 export default withRouter(ConnectedRegistrationPage)

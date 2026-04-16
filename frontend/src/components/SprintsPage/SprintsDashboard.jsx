@@ -9,8 +9,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
-
-
 const SprintsPage = (props) => {
   const [allSprints, setAllSprints] = useState([])
   const [sprintNumber, setSprintNumber] = useState('')
@@ -142,42 +140,49 @@ const SprintsPage = (props) => {
               </tr>
             </thead>
             <tbody id="sprint-list-rows">
-              {allSprints.sort((a, b) => b.sprint - a.sprint).map((sprint) => {
+              {allSprints
+                .sort((a, b) => b.sprint - a.sprint)
+                .map((sprint) => {
+                  const startDateObj = new Date(sprint.start_date)
+                  const endDateObj = new Date(sprint.end_date)
 
-                const startDateObj = new Date(sprint.start_date)
-                const endDateObj = new Date(sprint.end_date)
+                  const formattedStartDate = startDateObj
+                    .toLocaleDateString('fi-FI', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })
+                    .replace(/\./g, '/')
 
-                const formattedStartDate = startDateObj.toLocaleDateString('fi-FI', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                }).replace(/\./g, '/')
+                  const formattedEndDate = endDateObj
+                    .toLocaleDateString('fi-FI', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })
+                    .replace(/\./g, '/')
 
-                const formattedEndDate = endDateObj.toLocaleDateString('fi-FI', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                }).replace(/\./g, '/')
-
-                return (
-                  <tr key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
-                    <td className="sprint-list-sprint-number">{sprint.sprint}</td>
-                    <td>{formattedStartDate}</td>
-                    <td>{formattedEndDate}</td>
-                    <td>
-                      <Button
-                        id={`sprint-remove-button-${sprint.id}`}
-                        onClick={() => handleDeleteSprint(sprint.id)}
-                        className="delete-sprint-button"
-                        variant="contained"
-                        color="secondary"
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
-                )
-              })}
+                  return (
+                    <tr key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
+                      <td className="sprint-list-sprint-number">
+                        {sprint.sprint}
+                      </td>
+                      <td>{formattedStartDate}</td>
+                      <td>{formattedEndDate}</td>
+                      <td>
+                        <Button
+                          id={`sprint-remove-button-${sprint.id}`}
+                          onClick={() => handleDeleteSprint(sprint.id)}
+                          className="delete-sprint-button"
+                          variant="contained"
+                          color="secondary"
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                })}
             </tbody>
           </table>
         </div>
@@ -197,5 +202,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(SprintsPage)
+  connect(mapStateToProps, mapDispatchToProps)(SprintsPage),
 )

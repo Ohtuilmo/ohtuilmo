@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import { Table, TableBody, TableCell, TableRow } from '@material-ui/core'
 
 import groupManagementService from '../../services/groupManagement'
 
@@ -13,12 +14,6 @@ import groupManagementActions from '../../reducers/actions/groupManagementAction
 import TopicSelect from './TopicSelect'
 import AutocompletedUserSelect from './AutocompletedUserSelect'
 import './GroupCreationForm.css'
-
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
 
 const FormInput = ({ label, children }) => (
   <TableRow hover>
