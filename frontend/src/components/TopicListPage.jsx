@@ -287,7 +287,11 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
   }
 
   return (
-    <TableRow className={className()} data-cy-topic-name={topic.content.title}>
+    <TableRow
+      hover
+      className={className()}
+      data-cy-topic-name={topic.content.title}
+    >
       <TableCell padding="dense">
         <p className="topic-table-row__topic-title">
           <TopicDetailsLink topicId={topic.id}>
@@ -357,7 +361,7 @@ TopicTableRow.propTypes = {
 
 const TopicTableHead = () => (
   <TableHead>
-    <TableRow>
+    <TableRow hover>
       <TableCell padding="dense">Topic</TableCell>
       <TableCell padding="none">Customer review</TableCell>
       <TableCell padding="none">Send accept/reject email</TableCell>
