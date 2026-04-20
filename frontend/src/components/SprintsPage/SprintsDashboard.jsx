@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core'
 import sprintService from '../../services/sprints'
 import { NotInGroupPlaceholder } from '../common/Placeholders'
 import './SprintsDashboard.css'
@@ -130,16 +131,16 @@ const SprintsPage = (props) => {
       </Button>
       {allSprints.length > 0 && (
         <div className="sprint-list-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Sprint Number</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="sprint-list-rows">
+          <Table>
+            <TableHead>
+              <TableRow hover>
+                <TableCell>Sprint Number</TableCell>
+                <TableCell>Start Date</TableCell>
+                <TableCell>End Date</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody id="sprint-list-rows">
               {allSprints
                 .sort((a, b) => b.sprint - a.sprint)
                 .map((sprint) => {
@@ -163,13 +164,13 @@ const SprintsPage = (props) => {
                     .replace(/\./g, '/')
 
                   return (
-                    <tr key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
-                      <td className="sprint-list-sprint-number">
+                    <TableRow hover key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
+                      <TableCell className="sprint-list-sprint-number">
                         {sprint.sprint}
-                      </td>
-                      <td>{formattedStartDate}</td>
-                      <td>{formattedEndDate}</td>
-                      <td>
+                      </TableCell>
+                      <TableCell>{formattedStartDate}</TableCell>
+                      <TableCell>{formattedEndDate}</TableCell>
+                      <TableCell>
                         <Button
                           id={`sprint-remove-button-${sprint.id}`}
                           onClick={() => handleDeleteSprint(sprint.id)}
@@ -179,12 +180,12 @@ const SprintsPage = (props) => {
                         >
                           Delete
                         </Button>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>

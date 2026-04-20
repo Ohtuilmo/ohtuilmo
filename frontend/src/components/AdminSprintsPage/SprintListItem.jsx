@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useImperativeHandle } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
+import { TableRow, TableCell } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 
 import sprintService from '../../services/sprints'
@@ -71,9 +72,9 @@ export const SprintListItem = (props) => {
       setEndDateErrorMessage("")
 
       try {
-        const res = await sprintService.updateSprint({ 
+        const res = await sprintService.updateSprint({
           id: sprint.id,
-          start_date: newStartDate, 
+          start_date: newStartDate,
           end_date: newEndDate,
           sprint: sprint.sprint
         })
@@ -91,43 +92,47 @@ export const SprintListItem = (props) => {
 
 
   return (
-    <tr>
-      <td className="sprint-list-sprint-number">{sprint.sprint}</td>
-      <td>{!isEditing ? formatDate(startDate) : 
-        <TextField
-          errors={(!!startDateErrorMessage).toString()}
-          helperText={startDateErrorMessage}
-          className="date"
-          id="date"
-          type="date"
-          label="Date"
-          aria-describedby="date"
-          value={newStartDate}
-          onChange={(e) => setNewStartDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
-        />
-      }</td>
-      <td>{!isEditing ? formatDate(endDate) : 
-        <TextField
-          errors={(!!endDateErrorMessage).toString()}
-          helperText={endDateErrorMessage}
-          className="date"
-          id="date"
-          type="date"
-          label="Date"
-          aria-describedby="date"
-          value={newEndDate}
-          onChange={(e) => setNewEndDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
-        />
-      }</td>
-      <td>
+    <TableRow hover>
+      <TableCell className="sprint-list-sprint-number">{sprint.sprint}</TableCell>
+      <TableCell>
+        {!isEditing ? formatDate(startDate) :
+          <TextField
+            errors={(!!startDateErrorMessage).toString()}
+            helperText={startDateErrorMessage}
+            className="date"
+            id="date"
+            type="date"
+            label="Date"
+            aria-describedby="date"
+            value={newStartDate}
+            onChange={(e) => setNewStartDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+          />
+        }
+      </TableCell>
+      <TableCell>
+        {!isEditing ? formatDate(endDate) :
+          <TextField
+            errors={(!!endDateErrorMessage).toString()}
+            helperText={endDateErrorMessage}
+            className="date"
+            id="date"
+            type="date"
+            label="Date"
+            aria-describedby="date"
+            value={newEndDate}
+            onChange={(e) => setNewEndDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+          />
+        }
+      </TableCell>
+      <TableCell>
         {isEditing &&
           <Button
             id={`sprint-edit-save-button-${sprint.id}`}
@@ -136,7 +141,7 @@ export const SprintListItem = (props) => {
             variant="contained"
             color="secondary"
           >
-          Save
+            Save
           </Button>
         }
         <Button
@@ -146,9 +151,9 @@ export const SprintListItem = (props) => {
           variant="contained"
           color="secondary"
         >
-        {isEditing ? "Cancel" : "Edit" }
+          {isEditing ? "Cancel" : "Edit" }
         </Button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   )
 }

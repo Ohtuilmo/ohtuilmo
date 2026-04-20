@@ -9,8 +9,11 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts'
+import { useTheme } from '@material-ui/core/styles';
 
 const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
+  const theme = useTheme()
+
   const data = allTags
     .filter((tag) => selectedTags.includes(tag))
     .map((tag) => {
@@ -33,6 +36,9 @@ const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
           textAnchor="end"
           interval={0}
           height={80}
+          tick={{ fill: theme.palette.text.primary }}
+          tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+          axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
           tickFormatter={(value) =>
             value.length > 10 ? `${value.substring(0, 10)}...` : value
           }
@@ -42,9 +48,18 @@ const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
             value: 'Hours',
             angle: -90,
             position: 'insideLeft',
+            fill: theme.palette.text.primary,
           }}
+          tick={{ fill: theme.custom.chartAxis.stroke }}
+          tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+          axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
         />
-        <Tooltip formatter={(value) => `${Math.round(value * 100) / 100} h`} />
+        <Tooltip
+          formatter={(value) => `${Math.round(value * 100) / 100} h`}
+          cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }}
+          contentStyle={{ backgroundColor: theme.custom.chartTooltip.background }}
+          itemStyle={{ color: theme.palette.text }}
+        />
         <Bar dataKey="value">
           {data.map((entry) => (
             <Cell

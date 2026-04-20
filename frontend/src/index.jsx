@@ -9,6 +9,7 @@ import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { ColorModeContext } from './context/ColorModeContext'
+import CustomerReviewPage from './components/CustomerReviewPage'
 
 const getInitialMode = () => {
   const stored = localStorage.getItem('theme')
@@ -55,6 +56,18 @@ const Root = () => {
       h5: {
         marginTop: '1.67em',
         marginBottom: '1.67em',
+      },
+    },
+    custom: {
+      chartTooltip: {
+        background: effectiveDark ? '#202020' : '#ffffff',
+        border: effectiveDark ? '#73292c' : '#d88488',
+        shadow: effectiveDark
+          ? '1px 1px 2px #73292c'
+          : '1px 1px 2px #d88488',
+      },
+      chartAxis: {
+        stroke: effectiveDark ? '#ffffff' : '#4d4d4d',
       },
     },
     overrides: {

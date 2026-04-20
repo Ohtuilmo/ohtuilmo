@@ -6,7 +6,14 @@ import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintsSelectForm } from "./SprintsSelectForm"
 import { SprintListItem } from "./SprintListItem"
 
-import { Typography } from '@material-ui/core'
+import {
+  Typography,
+  Table,
+  TableRow,
+  TableBody,
+  TableHead,
+  TableCell
+} from '@material-ui/core'
 
 import sprintService from '../../services/sprints'
 import configurationService from '../../services/configuration'
@@ -112,21 +119,21 @@ const AdminSprintsPage = (props) => {
         <Typography variant='h5'>Sprints by {selectedGroup.name}</Typography>
       {allSprints.length > 0 && (
         <div className="sprint-list-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Sprint Number</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="sprint-list-rows">
+          <Table>
+            <TableHead>
+              <TableRow hover>
+                <TableCell>Sprint Number</TableCell>
+                <TableCell>Start Date</TableCell>
+                <TableCell>End Date</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody id="sprint-list-rows">
               {allSprints.sort((a, b) => b.sprint - a.sprint).map((sprint) => {
                 return <SprintListItem sprint={sprint} setError={setError} setSuccess={setSuccess} key={sprint.id}/>
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
       </div>

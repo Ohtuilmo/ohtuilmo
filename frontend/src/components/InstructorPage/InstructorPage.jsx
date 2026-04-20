@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 import Error from '@material-ui/icons/Error'
+import { Table, TableRow, TableCell, TableHead, TableBody } from '@material-ui/core'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
 import './InstructorPage.css'
@@ -259,46 +260,46 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
 
   return (
     <div className="padding-left-18">
-      <table className="radio-button-table">
-        <thead>
-          <tr className="radio-inforow">
-            <th />
+      <Table className="radio-button-table">
+        <TableHead>
+          <TableRow hover className="radio-inforow">
+            <TableCell />
             {peers.map((peer, index) => (
-              <th
+              <TableCell
                 key={`radio-infoheader-${index}`}
                 className="radio-infoheader text-overflow-ellipsis"
               >
                 Reviewer
-              </th>
+              </TableCell>
             ))}
-            <th />
-          </tr>
-          <tr className="radio-row">
-            <th />
+            <TableCell />
+          </TableRow>
+          <TableRow hover className="radio-row">
+            <TableCell />
             <PeerHeaders peers={peers} />
-            <th className="radio-header text-overflow-ellipsis">
+            <TableCell className="radio-header text-overflow-ellipsis">
               Average <p>(without self-review)</p>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {peers.map((member, index) => {
             return (
-              <tr key={index}>
-                <th className="peer-header text-overflow-ellipsis">
+              <TableRow hover key={index}>
+                <TableCell className="peer-header text-overflow-ellipsis">
                   <p>{member}</p>
-                </th>
+                </TableCell>
                 <PeerRows
                   member={member}
                   answers={answers}
                   questionNumber={questionNumber}
                   numberOfPeers={peers.length}
                 />
-              </tr>
+              </TableRow>
             )
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   )
 }
@@ -306,9 +307,9 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
 const PeerHeaders = ({ peers }) => {
   return peers.map((option, optionId) => {
     return (
-      <th className="radio-header text-overflow-ellipsis" key={optionId}>
+      <TableCell className="radio-header text-overflow-ellipsis" key={optionId}>
         {option}
-      </th>
+      </TableCell>
     )
   })
 }
@@ -343,13 +344,15 @@ const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
   return (
     <React.Fragment>
       {allPeersRatings.map((ratingInfo, index) => (
-        <td className="radio-button" key={`peer-row-${index}`}>
+        <TableCell className="radio-button" key={`peer-row-${index}`}>
           {typeof ratingInfo.rating === 'number'
             ? ratingInfo.rating.toFixed(2)
             : ratingInfo.rating}
-        </td>
+        </TableCell>
       ))}
-      <td className="radio-button">{averageRating}</td>
+      <TableCell className="radio-button">
+        {averageRating}
+      </TableCell>
     </React.Fragment>
   )
 }
