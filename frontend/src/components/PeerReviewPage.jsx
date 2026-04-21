@@ -16,8 +16,10 @@ import peerReviewPageActions from '../reducers/actions/peerReviewPageActions.js'
 import peerReviewService from '../services/peerReview'
 import groupManagementService from '../services/groupManagement'
 import timeLogService from '../services/timeLogs'
+
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core'
 
 class PeerReview extends React.Component {
   async componentDidMount() {
@@ -279,22 +281,25 @@ const Question = ({
     return (
       <div className="peer-review-box">
         <h3 className="peer-review-box__h3">{question.header}</h3>
-        <table className="peer-review-box__radio-button-table">
-          <thead>
-            <tr className="peer-review-box__radio-row">
-              <th className="peer-review-box__radio-header" />
+        <Table
+          size="small"
+          className="peer-review-box__radio-button-table"
+        >
+          <TableHead>
+            <TableRow hover>
+              <TableCell className="peer-review-box__radio-header" />
               <OptionHeaders options={temp} />
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             <QuestionRows
               peers={peers}
               options={temp}
               questionId={question.header}
               answerSheet={answerSheet[questionId]}
             />
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     )
   } else if (question.type === 'peerReview') {
@@ -368,9 +373,9 @@ const Question = ({
 const OptionHeaders = ({ options }) => {
   return options.map((option, optionId) => {
     return (
-      <th className="peer-review-box__radio-header" key={optionId}>
+      <TableCell className="peer-review-box__radio-header" key={optionId}>
         {option}
-      </th>
+      </TableCell>
     )
   })
 }
@@ -432,11 +437,11 @@ const QuestionRow = ({
   answerSheet,
 }) => {
   return (
-    <tr className="peer-review-box__peer-row">
-      <th className="peer-review-box__peer-header">{peerName}</th>
+    <TableRow hover className="peer-review-box__peer-row">
+      <TableCell align="center">{peerName}</TableCell>
       {options.map((buttonId, buttonNumber) => {
         return (
-          <th className="peer-review-box__radio-button" key={buttonId}>
+          <TableCell className="peer-review-box__radio-button" key={buttonId}>
             <input
               type="radio"
               name={questionId.toString() + peerId.toString()}
@@ -444,10 +449,10 @@ const QuestionRow = ({
                 radioSelectHandler(peerId, buttonNumber, answerSheet)
               }
             />
-          </th>
+          </TableCell>
         )
       })}
-    </tr>
+    </TableRow>
   )
 }
 
