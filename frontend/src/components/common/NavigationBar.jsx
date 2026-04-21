@@ -111,13 +111,25 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
     import.meta.env.MODE === "development"
       ? (
         <div style={{ marginRight: "10px"}}>
-          <Button variant="outlined" onClick={async () => await handleClick("student")}>
+          <Button
+            variant="outlined"
+            style={{ color: '#323232', borderColor: '#c2a628' }}
+            onClick={async () => await handleClick("student")}
+          >
             Student
           </Button>
-          <Button variant="outlined" onClick={async () => await handleClick("instructor")}>
+          <Button
+            variant="outlined"
+            style={{ color: '#323232', borderColor: '#c2a628' }}
+            onClick={async () => await handleClick("instructor")}
+          >
             Instructor
           </Button>
-          <Button variant="outlined" onClick={async () => await handleClick("admin")}>
+          <Button
+            variant="outlined"
+            style={{ color: '#323232', borderColor: '#c2a628' }}
+            onClick={async () => await handleClick("admin")}
+          >
             Admin
           </Button>
         </div>
@@ -158,7 +170,7 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
           </label>
           <Button
             className="navigation-bar-logout-button"
-            style={{ marginLeft: '10px' }}
+            style={{ marginLeft: '10px', color: '#323232', borderColor: '#c2a628' }}
             variant="outlined"
             onClick={logout}
           >

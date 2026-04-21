@@ -74,7 +74,7 @@ class NavigationMenu extends React.Component {
             aria-haspopup="true"
             onClick={this.handleToggle}
           >
-            <MenuIcon />
+            <MenuIcon style={{ color: '#323232' }}/>
           </IconButton>
           <Popper
             id="hamburger-menu-popper"
@@ -96,18 +96,18 @@ class NavigationMenu extends React.Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <>
-                    {menuItemsArray.map((group, index) =>
-                      group.title ? (
-                        <React.Fragment key={`group-${index}`}>
-                          <MenuList>
-                            <MenuItem disabled>{group.title}</MenuItem>
-                            {renderMenuItems(group.items)}
-                          </MenuList>
-                        </React.Fragment>
-                      ) : (
-                        renderMenuItems(group)
-                      )
-                    )}
+                      {menuItemsArray.map((group, index) =>
+                        group.title ? (
+                          <React.Fragment key={`group-${index}`}>
+                            <MenuList>
+                              <MenuItem disabled>{group.title}</MenuItem>
+                              {renderMenuItems(group.items)}
+                            </MenuList>
+                          </React.Fragment>
+                        ) : (
+                          renderMenuItems(group)
+                        )
+                      )}
                     </>
                   </ClickAwayListener>
                 </Paper>
