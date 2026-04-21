@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AsyncSelect from 'react-select/lib/Async'
+import { useTheme } from '@material-ui/core/styles'
 
 import autocomplete from '../../services/autocomplete'
 
@@ -22,6 +23,8 @@ const AutocompletedUserSelect = ({
   defaultUser,
 }) => {
   /** @param {AutocompleteResult} selectedOption */
+  const muiTheme = useTheme()
+
   const handleChange = (selectedOption, { action }) => {
     if (action === 'clear') {
       // selectedOption is null
@@ -55,6 +58,14 @@ const AutocompletedUserSelect = ({
       placeholder="Search by name"
       className={className}
       classNamePrefix={classNamePrefix}
+      theme={(theme) => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            primary25: 'red',
+            neutral0: muiTheme.palette.type === "dark" ? "black" : "white"
+          },
+        })}
     />
   )
 }
