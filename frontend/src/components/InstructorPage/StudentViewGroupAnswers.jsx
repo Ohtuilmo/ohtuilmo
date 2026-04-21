@@ -1,4 +1,5 @@
 import React from 'react'
+import { Table, TableRow, TableCell, TableHead, TableBody } from '@material-ui/core'
 
 import './InstructorPage.css'
 
@@ -35,33 +36,33 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
     <div className='padding-left-18'>
       <h3>{questionHeader}</h3>
       <div className='padding-left-18'>
-        <table className="radio-button-table">
-          <thead>
-            <tr className="radio-inforow">
-              <th />
-              { allPeers.map((peer, index) => (
-                <th key={`radio-infoheader-${index}`} className="radio-infoheader text-overflow-ellipsis">
-                Reviewer
-                </th>
+        <Table size="small" className="radio-button-table">
+          <TableHead>
+            <TableRow hover className="radio-inforow">
+              <TableCell />
+              {allPeers.map((peer, index) => (
+                <TableCell key={`radio-infoheader-${index}`} className="radio-infoheader text-overflow-ellipsis">
+                  Reviewer
+                </TableCell>
               ))}
-              <th />
-            </tr>
-            <tr className="radio-row">
-              <th />
-              {allPeers.map(peer => <th key={peer} className="radio-header text-overflow-ellipsis">{peer}</th>)}
-              <th className="radio-header text-overflow-ellipsis">Average <p>(without self-review)</p></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="peer-header">
-              <th><p>{studentName}</p></th>
-              {allPeers.map((peer, peerIndex) => (
-                <td key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</td>
-              ))}
-              <td className="radio-button">{calculateAverageRating(studentName, answers)}</td>
-            </tr>
-          </tbody>
-        </table>
+              <TableCell />
+            </TableRow>
+            <TableRow hover className="radio-row">
+              <TableCell />
+              {allPeers.map(peer => <TableCell key={peer} className="radio-header text-overflow-ellipsis">{peer}</TableCell>)}
+              <TableCell className="radio-header text-overflow-ellipsis">Average <p>(without self-review)</p></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow hover className="peer-header">
+              <TableCell><p>{studentName}</p></TableCell>
+                {allPeers.map((peer, peerIndex) => (
+                  <TableCell key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</TableCell>
+                ))}
+                <TableCell className="radio-button">{calculateAverageRating(studentName, answers)}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
     </div>
   )
