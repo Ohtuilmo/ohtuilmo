@@ -44,6 +44,8 @@ const AutocompletedUserSelect = ({
     return await autocomplete.findUsersByPartialName(inputValue)
   }
 
+  const isDark = muiTheme === 'dark'
+
   return (
     <AsyncSelect
       cacheOptions
@@ -59,13 +61,14 @@ const AutocompletedUserSelect = ({
       className={className}
       classNamePrefix={classNamePrefix}
       theme={(theme) => ({
-          ...theme,
-          colors: {
-            ...theme.colors,
-            primary25: 'red',
-            neutral0: muiTheme.palette.type === "dark" ? "black" : "white"
-          },
-        })}
+        ...theme,
+        colors: {
+          ...theme.colors,
+          primary25: muiTheme.palette.type === 'dark' ? 'rgba(255,255,255,0.08)' : 'lightgrey',
+          neutral80: muiTheme.palette.text.primary,
+          neutral0: muiTheme.palette.type === 'dark' ? '#303030' : 'white'
+        },
+      })}
     />
   )
 }

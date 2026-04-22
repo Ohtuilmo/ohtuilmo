@@ -20,6 +20,7 @@ import {
   TableRow,
   TableCell,
   TableHead,
+  useTheme,
 } from '@material-ui/core'
 import Icon from '@material-ui/icons/Input'
 
@@ -267,6 +268,7 @@ const isCustomerReviewMail = (sentMail) =>
  * @param {{ topic: any, onEmailSendRequested: (info: EmailInfo) => void, onActiveToggle: () => void }} props
  */
 const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
+  const theme = useTheme()
   const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
   const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
   const hasCustomerReviewMailBeenSent =
@@ -286,10 +288,24 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
     return 'topic-table-row'
   }
 
+  const rowBgColor = () => {
+    const isDark = theme.palette.type === 'dark'
+    const alpha = isDark ? 0.12 : 0.08
+
+    if (hasAcceptMailBeenSent) {
+      return { backgroundColor: `rgba(76, 175, 80, ${alpha})` }
+    }
+
+    if (hasRejectMailBeenSent) {
+      return { backgroundColor: `rgba(244, 67, 54, ${alpha})` }
+    }
+  }
+
   return (
     <TableRow
       hover
       className={className()}
+      style={rowBgColor()}
       data-cy-topic-name={topic.content.title}
     >
       <TableCell padding="dense">
