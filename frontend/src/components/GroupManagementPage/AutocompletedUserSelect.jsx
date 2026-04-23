@@ -44,8 +44,6 @@ const AutocompletedUserSelect = ({
     return await autocomplete.findUsersByPartialName(inputValue)
   }
 
-  const isDark = muiTheme === 'dark'
-
   return (
     <AsyncSelect
       cacheOptions

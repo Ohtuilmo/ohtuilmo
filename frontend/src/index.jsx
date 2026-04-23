@@ -7,31 +7,26 @@ import store from './reducers/store'
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'
 import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { ColorModeContext } from './context/ColorModeContext'
-import CustomerReviewPage from './components/CustomerReviewPage'
 
 const getInitialMode = () => {
   const stored = localStorage.getItem('theme')
-  return stored ? stored : 'device'
+  return stored ? stored : 'light'
 }
 
 const Root = () => {
-  const themePreference = useMediaQuery('(prefers-color-scheme: dark)')
   const [themeMode, setThemeMode] = useState(getInitialMode)
-
-  const effectiveDark =
-    themeMode === 'device' ? themePreference : themeMode === 'dark'
+  const isDark =themeMode === 'dark'
 
   const theme = createTheme({
     palette: {
-      type: effectiveDark ? 'dark' : 'light',
+      type: isDark ? 'dark' : 'light',
       primary: {
         main: '#fdd835',
       },
       secondary: amber,
       text: {
-        primary: effectiveDark ? '#ffffff' : '#4d4d4d',
+        primary: isDark ? '#ffffff' : '#4d4d4d',
       },
     },
     typography: {
@@ -60,32 +55,32 @@ const Root = () => {
     },
     custom: {
       chartTooltip: {
-        background: effectiveDark ? '#202020' : '#ffffff',
-        border: effectiveDark ? '#73292c' : '#d88488',
-        shadow: effectiveDark
+        background: isDark ? '#202020' : '#ffffff',
+        border: isDark ? '#73292c' : '#d88488',
+        shadow: isDark
           ? '1px 1px 2px #73292c'
           : '1px 1px 2px #d88488',
       },
       chartAxis: {
-        stroke: effectiveDark ? '#ffffff' : '#4d4d4d',
+        stroke: isDark ? '#ffffff' : '#4d4d4d',
       },
     },
     overrides: {
       MuiTableCell: {
         head: {
-          backgroundColor: effectiveDark
+          backgroundColor: isDark
             ? 'rgba(255,255,255,0.12)'
             : 'rgba(0,0,0,0.02)',
         },
         body: {
-          backgroundColor: effectiveDark
+          backgroundColor: isDark
             ? 'rgba(255,255,255,0.03)'
             : 'rgba(0,0,0,0.01)',
         },
       },
       MuiTableRow: {
         '&:hover': {
-          backgroundColor: effectiveDark
+          backgroundColor: isDark
             ? 'rgba(255,255,255,0.08)'
             : 'rgba(0,0,0,0.04)',
         },

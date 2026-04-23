@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
 export const ColorModeContext = createContext({
-  mode: 'device',
+  mode: 'light',
   setMode: () => {}
 })

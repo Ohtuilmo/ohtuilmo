@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import GroupIcon from '@material-ui/icons/Group'
+import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
+import Brightness7RoundedIcon from '@material-ui/icons/Brightness7Rounded';
 import NavigationMenu from './NavigationMenu'
 import {
   regularItems,
@@ -141,6 +143,20 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
     localStorage.setItem('theme', theme)
   }
 
+  const ThemeSelection = () => (
+    <Button
+      variant='outlined'
+      style={{ color: '#323232', marginLeft: '5px', borderColor: '#c2a628' }}
+      onClick={() => switchTheme(theme === 'dark' ? 'light' : 'dark')}
+    >
+      {theme === 'dark'
+        ? <Brightness7RoundedIcon />
+        : <Brightness4RoundedIcon />
+      }
+      Theme
+    </Button>
+  )
+
   return (
     <div className="navigation-bar-container">
       <AppBar position="static">
@@ -156,18 +172,7 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
           </Typography>
           {select_role}
           {loggedIn}
-          <label htmlFor="theme-switch">
-            theme
-            <select
-              id="theme-switch"
-              value={theme}
-              onChange={e => switchTheme(e.target.value)}
-            >
-              <option value="device"> device </option>
-              <option value="light"> light </option>
-              <option value="dark"> dark </option>
-            </select>
-          </label>
+          <ThemeSelection />
           <Button
             className="navigation-bar-logout-button"
             style={{ marginLeft: '10px', color: '#323232', borderColor: '#c2a628' }}
