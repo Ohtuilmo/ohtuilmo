@@ -148,6 +148,7 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
       variant='outlined'
       style={{ color: '#323232', marginLeft: '5px', borderColor: '#c2a628' }}
       onClick={() => switchTheme(theme === 'dark' ? 'light' : 'dark')}
+      data-cy='theme-toggle'
     >
       {theme === 'dark'
         ? <Brightness7RoundedIcon />
