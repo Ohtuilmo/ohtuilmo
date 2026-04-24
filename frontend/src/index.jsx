@@ -66,6 +66,16 @@ const Root = () => {
       },
     },
     overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          a: {
+            color: isDark ? '#78c3ff' : '',
+          },
+          'a:visited': {
+            color: isDark ? '#b4a0dc' : '',
+          },
+        },
+      },
       MuiTableCell: {
         head: {
           backgroundColor: isDark
