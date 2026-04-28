@@ -99,7 +99,7 @@ const barBorderColorByPace = (pace) => {
 }
 
 const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDuration) => {
-  const totalHours = allStudentHours.find(sprint => sprint.name === studentName && sprint.sprint === -1)?.hours
+  const totalHours = allStudentHours.find(sprint => sprint.name === studentName && sprint.sprint === -1)?.altHours
 
   let pace = ""
   if (totalHours >= totalDuration*idealHoursPerDay) {
@@ -122,7 +122,7 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
       return
 
     const studentName = student.name
-    const studentHours = student.hours
+    const studentHours = student.altHours
     const sprintDates = allSprintDates[student.sprint]
 
     if (studentName !== targetStudent)
@@ -130,21 +130,25 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
     if (!sprintDates)
       return
 
+    const sprintDuration = durationInDays(sprintDates.start_date, sprintDates.end_date)
+    const sprintDays = Math.min(
+      Math.max(durationInDays(sprintDates.start_date, new Date()), 1),
+      sprintDuration
+    )
 
     let pace = ""
-    const sprintDuration = durationInDays(sprintDates.start_date, sprintDates.end_date)
-    if (studentHours > sprintDuration*idealHoursPerDay) {
+    if (studentHours >= sprintDays*idealHoursPerDay) {
       pace = "Ideal"
-    } else if (studentHours > sprintDuration*okHoursPerDay) {
+    } else if (studentHours >= sprintDays*okHoursPerDay) {
       pace = "Ok"
-    } else if (studentHours > sprintDuration*dangerousHoursPerDay) {
+    } else if (studentHours >= sprintDays*dangerousHoursPerDay) {
       pace = "Dangerous"
     } else {
       pace = "Panic"
     }
 
     const paceColor = barBorderColorByPace(pace)
-    sprintPaces[student.sprint] = { pace, paceColor, hours: studentHours, idealHours: idealHours(sprintDuration) }
+    sprintPaces[student.sprint] = { pace, paceColor, hours: studentHours, idealHours: idealHours(sprintDays) }
   })
   return sprintPaces
 }
@@ -152,16 +156,20 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
 const checkStudentProgress = (mappedData, allSprintDates) => {
   const students = [...new Set(mappedData.map(sprint => sprint.name))];
   const paces = {}
-  const projectDuration = projectDurationFromSprints(allSprintDates)
+
+  const firstSprintStart = allSprintDates && Object.keys(allSprintDates).length > 0
+     ? allSprintDates[Math.min(...Object.keys(allSprintDates).map(Number))].start_date
+     : null
+
+   const projectDurationSinceStart = Math.max(durationInDays(firstSprintStart, new Date()), 1)
 
   students.forEach(student => {
-    const studentPaceTotal = checkStudentProgressPaceTotal(student, mappedData, projectDuration)
+    const studentPaceTotal = checkStudentProgressPaceTotal(student, mappedData, projectDurationSinceStart)
     const studentPacePerSprint = checkStudentProgressPacePerSprint(student, mappedData, allSprintDates)
     paces[student] = { total: studentPaceTotal, sprints: studentPacePerSprint}
   })
   return paces
 }
-
 
 const TimeLogChart = (props) => {
   const {
@@ -269,14 +277,44 @@ const TimeLogChart = (props) => {
     }
   }, [selectedSprintNumber, sprintDates])
 
-  console.log(selectedSprintNumber, projectDuration, idealHours(projectDuration))
+  const firstSprintStart = sprintDates && Object.keys(sprintDates).length > 0
+    ? sprintDates[Math.min(...Object.keys(sprintDates).map(Number))].start_date
+    : null
+
+  const totalIdealHours = firstSprintStart
+    ? idealHours(
+        Math.min(
+          Math.max(durationInDays(firstSprintStart, new Date()), 1),
+          projectDuration
+        )
+      )
+    : 0
+
+  const selectedSprintStart = selectedSprintNumber !== null && sprintDates?.[selectedSprintNumber]
+    ? sprintDates[selectedSprintNumber].start_date
+    : null
+
+  const currentSprintIdealHours = selectedSprintStart && selectedSprintDuration > 0
+    ? idealHours(
+        Math.min(
+          Math.max(durationInDays(selectedSprintStart, new Date()), 1),
+          selectedSprintDuration
+        )
+      )
+    : 0
 
 
   const showSprintTooltip = ({ payload, label, active }) => {
     if (active && payload && payload.length) {
       const pace = studentPaces[label].sprints[selectedSprintNumber]?.pace
       const totalHours = studentPaces[label].sprints[selectedSprintNumber]?.hours
-      const idealHours = studentPaces[label].sprints[selectedSprintNumber]?.idealHours
+
+      // some rounding errors and stuff
+      const fixedValue = payload[0].value.toFixed(1)
+      const fixedIdealHours = currentSprintIdealHours.toFixed(1)
+      const fixedTotalHours = totalHours.toFixed(1)
+      const missingHours = (currentSprintIdealHours - totalHours).toFixed(1)
+      const aheadHours = (totalHours - currentSprintIdealHours).toFixed(1)
       return (
         <div
           className="custom-tooltip"
@@ -288,12 +326,12 @@ const TimeLogChart = (props) => {
             boxShadow: '1px 1px 2px #d88488',
           }}
         >
-          <h3>{`${label} : ${payload[0].value}h`}</h3>
+          <h3>{`${label} : ${fixedValue}h`}</h3>
           <h4>
-            Student's pace: { pace } { idealHours-totalHours>0 ? `(missing: ${ idealHours - totalHours }h)` : `(ahead ${totalHours-idealHours}h)`}
+            Student's pace: { pace } { currentSprintIdealHours - totalHours > 0 ? `(missing: ${ missingHours }h)` : `(ahead ${aheadHours}h)`}
           </h4>
           <p className="desc" style={{ margin: '0' }}>
-            Student should have around { idealHours } hours, has { totalHours } hours
+            Student should have around { fixedIdealHours } hours by now, has { fixedTotalHours } hours
           </p>
         </div>
       );
@@ -302,11 +340,18 @@ const TimeLogChart = (props) => {
     return null;
   }
 
-  const showTotalTooltip = ({ payload, label, active }) => {
+ const showTotalTooltip = ({ payload, label, active }) => {
     if (active && payload && payload.length) {
       const pace = studentPaces[label].total.pace
       const totalHours = studentPaces[label].total.totalHours
-      const idealHours = studentPaces[label].total.idealHours
+      const idealHoursToDate = totalIdealHours
+
+      // some rounding errors and stuff
+      const fixedValue = payload[0].value.toFixed(1)
+      const fixedIdealHours = idealHoursToDate.toFixed(1)
+      const fixedTotalHours = totalHours.toFixed(1)
+      const missingHours = (idealHoursToDate - totalHours).toFixed(1)
+      const aheadHours = (totalHours - idealHoursToDate).toFixed(1)
       return (
         <div
           className="custom-tooltip"
@@ -318,12 +363,12 @@ const TimeLogChart = (props) => {
             boxShadow: '1px 1px 2px #d88488',
           }}
         >
-          <h3>{`${label} : ${payload[0].value}h`}</h3>
+          <h3>{`${label} : ${fixedValue}h`}</h3>
           <h4>
-            Student's pace: { pace } { idealHours-totalHours>0 ? `(missing: ${ idealHours - totalHours }h)` : `(ahead ${totalHours-idealHours}h)`}
+            Student's pace: { pace } { idealHoursToDate-totalHours>0 ? `(missing: ${ missingHours }h)` : `(ahead ${aheadHours}h)`}
           </h4>
           <p className="desc" style={{ margin: '0' }}>
-            Student should have around { idealHours } hours, has { totalHours } hours
+            Student should have around { fixedIdealHours } hours, has { fixedTotalHours } hours
           </p>
         </div>
       );
@@ -348,6 +393,13 @@ const TimeLogChart = (props) => {
               y={idealHours(projectDuration)}
               stroke="red"
               strokeDasharray="3 3"
+              label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
+            />
+            <ReferenceLine
+              y={totalIdealHours}
+              stroke="grey"
+              strokeDasharray="4 3"
+              label={{ value: 'ideal pace', dy: -10, offset:-60, position: 'left', fill: 'grey', fontSize: 12 }}
             />
             <Tooltip content={showTotalTooltip} />
             <Bar
@@ -380,6 +432,13 @@ const TimeLogChart = (props) => {
                 y={idealHours(selectedSprintDuration)}
                 stroke="red"
                 strokeDasharray="3 3"
+                label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
+              />
+              <ReferenceLine
+                y={currentSprintIdealHours}
+                stroke="grey"
+                strokeDasharray="4 3"
+                label={{ value: 'ideal pace', dy: -10, offset:-60, position: 'left', fill: 'grey', fontSize: 12 }}
               />
               <Tooltip content={showSprintTooltip} />
               <Bar
