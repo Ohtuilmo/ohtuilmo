@@ -129,7 +129,7 @@ const TagsPage = (props) => {
         Add Tag
       </Button>
       <div className="tag-list-container">
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow hover>
               <TableCell colSpan={2}>Tags</TableCell>

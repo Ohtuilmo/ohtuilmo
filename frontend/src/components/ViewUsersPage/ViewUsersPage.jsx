@@ -145,7 +145,7 @@ const UserTableHead = () => {
 
 const UserTable = (props) => {
   return (
-    <Table>
+    <Table size="small">
       <UserTableHead />
       <UserTableBody users={props.users} />
     </Table>

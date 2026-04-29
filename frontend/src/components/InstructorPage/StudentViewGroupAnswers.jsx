@@ -56,10 +56,10 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
           <TableBody>
             <TableRow hover className="peer-header">
               <TableCell><p>{studentName}</p></TableCell>
-                {allPeers.map((peer, peerIndex) => (
-                  <TableCell key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</TableCell>
-                ))}
-                <TableCell className="radio-button">{calculateAverageRating(studentName, answers)}</TableCell>
+              {allPeers.map((peer, peerIndex) => (
+                <TableCell key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</TableCell>
+              ))}
+              <TableCell className="radio-button">{calculateAverageRating(studentName, answers)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

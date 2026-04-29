@@ -260,7 +260,7 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
 
   return (
     <div className="padding-left-18">
-      <Table className="radio-button-table">
+      <Table size="small" className="radio-button-table">
         <TableHead>
           <TableRow hover className="radio-inforow">
             <TableCell />
