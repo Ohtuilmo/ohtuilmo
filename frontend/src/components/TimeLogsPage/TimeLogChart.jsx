@@ -48,10 +48,10 @@ const durationInDays = (start_date, end_date) => {
   // https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript/15289883#15289883
   const _MS_PER_DAY = 1000 * 60 * 60 * 24
 
-  const utc1 = Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate());
-  const utc2 = Date.UTC(end_date.getFullYear(), end_date.getMonth(), end_date.getDate());
+  const utc1 = Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate())
+  const utc2 = Date.UTC(end_date.getFullYear(), end_date.getMonth(), end_date.getDate())
 
-  return Math.floor(Math.abs((utc2 - utc1)) / _MS_PER_DAY);
+  return Math.floor(Math.abs((utc2 - utc1)) / _MS_PER_DAY)
 }
 
 // The ideal hours per project is 200h
@@ -84,32 +84,32 @@ const idealHours = (durationDays) => {
 
 const barBorderColorByPace = (pace) => {
   switch (pace) {
-    case "Ideal":
-      return "none"
-    case "Ok":
-      return "none"
-    case "Dangerous":
-      return "orange"
-    case "Panic":
-      return "red"
-    default:
-      console.error("Student pace not matched:", studentName, pace, "- skipping.")
-      return "none"
+  case 'Ideal':
+    return 'none'
+  case 'Ok':
+    return 'none'
+  case 'Dangerous':
+    return 'orange'
+  case 'Panic':
+    return 'red'
+  default:
+    console.error('Student pace not matched:', studentName, pace, '- skipping.')
+    return 'none'
   }
 }
 
 const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDuration) => {
   const totalHours = allStudentHours.find(sprint => sprint.name === studentName && sprint.sprint === -1)?.altHours
 
-  let pace = ""
+  let pace = ''
   if (totalHours >= totalDuration*idealHoursPerDay) {
-    pace = "Ideal"
+    pace = 'Ideal'
   } else if (totalHours >= totalDuration*okHoursPerDay) {
-    pace = "Ok"
+    pace = 'Ok'
   } else if (totalHours >= totalDuration*dangerousHoursPerDay) {
-    pace = "Dangerous"
+    pace = 'Dangerous'
   } else {
-    pace = "Panic"
+    pace = 'Panic'
   }
   const paceColor = barBorderColorByPace(pace)
   return { pace, paceColor, totalHours, idealHours: idealHours(totalDuration) }
@@ -136,15 +136,15 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
       sprintDuration
     )
 
-    let pace = ""
+    let pace = ''
     if (studentHours >= sprintDays*idealHoursPerDay) {
-      pace = "Ideal"
+      pace = 'Ideal'
     } else if (studentHours >= sprintDays*okHoursPerDay) {
-      pace = "Ok"
+      pace = 'Ok'
     } else if (studentHours >= sprintDays*dangerousHoursPerDay) {
-      pace = "Dangerous"
+      pace = 'Dangerous'
     } else {
-      pace = "Panic"
+      pace = 'Panic'
     }
 
     const paceColor = barBorderColorByPace(pace)
@@ -154,14 +154,14 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
 }
 
 const checkStudentProgress = (mappedData, allSprintDates) => {
-  const students = [...new Set(mappedData.map(sprint => sprint.name))];
+  const students = [...new Set(mappedData.map(sprint => sprint.name))]
   const paces = {}
 
   const firstSprintStart = allSprintDates && Object.keys(allSprintDates).length > 0
-     ? allSprintDates[Math.min(...Object.keys(allSprintDates).map(Number))].start_date
-     : null
+    ? allSprintDates[Math.min(...Object.keys(allSprintDates).map(Number))].start_date
+    : null
 
-   const projectDurationSinceStart = Math.max(durationInDays(firstSprintStart, new Date()), 1)
+  const projectDurationSinceStart = Math.max(durationInDays(firstSprintStart, new Date()), 1)
 
   students.forEach(student => {
     const studentPaceTotal = checkStudentProgressPaceTotal(student, mappedData, projectDurationSinceStart)
@@ -217,7 +217,7 @@ const TimeLogChart = (props) => {
         for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
 
           // Filter out sprint start+end dates and return them in an object grouped by sprint number
-          if (Object.keys(sprintData[entryIndex]).includes("start_date") || Object.keys(sprintData[entryIndex]).includes("end_date")) {
+          if (Object.keys(sprintData[entryIndex]).includes('start_date') || Object.keys(sprintData[entryIndex]).includes('end_date')) {
             const start_date = new Date(sprintData[entryIndex].start_date)
             const end_date = new Date(sprintData[entryIndex].end_date)
             sprintDates[sprint] = { start_date, end_date, duration: durationInDays(start_date, end_date) }
@@ -283,11 +283,11 @@ const TimeLogChart = (props) => {
 
   const totalIdealHours = firstSprintStart
     ? idealHours(
-        Math.min(
-          Math.max(durationInDays(firstSprintStart, new Date()), 1),
-          projectDuration
-        )
+      Math.min(
+        Math.max(durationInDays(firstSprintStart, new Date()), 1),
+        projectDuration
       )
+    )
     : 0
 
   const selectedSprintStart = selectedSprintNumber !== null && sprintDates?.[selectedSprintNumber]
@@ -296,11 +296,11 @@ const TimeLogChart = (props) => {
 
   const currentSprintIdealHours = selectedSprintStart && selectedSprintDuration > 0
     ? idealHours(
-        Math.min(
-          Math.max(durationInDays(selectedSprintStart, new Date()), 1),
-          selectedSprintDuration
-        )
+      Math.min(
+        Math.max(durationInDays(selectedSprintStart, new Date()), 1),
+        selectedSprintDuration
       )
+    )
     : 0
 
 
@@ -334,13 +334,13 @@ const TimeLogChart = (props) => {
             Student should have around { fixedIdealHours } hours by now, has { fixedTotalHours } hours
           </p>
         </div>
-      );
+      )
     }
 
-    return null;
+    return null
   }
 
- const showTotalTooltip = ({ payload, label, active }) => {
+  const showTotalTooltip = ({ payload, label, active }) => {
     if (active && payload && payload.length) {
       const pace = studentPaces[label].total.pace
       const totalHours = studentPaces[label].total.totalHours
@@ -371,10 +371,10 @@ const TimeLogChart = (props) => {
             Student should have around { fixedIdealHours } hours, has { fixedTotalHours } hours
           </p>
         </div>
-      );
+      )
     }
 
-    return null;
+    return null
   }
 
   if (chartData && chartData.length > 0) {
