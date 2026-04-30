@@ -4,20 +4,26 @@ import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import TextField from '@material-ui/core/TextField'
 import { Radio, RadioGroup, Checkbox } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import { useTheme } from '@material-ui/core'
 import './TopicForm.css'
 
 const TopicForm = (props) => {
   const [agreement, setAgreement] = useState(false)
   const timing = props.content.summerDates
+  const theme = useTheme()
+
+  const bgColor = theme.palette.type === 'dark'
+    ? '#202020'
+    : '#ffffff'
 
   const boxStyle = {
-    backgroundColor: agreement ? '' :'#f0f0f0',
+    backgroundColor: agreement ? '' : bgColor,
     border: '2px solid #333',
     borderRadius: '5px',
     padding: '20px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     fontSize: '16px',
-    color: '#333',
+    color: theme.palette.text.primary,
     margin: '20px auto',
   }
 

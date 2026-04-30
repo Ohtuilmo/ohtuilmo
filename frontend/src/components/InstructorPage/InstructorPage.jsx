@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 import Error from '@material-ui/icons/Error'
+import { Table, TableRow, TableCell, TableHead, TableBody } from '@material-ui/core'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
 import './InstructorPage.css'
@@ -18,7 +19,6 @@ import peerReviewService from '../../services/peerReview'
 import instructorPageActions from '../../reducers/actions/instructorPageActions'
 
 const StyledSelect = withStyles({
-
   select: {
     minWidth: '140px',
   },
@@ -32,35 +32,65 @@ const StyledButton = withStyles({
 
 const GroupStudents = ({ myGroup }) => {
   if (!myGroup || myGroup.length === 0) {
-    return <div className='group-notification-container'><Error /><h4>There are currently no students in your group.</h4></div>
+    return (
+      <div className="group-notification-container">
+        <Error />
+        <h4>There are currently no students in your group.</h4>
+      </div>
+    )
   } else {
-    return <div className='students-container'><h4>Students:</h4>{myGroup.map((member, index) => <p key={index}> {index + 1}. {member}</p>)}</div>
+    return (
+      <div className="students-container">
+        <h4>Students:</h4>
+        {myGroup.map((member, index) => (
+          <p key={index}>
+            {' '}
+            {index + 1}. {member}
+          </p>
+        ))}
+      </div>
+    )
   }
 }
 
-const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) => {
+const Answers = ({
+  answers,
+  currentConfiguration,
+  currentGroupID,
+  viewMode,
+}) => {
   answers = answers.filter(
-    (group) => group.group.configurationId === currentConfiguration
+    (group) => group.group.configurationId === currentConfiguration,
   )
 
   return (
     <div>
       {answers.map((projectGroup, index) => {
-        if (currentGroupID === projectGroup.group.id || currentGroupID === '0') {
+        if (
+          currentGroupID === projectGroup.group.id ||
+          currentGroupID === '0'
+        ) {
           return (
-            <div key={index} className='flex-column-32-container divider-48'>
+            <div key={index} className="flex-column-32-container divider-48">
               <br />
-              <div className='group-title-container'>
-                <h1 className='group-name'>{projectGroup.group.name}</h1>
-                <h4 className='instructor-name'>Instructor: {projectGroup.group.instructorName}</h4>
+              <div className="group-title-container">
+                <h1 className="group-name">{projectGroup.group.name}</h1>
+                <h4 className="instructor-name">
+                  Instructor: {projectGroup.group.instructorName}
+                </h4>
               </div>
               <GroupStudents myGroup={projectGroup.group.studentNames} />
               <div>
                 {projectGroup.round1Answers.length > 0 ? (
-                  <div className='padding-bottom-64 flex-column-16'>
-                    <div className='peer-review-header'><h2>Peer Reviews&nbsp;</h2><h2 className='peer-review-subheader'>/ 1st Round</h2></div>
+                  <div className="padding-bottom-64 flex-column-16">
+                    <div className="peer-review-header">
+                      <h2>Peer Reviews&nbsp;</h2>
+                      <h2 className="peer-review-subheader">/ 1st Round</h2>
+                    </div>
                     {viewMode === 'students' ? (
-                      <StudentViewGroupAnswers answers={projectGroup.round1Answers} />
+                      <StudentViewGroupAnswers
+                        answers={projectGroup.round1Answers}
+                      />
                     ) : (
                       <GroupAnswers
                         answers={projectGroup.round1Answers}
@@ -69,14 +99,25 @@ const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) =>
                     )}
                   </div>
                 ) : (
-                  <div className='group-notification-container'><Error /><h4>This group has not answered to the first peer review round yet.</h4></div>
+                  <div className="group-notification-container">
+                    <Error />
+                    <h4>
+                      This group has not answered to the first peer review round
+                      yet.
+                    </h4>
+                  </div>
                 )}
 
                 {projectGroup.round2Answers.length > 0 ? (
-                  <div className='flex-column-16'>
-                    <div className='peer-review-header'><h2>Peer Reviews&nbsp;</h2><h2 className='peer-review-subheader'>/ 2nd Round</h2></div>
+                  <div className="flex-column-16">
+                    <div className="peer-review-header">
+                      <h2>Peer Reviews&nbsp;</h2>
+                      <h2 className="peer-review-subheader">/ 2nd Round</h2>
+                    </div>
                     {viewMode === 'students' ? (
-                      <StudentViewGroupAnswers answers={projectGroup.round2Answers} />
+                      <StudentViewGroupAnswers
+                        answers={projectGroup.round2Answers}
+                      />
                     ) : (
                       <GroupAnswers
                         answers={projectGroup.round2Answers}
@@ -85,11 +126,18 @@ const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) =>
                     )}
                   </div>
                 ) : (
-                  <div className='group-notification-container'><Error /><h4>This group has not answered to the second peer review round yet.</h4></div>
+                  <div className="group-notification-container">
+                    <Error />
+                    <h4>
+                      This group has not answered to the second peer review
+                      round yet.
+                    </h4>
+                  </div>
                 )}
               </div>
             </div>
-          )}
+          )
+        }
       })}
     </div>
   )
@@ -107,15 +155,17 @@ const getQuestions = (answers) => {
 }
 
 const Question = ({ title, children }) => (
-  <div className='flex-column-16'>
-    <div className='peer-review-question-container'><h3>{title}</h3></div>
+  <div className="flex-column-16">
+    <div className="peer-review-question-container">
+      <h3>{title}</h3>
+    </div>
     {children}
   </div>
 )
 
 const GroupAnswers = ({ answers, students }) => {
   return (
-    <div className='flex-column-32-container padding-left-18'>
+    <div className="flex-column-32-container padding-left-18">
       {getQuestions(answers).map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
@@ -149,20 +199,29 @@ const GroupAnswers = ({ answers, students }) => {
 
 const PeerReviewAnswer = ({ answers, questionNumber }) => {
   return (
-    <div className='all-peer-reviews-container padding-left-18'>
+    <div className="all-peer-reviews-container padding-left-18">
       {answers.map((member, index) => {
-        const peers = member && member.answer_sheet && member.answer_sheet[questionNumber] ? member.answer_sheet[questionNumber].peers : null
+        const peers =
+          member && member.answer_sheet && member.answer_sheet[questionNumber]
+            ? member.answer_sheet[questionNumber].peers
+            : null
         return (
-          <div className='peer-review-and-author-container' key={`${member}-${index}`}>
-            <p className='peer-review-author-text'>Reviews by {`${member.student.first_names} ${member.student.last_name}`}:</p>
-            <div className='peer-review-container'>
-              {peers && Object.entries(peers).map(
-                ([peer, review]) => (
-                  <div className='peer-review-text' key={peer}>
-                    <p>{peer}:&nbsp;</p><p>{review}</p>
+          <div
+            className="peer-review-and-author-container"
+            key={`${member}-${index}`}
+          >
+            <p className="peer-review-author-text">
+              Reviews by{' '}
+              {`${member.student.first_names} ${member.student.last_name}`}:
+            </p>
+            <div className="peer-review-container">
+              {peers &&
+                Object.entries(peers).map(([peer, review]) => (
+                  <div className="peer-review-text" key={peer}>
+                    <p>{peer}:&nbsp;</p>
+                    <p>{review}</p>
                   </div>
-                )
-              )}
+                ))}
             </div>
           </div>
         )
@@ -173,11 +232,14 @@ const PeerReviewAnswer = ({ answers, questionNumber }) => {
 
 const TextNumberAnswer = ({ answers, questionNumber }) => {
   return (
-    <div className='padding-left-18'>
+    <div className="padding-left-18">
       {answers.map((member, index) => {
         return (
-          <div className='text-number-answer-container' key={index}>
-            <p>{`${member.student.first_names} ${member.student.last_name}`}:&nbsp;</p>
+          <div className="text-number-answer-container" key={index}>
+            <p>
+              {`${member.student.first_names} ${member.student.last_name}`}
+              :&nbsp;
+            </p>
             <p>{member.answer_sheet[questionNumber].answer}</p>
           </div>
         )
@@ -197,42 +259,47 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
   })
 
   return (
-    <div className='padding-left-18'>
-      <table className="radio-button-table">
-        <thead>
-          <tr className="radio-inforow">
-            <th />
-            { peers.map((peer, index) => (
-              <th key={`radio-infoheader-${index}`} className="radio-infoheader text-overflow-ellipsis">
+    <div className="padding-left-18">
+      <Table size="small" className="radio-button-table">
+        <TableHead>
+          <TableRow hover className="radio-inforow">
+            <TableCell />
+            {peers.map((peer, index) => (
+              <TableCell
+                key={`radio-infoheader-${index}`}
+                className="radio-infoheader text-overflow-ellipsis"
+              >
                 Reviewer
-              </th>
+              </TableCell>
             ))}
-            <th />
-          </tr>
-          <tr className="radio-row">
-            <th />
+            <TableCell />
+          </TableRow>
+          <TableRow hover className="radio-row">
+            <TableCell />
             <PeerHeaders peers={peers} />
-            <th className="radio-header text-overflow-ellipsis">Average <p>(without self-review)</p></th>
-          </tr>
-        </thead>
-        <tbody>
+            <TableCell className="radio-header text-overflow-ellipsis">
+              Average <p>(without self-review)</p>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {peers.map((member, index) => {
             return (
-              <tr key={index}>
-                <th className="peer-header text-overflow-ellipsis">
+              <TableRow hover key={index}>
+                <TableCell className="peer-header text-overflow-ellipsis">
                   <p>{member}</p>
-                </th>
+                </TableCell>
                 <PeerRows
                   member={member}
                   answers={answers}
                   questionNumber={questionNumber}
                   numberOfPeers={peers.length}
                 />
-              </tr>
+              </TableRow>
             )
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   )
 }
@@ -240,9 +307,9 @@ const RadioAnswer = ({ answers, questionNumber, students }) => {
 const PeerHeaders = ({ peers }) => {
   return peers.map((option, optionId) => {
     return (
-      <th className="radio-header text-overflow-ellipsis" key={optionId}>
+      <TableCell className="radio-header text-overflow-ellipsis" key={optionId}>
         {option}
-      </th>
+      </TableCell>
     )
   })
 }
@@ -250,34 +317,42 @@ const PeerHeaders = ({ peers }) => {
 const sum = (arr) => arr.reduce((sum, value) => sum + value, 0)
 
 const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
-  const allPeersRatings = new Array(numberOfPeers).fill({ rating: '-', isSelf: false })
+  const allPeersRatings = new Array(numberOfPeers).fill({
+    rating: '-',
+    isSelf: false,
+  })
 
   answers.forEach((answer, index) => {
     const peerFullName = `${answer.student.first_names} ${answer.student.last_name}`
     if (answer.answer_sheet[questionNumber].peers[member] !== undefined) {
       allPeersRatings[index] = {
         rating: answer.answer_sheet[questionNumber].peers[member],
-        isSelf: peerFullName === member
+        isSelf: peerFullName === member,
       }
     }
   })
 
   const validRatings = allPeersRatings
-    .filter(ratingInfo => ratingInfo.rating !== '-' && !ratingInfo.isSelf)
-    .map(ratingInfo => ratingInfo.rating)
+    .filter((ratingInfo) => ratingInfo.rating !== '-' && !ratingInfo.isSelf)
+    .map((ratingInfo) => ratingInfo.rating)
 
-  const averageRating = validRatings.length > 0
-    ? (sum(validRatings) / validRatings.length).toFixed(2)
-    : 'N/A'
+  const averageRating =
+    validRatings.length > 0
+      ? (sum(validRatings) / validRatings.length).toFixed(2)
+      : 'N/A'
 
   return (
     <React.Fragment>
       {allPeersRatings.map((ratingInfo, index) => (
-        <td className="radio-button" key={`peer-row-${index}`}>
-          {typeof ratingInfo.rating === 'number' ? ratingInfo.rating.toFixed(2) : ratingInfo.rating}
-        </td>
+        <TableCell className="radio-button" key={`peer-row-${index}`}>
+          {typeof ratingInfo.rating === 'number'
+            ? ratingInfo.rating.toFixed(2)
+            : ratingInfo.rating}
+        </TableCell>
       ))}
-      <td className="radio-button">{averageRating}</td>
+      <TableCell className="radio-button">
+        {averageRating}
+      </TableCell>
     </React.Fragment>
   )
 }
@@ -305,11 +380,7 @@ const SelectViewButton = ({ viewMode, setViewMode }) => {
   }
 
   return (
-    <StyledButton
-      onClick={toggleView}
-      variant="contained"
-      color="primary"
-    >
+    <StyledButton onClick={toggleView} variant="contained" color="primary">
       {viewMode === 'questions' ? 'Student' : 'Question'} View
     </StyledButton>
   )
@@ -326,16 +397,16 @@ const ConfigurationSelect = ({
   currentConfiguration,
   setCurrentConfiguration,
   configurations,
-  setCurrentGroupID
+  setCurrentGroupID,
 }) => {
   return (
     <StyledSelect
       MenuProps={{
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         },
-        getContentAnchorEl: null
+        getContentAnchorEl: null,
       }}
       data-cy="configuration-selector"
       value={currentConfiguration}
@@ -359,36 +430,36 @@ const ConfigurationSelect = ({
 
 const GroupSelectWrapper = ({ label, children }) => (
   <div>
-    <Typography variant='caption'>{label}</Typography>
+    <Typography variant="caption">{label}</Typography>
     {children}
   </div>
 )
 
-const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroupsInConfig }) => {
+const GroupSelect = ({
+  currentGroupID,
+  setCurrentGroupID,
+  allGroupsInConfig,
+}) => {
   return (
     <StyledSelect
       MenuProps={{
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         },
-        getContentAnchorEl: null
+        getContentAnchorEl: null,
       }}
-      data-cy='group-selector'
+      data-cy="group-selector"
       value={currentGroupID}
       onChange={(e) => setCurrentGroupID(e.target.value)}
     >
-      <MenuItem
-        key={0}
-        className='all-groups-menu-item'
-        value={'0'}
-      >
+      <MenuItem key={0} className="all-groups-menu-item" value={'0'}>
         All groups
       </MenuItem>
       {allGroupsInConfig.map((group) => (
         <MenuItem
           key={group.id}
-          className='specified-group-menu-item'
+          className="specified-group-menu-item"
           value={group.id}
         >
           {group.name}
@@ -448,7 +519,14 @@ const InstructorPage = (props) => {
     }
 
     fetchData()
-  }, [setAnswers, setConfigurations, setCurrentConfiguration, setError, setGroups, setCurrentGroupID])
+  }, [
+    setAnswers,
+    setConfigurations,
+    setCurrentConfiguration,
+    setError,
+    setGroups,
+    setCurrentGroupID,
+  ])
 
   if (!answers || !currentConfiguration || !groups || !currentGroupID) {
     return <div className="flex-column-32-container">Loading</div>
@@ -470,7 +548,9 @@ const InstructorPage = (props) => {
             <GroupSelect
               currentGroupID={currentGroupID}
               setCurrentGroupID={setCurrentGroupID}
-              allGroupsInConfig={groups.filter(group => group.configurationId === currentConfiguration)}
+              allGroupsInConfig={groups.filter(
+                (group) => group.configurationId === currentConfiguration,
+              )}
             />
           </GroupSelectWrapper>
         </div>
@@ -479,13 +559,15 @@ const InstructorPage = (props) => {
             jsonData={JSON.stringify(answers)}
             fileName="peerReviews.json"
           />
-          <SelectViewButton
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-          />
+          <SelectViewButton viewMode={viewMode} setViewMode={setViewMode} />
         </div>
       </div>
-      <Answers answers={answers} currentConfiguration={currentConfiguration} currentGroupID={currentGroupID} viewMode={viewMode}/>
+      <Answers
+        answers={answers}
+        currentConfiguration={currentConfiguration}
+        currentGroupID={currentGroupID}
+        viewMode={viewMode}
+      />
     </div>
   )
 }
@@ -496,7 +578,7 @@ const mapStateToProps = (state) => {
     currentConfiguration: state.instructorPage.currentConfiguration,
     answers: state.instructorPage.answers,
     groups: state.instructorPage.groups,
-    currentGroupID: state.instructorPage.currentGroupID
+    currentGroupID: state.instructorPage.currentGroupID,
   }
 }
 
@@ -506,12 +588,12 @@ const mapDispatchToProps = {
   setAnswers: instructorPageActions.setAnswers,
   setError: notificationActions.setError,
   setGroups: instructorPageActions.setGroups,
-  setCurrentGroupID: instructorPageActions.setCurrentGroupID
+  setCurrentGroupID: instructorPageActions.setCurrentGroupID,
 }
 
 const ConnectedInstructorPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)

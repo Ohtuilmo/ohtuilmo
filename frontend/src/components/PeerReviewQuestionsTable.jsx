@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import Table from '@material-ui/core/Table'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
-import TableBody from '@material-ui/core/TableBody'
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@material-ui/core'
 
 import { peerReviewQuestionShape } from './common/sharedPropTypes'
 
@@ -13,22 +14,22 @@ const PeerReviewQuestionsTableRow = ({
   type,
   header,
   description,
-  options
+  options,
 }) => (
-  <TableRow className="registration-questions-table-row">
+  <TableRow hover className="registration-questions-table-row">
     <TableCell component="th" scope="row">
       {header}
     </TableCell>
     <TableCell>{description}</TableCell>
     <TableCell>{type}</TableCell>
-    <TableCell>{options ? JSON.stringify(options) : ""}</TableCell>
+    <TableCell>{options ? JSON.stringify(options) : ''}</TableCell>
   </TableRow>
 )
 
 const RegistrationQuestionsTable = ({ questions }) => (
   <Table className="registration-questions-table">
     <TableHead>
-      <TableRow>
+      <TableRow hover>
         <TableCell>Header</TableCell>
         <TableCell>Description</TableCell>
         <TableCell>Type</TableCell>
@@ -50,7 +51,7 @@ const RegistrationQuestionsTable = ({ questions }) => (
 )
 
 RegistrationQuestionsTable.propTypes = {
-  questions: PropTypes.arrayOf(peerReviewQuestionShape)
+  questions: PropTypes.arrayOf(peerReviewQuestionShape),
 }
 
 export default RegistrationQuestionsTable

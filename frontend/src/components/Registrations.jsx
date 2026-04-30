@@ -1,47 +1,40 @@
 import React, { useEffect, useState } from 'react'
+import { Table, TableRow, TableCell } from '@material-ui/core'
 import registrationService from '../services/registration'
 
 const Registrations = () => {
   const [regs, setRegs] = useState([])
   useEffect(() => {
-    registrationService.current().then(registrations => {
+    registrationService.current().then((registrations) => {
       setRegs(registrations)
     })
-  },
-  [])
+  }, [])
 
-  if (regs.length===0) {
-    return <div>
-      no registrations
-    </div>
+  if (regs.length === 0) {
+    return <div>no registrations</div>
   }
 
   const truncate = (title) => title
 
   const preferred_of = (reg) => {
-    if (reg.preferred_topics.length===0) return null
+    if (reg.preferred_topics.length === 0) return null
 
-    return (
-      reg.preferred_topics.map(t =>
-        <td key={t.content.title}>
-          {truncate(t.content.title)}
-        </td>
-      )
-    )
+    return reg.preferred_topics.map((t) => (
+      <TableCell key={t.content.title}>{truncate(t.content.title)}</TableCell>
+    ))
   }
 
   const stats = (registrations) => {
-
     const votes = {}
     const topicNames = {}
 
     const TOPIC_COUNT = registrations[0].preferred_topics.length
 
-    registrations[0].preferred_topics.forEach(topic => {
+    registrations[0].preferred_topics.forEach((topic) => {
       topicNames[topic.id] = topic.content.title
     })
 
-    registrations.forEach(reg => {
+    registrations.forEach((reg) => {
       for (let i = 0; i < reg.preferred_topics.length; i++) {
         const topic = reg.preferred_topics[i]
         if (!votes[topic.id]) {
@@ -51,7 +44,7 @@ const Registrations = () => {
       }
     })
 
-    const topics = Object.keys(votes).map(key => {
+    const topics = Object.keys(votes).map((key) => {
       const topic = votes[key]
 
       let totalScore = 0
@@ -67,21 +60,20 @@ const Registrations = () => {
         id: key,
         name: topicNames[key],
         score: totalScore,
-        votes: votes[key]
+        votes: votes[key],
       }
     })
 
     const byScore = (t1, t2) => t2.score - t1.score
 
     const padded = (name) => {
-      const paddedName = name + '                                                      '
+      const paddedName =
+        name + '                                                      '
       return paddedName.slice(0, 60)
     }
 
-
     const pretty = (votes) => {
-      const p = (score) =>
-        (score >= 10 ? score : ' ' + score)
+      const p = (score) => (score >= 10 ? score : ' ' + score)
 
       let string = ''
 
@@ -93,7 +85,7 @@ const Registrations = () => {
     }
 
     const lines = ['```\n']
-    topics.sort(byScore).forEach(topic => {
+    topics.sort(byScore).forEach((topic) => {
       lines.push(`${padded(topic.name)} ${pretty(topic.votes)}\n`)
     })
     lines.push('```')
@@ -104,36 +96,22 @@ const Registrations = () => {
   console.log(regs[0].questions)
   return (
     <div>
-      <h3>
-        Registrations {regs.length}
-      </h3>
+      <h3>Registrations {regs.length}</h3>
 
-      <pre>
-        {stats(regs)}
-      </pre>
+      <pre>{stats(regs)}</pre>
 
-      <table>
-        {regs.map(reg =>
-          <tr key={reg.student_number}>
-            <td>
-              {reg.last_name}
-            </td>
-            <td>
-              {reg.first_names}
-            </td>
-            <td>
-              {reg.student_number}
-            </td>
-            <td>
-              {reg.email}
-            </td>
+      <Table size="small">
+        {regs.map((reg) => (
+          <TableRow hover key={reg.student_number}>
+            <TableCell>{reg.last_name}</TableCell>
+            <TableCell>{reg.first_names}</TableCell>
+            <TableCell>{reg.student_number}</TableCell>
+            <TableCell>{reg.email}</TableCell>
             {preferred_of(reg)}
-            <td>
-              {reg.questions[0].answer}
-            </td>
-          </tr>
-        )}
-      </table>
+            <TableCell>{reg.questions[0].answer}</TableCell>
+          </TableRow>
+        ))}
+      </Table>
     </div>
   )
 }

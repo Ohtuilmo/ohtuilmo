@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AsyncSelect from 'react-select/lib/Async'
+import { useTheme } from '@material-ui/core/styles'
 
 import autocomplete from '../../services/autocomplete'
 
@@ -19,9 +20,11 @@ const AutocompletedUserSelect = ({
   classNamePrefix,
   selectedUser,
   onSelectedUserChange,
-  defaultUser
+  defaultUser,
 }) => {
   /** @param {AutocompleteResult} selectedOption */
+  const muiTheme = useTheme()
+
   const handleChange = (selectedOption, { action }) => {
     if (action === 'clear') {
       // selectedOption is null
@@ -55,6 +58,15 @@ const AutocompletedUserSelect = ({
       placeholder="Search by name"
       className={className}
       classNamePrefix={classNamePrefix}
+      theme={(theme) => ({
+        ...theme,
+        colors: {
+          ...theme.colors,
+          primary25: muiTheme.palette.type === 'dark' ? 'rgba(255,255,255,0.08)' : 'lightgrey',
+          neutral80: muiTheme.palette.text.primary,
+          neutral0: muiTheme.palette.type === 'dark' ? '#303030' : 'white'
+        },
+      })}
     />
   )
 }
@@ -62,7 +74,7 @@ const AutocompletedUserSelect = ({
 const autosuggestResultShape = PropTypes.shape({
   student_number: PropTypes.string.isRequired,
   first_names: PropTypes.string.isRequired,
-  last_name: PropTypes.string.isRequired
+  last_name: PropTypes.string.isRequired,
 })
 
 AutocompletedUserSelect.propTypes = {
@@ -70,7 +82,7 @@ AutocompletedUserSelect.propTypes = {
   classNamePrefix: PropTypes.string,
   selectedUser: autosuggestResultShape,
   defaultUser: autosuggestResultShape,
-  onSelectedUserChange: PropTypes.func.isRequired
+  onSelectedUserChange: PropTypes.func.isRequired,
 }
 
 export default AutocompletedUserSelect

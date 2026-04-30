@@ -16,8 +16,10 @@ import peerReviewPageActions from '../reducers/actions/peerReviewPageActions.js'
 import peerReviewService from '../services/peerReview'
 import groupManagementService from '../services/groupManagement'
 import timeLogService from '../services/timeLogs'
+
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core'
 
 class PeerReview extends React.Component {
   async componentDidMount() {
@@ -31,7 +33,7 @@ class PeerReview extends React.Component {
         // straight to this page and fixes itself right after.
         const reviewQuestionsSet = await peerReviewService.getReviewQuestions(
           this.props.reviewConf,
-          this.props.reviewRound
+          this.props.reviewRound,
         )
 
         const questionObject = { questions: reviewQuestionsSet.questions }
@@ -73,7 +75,7 @@ class PeerReview extends React.Component {
 
       peers.forEach(
         (peer) =>
-          (peerAnswers.peers[peer.first_names + ' ' + peer.last_name] = null)
+          (peerAnswers.peers[peer.first_names + ' ' + peer.last_name] = null),
       )
 
       return peerAnswers
@@ -108,7 +110,7 @@ class PeerReview extends React.Component {
       peers.forEach(
         (peer) =>
           (peerTextAnswers.peers[peer.first_names + ' ' + peer.last_name] =
-            null)
+            null),
       )
 
       return peerTextAnswers
@@ -116,7 +118,10 @@ class PeerReview extends React.Component {
 
     const tempAnswerSheet = questionObject.questions.map(
       (question, questionID) => {
-        if (question.header === 'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?') {
+        if (
+          question.header ===
+          'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?'
+        ) {
           return initializeProjectHours(question, questionID)
         } else if (question.type === 'radio') {
           return initializeRadioAnswer(question, questionID)
@@ -129,7 +134,7 @@ class PeerReview extends React.Component {
         } else {
           return question
         }
-      }
+      },
     )
 
     this.props.initializeAnswerSheet(tempAnswerSheet)
@@ -139,7 +144,7 @@ class PeerReview extends React.Component {
     event.preventDefault()
 
     const answer = window.confirm(
-      'Answers can not be changed after submitting. Continue?'
+      'Answers can not be changed after submitting. Continue?',
     )
     if (!answer) return
     try {
@@ -152,7 +157,7 @@ class PeerReview extends React.Component {
         },
       })
       this.props.setSubmittedReviews(
-        this.props.submittedReviews.concat(createdReview)
+        this.props.submittedReviews.concat(createdReview),
       )
       this.props.setSuccess('Peer review saved!')
       this.props.history.push('/')
@@ -259,9 +264,8 @@ const Question = ({
   updateAnswer,
   updatePeerReview,
 }) => {
-
   if (!questionId === undefined) {
-    console.error("No questionId given")
+    console.error('No questionId given')
     return (
       <div>
         <p>No questionId for this question!</p>
@@ -277,22 +281,25 @@ const Question = ({
     return (
       <div className="peer-review-box">
         <h3 className="peer-review-box__h3">{question.header}</h3>
-        <table className="peer-review-box__radio-button-table">
-          <thead>
-            <tr className="peer-review-box__radio-row">
-              <th className="peer-review-box__radio-header" />
+        <Table
+          size="small"
+          className="peer-review-box__radio-button-table"
+        >
+          <TableHead>
+            <TableRow hover>
+              <TableCell className="peer-review-box__radio-header" />
               <OptionHeaders options={temp} />
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             <QuestionRows
               peers={peers}
               options={temp}
               questionId={question.header}
               answerSheet={answerSheet[questionId]}
             />
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     )
   } else if (question.type === 'peerReview') {
@@ -366,9 +373,9 @@ const Question = ({
 const OptionHeaders = ({ options }) => {
   return options.map((option, optionId) => {
     return (
-      <th className="peer-review-box__radio-header" key={optionId}>
+      <TableCell className="peer-review-box__radio-header" key={optionId}>
         {option}
-      </th>
+      </TableCell>
     )
   })
 }
@@ -412,7 +419,7 @@ const PeerReviewTextFields = ({
                 `${peer.first_names} ${peer.last_name}`,
                 e.target.value,
                 questionId,
-                updatePeerReview
+                updatePeerReview,
               )
             }
           />
@@ -430,11 +437,11 @@ const QuestionRow = ({
   answerSheet,
 }) => {
   return (
-    <tr className="peer-review-box__peer-row">
-      <th className="peer-review-box__peer-header">{peerName}</th>
+    <TableRow hover className="peer-review-box__peer-row">
+      <TableCell align="center">{peerName}</TableCell>
       {options.map((buttonId, buttonNumber) => {
         return (
-          <th className="peer-review-box__radio-button" key={buttonId}>
+          <TableCell className="peer-review-box__radio-button" key={buttonId}>
             <input
               type="radio"
               name={questionId.toString() + peerId.toString()}
@@ -442,10 +449,10 @@ const QuestionRow = ({
                 radioSelectHandler(peerId, buttonNumber, answerSheet)
               }
             />
-          </th>
+          </TableCell>
         )
       })}
-    </tr>
+    </TableRow>
   )
 }
 
@@ -487,6 +494,6 @@ const mapDispatchToProps = {
 
 const ConnectedPeerReview = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PeerReview)
 export default withRouter(ConnectedPeerReview)

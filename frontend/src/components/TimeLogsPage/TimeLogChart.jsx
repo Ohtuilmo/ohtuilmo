@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, ReferenceLine, Label, LabelList, Bar, Cell } from 'recharts'
 import { NoTimeLogsPlaceholderSprint, NoTimeLogsPlaceholderProject } from '../common/Placeholders'
 import Error from '@material-ui/icons/Error'
+import { useTheme } from '@material-ui/core/styles';
 
 import './TimeLogsPage.css'
 
@@ -183,6 +183,7 @@ const TimeLogChart = (props) => {
   const [sprintDates, setSprintDates] = useState({})
   const [projectDuration, setProjectDuration] = useState(0)
   const [selectedSprintDuration, setSelectedSprintDuration] = useState(0)
+  const theme = useTheme()
 
   const mapSprintSummaryData = (summaryData) => {
     let mappedData = []
@@ -319,11 +320,11 @@ const TimeLogChart = (props) => {
         <div
           className="custom-tooltip"
           style={{
-            border: '1px solid #d88488',
-            backgroundColor: '#fff',
+            border: `1px solid ${theme.custom.chartTooltip.border}`,
+            backgroundColor: theme.custom.chartTooltip.background,
             padding: '10px',
             borderRadius: '5px',
-            boxShadow: '1px 1px 2px #d88488',
+            boxShadow: theme.custom.chartTooltip.shadow,
           }}
         >
           <h3>{`${label} : ${fixedValue}h`}</h3>
@@ -356,11 +357,11 @@ const TimeLogChart = (props) => {
         <div
           className="custom-tooltip"
           style={{
-            border: '1px solid #d88488',
-            backgroundColor: '#fff',
+            border: `1px solid ${theme.custom.chartTooltip.border}`,
+            backgroundColor: theme.custom.chartTooltip.background,
             padding: '10px',
             borderRadius: '5px',
-            boxShadow: '1px 1px 2px #d88488',
+            boxShadow: theme.custom.chartTooltip.shadow,
           }}
         >
           <h3>{`${label} : ${fixedValue}h`}</h3>
@@ -387,8 +388,21 @@ const TimeLogChart = (props) => {
             className='timelogs-chart'
             data={chartData.filter((entry) => entry.sprint === -1)}
           >
-            <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-            <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}/>
+            <XAxis
+              dataKey='name'
+              minTickGap={0}
+              height={70}
+              tick={<CustomizedTick variant={chartVariant} />}
+              angle={270}
+              tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+              axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
+            />
+            <YAxis
+              domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}
+              axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
+              tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+              tick={{ fill: theme.custom.chartAxis.stroke }}
+            />
             <ReferenceLine
               y={idealHours(projectDuration)}
               stroke="red"
@@ -401,7 +415,10 @@ const TimeLogChart = (props) => {
               strokeDasharray="4 3"
               label={{ value: 'ideal pace', dy: -10, offset:-60, position: 'left', fill: 'grey', fontSize: 12 }}
             />
-            <Tooltip content={showTotalTooltip} />
+            <Tooltip
+              content={showTotalTooltip}
+              cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }}
+            />
             <Bar
               dataKey='altHours'
               background={false}
@@ -426,8 +443,21 @@ const TimeLogChart = (props) => {
               className='timelogs-chart'
               data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
             >
-              <XAxis dataKey='name' minTickGap={0} height={70} tick={<CustomizedTick variant={chartVariant} />} angle={270} tickLine={false} />
-              <YAxis domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration))]}/>
+              <XAxis
+                dataKey='name'
+                minTickGap={0}
+                height={70}
+                tick={<CustomizedTick variant={chartVariant} />}
+                angle={270}
+                tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+                axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
+              />
+              <YAxis
+                domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}
+                axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
+                tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+                tick={{ fill: theme.custom.chartAxis.stroke }}
+              />
               <ReferenceLine
                 y={idealHours(selectedSprintDuration)}
                 stroke="red"
@@ -440,7 +470,10 @@ const TimeLogChart = (props) => {
                 strokeDasharray="4 3"
                 label={{ value: 'ideal pace', dy: -10, offset:-60, position: 'left', fill: 'grey', fontSize: 12 }}
               />
-              <Tooltip content={showSprintTooltip} />
+              <Tooltip
+                content={showSprintTooltip}
+                cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }}
+              />
               <Bar
                 dataKey='altHours'
                 background={false}

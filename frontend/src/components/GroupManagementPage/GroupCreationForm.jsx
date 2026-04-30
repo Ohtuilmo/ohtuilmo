@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import { Table, TableBody, TableCell, TableRow } from '@material-ui/core'
 
 import groupManagementService from '../../services/groupManagement'
 
@@ -15,12 +16,12 @@ import AutocompletedUserSelect from './AutocompletedUserSelect'
 import './GroupCreationForm.css'
 
 const FormInput = ({ label, children }) => (
-  <tr>
-    <td className="form-input__label">
+  <TableRow hover>
+    <TableCell className="form-input__label">
       <Typography variant="caption">{label}</Typography>
-    </td>
-    <td className="form-input__control">{children}</td>
-  </tr>
+    </TableCell>
+    <TableCell className="form-input__control">{children}</TableCell>
+  </TableRow>
 )
 
 const StudentInput = ({ value, onChange }) => {
@@ -57,7 +58,7 @@ const saveGroup = async (event, props) => {
     students,
     groupTopicID,
     groupInstructor,
-    groupConfigurationID
+    groupConfigurationID,
   } = props
 
   const splitStudents = students
@@ -77,7 +78,7 @@ const saveGroup = async (event, props) => {
       topicId: groupTopicID,
       configurationId: groupConfigurationID,
       instructorId: groupInstructor ? groupInstructor.student_number : '',
-      studentIds: splitStudents
+      studentIds: splitStudents,
     })
     props.createGroupSuccsess(createdGroup)
     props.onInstructorChange(null)
@@ -100,7 +101,7 @@ const GroupCreationForm = ({
   groupConfigurationID,
   createGroupSuccsess,
   setSuccess,
-  setError
+  setError,
 }) => {
   const handleTopicChange = (topicid) => {
     onTopicSelectChange(topicid)
@@ -121,12 +122,12 @@ const GroupCreationForm = ({
             createGroupSuccsess,
             setSuccess,
             setError,
-            onInstructorChange
+            onInstructorChange,
           })
         }
       >
-        <table style={{ minWidth: '400px' }}>
-          <tbody>
+        <Table style={{ minWidth: '400px' }}>
+          <TableBody>
             <FormInput label="Topic">
               <TopicSelect
                 topics={topics}
@@ -141,7 +142,7 @@ const GroupCreationForm = ({
                 value={groupName}
                 onChange={onNameChangeForm}
                 inputProps={{
-                  className: 'create-group-form__name'
+                  className: 'create-group-form__name',
                 }}
               />
             </FormInput>
@@ -158,8 +159,8 @@ const GroupCreationForm = ({
                 onSelectedUserChange={onInstructorChange}
               />
             </FormInput>
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
         <Button
           style={{ marginRight: '10px', height: '40px' }}
           color="primary"
@@ -180,7 +181,7 @@ const mapStateToPropsForm = (state) => ({
   groupTopicID: state.groupPage.groupTopicID,
   groupInstructor: state.groupPage.groupInstructor,
   groupConfigurationID: state.groupPage.groupConfigurationID,
-  topics: state.topicListPage.topics
+  topics: state.topicListPage.topics,
 })
 
 const mapDispatchToPropsForm = {
@@ -190,10 +191,10 @@ const mapDispatchToPropsForm = {
   onInstructorChange: groupManagementActions.updateGroupInstructor,
   createGroupSuccsess: groupManagementActions.createGroupSuccsess,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
 export default connect(
   mapStateToPropsForm,
-  mapDispatchToPropsForm
+  mapDispatchToPropsForm,
 )(GroupCreationForm)

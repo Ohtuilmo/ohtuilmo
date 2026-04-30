@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { updateRole } from "../../services/dev"
@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import GroupIcon from '@material-ui/icons/Group'
+import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
+import Brightness7RoundedIcon from '@material-ui/icons/Brightness7Rounded';
 import NavigationMenu from './NavigationMenu'
 import {
   regularItems,
@@ -20,8 +22,10 @@ import {
   loggedInUnregisteredItems
 } from './MenuItemLists'
 import './NavigationBar.css'
+import { ColorModeContext } from '../../context/ColorModeContext'
 
 const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistrationManagement, history, logout }) => {
+  const { mode: theme, setMode: setTheme } = useContext(ColorModeContext)
   const getAppropriateMenuItemList = () => {
     if (user === null) {
       return { items: regularItems(history) }
@@ -109,18 +113,50 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
     import.meta.env.MODE === "development"
       ? (
         <div style={{ marginRight: "10px"}}>
-          <Button variant="outlined" onClick={async () => await handleClick("student")}>
+          <Button
+            variant="outlined"
+            style={{ color: '#323232', borderColor: '#c2a628' }}
+            onClick={async () => await handleClick("student")}
+          >
             Student
           </Button>
-          <Button variant="outlined" onClick={async () => await handleClick("instructor")}>
+          <Button
+            variant="outlined"
+            style={{ color: '#323232', borderColor: '#c2a628' }}
+            onClick={async () => await handleClick("instructor")}
+          >
             Instructor
           </Button>
-          <Button variant="outlined" onClick={async () => await handleClick("admin")}>
+          <Button
+            variant="outlined"
+            style={{ color: '#323232', borderColor: '#c2a628' }}
+            onClick={async () => await handleClick("admin")}
+          >
             Admin
           </Button>
         </div>
       )
       : ""
+
+  const switchTheme = (theme) => {
+    setTheme(theme)
+    localStorage.setItem('theme', theme)
+  }
+
+  const ThemeSelection = () => (
+    <Button
+      variant='outlined'
+      style={{ color: '#323232', marginLeft: '5px', borderColor: '#c2a628' }}
+      onClick={() => switchTheme(theme === 'dark' ? 'light' : 'dark')}
+      data-cy='theme-toggle'
+    >
+      {theme === 'dark'
+        ? <Brightness7RoundedIcon />
+        : <Brightness4RoundedIcon />
+      }
+      Theme
+    </Button>
+  )
 
   return (
     <div className="navigation-bar-container">
@@ -137,9 +173,10 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
           </Typography>
           {select_role}
           {loggedIn}
+          <ThemeSelection />
           <Button
             className="navigation-bar-logout-button"
-            style={{ marginLeft: '10px' }}
+            style={{ marginLeft: '10px', color: '#323232', borderColor: '#c2a628' }}
             variant="outlined"
             onClick={logout}
           >
