@@ -12,7 +12,7 @@ class TopicDialog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false
+      open: false,
     }
 
     this.handleClose = this.handleClose.bind(this)
@@ -23,30 +23,55 @@ class TopicDialog extends React.Component {
   }
 
   render() {
-    const isSummer = this.props.topic.content.summerDates && (this.props.topic.content.summerDates.short || this.props.topic.content.summerDates.long)
+    const isSummer =
+      this.props.topic.content.summerDates &&
+      (this.props.topic.content.summerDates.short ||
+        this.props.topic.content.summerDates.long)
 
     const padding = isSummer ? '10px' : '15px'
 
-    const isNotOpenSorce = this.props.topic.content.organisation === 'company' && this.props.topic.content.ipRights === 'nonopen'
-    const ipRights = isNotOpenSorce ? 'The customer retains the intellectual property rights to the project' : 'Software is published under an open source license'
-
+    const isNotOpenSorce =
+      this.props.topic.content.organisation === 'company' &&
+      this.props.topic.content.ipRights === 'nonopen'
+    const ipRights = isNotOpenSorce
+      ? 'The customer retains the intellectual property rights to the project'
+      : 'Software is published under an open source license'
 
     return (
       <Card style={{ margin: '2px', height: '78px' }}>
-        <CardContent
-          style={{ padding, display: 'flex', flexDirection: 'row' }}
-        >
+        <CardContent style={{ padding, display: 'flex', flexDirection: 'row' }}>
           <div style={{ flex: 4 }}>
-            <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>{this.props.topic.content.title}</Typography>
-            <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>Customer: {this.props.topic.content.customerName}</Typography>
-            {isNotOpenSorce && <Typography style={{ flex: 1, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }}>{ipRights}</Typography>}
-            {isSummer && <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray' }}>
-              {this.props.topic.content.summerDates.short && 'early summer'}
-              {this.props.topic.content.summerDates.short && this.props.topic.content.summerDates.long ? ', ': '' }
-              {this.props.topic.content.summerDates.long && 'whole summer'}
-            </Typography>}
+            <Typography style={{ flex: 1, fontWeight: 'bold' }}>
+              {this.props.topic.content.title}
+            </Typography>
+            <Typography style={{ flex: 1, fontWeight: 'bold' }}>
+              Customer: {this.props.topic.content.customerName}
+            </Typography>
+            {isNotOpenSorce && (
+              <Typography
+                style={{ flex: 1, fontWeight: 'bold', fontStyle: 'italic' }}
+              >
+                {ipRights}
+              </Typography>
+            )}
+            {isSummer && (
+              <Typography style={{ flex: 1, fontWeight: 'bold' }}>
+                {this.props.topic.content.summerDates.short && 'early summer'}
+                {this.props.topic.content.summerDates.short &&
+                this.props.topic.content.summerDates.long
+                  ? ', '
+                  : ''}
+                {this.props.topic.content.summerDates.long && 'whole summer'}
+              </Typography>
+            )}
           </div>
-          <Button variant="outlined" style={{ flex: 1, maxHeight: '42px' }} onClick={() => this.setState({ open: true })}>Details</Button>
+          <Button
+            variant="outlined"
+            style={{ flex: 1, maxHeight: '42px' }}
+            onClick={() => this.setState({ open: true })}
+          >
+            Details
+          </Button>
         </CardContent>
         <Dialog
           open={this.state.open}
@@ -54,10 +79,10 @@ class TopicDialog extends React.Component {
           scroll={this.state.scroll}
         >
           <DialogContent>
-            <Topic content={this.props.topic.content}/>
-          </ DialogContent>
+            <Topic content={this.props.topic.content} />
+          </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} variant='outlined'>
+            <Button onClick={this.handleClose} variant="outlined">
               Close
             </Button>
           </DialogActions>

@@ -87,4 +87,4 @@ QuestionSetItem.propTypes = {
   theme: PropTypes.object
 }
 
-export default withTheme()(QuestionSetItem)
+export default withTheme(QuestionSetItem)

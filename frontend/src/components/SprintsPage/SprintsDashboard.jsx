@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core'
 import sprintService from '../../services/sprints'
 import { NotInGroupPlaceholder } from '../common/Placeholders'
 import './SprintsDashboard.css'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as notificationActions from '../../reducers/actions/notificationActions'
-
-
 
 const SprintsPage = (props) => {
   const [allSprints, setAllSprints] = useState([])
@@ -132,54 +131,61 @@ const SprintsPage = (props) => {
       </Button>
       {allSprints.length > 0 && (
         <div className="sprint-list-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Sprint Number</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="sprint-list-rows">
-              {allSprints.sort((a, b) => b.sprint - a.sprint).map((sprint) => {
+          <Table>
+            <TableHead>
+              <TableRow hover>
+                <TableCell>Sprint Number</TableCell>
+                <TableCell>Start Date</TableCell>
+                <TableCell>End Date</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody id="sprint-list-rows">
+              {allSprints
+                .sort((a, b) => b.sprint - a.sprint)
+                .map((sprint) => {
+                  const startDateObj = new Date(sprint.start_date)
+                  const endDateObj = new Date(sprint.end_date)
 
-                const startDateObj = new Date(sprint.start_date)
-                const endDateObj = new Date(sprint.end_date)
+                  const formattedStartDate = startDateObj
+                    .toLocaleDateString('fi-FI', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })
+                    .replace(/\./g, '/')
 
-                const formattedStartDate = startDateObj.toLocaleDateString('fi-FI', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                }).replace(/\./g, '/')
+                  const formattedEndDate = endDateObj
+                    .toLocaleDateString('fi-FI', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })
+                    .replace(/\./g, '/')
 
-                const formattedEndDate = endDateObj.toLocaleDateString('fi-FI', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                }).replace(/\./g, '/')
-
-                return (
-                  <tr key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
-                    <td className="sprint-list-sprint-number">{sprint.sprint}</td>
-                    <td>{formattedStartDate}</td>
-                    <td>{formattedEndDate}</td>
-                    <td>
-                      <Button
-                        id={`sprint-remove-button-${sprint.id}`}
-                        onClick={() => handleDeleteSprint(sprint.id)}
-                        className="delete-sprint-button"
-                        variant="contained"
-                        color="secondary"
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                  return (
+                    <TableRow hover key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
+                      <TableCell className="sprint-list-sprint-number">
+                        {sprint.sprint}
+                      </TableCell>
+                      <TableCell>{formattedStartDate}</TableCell>
+                      <TableCell>{formattedEndDate}</TableCell>
+                      <TableCell>
+                        <Button
+                          id={`sprint-remove-button-${sprint.id}`}
+                          onClick={() => handleDeleteSprint(sprint.id)}
+                          className="delete-sprint-button"
+                          variant="contained"
+                          color="secondary"
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
@@ -197,5 +203,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(SprintsPage)
+  connect(mapStateToProps, mapDispatchToProps)(SprintsPage),
 )

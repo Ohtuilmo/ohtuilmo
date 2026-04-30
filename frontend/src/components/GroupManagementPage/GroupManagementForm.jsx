@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Paper from '@material-ui/core/Paper'
+import { Table, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
@@ -16,10 +17,10 @@ const GroupManagementForm = ({
   users,
   deleteGroup,
   setSuccess,
-  setError
+  setError,
 }) => {
   const filteredGroups = groups.filter(
-    (group) => group.configurationId === groupConfigurationID
+    (group) => group.configurationId === groupConfigurationID,
   )
 
   return (
@@ -31,10 +32,10 @@ const GroupManagementForm = ({
             style={{ clear: 'both', display: 'table', padding: '15px' }}
           >
             <Paper>
-              <table>
-                <tbody>
-                  <tr>
-                    <td style={{ verticalAlign: 'top', padding: '25px' }}>
+              <Table>
+                <TableBody>
+                  <TableRow hover>
+                    <TableCell style={{ verticalAlign: 'top', padding: '25px' }}>
                       <GroupViewer
                         group={group}
                         topics={topics}
@@ -44,10 +45,10 @@ const GroupManagementForm = ({
                         setSuccess={setSuccess}
                         setError={setError}
                       />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </Paper>
           </div>
         )
@@ -60,17 +61,17 @@ const mapStateToPropsForm = (state) => ({
   groupConfigurationID: state.groupPage.groupConfigurationID,
   groups: state.groupPage.groups,
   topics: state.topicListPage.topics,
-  users: state.groupPage.users
+  users: state.groupPage.users,
 })
 
 const mapDispatchToPropsForm = {
   deleteFromGroupAction: groupManagementActions.deleteFromGroup,
   deleteGroup: groupManagementActions.deleteGroup,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
 export default connect(
   mapStateToPropsForm,
-  mapDispatchToPropsForm
+  mapDispatchToPropsForm,
 )(GroupManagementForm)

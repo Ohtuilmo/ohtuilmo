@@ -14,9 +14,14 @@ const ConfigurationSelect = ({
   return (
     <Select
       className="configuration-selector"
-      value={groupConfigurationID}
+      value={groupConfigurationID || ''}
       onChange={(e) => onConfigurationChange(e.target.value)}
+      displayEmpty
     >
+      <MenuItem value="" disabled>
+        select a configuration
+      </MenuItem>
+
       {configurations.map((configuration) => (
         <MenuItem
           key={configuration.id}
@@ -32,14 +37,8 @@ const ConfigurationSelect = ({
 }
 
 const mapStateToPropsForm = (state) => {
-  const defaultConfiguration =
-    state.configurationPage.configurations.length > 0
-      ? state.configurationPage.configurations[0].id
-      : ''
-
   return {
-    groupConfigurationID:
-      state.groupPage.groupConfigurationID || defaultConfiguration,
+    groupConfigurationID: state.groupPage.groupConfigurationID || '',
     configurations: state.configurationPage.configurations,
   }
 }

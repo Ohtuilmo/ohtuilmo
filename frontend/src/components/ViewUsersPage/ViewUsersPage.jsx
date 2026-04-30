@@ -2,11 +2,13 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 
@@ -22,8 +24,8 @@ const customTheme = createMuiTheme({
     color: 'darkOrange',
   },
   typography: {
-    useNextVariants: true
-  }
+    useNextVariants: true,
+  },
 })
 
 const TopicDetailsLink = ({ topicId, ...props }) => (
@@ -74,7 +76,7 @@ const UserTableBody = (props) => {
   if (!users || users.length === 0) {
     return (
       <TableBody>
-        <TableRow>
+        <TableRow hover>
           <TableCell padding="dense" colSpan={4}>
             <Typography variant="overline">No users found</Typography>
           </TableCell>
@@ -86,7 +88,7 @@ const UserTableBody = (props) => {
     <TableBody>
       {users.map((user) => {
         return (
-          <TableRow key={user.username}>
+          <TableRow hover key={user.username}>
             <TableCell padding="dense">
               <Typography variant="body2">
                 {user.last_name} {user.first_names}
@@ -131,7 +133,7 @@ const UserTableBody = (props) => {
 const UserTableHead = () => {
   return (
     <TableHead>
-      <TableRow>
+      <TableRow hover>
         <TableCell padding="dense">Name & student number</TableCell>
         <TableCell padding="dense">Email</TableCell>
         <TableCell padding="dense">Participated</TableCell>
@@ -143,7 +145,7 @@ const UserTableHead = () => {
 
 const UserTable = (props) => {
   return (
-    <Table>
+    <Table size="small">
       <UserTableHead />
       <UserTableBody users={props.users} />
     </Table>
@@ -176,5 +178,5 @@ const mapDispatchToProps = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ViewUsersPage)
+  connect(mapStateToProps, mapDispatchToProps)(ViewUsersPage),
 )
