@@ -46,7 +46,9 @@ const InstructorTimeLogsPage = (props) => {
   const [moveToNextSprintConfirmOpen, setMoveToNextSprintConfirmOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
-  const possibleSprintNumbers = Array.from({ length: 101 }, (_, i) => i)
+  const possibleSprintNumbers = allSprints
+    .map((sprint) => sprint.sprint)
+    .sort((a, b) => a - b)
 
   useEffect(() => {
     const fetchAllConfigurations = async () => {
@@ -142,7 +144,6 @@ const InstructorTimeLogsPage = (props) => {
       try {
         const summaryData = await timeLogsService.getGroupSprintSummary(group_id)
         setGroupSprintSummary(JSON.parse(summaryData))
-        setSelectedSprintNumber(0)
       } catch (error) {
         console.error(
           'Error fetching group sprint summary:',
@@ -157,8 +158,27 @@ const InstructorTimeLogsPage = (props) => {
 
     const fetchSprintData = async (group_id) => {
       try {
-        const sprintData = await sprintService.getSprintsByGroup(group_id);
-        setAllSprints(sprintData);
+        const sprintData = await sprintService.getSprintsByGroup(group_id)
+        setAllSprints(sprintData)
+
+        const today = new Date()
+        const currentSprintObject = sprintData.find(
+          (sprint) => {
+            const start = new Date(sprint.start_date)
+            const end = new Date(sprint.end_date)
+
+            start.setHours(0, 0, 0, 0)
+            end.setHours(23, 59, 59, 999)
+
+            return today >= start && today <= end
+          }
+        )
+
+        if (currentSprintObject) {
+          setSelectedSprintNumber(currentSprintObject.sprint)
+        } else {
+          setSelectedSprintNumber(sprintData.length)
+        }
       } catch (error) {
         console.error(
           'Error fetching all sprints:',
