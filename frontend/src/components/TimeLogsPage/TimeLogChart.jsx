@@ -453,7 +453,7 @@ const TimeLogChart = (props) => {
                 axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
               />
               <YAxis
-                domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}
+                domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration))]}
                 axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
                 tickLine={{ stroke: theme.custom.chartAxis.stroke }}
                 tick={{ fill: theme.custom.chartAxis.stroke }}
