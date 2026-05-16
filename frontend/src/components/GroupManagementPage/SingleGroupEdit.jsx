@@ -5,6 +5,9 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import groupManagementService from '../../services/groupManagement'
 import * as notificationActions from '../../reducers/actions/notificationActions'
@@ -22,7 +25,8 @@ const updateCreatedGroup = async (event, props) => {
     topicId,
     studentIds,
     instructor,
-    configurationId
+    configurationId,
+    projectLength
   } = props.group
 
   const splitStudents = studentIds
@@ -37,13 +41,15 @@ const updateCreatedGroup = async (event, props) => {
     })
 
   try {
+    const isShortProject = projectLength === 'short'
     const updatedGroup = await groupManagementService.put({
       id: id,
       name: name,
       topicId: topicId,
       configurationId: configurationId,
       instructorId: instructor ? instructor.student_number : '',
-      studentIds: splitStudents
+      studentIds: splitStudents,
+      isShortProject,
     })
 
     props.updateExistingGroup(updatedGroup)
@@ -69,7 +75,8 @@ class SingleGroupEdit extends React.Component {
       instructor: props.users.find(
         (user) => user.student_number === props.group.instructorId
       ),
-      studentIds: props.group.studentIds.join('\n')
+      studentIds: props.group.studentIds.join('\n'),
+      projectLength: props.group.isShortProject ? 'short' : 'long'
     }
   }
 
@@ -83,6 +90,10 @@ class SingleGroupEdit extends React.Component {
 
   handleInstructorChange = (newInstructor) => {
     this.setState({ instructor: newInstructor })
+  }
+
+  handleProjectLengthChange = (event) => {
+    this.setState({ projectLength: event.target.value })
   }
 
   handleTopicChange = (newTopicId) => {
@@ -157,6 +168,11 @@ class SingleGroupEdit extends React.Component {
           className="edit-group-form-topic__selector"
           fullWidth={true}
         />
+        <p>Change project length</p>
+        <RadioGroup name="length" value={this.state.projectLength} onChange={this.handleProjectLengthChange}>
+          <FormControlLabel value="short" control={<Radio />} label="short" />
+          <FormControlLabel value="long" control={<Radio />} label="long" />
+        </RadioGroup>
         <p>Add new students</p>
         <TextField
           inputProps={{

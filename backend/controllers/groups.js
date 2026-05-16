@@ -13,7 +13,8 @@ const formatGroup = (dbGroup) => {
     topicId,
     configurationId,
     instructorId,
-    students
+    students,
+    isShortProject
   } = dbGroup
   return {
     id,
@@ -23,7 +24,8 @@ const formatGroup = (dbGroup) => {
     topicId,
     instructorId,
     configurationId,
-    studentIds: students.map(({ student_number }) => student_number)
+    studentIds: students.map(({ student_number }) => student_number),
+    isShortProject
   }
 }
 
@@ -141,7 +143,8 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     updatedAt,
     topicId,
     configurationId,
-    instructorId
+    instructorId,
+    isShortProject
   } = dbGroup
   return {
     id,
@@ -153,7 +156,8 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     configurationId,
     studentIds: dbGroupStudents.map(
       ({ userStudentNumber }) => userStudentNumber
-    )
+    ),
+    isShortProject
   }
 }
 
@@ -219,7 +223,7 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
     return res.status(400).json({ error: validationError })
   }
 
-  const { name, topicId, instructorId, studentIds } = req.body
+  const { name, topicId, instructorId, studentIds, isShortProject } = req.body
 
   try {
     const group = await db.Group.findOne({
@@ -237,7 +241,8 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
         {
           name,
           topicId,
-          instructorId: instructorId || null
+          instructorId: instructorId || null,
+          isShortProject,
         },
         {
           ...options,
