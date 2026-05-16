@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -59,8 +60,14 @@ const SingleGroupView = ({
       <div>
         <div className="group-topic">
           <p>Topic</p>
+          <Link to={`/topics/${group.topicId}`}>
+            {topicName}
+          </Link>
+        </div>
 
-          {topicName}
+        <div className="group-topic">
+          <p>Project length</p>
+          {group.isShortProject ? 'short' : 'long'}
         </div>
 
         <div className="group-students">
