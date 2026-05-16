@@ -84,13 +84,14 @@ const saveGroup = async (event, props) => {
     })
 
   try {
+    const isShortProject = projectLength === 'short'
     const createdGroup = await groupManagementService.create({
       name: groupName,
       topicId: groupTopicID,
       configurationId: groupConfigurationID,
       instructorId: groupInstructor ? groupInstructor.student_number : '',
       studentIds: splitStudents,
-      projectLength: projectLength,
+      isShortProject: isShortProject,
     })
     props.createGroupSuccsess(createdGroup)
     props.onInstructorChange(null)

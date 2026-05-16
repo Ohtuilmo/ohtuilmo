@@ -6,7 +6,12 @@ module.exports = (sequelize, Sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
-    name: Sequelize.STRING
+    name: Sequelize.STRING,
+    isShortProject: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   },
   {
     underscored: true

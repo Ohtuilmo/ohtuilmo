@@ -88,7 +88,7 @@ const findNonExistingStudents = async (studentNumbers) => {
 const validateGroup = async (body) => {
   if (!body) return 'POST body is missing'
 
-  const { name, topicId, configurationId, instructorId, studentIds } = body
+  const { name, topicId, configurationId, instructorId, studentIds, isShortProject } = body
 
   if (isNil(name) || typeof name !== 'string') return 'name is missing'
   if (isNil(topicId) || typeof topicId !== 'number') return 'topicId is missing'
@@ -117,6 +117,10 @@ const validateGroup = async (body) => {
 
   if (!!instructorId && (await instructorDoesNotExist(instructorId))) {
     return `Instructor user ${instructorId} does not exist`
+  }
+
+  if (isNil(isShortProject) || typeof isShortProject !== 'boolean') {
+    return 'Project length is missing'
   }
 
   const nonExistingStudents = await findNonExistingStudents(studentIds)
@@ -160,7 +164,7 @@ router.post('/', checkAdmin, async (req, res) => {
     return res.status(400).json({ error: validationError })
   }
 
-  const { name, topicId, configurationId, instructorId, studentIds } = req.body
+  const { name, topicId, configurationId, instructorId, studentIds, isShortProject } = req.body
 
   // Wrap group creation and group_students join table setting in a transaction
   // so that the group is not created if a foreign key violation occurs
@@ -178,7 +182,8 @@ router.post('/', checkAdmin, async (req, res) => {
             name,
             topicId,
             configurationId,
-            instructorId: instructorId || null
+            instructorId: instructorId || null,
+            isShortProject,
           },
           options
         )
