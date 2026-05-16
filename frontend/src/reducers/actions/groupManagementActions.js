@@ -23,6 +23,11 @@ const updateGroupConfigurationID = (groupConfigurationID) => ({
   payload: groupConfigurationID
 })
 
+const updateProjectLength = (projectLength) => ({
+  type: 'UPDATE_PROJECT_LENGTH',
+  payload: projectLength
+})
+
 const createGroupSuccsess = (newGroup) => ({
   type: 'CREATE_GROUP_SUCCSESS',
   payload: newGroup
@@ -59,6 +64,7 @@ export default {
   updateGroupTopicID,
   updateGroupInstructor,
   updateGroupConfigurationID,
+  updateProjectLength,
   createGroupSuccsess,
   setGroups,
   deleteFromGroup,

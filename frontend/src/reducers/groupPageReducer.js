@@ -5,7 +5,8 @@ const initialState = {
   groupInstructor: null, // autosuggested user
   groupConfigurationID: '',
   groups: [],
-  users: []
+  users: [],
+  projectLength: 'long'
 }
 
 const groupPageReducer = (state = initialState, action) => {
@@ -34,6 +35,11 @@ const groupPageReducer = (state = initialState, action) => {
     return {
       ...state,
       groupConfigurationID: action.payload
+    }
+  case 'UPDATE_PROJECT_LENGTH':
+    return {
+      ...state,
+      projectLength: action.payload
     }
   case 'CREATE_GROUP_SUCCSESS':
     return {
