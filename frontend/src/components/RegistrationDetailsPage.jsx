@@ -77,6 +77,10 @@ const GroupDetails = ({ groupDetails }) => {
           <Typography variant="body1" gutterBottom>
             {groupDetails.groupName}
           </Typography>
+          <h4>Project length</h4>
+          <Typography variant="body1" gutterBottom>
+            {groupDetails.isShortProject ? "Short" : "Normal"}
+          </Typography>
           <h4>Instructor</h4>
           <Typography variant="body1" gutterBottom>
             {groupDetails.instructor}
