@@ -51,7 +51,7 @@ const durationInDays = (start_date, end_date) => {
   const utc1 = Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate())
   const utc2 = Date.UTC(end_date.getFullYear(), end_date.getMonth(), end_date.getDate())
 
-  return Math.floor(Math.abs((utc2 - utc1)) / _MS_PER_DAY)
+  return Math.floor(Math.abs((utc2 - utc1)) / _MS_PER_DAY) + 1
 }
 
 // The ideal hours per project is 200h
