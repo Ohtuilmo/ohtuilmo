@@ -134,6 +134,7 @@ const deleteFromGroupStudent = async (event, props) => {
     topicId,
     studentIds,
     instructorId,
+    isShortProject,
     configurationId
   } = props.group
 
@@ -148,6 +149,7 @@ const deleteFromGroupStudent = async (event, props) => {
       topicId: topicId,
       configurationId: configurationId,
       instructorId: instructorId,
+      isShortProject: isShortProject,
       studentIds: removedStudents
     })
     props.deleteFromGroupAction(updatedGroup)
@@ -172,7 +174,7 @@ const deleteFromGroupInstructor = async (event, props) => {
     return
   }
 
-  const { id, name, topicId, studentIds, configurationId } = props.group
+  const { id, name, topicId, studentIds, configurationId, isShortProject } = props.group
 
   try {
     const updatedGroup = await groupManagementService.put({
@@ -181,6 +183,7 @@ const deleteFromGroupInstructor = async (event, props) => {
       topicId: topicId,
       configurationId: configurationId,
       instructorId: '',
+      isShortProject,
       studentIds: studentIds
     })
     props.deleteFromGroupAction(updatedGroup)
