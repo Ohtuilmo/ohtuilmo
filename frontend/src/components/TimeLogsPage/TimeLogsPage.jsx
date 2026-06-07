@@ -253,11 +253,17 @@ const TimeLogsPage = (props) => {
       <div className='timelogs-charts-container'>
         <div className='timelogs-chart-and-title-container'>
           <Typography variant='h5'>Sprint Chart</Typography>
-          <TimeLogChart chartVariant='sprint' />
+          <TimeLogChart
+            chartVariant='sprint'
+            isShortProject={group.isShortProject}
+          />
         </div>
         <div className='timelogs-chart-and-title-container'>
           <Typography variant='h5'>Project Chart</Typography>
-          <TimeLogChart chartVariant='total' />
+          <TimeLogChart
+            chartVariant='total'
+            isShortProject={group.isShortProject}
+          />
         </div>
       </div>
     </div>

@@ -360,7 +360,8 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
       configurationId: usersGroup.configurationId,
       groupName: usersGroup.name,
       students: usersGroup.students,
-      instructor: instructorString
+      instructor: instructorString,
+      isShortProject: usersGroup.isShortProject,
     })
   } catch (error) {
     console.error('Error while updating group', error)

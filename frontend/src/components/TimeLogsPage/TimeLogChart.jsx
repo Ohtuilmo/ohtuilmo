@@ -56,19 +56,29 @@ const durationInDays = (start_date, end_date) => {
 
 // The ideal hours per project is 200h
 // The approximation for calculations is:
+
+// NORMAL/LONG PROJECT (~15 weeks):
 // 14h/week is a ideal pace.
 // 12h/week will lead to 180h,
 // 10h/week to 150h
 // if less that that... good luck
-const idealHoursPerWeek = 14
-const idealHoursPerDay = idealHoursPerWeek / 7
-
-const okHoursPerWeek = 12
-const okHoursPerDay = okHoursPerWeek / 7
-
-const dangerousHoursPerWeek = 8
-const dangerousHoursPerDay = dangerousHoursPerWeek / 7
-
+//
+// SHORT PROJECT (~7 weeks):
+// 30h/week is a ideal pace.
+// 26h/week will lead to 182h,
+// 22h/week to 154h
+// if less that that... good luck
+const getProjectHours = (isShortProject) => {
+  return isShortProject ? {
+    idealHoursPerDay: 30 / 7,
+    okHoursPerDay: 26 / 7,
+    dangerousHoursPerDay: 22 / 7,
+  } : {
+    idealHoursPerDay: 14 / 7,
+    okHoursPerDay: 12 / 7,
+    dangerousHoursPerDay: 8 / 7,
+  }
+}
 
 const projectDurationFromSprints = (allSprintDates) => {
   const projectStartDate = allSprintDates[Math.min(...Object.keys(allSprintDates))].start_date
@@ -78,8 +88,9 @@ const projectDurationFromSprints = (allSprintDates) => {
   return sprintDuration
 }
 
-const idealHours = (durationDays) => {
-  return durationDays*idealHoursPerDay
+const idealHours = (durationDays, isShortProject) => {
+  const { idealHoursPerDay } = getProjectHours(isShortProject)
+  return durationDays * idealHoursPerDay
 }
 
 const barBorderColorByPace = (pace) => {
@@ -98,7 +109,8 @@ const barBorderColorByPace = (pace) => {
   }
 }
 
-const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDuration) => {
+const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDuration, isShortProject) => {
+  const { idealHoursPerDay, okHoursPerDay, dangerousHoursPerDay } = getProjectHours(isShortProject)
   const totalHours = allStudentHours.find(sprint => sprint.name === studentName && sprint.sprint === -1)?.altHours
 
   let pace = ''
@@ -112,10 +124,11 @@ const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDurati
     pace = 'Panic'
   }
   const paceColor = barBorderColorByPace(pace)
-  return { pace, paceColor, totalHours, idealHours: idealHours(totalDuration) }
+  return { pace, paceColor, totalHours, idealHours: idealHours(totalDuration, isShortProject) }
 }
 
-const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSprintDates) => {
+const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSprintDates, isShortProject) => {
+  const { idealHoursPerDay, okHoursPerDay, dangerousHoursPerDay } = getProjectHours(isShortProject)
   const sprintPaces = {}
   allStudentHours.forEach((student, index) => {
     if (student.sprint === -1)
@@ -148,12 +161,12 @@ const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSp
     }
 
     const paceColor = barBorderColorByPace(pace)
-    sprintPaces[student.sprint] = { pace, paceColor, hours: studentHours, idealHours: idealHours(sprintDays) }
+    sprintPaces[student.sprint] = { pace, paceColor, hours: studentHours, idealHours: idealHours(sprintDays, isShortProject) }
   })
   return sprintPaces
 }
 
-const checkStudentProgress = (mappedData, allSprintDates) => {
+const checkStudentProgress = (mappedData, allSprintDates, isShortProject) => {
   const students = [...new Set(mappedData.map(sprint => sprint.name))]
   const paces = {}
 
@@ -164,8 +177,8 @@ const checkStudentProgress = (mappedData, allSprintDates) => {
   const projectDurationSinceStart = Math.max(durationInDays(firstSprintStart, new Date()), 1)
 
   students.forEach(student => {
-    const studentPaceTotal = checkStudentProgressPaceTotal(student, mappedData, projectDurationSinceStart)
-    const studentPacePerSprint = checkStudentProgressPacePerSprint(student, mappedData, allSprintDates)
+    const studentPaceTotal = checkStudentProgressPaceTotal(student, mappedData, projectDurationSinceStart, isShortProject)
+    const studentPacePerSprint = checkStudentProgressPacePerSprint(student, mappedData, allSprintDates, isShortProject)
     paces[student] = { total: studentPaceTotal, sprints: studentPacePerSprint}
   })
   return paces
@@ -175,7 +188,8 @@ const TimeLogChart = (props) => {
   const {
     groupSprintSummary,
     selectedSprintNumber,
-    chartVariant
+    chartVariant,
+    isShortProject,
   } = props
   const [chartData, setChartData] = useState([])
   const [sprints, setSprints] = useState([])
@@ -262,9 +276,9 @@ const TimeLogChart = (props) => {
 
     const duration = projectDurationFromSprints(sprintDates)
     setProjectDuration(duration)
-    const paces = checkStudentProgress(mappedData, sprintDates)
+    const paces = checkStudentProgress(mappedData, sprintDates, isShortProject)
     setStudentPaces(paces)
-  }, [groupSprintSummary])
+  }, [groupSprintSummary, isShortProject])
 
   useEffect(() => {
     if (!sprintDates)
@@ -287,7 +301,8 @@ const TimeLogChart = (props) => {
       Math.min(
         Math.max(durationInDays(firstSprintStart, new Date()), 1),
         projectDuration
-      )
+      ),
+      isShortProject
     )
     : 0
 
@@ -300,7 +315,8 @@ const TimeLogChart = (props) => {
       Math.min(
         Math.max(durationInDays(selectedSprintStart, new Date()), 1),
         selectedSprintDuration
-      )
+      ),
+      isShortProject
     )
     : 0
 
@@ -398,13 +414,13 @@ const TimeLogChart = (props) => {
               axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
             />
             <YAxis
-              domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration))]}
+              domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration, isShortProject))]}
               axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
               tickLine={{ stroke: theme.custom.chartAxis.stroke }}
               tick={{ fill: theme.custom.chartAxis.stroke }}
             />
             <ReferenceLine
-              y={idealHours(projectDuration)}
+              y={idealHours(projectDuration, isShortProject)}
               stroke="red"
               strokeDasharray="3 3"
               label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
@@ -453,13 +469,13 @@ const TimeLogChart = (props) => {
                 axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
               />
               <YAxis
-                domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration))]}
+                domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration, isShortProject))]}
                 axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
                 tickLine={{ stroke: theme.custom.chartAxis.stroke }}
                 tick={{ fill: theme.custom.chartAxis.stroke }}
               />
               <ReferenceLine
-                y={idealHours(selectedSprintDuration)}
+                y={idealHours(selectedSprintDuration, isShortProject)}
                 stroke="red"
                 strokeDasharray="3 3"
                 label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
