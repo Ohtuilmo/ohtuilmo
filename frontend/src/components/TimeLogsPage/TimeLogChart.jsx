@@ -393,6 +393,7 @@ const TimeLogChart = (props) => {
 
     return null
   }
+  console.log()
 
   if (chartData && chartData.length > 0) {
     return chartVariant === 'total'
@@ -414,13 +415,16 @@ const TimeLogChart = (props) => {
               axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
             />
             <YAxis
-              domain={[0, (dataMax) => Math.max(dataMax, idealHours(projectDuration, isShortProject))]}
+              domain={[0, (dataMax) => Math.max(
+                dataMax,
+                Math.round(idealHours(projectDuration, isShortProject))
+              )]}
               axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
               tickLine={{ stroke: theme.custom.chartAxis.stroke }}
               tick={{ fill: theme.custom.chartAxis.stroke }}
             />
             <ReferenceLine
-              y={idealHours(projectDuration, isShortProject)}
+              y={Math.round(idealHours(projectDuration, isShortProject))}
               stroke="red"
               strokeDasharray="3 3"
               label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
@@ -469,13 +473,16 @@ const TimeLogChart = (props) => {
                 axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
               />
               <YAxis
-                domain={[0, (dataMax) => Math.max(dataMax, idealHours(selectedSprintDuration, isShortProject))]}
+                domain={[0, (dataMax) => Math.max(
+                  dataMax,
+                  Math.round(idealHours(selectedSprintDuration, isShortProject))
+                )]}
                 axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
                 tickLine={{ stroke: theme.custom.chartAxis.stroke }}
                 tick={{ fill: theme.custom.chartAxis.stroke }}
               />
               <ReferenceLine
-                y={idealHours(selectedSprintDuration, isShortProject)}
+                y={Math.round(idealHours(selectedSprintDuration, isShortProject))}
                 stroke="red"
                 strokeDasharray="3 3"
                 label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
