@@ -169,9 +169,21 @@ class SingleGroupEdit extends React.Component {
           fullWidth={true}
         />
         <p>Change project length</p>
-        <RadioGroup name="length" value={this.state.projectLength} onChange={this.handleProjectLengthChange}>
-          <FormControlLabel value="short" control={<Radio />} label="short" />
-          <FormControlLabel value="long" control={<Radio />} label="long" />
+        <RadioGroup
+          name="length"
+          value={this.state.projectLength}
+          onChange={this.handleProjectLengthChange}
+        >
+          <FormControlLabel
+            value="short"
+            control={<Radio inputProps={{ 'data-cy': 'edit-project-length-short' }} />}
+            label="short"
+          />
+          <FormControlLabel
+            value="long"
+            control={<Radio inputProps={{ 'data-cy': 'edit-project-length-long' }} />}
+            label="long"
+          />
         </RadioGroup>
         <p>Add new students</p>
         <TextField
