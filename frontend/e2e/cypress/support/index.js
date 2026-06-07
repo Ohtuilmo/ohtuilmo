@@ -626,6 +626,7 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
       topicId,
       configurationId,
       instructorId,
+      isShortProject = false,
       studentIds
     } = groupData
 
@@ -639,6 +640,7 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
           topicId,
           configurationId,
           instructorId,
+          isShortProject,
           studentIds
         }
       })
@@ -686,6 +688,7 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
       topicId,
       configurationId,
       instructorId,
+      isShortProject = false,
       studentIds
     } = groupData
 
@@ -699,6 +702,7 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
           topicId,
           configurationId,
           instructorId,
+          isShortProject,
           studentIds
         }
       })
@@ -718,6 +722,7 @@ Cypress.Commands.add('createGroup', (groupData) => {
       topicId,
       configurationId,
       instructorId,
+      isShortProject = false,
       studentIds
     } = groupData
 
@@ -730,6 +735,7 @@ Cypress.Commands.add('createGroup', (groupData) => {
         topicId,
         configurationId,
         instructorId,
+        isShortProject,
         studentIds
       }
     }).then((res) => {
