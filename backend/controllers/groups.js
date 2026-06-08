@@ -13,7 +13,8 @@ const formatGroup = (dbGroup) => {
     topicId,
     configurationId,
     instructorId,
-    students
+    students,
+    isShortProject
   } = dbGroup
   return {
     id,
@@ -23,7 +24,8 @@ const formatGroup = (dbGroup) => {
     topicId,
     instructorId,
     configurationId,
-    studentIds: students.map(({ student_number }) => student_number)
+    studentIds: students.map(({ student_number }) => student_number),
+    isShortProject
   }
 }
 
@@ -88,7 +90,7 @@ const findNonExistingStudents = async (studentNumbers) => {
 const validateGroup = async (body) => {
   if (!body) return 'POST body is missing'
 
-  const { name, topicId, configurationId, instructorId, studentIds } = body
+  const { name, topicId, configurationId, instructorId, studentIds, isShortProject } = body
 
   if (isNil(name) || typeof name !== 'string') return 'name is missing'
   if (isNil(topicId) || typeof topicId !== 'number') return 'topicId is missing'
@@ -119,6 +121,10 @@ const validateGroup = async (body) => {
     return `Instructor user ${instructorId} does not exist`
   }
 
+  if (isNil(isShortProject) || typeof isShortProject !== 'boolean') {
+    return 'Project length is missing'
+  }
+
   const nonExistingStudents = await findNonExistingStudents(studentIds)
   if (nonExistingStudents.length > 0) {
     return nonExistingStudents.length === 1
@@ -137,7 +143,8 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     updatedAt,
     topicId,
     configurationId,
-    instructorId
+    instructorId,
+    isShortProject
   } = dbGroup
   return {
     id,
@@ -149,7 +156,8 @@ const formatCreatedGroup = (dbGroup, dbGroupStudents) => {
     configurationId,
     studentIds: dbGroupStudents.map(
       ({ userStudentNumber }) => userStudentNumber
-    )
+    ),
+    isShortProject
   }
 }
 
@@ -160,7 +168,7 @@ router.post('/', checkAdmin, async (req, res) => {
     return res.status(400).json({ error: validationError })
   }
 
-  const { name, topicId, configurationId, instructorId, studentIds } = req.body
+  const { name, topicId, configurationId, instructorId, studentIds, isShortProject } = req.body
 
   // Wrap group creation and group_students join table setting in a transaction
   // so that the group is not created if a foreign key violation occurs
@@ -178,7 +186,8 @@ router.post('/', checkAdmin, async (req, res) => {
             name,
             topicId,
             configurationId,
-            instructorId: instructorId || null
+            instructorId: instructorId || null,
+            isShortProject,
           },
           options
         )
@@ -214,7 +223,7 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
     return res.status(400).json({ error: validationError })
   }
 
-  const { name, topicId, instructorId, studentIds } = req.body
+  const { name, topicId, instructorId, studentIds, isShortProject } = req.body
 
   try {
     const group = await db.Group.findOne({
@@ -232,7 +241,8 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
         {
           name,
           topicId,
-          instructorId: instructorId || null
+          instructorId: instructorId || null,
+          isShortProject,
         },
         {
           ...options,
@@ -350,7 +360,8 @@ router.get('/bystudent/:student', checkLogin, async (req, res) => {
       configurationId: usersGroup.configurationId,
       groupName: usersGroup.name,
       students: usersGroup.students,
-      instructor: instructorString
+      instructor: instructorString,
+      isShortProject: usersGroup.isShortProject,
     })
   } catch (error) {
     console.error('Error while updating group', error)

@@ -74,6 +74,15 @@ describe('Group Management Page', () => {
       cy.get('.group-name').eq(0).should('contain', 'Ryhmä B')
     })
 
+    it('changes project length', () => {
+      cy.get('[data-cy=edit-project-length-short]').check()
+      cy.get('[data-cy=edit-group-save-button]').click()
+      cy.get('.notification').should('have.text', 'Group updated!')
+
+      cy.get('[data-cy=edit-group-button]').eq(0).click()
+      cy.get('[data-cy=edit-project-length-short]').should('be.checked')
+    })
+
     it('changes topic', () => {
       cy.get('.edit-group-form-topic__selector')
         .should('be.visible')

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -59,8 +60,14 @@ const SingleGroupView = ({
       <div>
         <div className="group-topic">
           <p>Topic</p>
+          <Link to={`/topics/${group.topicId}`}>
+            {topicName}
+          </Link>
+        </div>
 
-          {topicName}
+        <div className="group-topic">
+          <p>Project length</p>
+          {group.isShortProject ? 'short' : 'long'}
         </div>
 
         <div className="group-students">
@@ -127,6 +134,7 @@ const deleteFromGroupStudent = async (event, props) => {
     topicId,
     studentIds,
     instructorId,
+    isShortProject,
     configurationId
   } = props.group
 
@@ -141,6 +149,7 @@ const deleteFromGroupStudent = async (event, props) => {
       topicId: topicId,
       configurationId: configurationId,
       instructorId: instructorId,
+      isShortProject: isShortProject,
       studentIds: removedStudents
     })
     props.deleteFromGroupAction(updatedGroup)
@@ -165,7 +174,7 @@ const deleteFromGroupInstructor = async (event, props) => {
     return
   }
 
-  const { id, name, topicId, studentIds, configurationId } = props.group
+  const { id, name, topicId, studentIds, configurationId, isShortProject } = props.group
 
   try {
     const updatedGroup = await groupManagementService.put({
@@ -174,6 +183,7 @@ const deleteFromGroupInstructor = async (event, props) => {
       topicId: topicId,
       configurationId: configurationId,
       instructorId: '',
+      isShortProject,
       studentIds: studentIds
     })
     props.deleteFromGroupAction(updatedGroup)

@@ -67,6 +67,7 @@ describe('POST Groups', () => {
         name: 'Hassunimi',
         topicId: testTopicId,
         configurationId: testConfigurationId,
+        isShortProject: true,
         studentIds: createdTestUsers.concat(testUsers[0]).map(user => user.student_number.toString())
       })
 
@@ -87,6 +88,7 @@ describe('POST Groups', () => {
         name: 'Hassunimi',
         topicId: testTopicId,
         configurationId: testConfigurationId,
+        isShortProject: true,
         studentIds: createdTestUsers.map(user => user.student_number.toString()).concat('eiainakaansn')
       })
 
@@ -107,6 +109,7 @@ describe('POST Groups', () => {
         name: 'Hassunimi',
         topicId: testTopicId,
         configurationId: testConfigurationId,
+        isShortProject: true,
         studentIds: createdTestUsers.map(user => user.student_number.toString())
       })
 
@@ -118,6 +121,7 @@ describe('POST Groups', () => {
       'updatedAt',
       'topicId',
       'instructorId',
+      'isShortProject',
       'configurationId',
     )
   })

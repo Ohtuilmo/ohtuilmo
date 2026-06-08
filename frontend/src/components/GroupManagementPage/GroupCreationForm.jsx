@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core'
 
 import groupManagementService from '../../services/groupManagement'
@@ -50,6 +53,13 @@ const NameInput = ({ value, onChange, inputProps, ...textFieldProps }) => (
   />
 )
 
+const ProjectLengthInput = ({ value, onChange }) => (
+  <RadioGroup name="length" value={value} onChange={(e) => onChange(e.target.value)}>
+    <FormControlLabel value="short" control={<Radio />} label="short" />
+    <FormControlLabel value="long" control={<Radio />} label="long" />
+  </RadioGroup>
+)
+
 const saveGroup = async (event, props) => {
   event.preventDefault()
 
@@ -59,6 +69,7 @@ const saveGroup = async (event, props) => {
     groupTopicID,
     groupInstructor,
     groupConfigurationID,
+    projectLength,
   } = props
 
   const splitStudents = students
@@ -73,12 +84,14 @@ const saveGroup = async (event, props) => {
     })
 
   try {
+    const isShortProject = projectLength === 'short'
     const createdGroup = await groupManagementService.create({
       name: groupName,
       topicId: groupTopicID,
       configurationId: groupConfigurationID,
       instructorId: groupInstructor ? groupInstructor.student_number : '',
       studentIds: splitStudents,
+      isShortProject: isShortProject,
     })
     props.createGroupSuccsess(createdGroup)
     props.onInstructorChange(null)
@@ -99,6 +112,8 @@ const GroupCreationForm = ({
   onTopicSelectChange,
   groupTopicID,
   groupConfigurationID,
+  projectLength,
+  onProjectLengthChange,
   createGroupSuccsess,
   setSuccess,
   setError,
@@ -119,6 +134,7 @@ const GroupCreationForm = ({
             groupTopicID,
             groupInstructor,
             groupConfigurationID,
+            projectLength,
             createGroupSuccsess,
             setSuccess,
             setError,
@@ -144,6 +160,13 @@ const GroupCreationForm = ({
                 inputProps={{
                   className: 'create-group-form__name',
                 }}
+              />
+            </FormInput>
+
+            <FormInput label="Project length">
+              <ProjectLengthInput
+                value={projectLength}
+                onChange={onProjectLengthChange}
               />
             </FormInput>
 
@@ -181,6 +204,7 @@ const mapStateToPropsForm = (state) => ({
   groupTopicID: state.groupPage.groupTopicID,
   groupInstructor: state.groupPage.groupInstructor,
   groupConfigurationID: state.groupPage.groupConfigurationID,
+  projectLength: state.groupPage.projectLength,
   topics: state.topicListPage.topics,
 })
 
@@ -189,6 +213,7 @@ const mapDispatchToPropsForm = {
   onStudentFormChange: groupManagementActions.updateStudentsForm,
   onTopicSelectChange: groupManagementActions.updateGroupTopicID,
   onInstructorChange: groupManagementActions.updateGroupInstructor,
+  onProjectLengthChange: groupManagementActions.updateProjectLength,
   createGroupSuccsess: groupManagementActions.createGroupSuccsess,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
