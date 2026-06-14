@@ -393,7 +393,6 @@ const TimeLogChart = (props) => {
 
     return null
   }
-  console.log()
 
   if (chartData && chartData.length > 0) {
     return chartVariant === 'total'
