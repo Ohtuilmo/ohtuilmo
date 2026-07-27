@@ -17,15 +17,26 @@ const markdownRenderers = {
         {children}
       </a>
     )
-  }
+  },
 }
 
 const Markdown = ({ children }) => (
   <ReactMarkdown renderers={markdownRenderers}>{children}</ReactMarkdown>
 )
 
-const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration, summer, dates }) => {
-  const ipRights = content.ipRights === 'nonopen' ? 'The customer retains the intellectual property rights to the project.' : 'Software is published under a open source license'
+const Topic = ({
+  content,
+  isEditable,
+  onPageChange,
+  isAdmin,
+  copyToConfiguration,
+  summer,
+  dates,
+}) => {
+  const ipRights =
+    content.ipRights === 'nonopen'
+      ? 'The customer retains the intellectual property rights to the project.'
+      : 'Software is published under a open source license'
 
   return (
     <div className="single-topic-container">
@@ -35,36 +46,50 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
         </Typography>
       </div>
       <div className="block">
-        <p className="title" style={{ paddingBottom: 7 }}>Customer</p>
+        <p className="title" style={{ paddingBottom: 7 }}>
+          Customer
+        </p>
         <Typography variant="body1">{content.customerName}</Typography>
       </div>
-      {content.organisation &&(
+      {content.organisation && (
         <div className="block">
-          <p className="title" style={{ paddingBottom: 7 }}>Organisation type</p>
+          <p className="title" style={{ paddingBottom: 7 }}>
+            Organisation type
+          </p>
           <Typography variant="body1">{content.organisation}</Typography>
         </div>
       )}
       <div className="block">
-        <p className="title" style={{ paddingBottom: 7 }}>Contact email</p>
+        <p className="title" style={{ paddingBottom: 7 }}>
+          Contact email
+        </p>
         <Typography variant="body1">{content.email}</Typography>
       </div>
       {content.phoneNumber && (
         <div className="block">
-          <p className="title" style={{ paddingBottom: 7 }}>Phone number</p>
+          <p className="title" style={{ paddingBottom: 7 }}>
+            Phone number
+          </p>
           <Typography variant="body1">{content.phoneNumber}</Typography>
         </div>
       )}
-      {summer && content.summerDates &&(
+      {summer && content.summerDates && (
         <div className="block">
           <p className="title">Suitable timing</p>
           <ul>
-            {content.summerDates.short && <li>the early summer project {dates.short}</li>}
-            {content.summerDates.long && <li>the whole summer project {dates.long}</li>}
+            {content.summerDates.short && (
+              <li>the early summer project {dates.short}</li>
+            )}
+            {content.summerDates.long && (
+              <li>the whole summer project {dates.long}</li>
+            )}
           </ul>
         </div>
       )}
       <div className="block">
-        <p className="title" style={{ paddingBottom: 7 }}>Intellectual property rights</p>
+        <p className="title" style={{ paddingBottom: 7 }}>
+          Intellectual property rights
+        </p>
         <Typography variant="body1">{ipRights}</Typography>
       </div>
 
@@ -78,17 +103,19 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
       </div>
       <div className="block">
         <p className="title">Special requests</p>
-        {content.specialRequests ?
-          <Markdown>{content.specialRequests}</Markdown> :
+        {content.specialRequests ? (
+          <Markdown>{content.specialRequests}</Markdown>
+        ) : (
           <div style={{ paddingTop: 7 }}>-</div>
-        }
+        )}
       </div>
       <div className="block">
         <p className="title">Additional information</p>
-        {content.additionalInfo ?
-          <Markdown>{content.additionalInfo}</Markdown> :
+        {content.additionalInfo ? (
+          <Markdown>{content.additionalInfo}</Markdown>
+        ) : (
           <div style={{ paddingTop: 7 }}>-</div>
-        }
+        )}
       </div>
       {isEditable && (
         <div className="topic-edit-button">
@@ -99,7 +126,11 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
       )}
       {isAdmin && (
         <div className="topic-edit-button">
-          <Button variant="contained" color="default" onClick={copyToConfiguration}>
+          <Button
+            variant="contained"
+            color="default"
+            onClick={copyToConfiguration}
+          >
             Copy to most recent configuration
           </Button>
         </div>
@@ -111,15 +142,10 @@ const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration
 const mapStateToProps = (state) => {
   return {
     summer: state.registrationManagement.summerProject,
-    dates: state.registrationManagement.summerDates
+    dates: state.registrationManagement.summerDates,
   }
 }
 
-
-const ConnectedTopic = connect(
-  mapStateToProps,
-  null
-)(Topic)
-
+const ConnectedTopic = connect(mapStateToProps, null)(Topic)
 
 export default ConnectedTopic

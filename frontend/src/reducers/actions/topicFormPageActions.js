@@ -1,21 +1,21 @@
 const updateTitle = (title) => {
   return {
     type: 'UPDATE_TITLE',
-    payload: title
+    payload: title,
   }
 }
 
 const updateCustomerName = (customerName) => {
   return {
     type: 'UPDATE_CUSTOMER_NAME',
-    payload: customerName
+    payload: customerName,
   }
 }
 
 const updateOrganisation = (organisation) => {
   return {
     type: 'UPDATE_ORGANISATION_TYPE',
-    payload: organisation
+    payload: organisation,
   }
 }
 
@@ -23,97 +23,97 @@ const updateIp = (rights) => {
   console.log(rights)
   return {
     type: 'UPDATE_IP_RIGHTS',
-    payload: rights
+    payload: rights,
   }
 }
 
 const updateEmail = (email) => {
   return {
     type: 'UPDATE_EMAIL',
-    payload: email
+    payload: email,
   }
 }
 
 const updatePhoneNumber = (phoneNumber) => {
   return {
     type: 'UPDATE_PHONE_NUMBER',
-    payload: phoneNumber
+    payload: phoneNumber,
   }
 }
 
 const updateDescription = (description) => {
   return {
     type: 'UPDATE_DESCRIPTION',
-    payload: description
+    payload: description,
   }
 }
 
 const updateEnvironment = (environment) => {
   return {
     type: 'UPDATE_ENVIRONMENT',
-    payload: environment
+    payload: environment,
   }
 }
 
 const updateSpecialRequests = (specialRequests) => {
   return {
     type: 'UPDATE_SPECIAL_REQUESTS',
-    payload: specialRequests
+    payload: specialRequests,
   }
 }
 
 const updateAdditionalInfo = (additionalInfo) => {
   return {
     type: 'UPDATE_ADDITIONAL_INFO',
-    payload: additionalInfo
+    payload: additionalInfo,
   }
 }
 
 const updateDates = (dates) => {
   return {
     type: 'UPDATE_DATES',
-    payload: dates
+    payload: dates,
   }
 }
 
 const clearForm = () => {
   return {
-    type: 'CLEAR_FORM'
+    type: 'CLEAR_FORM',
   }
 }
 
 const setCurrentTopic = (topic) => {
   return {
     type: 'SET_CURRENT_TOPIC',
-    payload: topic
+    payload: topic,
   }
 }
 
 const updatePreview = (preview) => {
   return {
     type: 'UPDATE_PREVIEW',
-    payload: preview
+    payload: preview,
   }
 }
 
 const setSaved = (status) => {
   return {
     type: 'SET_SAVED',
-    payload: status
+    payload: status,
   }
 }
 
 const updateSecretId = (secretId) => {
   return {
     type: 'UPDATE_SECRETID',
-    payload: secretId
+    payload: secretId,
   }
 }
 
 const updateShowInfo = (showInfo) => {
   return {
     type: 'UPDATE_SHOWINFO',
-    payload: showInfo
+    payload: showInfo,
   }
 }
 
@@ -134,5 +134,5 @@ export default {
   setSaved,
   updateSecretId,
   setCurrentTopic,
-  updateShowInfo
+  updateShowInfo,
 }
