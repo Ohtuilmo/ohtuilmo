@@ -27,7 +27,14 @@ import * as notificationActions from '../reducers/actions/notificationActions'
 import registrationActions from '../reducers/actions/registrationActions'
 import registrationmanagementActions from '../reducers/actions/registrationManagementActions'
 
-const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
+const Prerequisites = ({
+  checkbox1,
+  checkbox2,
+  checkbox3,
+  onToggle1,
+  onToggle2,
+  onToggle3,
+}) => {
   return (
     <div
       style={{
@@ -64,7 +71,12 @@ const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
         olen tutustunut projektin arvosteluperusteisiin
       </label>
       <label
-        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+          marginBottom: '10px',
+        }}
       >
         <input
           type="checkbox"
@@ -73,6 +85,17 @@ const Prerequisites = ({ checkbox1, checkbox2, onToggle1, onToggle2 }) => {
           style={{ marginRight: '8px' }}
         />
         sitoudun työskentelemään koko projektin ajan tasaisesti
+      </label>
+      <label
+        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+      >
+        <input
+          type="checkbox"
+          checked={checkbox3}
+          onChange={onToggle3}
+          style={{ marginRight: '8px' }}
+        />
+        Vakuutan että esitiedot on suoritettu projektin alkuun mennessä
       </label>
     </div>
   )
@@ -84,6 +107,8 @@ class RegistrationPage extends React.Component {
     this.state = {
       checkbox1: false,
       checkbox2: false,
+      prerequisitesReady: false,
+      prerequisitesConfirmed: false,
     }
   }
 
@@ -180,16 +205,46 @@ class RegistrationPage extends React.Component {
     this.setState({ checkbox2: !this.state.checkbox2 })
   }
 
+  togglePrerequisitesReady = () => {
+    if (!this.state.prerequisitesReady) {
+      const answer = window.confirm(
+        'Vakuutatko että kaikki esitiedot (Ohjelmistotuotanto, Tietokannat ja Web-ohjelmointi sekä yksi aineopintojen harjoitustyö tai Full stack -websovelluskehitys) on suoritettu tai palautettu arvosteltavaksi projektin alkuun mennessä?\n\nDo you confirm that all prerequisite courses have been completed or submitted for grading by the start of the project?',
+      )
+      if (answer) {
+        this.setState({ prerequisitesReady: true })
+      }
+    } else {
+      this.setState({ prerequisitesReady: false })
+    }
+  }
+
+  togglePrerequisitesConfirmed = () => {
+    if (!this.state.prerequisitesConfirmed) {
+      const answer = window.confirm(
+        'Vakuutatko että kaikki esitiedot (Ohjelmistotuotanto, Tietokannat ja Web-ohjelmointi sekä yksi aineopintojen harjoitustyö tai Full stack -websovelluskehitys) on suoritettu tai palautettu arvosteltavaksi projektin alkuun mennessä?\n\nDo you confirm that all prerequisite courses have been completed or submitted for grading by the start of the project?',
+      )
+      if (answer) {
+        this.setState({ prerequisitesConfirmed: true })
+      }
+    } else {
+      this.setState({ prerequisitesConfirmed: false })
+    }
+  }
+
   submitRegistration = async (e) => {
     e.preventDefault()
 
-    if (!this.state.checkbox1 || !this.state.checkbox2) {
-      this.props.setError('Please check both boxes to enable submission', 3000)
+    if (
+      !this.state.checkbox1 ||
+      !this.state.checkbox2 ||
+      !this.state.prerequisitesConfirmed
+    ) {
+      this.props.setError('Please check all boxes to enable submission', 3000)
       return
     }
 
     const answer = window.confirm(
-      'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?',
+      'Vakuutatko että kaikki esitiedot (Ohjelmistotuotanto, Tietokannat ja Web-ohjelmointi sekä yksi aineopintojen harjoitustyö tai Full stack -websovelluskehitys) on suoritettu tai palautettu arvosteltavaksi projektin alkuun mennessä?\n\nDo you confirm that all prerequisite courses have been completed or submitted for grading by the start of the project?',
     )
     if (!answer) return
 
@@ -304,83 +359,179 @@ class RegistrationPage extends React.Component {
             <br />
             <div
               style={{
-                fontWeight: 'bold',
-                marginBottom: 20,
+                marginBottom: 30,
                 border: 'solid',
-                padding: 10,
+                padding: 20,
                 borderRadius: 10,
               }}
             >
-              Huomaa, että projektiin osallistuminen edellyttää että kaikki
-              esitietona olevat opintojaksot eli kurssit Ohjelmistotuotanto ja
-              Tietokannat ja Web-ohjelmointi sekä yksi seuraavista
-              (Aineopintojen harjoitustyö: Ohjelmistotekniikka, Aineopintojen
-              harjoitustyö: Algoritmit ja teköäly, Aineopintojen harjoitustyö:
-              Tietorakenteet ja algoritmit, Aineopintojen harjoitustyö:
-              Tietoliikenne, Full stack -websovelluskehitys) on suoritettu tai
-              palautettu arvosteltavaksi projektin alkuun mennessä.
+              <h3 style={{ marginTop: 0, marginBottom: '15px' }}>
+                Huomaa, että projektiin osallistuminen edellyttää että kaikki
+                esitietona olevat opintojaksot on suoritettu tai palautettu
+                arvosteltavaksi projektin alkuun mennessä:
+              </h3>
+              <ul style={{ marginTop: '10px', marginBottom: '10px' }}>
+                <li>
+                  <a
+                    href="https://studies.helsinki.fi/kurssit/opintojakso/otm-920b6fde-c155-4220-b672-21ea1b2bd3e4/TKT20006?cpId=hy-lv-77"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ohjelmistotuotanto
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://studies.helsinki.fi/kurssit/opintojakso/otm-f15d8b61-6e3e-47d2-8191-43a92d7d8607/TKT20019"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Tietokannat ja Web-ohjelmointi
+                  </a>
+                </li>
+                <li>
+                  Yksi seuraavista:
+                  <ul style={{ marginTop: '5px' }}>
+                    <li>
+                      <a
+                        href="https://studies.helsinki.fi/kurssit/opintojakso/otm-e6d8ac50-806d-47f5-be72-74a47af9c07d/TKT20018?cpId=hy-lv-77"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Aineopintojen harjoitustyö: Ohjelmistotekniikka
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://studies.helsinki.fi/kurssit/opintojakso/otm-85bcf4bf-3797-46df-82b9-f5620bb5afd2/TKT20010?cpId=hy-lv-77"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Aineopintojen harjoitustyö: Algoritmit ja teköäly
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://studies.helsinki.fi/kurssit/opintojakso/otm-85bcf4bf-3797-46df-82b9-f5620bb5afd2/TKT20010?cpId=hy-lv-77"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://studies.helsinki.fi/kurssit/opintojakso/otm-bf72d0c0-94f2-46dd-98ab-c3503517b5f1/TKT20012?cpId=hy-lv-77"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Aineopintojen harjoitustyö: Tietoliikenne
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://studies.helsinki.fi/kurssit/opintojakso/otm-d351a53b-c18d-4c64-89da-39941d9d6d92/CSM141081?cpId=hy-lv-77"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Full stack -websovelluskehitys
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={this.state.prerequisitesReady}
+                  onChange={this.togglePrerequisitesReady}
+                  style={{ marginRight: '8px' }}
+                />
+                Vakuutan että esitiedot on suoritettu projektin alkuun mennessä
+              </label>
             </div>
-            <h2 className="landingpage-header">User details</h2>
-            <UserDetails />
-            <p>Please fill your email</p>
-            <div>
-              <TextField
-                type="email"
-                required
-                label="Email"
-                margin="normal"
-                style={{ width: '250px', marginTop: 0 }}
-                value={this.props.email}
-                onChange={(e) => this.props.updateEmail(e.target.value)}
-              />
-            </div>
-            <h2>Topics</h2>
-            <div
-              style={{
-                fontWeight: 'bold',
-                marginBottom: 20,
-                border: 'solid',
-                padding: 10,
-                borderRadius: 10,
-              }}
-            >
-              Set the order of the list of topics according to your preference
-              (1 = favorite) by dragging and dropping, click to expand details
-            </div>
-            <div className="dragndrop-container">
-              <div className="dragndrop-indexes-container">{indexes}</div>
-              <ReactDragList
-                className="dragndrop-list"
-                handles={false}
-                dataSource={this.props.topics}
-                onUpdate={this.handleUpdate}
-                rowKey="id"
-                row={(topic) => (
-                  <TopicDialog topic={topic} key={topic.content.title} />
-                )}
-              />
-            </div>
+            {this.state.prerequisitesReady && (
+              <>
+                <h2 className="landingpage-header">User details</h2>
+                <UserDetails />
+                <p>Please fill your email</p>
+                <div>
+                  <TextField
+                    type="email"
+                    required
+                    label="Email"
+                    margin="normal"
+                    style={{ width: '250px', marginTop: 0 }}
+                    value={this.props.email}
+                    onChange={(e) => this.props.updateEmail(e.target.value)}
+                  />
+                </div>
+                <h2>Topics</h2>
+                <div
+                  style={{
+                    fontWeight: 'bold',
+                    marginBottom: 20,
+                    border: 'solid',
+                    padding: 10,
+                    borderRadius: 10,
+                  }}
+                >
+                  Set the order of the list of topics according to your
+                  preference (1 = favorite) by dragging and dropping, click to
+                  expand details
+                </div>
+                <div className="dragndrop-container">
+                  <div className="dragndrop-indexes-container">{indexes}</div>
+                  <ReactDragList
+                    className="dragndrop-list"
+                    handles={false}
+                    dataSource={this.props.topics}
+                    onUpdate={this.handleUpdate}
+                    rowKey="id"
+                    row={(topic) => (
+                      <TopicDialog topic={topic} key={topic.content.title} />
+                    )}
+                  />
+                </div>
+              </>
+            )}
           </div>
-          <div className="section">
-            <h2>Details</h2>
-            <p>Please answer all questions</p>
-            {questions}
-          </div>
+          {this.state.prerequisitesReady && (
+            <>
+              <div className="section">
+                <h2>Details</h2>
+                <p>Please answer all questions</p>
+                {questions}
+              </div>
 
-          <Prerequisites
-            checkbox1={this.state.checkbox1}
-            checkbox2={this.state.checkbox2}
-            onToggle1={this.toggleCheckbox1}
-            onToggle2={this.toggleCheckbox2}
-          />
+              <Prerequisites
+                checkbox1={this.state.checkbox1}
+                checkbox2={this.state.checkbox2}
+                checkbox3={this.state.prerequisitesConfirmed}
+                onToggle1={this.toggleCheckbox1}
+                onToggle2={this.toggleCheckbox2}
+                onToggle3={this.togglePrerequisitesConfirmed}
+              />
 
-          <Button
-            type="submit"
-            variant="outlined"
-            disabled={!this.state.checkbox1 || !this.state.checkbox2}
-          >
-            Submit your registration
-          </Button>
+              <Button
+                type="submit"
+                variant="outlined"
+                disabled={
+                  !this.state.checkbox1 ||
+                  !this.state.checkbox2 ||
+                  !this.state.prerequisitesConfirmed
+                }
+              >
+                Submit your registration
+              </Button>
+            </>
+          )}
         </form>
       </div>
     )
