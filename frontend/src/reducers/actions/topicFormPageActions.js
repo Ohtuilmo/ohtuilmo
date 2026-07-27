@@ -34,6 +34,13 @@ const updateEmail = (email) => {
   }
 }
 
+const updatePhoneNumber = (phoneNumber) => {
+  return {
+    type: 'UPDATE_PHONE_NUMBER',
+    payload: phoneNumber
+  }
+}
+
 const updateDescription = (description) => {
   return {
     type: 'UPDATE_DESCRIPTION',
@@ -114,6 +121,7 @@ export default {
   updateTitle,
   updateCustomerName,
   updateEmail,
+  updatePhoneNumber,
   updateOrganisation,
   updateDates,
   updateIp,

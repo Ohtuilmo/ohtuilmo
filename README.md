@@ -6,7 +6,6 @@
 
 Registration, administration and review tool for University of Helsinki's software engineering project course.
 
-
 ## Development
 
 ### How to start development
@@ -16,7 +15,6 @@ Registration, administration and review tool for University of Helsinki's softwa
 2.  Clone this repository to your computer.
 
 3.  Run `docker compose up` in any folder inside cloned repository to start development containers.
-
     - It will start 4 containers:
 
       | Container | Port |
@@ -71,13 +69,13 @@ To modify the currently used user, you can press one of the Role buttons on the 
 
 Development setup includes database management tool called Adminer. With Adminer, you can easily inspect and modify database by using your browser. When development containers are running, navigate to [http://localhost:8083/](http://localhost:8083/) and sign in with following info:
 
-| Field     | Value                                         |
-| --------- | --------------------------------------------- |
-| System    | PostgreSQL (important: otherwise login hangs) |
-| Server    | db (or test-db when using test environment)   |
-| Username  | postgres                                      |
-| Password  | postgres                                      |
-| Database  | postgres                                      |
+| Field    | Value                                         |
+| -------- | --------------------------------------------- |
+| System   | PostgreSQL (important: otherwise login hangs) |
+| Server   | db (or test-db when using test environment)   |
+| Username | postgres                                      |
+| Password | postgres                                      |
+| Database | postgres                                      |
 
 ## Staging
 
@@ -87,13 +85,12 @@ After a successful staging build, the new version should appear on the staging-s
 
 ### Users
 
-| user      | pwd       |
-| --------- | --------- |
-| oppilas1  | oppilas1  |
-| oppilas2  | oppilas2  |
-| assari    | assari    |
-| opettaja  | opettaja  |
-
+| user     | pwd      |
+| -------- | -------- |
+| oppilas1 | oppilas1 |
+| oppilas2 | oppilas2 |
+| assari   | assari   |
+| opettaja | opettaja |
 
 ### Project links (legacy)
 

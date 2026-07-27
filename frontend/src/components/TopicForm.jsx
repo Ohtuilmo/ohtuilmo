@@ -89,6 +89,16 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateEmail(e.target.value)}
           />
         </div>
+        <div>
+          <TextField
+            type="tel"
+            fullWidth
+            label="Phone number / Puhelinnumero"
+            margin="normal"
+            value={props.content.phoneNumber}
+            onChange={(e) => props.updatePhoneNumber(e.target.value)}
+          />
+        </div>
         <div style={{ marginTop: 35 }}>
           Customer organization is / Asiakasorganisaatio on
           <RadioGroup
