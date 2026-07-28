@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const initialState = {
   content: {
     title: '',
