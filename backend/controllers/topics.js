@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const shuffle = require('shuffle-array')
 const topicsRouter = require('express').Router()
 const db = require('../models/index')
@@ -278,7 +279,7 @@ topicsRouter.get('/:id', optionalLogin, async (req, res) => {
         console.log(error)
         res.status(500).json({ error: 'Something is wrong... try reloading the page' })
       })
-  } else if (req?.user?.admin) {
+  } else if (req.user && req.user.admin) {
     db.Topic.findOne({
       where: {
         id: id
