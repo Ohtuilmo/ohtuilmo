@@ -99,6 +99,18 @@ const checkAdmin = (req, res, next) => {
   next()
 }
 
+// STOP AND THINK BEFORE USING THIS! For PUBLIC endpoints, if there is a
+// need to partially omit something, if not logged in or user is not admin. 
+/** @type {RequestHandler} */
+const optionalLogin = (req, res, next) => {
+  const { token } = authenticateToken(req)
+
+  if (token) {
+    req.user = token
+  }
+  next()
+}
+
 /** @type {RequestHandler} */
 const fakeshibbo = (req, res, next) => {
   const user = test_user.test_user
@@ -125,6 +137,7 @@ module.exports = {
   checkLogin,
   checkInstructor,
   checkAdmin,
+  optionalLogin,
   logger,
   fakeshibbo,
 }

@@ -1,7 +1,7 @@
 const shuffle = require('shuffle-array')
 const topicsRouter = require('express').Router()
 const db = require('../models/index')
-const { checkAdmin } = require('../middleware')
+const { checkAdmin, optionalLogin } = require('../middleware')
 const email = require('./email')
 const { getRandomId, pipe } = require('../utils')
 
@@ -231,6 +231,17 @@ topicsRouter.get('/active', async (req, res) => {
     }
 
     const activeTopics = await db.Topic.findAll({
+      attributes: {
+        exclude: ['content'],
+        include: [
+          [
+            db.sequelize.literal(
+              `COALESCE("content", '{}'::jsonb) - 'phoneNumber'`
+            ),
+            'content'
+          ]
+        ]
+      },
       where: {
         active: true,
         configuration_id: registrationManagement.project_registration_conf
@@ -246,7 +257,10 @@ topicsRouter.get('/active', async (req, res) => {
   }
 })
 
-topicsRouter.get('/:id', (req, res) => {
+// optionalLogin is needed to check admin status: phoneNumber should be omitted for users without
+// the edit link and admin rights
+topicsRouter.get('/:id', optionalLogin, async (req, res) => {
+
   const id = req.params.id
   if (isSecretId(id)) {
     db.Topic.findOne({
@@ -264,8 +278,35 @@ topicsRouter.get('/:id', (req, res) => {
         console.log(error)
         res.status(500).json({ error: 'Something is wrong... try reloading the page' })
       })
+  } else if (req?.user?.admin) {
+    db.Topic.findOne({
+      where: {
+        id: id
+      }
+    })
+      .then((topic) => {
+        if (!topic)
+          return res.status(400).json({ error: 'no topic with that id' })
+        topic = censorSecretId(topic)
+        res.status(200).json({ topic })
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(500).json({ error: 'Something is wrong... try reloading the page' })
+      })
   } else {
     db.Topic.findOne({
+      attributes: {
+        exclude: ['content'],
+        include: [
+          [
+            db.sequelize.literal(
+              `COALESCE("content", '{}'::jsonb) - 'phoneNumber'`
+            ),
+            'content'
+          ]
+        ]
+      },
       where: {
         id: id
       }

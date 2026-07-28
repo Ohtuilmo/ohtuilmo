@@ -36,7 +36,10 @@ const update = async (topic) => {
 }
 
 const getOne = async (id) => {
-  const response = await axios.get(url + '/' + id)
+  const config = {
+    headers: { 'Authorization': 'bearer ' + getUserToken() }
+  }
+  const response = await axios.get(url + '/' + id, config)
   return response.data.topic
 }
 

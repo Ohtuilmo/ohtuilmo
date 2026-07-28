@@ -96,7 +96,7 @@ const TopicForm = (props) => {
           <TextField
             type="tel"
             fullWidth
-            label="Phone number / Puhelinnumero"
+            label="Phone number (Hidden from students) / Puhelinnumero (piilotettu opiskelijoilta)"
             margin="normal"
             value={props.content.phoneNumber}
             onChange={(e) => props.updatePhoneNumber(e.target.value)}
