@@ -1,12 +1,12 @@
 export const clearNotifications = () => {
   return {
-    type: 'CLEAR_NOTIFICATIONS'
+    type: 'CLEAR_NOTIFICATIONS',
   }
 }
 
 const setNotification = (message, type, duration) => ({
   type: 'SET_NOTIFICATION',
-  payload: { message, type, duration }
+  payload: { message, type, duration },
 })
 
 export const setError = (message, duration = 3000) => {

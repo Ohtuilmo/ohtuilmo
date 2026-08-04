@@ -7,12 +7,14 @@ const PeerReviewAnswer = ({ answers, questionHeader, student }) => {
   const studentName = `${student.first_names} ${student.last_name}`
 
   return (
-    <div className='padding-left-18'>
+    <div className="padding-left-18">
       <h3>{questionHeader}</h3>
-      <div className='padding-left-18'>
+      <div className="padding-left-18">
         {answers.map((answer, index) => (
-          <div className='peer-review-text' key={`peer-review-${index}`}>
-            <p className='bold'>{`${answer.student.first_names} ${answer.student.last_name}`} says:&nbsp;</p>
+          <div className="peer-review-text" key={`peer-review-${index}`}>
+            <p className="bold">
+              {`${answer.student.first_names} ${answer.student.last_name}`} says:&nbsp;
+            </p>
             <p>{answer.peers[studentName]}</p>
           </div>
         ))}
@@ -33,15 +35,18 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
   const studentName = `${student.first_names} ${student.last_name}`
 
   return (
-    <div className='padding-left-18'>
+    <div className="padding-left-18">
       <h3>{questionHeader}</h3>
-      <div className='padding-left-18'>
+      <div className="padding-left-18">
         <Table size="small" className="radio-button-table">
           <TableHead>
             <TableRow hover className="radio-inforow">
               <TableCell />
               {allPeers.map((peer, index) => (
-                <TableCell key={`radio-infoheader-${index}`} className="radio-infoheader text-overflow-ellipsis">
+                <TableCell
+                  key={`radio-infoheader-${index}`}
+                  className="radio-infoheader text-overflow-ellipsis"
+                >
                   Reviewer
                 </TableCell>
               ))}
@@ -49,17 +54,29 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
             </TableRow>
             <TableRow hover className="radio-row">
               <TableCell />
-              {allPeers.map(peer => <TableCell key={peer} className="radio-header text-overflow-ellipsis">{peer}</TableCell>)}
-              <TableCell className="radio-header text-overflow-ellipsis">Average <p>(without self-review)</p></TableCell>
+              {allPeers.map((peer) => (
+                <TableCell key={peer} className="radio-header text-overflow-ellipsis">
+                  {peer}
+                </TableCell>
+              ))}
+              <TableCell className="radio-header text-overflow-ellipsis">
+                Average <p>(without self-review)</p>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow hover className="peer-header">
-              <TableCell><p>{studentName}</p></TableCell>
+              <TableCell>
+                <p>{studentName}</p>
+              </TableCell>
               {allPeers.map((peer, peerIndex) => (
-                <TableCell key={peerIndex} className="radio-button">{calculatePeerRating(studentName, peer, answers)}</TableCell>
+                <TableCell key={peerIndex} className="radio-button">
+                  {calculatePeerRating(studentName, peer, answers)}
+                </TableCell>
               ))}
-              <TableCell className="radio-button">{calculateAverageRating(studentName, answers)}</TableCell>
+              <TableCell className="radio-button">
+                {calculateAverageRating(studentName, answers)}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -69,7 +86,9 @@ const RadioAnswer = ({ answers, questionHeader, student }) => {
 }
 
 const calculatePeerRating = (member, peer, answers) => {
-  const submission = answers.find(answer => `${answer.student.first_names} ${answer.student.last_name}` === peer)
+  const submission = answers.find(
+    (answer) => `${answer.student.first_names} ${answer.student.last_name}` === peer,
+  )
   return submission ? submission.peers[member] : '-'
 }
 
@@ -87,21 +106,22 @@ const calculateAverageRating = (member, answers) => {
   return ratings.length > 0 ? (sum / ratings.length).toFixed(2) : 'N/A'
 }
 
-
 const StudentViewGroupAnswers = ({ answers }) => {
   return (
-    <div className='padding-left-18 flex-column-72'>
+    <div className="padding-left-18 flex-column-72">
       {answers.map((studentAnswer, answerIndex) => (
-        <div key={answerIndex} className='flex-column-16 divider-48'>
-          <h3 className='student-view-student-name'>Reviews for {studentAnswer.student.first_names} {studentAnswer.student.last_name}</h3>
+        <div key={answerIndex} className="flex-column-16 divider-48">
+          <h3 className="student-view-student-name">
+            Reviews for {studentAnswer.student.first_names} {studentAnswer.student.last_name}
+          </h3>
           {studentAnswer.answer_sheet.map((question, questionIndex) => {
             if (question.type === 'radio') {
               return (
                 <RadioAnswer
                   key={questionIndex}
-                  answers={answers.map(roundAnswer => ({
+                  answers={answers.map((roundAnswer) => ({
                     student: roundAnswer.student,
-                    peers: roundAnswer.answer_sheet[questionIndex].peers
+                    peers: roundAnswer.answer_sheet[questionIndex].peers,
                   }))}
                   questionHeader={question.questionHeader}
                   student={studentAnswer.student}
@@ -111,9 +131,9 @@ const StudentViewGroupAnswers = ({ answers }) => {
               return (
                 <PeerReviewAnswer
                   key={questionIndex}
-                  answers={answers.map(roundAnswer => ({
+                  answers={answers.map((roundAnswer) => ({
                     student: roundAnswer.student,
-                    peers: roundAnswer.answer_sheet[questionIndex].peers
+                    peers: roundAnswer.answer_sheet[questionIndex].peers,
                   }))}
                   questionHeader={question.questionHeader}
                   student={studentAnswer.student}
@@ -121,9 +141,9 @@ const StudentViewGroupAnswers = ({ answers }) => {
               )
             } else {
               return (
-                <div className='padding-left-18' key={questionIndex}>
+                <div className="padding-left-18" key={questionIndex}>
                   <h3>{question.questionHeader}</h3>
-                  <p className='padding-left-18'>{question.answer}</p>
+                  <p className="padding-left-18">{question.answer}</p>
                 </div>
               )
             }

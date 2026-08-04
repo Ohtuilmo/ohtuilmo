@@ -11,9 +11,7 @@ const create = async (req, res) => {
   const { registrationManagement } = req.body
 
   try {
-    const createdConfig = await db.RegistrationManagement.create(
-      registrationManagement
-    )
+    const createdConfig = await db.RegistrationManagement.create(registrationManagement)
     return res.status(201).json(createdConfig)
   } catch (err) {
     return handleDatabaseError(res, err)
@@ -37,7 +35,7 @@ const validateRegistrationManagement = async (registrationManagement) => {
     project_registration_info,
     topic_registration_conf,
     topic_registration_open,
-    topic_registration_message
+    topic_registration_message,
   } = registrationManagement
 
   if (
@@ -70,7 +68,7 @@ const validateRegistrationManagement = async (registrationManagement) => {
   const allConfigurations = await db.Configuration.findAll({})
 
   const projectRegistrationConf = allConfigurations.find(
-    (configuration) => configuration.id === project_registration_conf
+    (configuration) => configuration.id === project_registration_conf,
   )
 
   if (!projectRegistrationConf) {
@@ -78,7 +76,7 @@ const validateRegistrationManagement = async (registrationManagement) => {
   }
 
   const peerReviewConf = allConfigurations.find(
-    (configuration) => configuration.id === peer_review_conf
+    (configuration) => configuration.id === peer_review_conf,
   )
 
   if (!peerReviewConf) {
@@ -86,7 +84,7 @@ const validateRegistrationManagement = async (registrationManagement) => {
   }
 
   const topicRegistrationConf = allConfigurations.find(
-    (configuration) => configuration.id === topic_registration_conf
+    (configuration) => configuration.id === topic_registration_conf,
   )
 
   if (!topicRegistrationConf) {
@@ -110,13 +108,12 @@ registrationManagementRouter.post('/', checkAdmin, async (req, res) => {
 registrationManagementRouter.get('/', async (req, res) => {
   try {
     const entry = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!entry) {
       return res.status(400).json({
-        error:
-          'There are no saved registration management configurations in database.'
+        error: 'There are no saved registration management configurations in database.',
       })
     }
 

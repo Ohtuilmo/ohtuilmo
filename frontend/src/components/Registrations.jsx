@@ -67,8 +67,7 @@ const Registrations = () => {
     const byScore = (t1, t2) => t2.score - t1.score
 
     const padded = (name) => {
-      const paddedName =
-        name + '                                                      '
+      const paddedName = name + '                                                      '
       return paddedName.slice(0, 60)
     }
 

@@ -12,19 +12,19 @@ const updateQuestionSet = (state, updatedSet) => {
 
 const questionSets = (state = [], action) => {
   switch (action.type) {
-  case 'FETCH_CUSTOMER_REVIEW_QUESTION_SETS_SUCCESS':
-    return action.payload
-  case 'CREATE_CUSTOMER_REVIEW_QUESTION_SET_SUCCESS':
-    return createQuestionSet(state, action.payload)
-  case 'UPDATE_CUSTOMER_REVIEW_QUESTION_SET_SUCCESS':
-    return updateQuestionSet(state, action.payload)
-  default:
-    return state
+    case 'FETCH_CUSTOMER_REVIEW_QUESTION_SETS_SUCCESS':
+      return action.payload
+    case 'CREATE_CUSTOMER_REVIEW_QUESTION_SET_SUCCESS':
+      return createQuestionSet(state, action.payload)
+    case 'UPDATE_CUSTOMER_REVIEW_QUESTION_SET_SUCCESS':
+      return updateQuestionSet(state, action.payload)
+    default:
+      return state
   }
 }
 
 const customerReviewQuestionsPageReducer = combineReducers({
-  questionSets
+  questionSets,
 })
 
 export default customerReviewQuestionsPageReducer

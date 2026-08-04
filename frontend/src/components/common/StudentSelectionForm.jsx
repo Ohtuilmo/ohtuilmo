@@ -71,15 +71,9 @@ export const StudentSelectionForm = ({
           Pick a group
         </MenuItem>
         {groups
-          .filter((group) =>
-            GroupIsInConfiguration(group, selectedConfigurationId),
-          )
+          .filter((group) => GroupIsInConfiguration(group, selectedConfigurationId))
           .map((group) => (
-            <MenuItem
-              key={group.id}
-              className="group-menu-item"
-              value={group.id}
-            >
+            <MenuItem key={group.id} className="group-menu-item" value={group.id}>
               {group.name}
             </MenuItem>
           ))}
@@ -88,9 +82,7 @@ export const StudentSelectionForm = ({
   }
 
   const StudentIsInGroup = (student, group_id) => {
-    return groups
-      .find((g) => g.id === group_id)
-      ?.studentIds.includes(student.student_number)
+    return groups.find((g) => g.id === group_id)?.studentIds.includes(student.student_number)
   }
 
   const StudentSelect = ({

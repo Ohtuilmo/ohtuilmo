@@ -1,10 +1,9 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { loginAs, createAndLoginAs, testUser, testAdmin } = require('../utils/login')
 const { testInstructor, createTestInstructor, resetInstructor } = require('../utils/groups')
-
 
 describe('Login with token', () => {
   test('of a not-logined user should not pass any checkRole', async () => {
@@ -29,7 +28,7 @@ describe('Login with token', () => {
       .set('Authorization', `bearer ${login.token}`)
 
     expect(res.statusCode).toEqual(200)
-    expect(res.body).toEqual({ 'message': 'success' })
+    expect(res.body).toEqual({ message: 'success' })
   })
   test('of a normal user should not pass checkInstructor or checkAdmin', async () => {
     const login = await createAndLoginAs(db, app, testUser)
@@ -61,9 +60,9 @@ describe('Login with token', () => {
       .set('Authorization', `bearer ${login.token}`)
 
     expect(resLogin.statusCode).toEqual(200)
-    expect(resLogin.body).toEqual({ 'message': 'success' })
+    expect(resLogin.body).toEqual({ message: 'success' })
 
-    expect(resInstructor.body).toEqual({ 'message': 'success' })
+    expect(resInstructor.body).toEqual({ message: 'success' })
     expect(resInstructor.statusCode).toEqual(200)
   })
   test('of an instructor should not pass checkAdmin', async () => {
@@ -75,9 +74,8 @@ describe('Login with token', () => {
       .set('Authorization', `bearer ${login.token}`)
 
     expect(resAdmin.statusCode).toEqual(401)
-    expect(resAdmin.body).toEqual({ 'error': 'not admin' })
+    expect(resAdmin.body).toEqual({ error: 'not admin' })
   })
-
 
   test('of an admin should pass checkLogin, checkInstructor and checkAdmin', async () => {
     const login = await createAndLoginAs(db, app, testAdmin)

@@ -25,8 +25,7 @@ class TopicDialog extends React.Component {
   render() {
     const isSummer =
       this.props.topic.content.summerDates &&
-      (this.props.topic.content.summerDates.short ||
-        this.props.topic.content.summerDates.long)
+      (this.props.topic.content.summerDates.short || this.props.topic.content.summerDates.long)
 
     const padding = isSummer ? '10px' : '15px'
 
@@ -48,9 +47,7 @@ class TopicDialog extends React.Component {
               Customer: {this.props.topic.content.customerName}
             </Typography>
             {isNotOpenSorce && (
-              <Typography
-                style={{ flex: 1, fontWeight: 'bold', fontStyle: 'italic' }}
-              >
+              <Typography style={{ flex: 1, fontWeight: 'bold', fontStyle: 'italic' }}>
                 {ipRights}
               </Typography>
             )}
@@ -73,11 +70,7 @@ class TopicDialog extends React.Component {
             Details
           </Button>
         </CardContent>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          scroll={this.state.scroll}
-        >
+        <Dialog open={this.state.open} onClose={this.handleClose} scroll={this.state.scroll}>
           <DialogContent>
             <Topic content={this.props.topic.content} />
           </DialogContent>

@@ -2,13 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -173,9 +167,6 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
 }
 
-const ConnectedParticipantsPage = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ParticipantsPage)
+const ConnectedParticipantsPage = connect(mapStateToProps, mapDispatchToProps)(ParticipantsPage)
 
 export default withRouter(withStyles(styles)(ConnectedParticipantsPage))

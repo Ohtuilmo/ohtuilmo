@@ -41,11 +41,11 @@ tr:hover {
   height: 45px;
 }
 
-.sprint-number, .date {
+.sprint-number,
+.date {
   flex-grow: 1;
 }
 
 .submit-button:hover {
-  background-color: rgb(231, 231, 231)
+  background-color: rgb(231, 231, 231);
 }
-

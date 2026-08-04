@@ -12,19 +12,19 @@ const updateQuestionSet = (state, updatedSet) => {
 
 const questionSets = (state = [], action) => {
   switch (action.type) {
-  case 'FETCH_PEER_REVIEW_QUESTION_SETS_SUCCESS':
-    return action.payload
-  case 'CREATE_PEER_REVIEW_QUESTION_SET_SUCCESS':
-    return createQuestionSet(state, action.payload)
-  case 'UPDATE_PEER_REVIEW_QUESTION_SET_SUCCESS':
-    return updateQuestionSet(state, action.payload)
-  default:
-    return state
+    case 'FETCH_PEER_REVIEW_QUESTION_SETS_SUCCESS':
+      return action.payload
+    case 'CREATE_PEER_REVIEW_QUESTION_SET_SUCCESS':
+      return createQuestionSet(state, action.payload)
+    case 'UPDATE_PEER_REVIEW_QUESTION_SET_SUCCESS':
+      return updateQuestionSet(state, action.payload)
+    default:
+      return state
   }
 }
 
 const peerReviewQuestionsPageReducer = combineReducers({
-  questionSets
+  questionSets,
 })
 
 export default peerReviewQuestionsPageReducer

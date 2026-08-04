@@ -19,19 +19,13 @@ const TemplateTextField = ({ className, ...props }) => (
   />
 )
 
-const EmailTemplate = ({
-  name,
-  availableReplacements,
-  template,
-  onTemplateEdited,
-  className
-}) => {
+const EmailTemplate = ({ name, availableReplacements, template, onTemplateEdited, className }) => {
   const { finnish, english } = template
 
   const createHandleTemplateEdited = (language) => (e) => {
     const newTemplate = {
       ...template,
-      [language]: e.target.value
+      [language]: e.target.value,
     }
     onTemplateEdited(newTemplate)
   }
@@ -39,17 +33,12 @@ const EmailTemplate = ({
   const helperText = (
     <span>
       Available parameters:{' '}
-      <span className="email-template__replacements">
-        {availableReplacements.join(', ')}
-      </span>
+      <span className="email-template__replacements">{availableReplacements.join(', ')}</span>
     </span>
   )
 
   return (
-    <div
-      className={classes('email-template', className)}
-      data-cy-template={name}
-    >
+    <div className={classes('email-template', className)} data-cy-template={name}>
       <h3 className="email-template__title">{name}</h3>
       <div className="email-template__fields">
         <TemplateTextField
@@ -75,7 +64,7 @@ EmailTemplate.propTypes = {
   name: PropTypes.string.isRequired,
   template: templateShape.isRequired,
   availableReplacements: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onTemplateEdited: PropTypes.func.isRequired
+  onTemplateEdited: PropTypes.func.isRequired,
 }
 
 export default EmailTemplate

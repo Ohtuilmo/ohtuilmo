@@ -16,7 +16,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       underscored: true,
-    }
+    },
   )
 
   Review_question_set.associate = (models) => {

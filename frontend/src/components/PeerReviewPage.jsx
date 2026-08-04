@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import './PeerReviewPage.css'
 import { getUser, extractCallingName } from '../utils/functions'
-import {
-  NotInGroupPlaceholder,
-  LoadingPlaceholder,
-} from './common/Placeholders'
+import { NotInGroupPlaceholder, LoadingPlaceholder } from './common/Placeholders'
 
 // Actions
 import appActions from '../reducers/actions/appActions'
@@ -19,13 +16,7 @@ import timeLogService from '../services/timeLogs'
 
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-} from '@material-ui/core'
+import { Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core'
 
 class PeerReview extends React.Component {
   async componentDidMount() {
@@ -79,10 +70,7 @@ class PeerReview extends React.Component {
         peers: {},
       }
 
-      peers.forEach(
-        (peer) =>
-          (peerAnswers.peers[peer.first_names + ' ' + peer.last_name] = null),
-      )
+      peers.forEach((peer) => (peerAnswers.peers[peer.first_names + ' ' + peer.last_name] = null))
 
       return peerAnswers
     }
@@ -114,34 +102,27 @@ class PeerReview extends React.Component {
       }
 
       peers.forEach(
-        (peer) =>
-          (peerTextAnswers.peers[peer.first_names + ' ' + peer.last_name] =
-            null),
+        (peer) => (peerTextAnswers.peers[peer.first_names + ' ' + peer.last_name] = null),
       )
 
       return peerTextAnswers
     }
 
-    const tempAnswerSheet = questionObject.questions.map(
-      (question, questionID) => {
-        if (
-          question.header ===
-          'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?'
-        ) {
-          return initializeProjectHours(question, questionID)
-        } else if (question.type === 'radio') {
-          return initializeRadioAnswer(question, questionID)
-        } else if (question.type === 'peerReview') {
-          return initializePeerReview(question, questionID)
-        } else if (question.type === 'text') {
-          return initializeTextAnswer(question, questionID)
-        } else if (question.type === 'number') {
-          return initializeNumberAnswer(question, questionID)
-        } else {
-          return question
-        }
-      },
-    )
+    const tempAnswerSheet = questionObject.questions.map((question, questionID) => {
+      if (question.header === 'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?') {
+        return initializeProjectHours(question, questionID)
+      } else if (question.type === 'radio') {
+        return initializeRadioAnswer(question, questionID)
+      } else if (question.type === 'peerReview') {
+        return initializePeerReview(question, questionID)
+      } else if (question.type === 'text') {
+        return initializeTextAnswer(question, questionID)
+      } else if (question.type === 'number') {
+        return initializeNumberAnswer(question, questionID)
+      } else {
+        return question
+      }
+    })
 
     this.props.initializeAnswerSheet(tempAnswerSheet)
   }
@@ -149,9 +130,7 @@ class PeerReview extends React.Component {
   Submit = async (event, answerSheet, reviewConf) => {
     event.preventDefault()
 
-    const answer = window.confirm(
-      'Answers can not be changed after submitting. Continue?',
-    )
+    const answer = window.confirm('Answers can not be changed after submitting. Continue?')
     if (!answer) return
     try {
       const createdReview = await peerReviewService.create({
@@ -162,9 +141,7 @@ class PeerReview extends React.Component {
           review_round: this.props.reviewRound,
         },
       })
-      this.props.setSubmittedReviews(
-        this.props.submittedReviews.concat(createdReview),
-      )
+      this.props.setSubmittedReviews(this.props.submittedReviews.concat(createdReview))
       this.props.setSuccess('Peer review saved!')
       this.props.history.push('/')
     } catch (e) {
@@ -193,9 +170,7 @@ class PeerReview extends React.Component {
     } else if (!reviewOpen) {
       return (
         <div className="peer-review-container">
-          <h1 className="peer-review-container__h1">
-            Peer review is not currently open!
-          </h1>
+          <h1 className="peer-review-container__h1">Peer review is not currently open!</h1>
         </div>
       )
     } else if (groupsLoading) {
@@ -203,9 +178,7 @@ class PeerReview extends React.Component {
     } else if (submittedReviews.length >= reviewRound) {
       return (
         <div className="peer-review-container">
-          <h1 className="peer-review-container__h1">
-            Peer review already submitted!
-          </h1>
+          <h1 className="peer-review-container__h1">Peer review already submitted!</h1>
         </div>
       )
     } else {
@@ -236,13 +209,7 @@ class PeerReview extends React.Component {
   }
 }
 
-const Questions = ({
-  questions,
-  peers,
-  answerSheet,
-  updateAnswer,
-  updatePeerReview,
-}) => {
+const Questions = ({ questions, peers, answerSheet, updateAnswer, updatePeerReview }) => {
   return (
     <div>
       {questions.map((question, questionId) => {
@@ -262,14 +229,7 @@ const Questions = ({
   )
 }
 
-const Question = ({
-  peers,
-  question,
-  questionId,
-  answerSheet,
-  updateAnswer,
-  updatePeerReview,
-}) => {
+const Question = ({ peers, question, questionId, answerSheet, updateAnswer, updatePeerReview }) => {
   if (!questionId) {
     console.error('No questionId given')
     return (
@@ -333,9 +293,7 @@ const Question = ({
               style={{ width: 400 }}
               multiline
               variant="outlined"
-              onChange={(e) =>
-                textFieldHandler(e.target.value, questionId, updateAnswer)
-              }
+              onChange={(e) => textFieldHandler(e.target.value, questionId, updateAnswer)}
             />
           </div>
         </div>
@@ -351,9 +309,7 @@ const Question = ({
           type="number"
           data-cy={`input_number_${question.header}`}
           value={answerSheet[questionId].answer}
-          onChange={(e) =>
-            textFieldHandler(e.target.value, questionId, updateAnswer)
-          }
+          onChange={(e) => textFieldHandler(e.target.value, questionId, updateAnswer)}
         />
       </div>
     )
@@ -398,12 +354,7 @@ const QuestionRows = ({ peers, options, questionId, answerSheet }) => (
   </React.Fragment>
 )
 
-const PeerReviewTextFields = ({
-  peers,
-  questionId,
-  answerSheet,
-  updatePeerReview,
-}) => {
+const PeerReviewTextFields = ({ peers, questionId, answerSheet, updatePeerReview }) => {
   return (
     <div className="peer-review-box__text-field-rows">
       {peers.map((peer, key) => (
@@ -432,13 +383,7 @@ const PeerReviewTextFields = ({
   )
 }
 
-const QuestionRow = ({
-  peerName,
-  options,
-  peerId,
-  questionId,
-  answerSheet,
-}) => {
+const QuestionRow = ({ peerName, options, peerId, questionId, answerSheet }) => {
   return (
     <TableRow hover className="peer-review-box__peer-row">
       <TableCell align="center">{peerName}</TableCell>
@@ -448,9 +393,7 @@ const QuestionRow = ({
             <input
               type="radio"
               name={questionId.toString() + peerId.toString()}
-              onClick={() =>
-                radioSelectHandler(peerId, buttonNumber, answerSheet)
-              }
+              onClick={() => radioSelectHandler(peerId, buttonNumber, answerSheet)}
             />
           </TableCell>
         )
@@ -495,8 +438,5 @@ const mapDispatchToProps = {
   ...appActions,
 }
 
-const ConnectedPeerReview = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PeerReview)
+const ConnectedPeerReview = connect(mapStateToProps, mapDispatchToProps)(PeerReview)
 export default withRouter(ConnectedPeerReview)

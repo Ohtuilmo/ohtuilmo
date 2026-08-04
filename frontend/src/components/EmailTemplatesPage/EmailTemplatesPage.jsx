@@ -39,9 +39,7 @@ class EmailTemplatesPage extends React.Component {
       <div className="email-templates-page">
         <h1>Configure email templates</h1>
         <Paper className="email-templates-page__container" elevation={1}>
-          {isLoading && (
-            <LoadingCover className="email-templates-page__loading-cover" />
-          )}
+          {isLoading && <LoadingCover className="email-templates-page__loading-cover" />}
           <EmailTemplatesForm
             initialTemplates={templates}
             disabled={isLoading}
@@ -55,31 +53,26 @@ class EmailTemplatesPage extends React.Component {
 
 EmailTemplatesPage.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func
+    push: PropTypes.func,
   }).isRequired,
   fetchEmailTemplates: PropTypes.func.isRequired,
   updateEmailTemplates: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setSuccess: PropTypes.func.isRequired,
   templates: templatesShape,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => ({
   templates: state.emailTemplates.templates,
-  isLoading: state.emailTemplates.isLoading
+  isLoading: state.emailTemplates.isLoading,
 })
 
 const mapDispatchToProps = {
   fetchEmailTemplates: emailTemplatesActions.fetchEmailTemplates,
   updateEmailTemplates: emailTemplatesActions.updateEmailTemplates,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(EmailTemplatesPage)
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailTemplatesPage))

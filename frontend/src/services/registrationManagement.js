@@ -11,7 +11,7 @@ const get = async () => {
 
 const create = async (registrationManagement) => {
   const response = await axios.post(url, registrationManagement, {
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
   return response.data
 }

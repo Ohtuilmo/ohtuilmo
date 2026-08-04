@@ -11,13 +11,13 @@ const additionalTopic = [
       environment: 'Joku hyvä toteutusympäristö',
       customerName: 'Beesiakas',
       additionalInfo: 'Joku hyvä lisätieto',
-      specialRequests: 'Joku hyvä erityistoive'
+      specialRequests: 'Joku hyvä erityistoive',
     }),
     secret_id: 'Coh5boozeyish7iS',
     configuration_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
 
 module.exports = {
@@ -27,5 +27,5 @@ module.exports = {
 
   down: async (query) => {
     await query.bulkDelete('topics', { secret_id: 'Coh5boozeyish7iS' }, {})
-  }
+  },
 }

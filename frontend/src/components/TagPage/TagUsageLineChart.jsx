@@ -9,15 +9,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles'
 
-const TagUsageLineChart = ({
-  allSprints,
-  allTags,
-  selectedTags,
-  tagData,
-  tagColors,
-}) => {
+const TagUsageLineChart = ({ allSprints, allTags, selectedTags, tagData, tagColors }) => {
   const theme = useTheme()
 
   const data = allSprints.map((sprint) => {
@@ -25,9 +19,7 @@ const TagUsageLineChart = ({
 
     allTags.forEach((tag) => {
       if (selectedTags.includes(tag)) {
-        const matchingSprint = tagData[tag]?.find(
-          (x) => x.sprint_id === sprint.id,
-        )
+        const matchingSprint = tagData[tag]?.find((x) => x.sprint_id === sprint.id)
 
         sprintTagHours[tag] = (matchingSprint?.minutes ?? 0) / 60
       }

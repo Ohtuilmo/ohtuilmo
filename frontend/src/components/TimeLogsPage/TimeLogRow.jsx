@@ -12,11 +12,13 @@ export const TimeLogRow = ({ log, handleDelete, handleTimeLogCheck, isChecked, u
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
 
   const dateObj = new Date(log.date)
-  const formattedDate = dateObj.toLocaleDateString('fi-FI', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).replace(/\./g, '/')
+  const formattedDate = dateObj
+    .toLocaleDateString('fi-FI', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    })
+    .replace(/\./g, '/')
 
   return (
     <div className="timelogs-row-container">

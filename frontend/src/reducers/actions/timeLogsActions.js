@@ -1,30 +1,29 @@
-
 import timeLogsService from '../../services/timeLogs'
 
 const setSelectedSprintNumber = (sprintNumber) => {
   return {
     type: 'SET_SELECTED_SPRINT_NUMBER',
-    payload: sprintNumber
+    payload: sprintNumber,
   }
 }
 
 const setCurrentSprintNumber = (sprintNumber) => {
   return {
     type: 'SET_CURRENT_SPRINT_NUMBER',
-    payload: sprintNumber
+    payload: sprintNumber,
   }
 }
 
 const resetGroupSprintSummary = () => {
   return {
-    type: 'RESET_GROUP_SPRINT_SUMMARY'
+    type: 'RESET_GROUP_SPRINT_SUMMARY',
   }
 }
 
 const setGroupSprintSummary = (groupSprintSummary) => {
   return {
     type: 'SET_GROUP_SPRINT_SUMMARY',
-    payload: groupSprintSummary
+    payload: groupSprintSummary,
   }
 }
 
@@ -34,7 +33,7 @@ const fetchGroupSprintSummary = () => {
     if (groupSprintSummary) {
       dispatch({
         type: 'SET_GROUP_SPRINT_SUMMARY',
-        payload: groupSprintSummary
+        payload: groupSprintSummary,
       })
     }
   }
@@ -45,5 +44,5 @@ export default {
   setGroupSprintSummary,
   fetchGroupSprintSummary,
   setCurrentSprintNumber,
-  setSelectedSprintNumber
+  setSelectedSprintNumber,
 }

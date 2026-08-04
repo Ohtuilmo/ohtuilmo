@@ -26,8 +26,7 @@ const TopicForm = (props) => {
   }
 
   const organisation = props.content.organisation
-  const timingNotSet =
-    !timing || (timing && !timing.short && !timing.long && props.summerProject)
+  const timingNotSet = !timing || (timing && !timing.short && !timing.long && props.summerProject)
 
   const periodChecked = (what) => {
     if (!timing) {
@@ -44,19 +43,14 @@ const TopicForm = (props) => {
       ? 'https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/tree/master/sopimukset'
       : 'https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/tree/master/sopimukset'
 
-  const isCompany =
-    props.content.organisation && props.content.organisation === 'company'
+  const isCompany = props.content.organisation && props.content.organisation === 'company'
 
   const iprNotSet = isCompany && props.content.ipRights === ''
 
   return (
     <div className="topic-form">
       <div className="preview-button">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => props.updatePreview(true)}
-        >
+        <Button variant="contained" color="primary" onClick={() => props.updatePreview(true)}>
           Preview
         </Button>
       </div>
@@ -139,20 +133,14 @@ const TopicForm = (props) => {
               onChange={(e) => props.updateIp(e.target.value)}
             >
               <div>
-                <Radio
-                  checked={props.content.ipRights === 'open'}
-                  value="open"
-                />
-                Software is published under a open source license / Työ
-                julkaistaan avoimella lisenssillä
+                <Radio checked={props.content.ipRights === 'open'} value="open" />
+                Software is published under a open source license / Työ julkaistaan avoimella
+                lisenssillä
               </div>
               <div>
-                <Radio
-                  checked={props.content.ipRights === 'nonopen'}
-                  value="nonopen"
-                />
-                All rights to the outcome are transferred to the company /
-                Yritykselle siirretään kaikki oikeudet tuotokseen
+                <Radio checked={props.content.ipRights === 'nonopen'} value="nonopen" />
+                All rights to the outcome are transferred to the company / Yritykselle siirretään
+                kaikki oikeudet tuotokseen
               </div>
             </RadioGroup>
           </div>
@@ -164,9 +152,7 @@ const TopicForm = (props) => {
             <div>
               <Checkbox
                 checked={periodChecked('short')}
-                onChange={(e) =>
-                  props.updateDates({ ...timing, short: e.target.checked })
-                }
+                onChange={(e) => props.updateDates({ ...timing, short: e.target.checked })}
                 color="primary"
               />{' '}
               the early summer project {props.dates.short}
@@ -174,9 +160,7 @@ const TopicForm = (props) => {
             <div>
               <Checkbox
                 checked={periodChecked('long')}
-                onChange={(e) =>
-                  props.updateDates({ ...timing, long: e.target.checked })
-                }
+                onChange={(e) => props.updateDates({ ...timing, long: e.target.checked })}
                 color="primary"
               />{' '}
               the whole summer project {props.dates.long}
@@ -185,8 +169,8 @@ const TopicForm = (props) => {
         )}
 
         <p>
-          The fields below have Markdown support. / Seuraavia kenttiä voi
-          muotoilla Markdown-notaatiolla. (
+          The fields below have Markdown support. / Seuraavia kenttiä voi muotoilla
+          Markdown-notaatiolla. (
           <a href="https://guides.github.com/features/mastering-markdown/">
             Markdown instructions / Markdown ohjeet
           </a>
@@ -239,79 +223,66 @@ const TopicForm = (props) => {
           />
         </div>
 
-        {((organisation && organisation.length === 0) ||
-          timingNotSet ||
-          iprNotSet) && (
+        {((organisation && organisation.length === 0) || timingNotSet || iprNotSet) && (
           <div style={boxStyle}>
             {organisation && organisation.length === 0 && (
               <>
                 <div style={{ padding: 10 }}>
-                  Select the customer provider organisaation type, from below
-                  the contact information
+                  Select the customer provider organisaation type, from below the contact
+                  information
                 </div>
                 <div style={{ padding: 10 }}>
                   Valitse asiakasorganisaation tyyppi yhteystietojen alta
                 </div>
               </>
             )}
-            {organisation && organisation.length === 0 && timingNotSet && (
-              <br />
-            )}
+            {organisation && organisation.length === 0 && timingNotSet && <br />}
             {timingNotSet && (
               <>
                 <div style={{ padding: 10 }}>
                   Select the suitable timing for the project from above
                 </div>
-                <div style={{ padding: 10 }}>
-                  Valitse projektille sopiva ajankohta
-                </div>
+                <div style={{ padding: 10 }}>Valitse projektille sopiva ajankohta</div>
               </>
             )}
             {iprNotSet && (
               <>
                 <div style={{ padding: 10 }}>
-                  Select the type of intellectual property rights for the
-                  project from above
+                  Select the type of intellectual property rights for the project from above
                 </div>
-                <div style={{ padding: 10 }}>
-                  Valitse immateriaalioikeuksien tyyppi projektille
-                </div>
+                <div style={{ padding: 10 }}>Valitse immateriaalioikeuksien tyyppi projektille</div>
               </>
             )}
           </div>
         )}
-        {!timingNotSet &&
-          organisation !== 'company' &&
-          organisation !== '' &&
-          !iprNotSet && (
-            <div style={boxStyle}>
-              <div style={{ marginTop: 10 }}>
-                As a customer I promise to provide the group with the necessary
-                information and resources for the project.
-              </div>
-              <div style={{ marginTop: 5 }}>
-                Lupaan asiakkaana tarjota ryhmälle tarvittavat tiedot ja
-                resurssit projektia varten.
-              </div>
-
-              <div style={{ marginTop: 10 }}>
-                <Checkbox
-                  checked={agreement}
-                  onChange={(e) => setAgreement(e.target.checked)}
-                  color="primary"
-                />
-                I agree to the above / sitoudun ylläolevaan
-              </div>
+        {!timingNotSet && organisation !== 'company' && organisation !== '' && !iprNotSet && (
+          <div style={boxStyle}>
+            <div style={{ marginTop: 10 }}>
+              As a customer I promise to provide the group with the necessary information and
+              resources for the project.
             </div>
-          )}
+            <div style={{ marginTop: 5 }}>
+              Lupaan asiakkaana tarjota ryhmälle tarvittavat tiedot ja resurssit projektia varten.
+            </div>
+
+            <div style={{ marginTop: 10 }}>
+              <Checkbox
+                checked={agreement}
+                onChange={(e) => setAgreement(e.target.checked)}
+                color="primary"
+              />
+              I agree to the above / sitoudun ylläolevaan
+            </div>
+          </div>
+        )}
         {!timingNotSet && organisation === 'company' && !iprNotSet && (
           <div style={boxStyle}>
             <div style={{ marginTop: 10 }}>
               If the project is selected for implementation
               <ul>
                 <li>
-                  As a customer I promise to provide the group with the
-                  necessary information and resources for the project
+                  As a customer I promise to provide the group with the necessary information and
+                  resources for the project
                 </li>
                 <li>I commit to paying the support fee of €3,000 (+VAT)</li>
               </ul>
@@ -320,13 +291,10 @@ const TopicForm = (props) => {
               Mikäli ehdottamani projekti toteutetaan
               <ul>
                 <li>
-                  lupaan asiakkaana tarjota ryhmälle tarvittavat tiedot ja
-                  resurssit projektia varten
+                  lupaan asiakkaana tarjota ryhmälle tarvittavat tiedot ja resurssit projektia
+                  varten
                 </li>
-                <li>
-                  sitoudun maksamaan yrityksiltä veloitettavan 3 000 euron
-                  (+alv) tukimaksun
-                </li>
+                <li>sitoudun maksamaan yrityksiltä veloitettavan 3 000 euron (+alv) tukimaksun</li>
               </ul>
             </div>
 
@@ -335,14 +303,14 @@ const TopicForm = (props) => {
               <ul>
                 {props.content.ipRights === 'open' && (
                   <li style={{ marginTop: 10 }}>
-                    Software is published under a open source license / Työ
-                    julkaistaan avoimella lisenssillä
+                    Software is published under a open source license / Työ julkaistaan avoimella
+                    lisenssillä
                   </li>
                 )}
                 {props.content.ipRights === 'nonopen' && (
                   <li style={{ marginTop: 10 }}>
-                    All rights to the outcome are transferred to the company /
-                    Yritykselle siirretään kaikki oikeudet tuotokseen
+                    All rights to the outcome are transferred to the company / Yritykselle
+                    siirretään kaikki oikeudet tuotokseen
                   </li>
                 )}
                 <li>
@@ -359,8 +327,8 @@ const TopicForm = (props) => {
                   onChange={(e) => setAgreement(e.target.checked)}
                   color="primary"
                 />
-                I agree to the above and have read the contract / sitoudun
-                ylläolevaan ja olen lukenut sopimuksen
+                I agree to the above and have read the contract / sitoudun ylläolevaan ja olen
+                lukenut sopimuksen
               </div>
             </div>
           </div>
@@ -378,11 +346,7 @@ const TopicForm = (props) => {
           </div>
           {props.isEditForm && (
             <div className="form-button">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={props.onCancel}
-              >
+              <Button variant="contained" color="primary" onClick={props.onCancel}>
                 Cancel
               </Button>
             </div>
@@ -404,9 +368,6 @@ const mapDispatchToProps = {
   ...topicFormPageActions,
 }
 
-const ConnectedTopicForm = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TopicForm)
+const ConnectedTopicForm = connect(mapStateToProps, mapDispatchToProps)(TopicForm)
 
 export default ConnectedTopicForm

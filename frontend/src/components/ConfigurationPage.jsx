@@ -45,15 +45,13 @@ const ConfigurationPage = (props) => {
 
   const setQuestions = async () => {
     try {
-      const registrationQuestions =
-        await registrationQuestionSetService.getAll()
+      const registrationQuestions = await registrationQuestionSetService.getAll()
       props.setRegistrationQuestions(registrationQuestions)
 
       const reviewQuestions = await reviewQuestionSetService.getAll()
       props.setReviewQuestions(reviewQuestions)
 
-      const customerReviewQuestions =
-        await customerReviewQuestionService.getAll()
+      const customerReviewQuestions = await customerReviewQuestionService.getAll()
       props.setCustomerReviewQuestions(customerReviewQuestions)
     } catch (e) {
       console.log('error happened', e)
@@ -74,17 +72,30 @@ const ConfigurationPage = (props) => {
 
   const handleQuestionSetChange = (event) => {
     if (event.target.name === 'registration') {
-      const value = props.allRegistrationQuestions.find(questions => questions.id === event.target.value)
-      console.log("VALUE FOR REGISTRATION:", value, event.target.value, props.allRegistrationQuestions)
+      const value = props.allRegistrationQuestions.find(
+        (questions) => questions.id === event.target.value,
+      )
+      console.log(
+        'VALUE FOR REGISTRATION:',
+        value,
+        event.target.value,
+        props.allRegistrationQuestions,
+      )
       props.updateSelectedRegistrationQuestions(value)
     } else if (event.target.name === 'review1') {
-      const value = props.allReviewQuestions.find(questions => questions.id === event.target.value)
+      const value = props.allReviewQuestions.find(
+        (questions) => questions.id === event.target.value,
+      )
       props.updateSelectedReviewQuestions1(value)
     } else if (event.target.name === 'review2') {
-      const value = props.allReviewQuestions.find(questions => questions.id === event.target.value)
+      const value = props.allReviewQuestions.find(
+        (questions) => questions.id === event.target.value,
+      )
       props.updateSelectedReviewQuestions2(value)
     } else if (event.target.name === 'customer-review') {
-      const value = props.allCustomerReviewQuestions.find(questions => questions.id === event.target.value)
+      const value = props.allCustomerReviewQuestions.find(
+        (questions) => questions.id === event.target.value,
+      )
       props.updateSelectedCustomerReviewQuestions(value)
     }
   }
@@ -108,10 +119,7 @@ const ConfigurationPage = (props) => {
     event.preventDefault()
     try {
       const configuration = { ...props.form }
-      const response = await configurationService.update(
-        configuration,
-        props.selectedConfig.id
-      )
+      const response = await configurationService.update(configuration, props.selectedConfig.id)
       props.updateConfigurations(response.configuration)
       props.updateSelectedConfig(response.configuration)
       props.updateConfigForm(response.configuration)
@@ -176,20 +184,14 @@ const ConfigurationPage = (props) => {
             <div>
               <Divider />
               {props.selectedRegister && (
-                <RegistrationQuestionsTable
-                  questions={props.selectedRegister.questions}
-                />
+                <RegistrationQuestionsTable questions={props.selectedRegister.questions} />
               )}
             </div>
           </ExpansionPanelDetails>
           <ExpansionPanelActions>
             <Select
               name="registration"
-              value={
-                props.selectedRegister
-                  ? props.selectedRegister.id
-                  : 'default'
-              }
+              value={props.selectedRegister ? props.selectedRegister.id : 'default'}
               onChange={handleQuestionSetChange}
             >
               <MenuItem value="default" disabled>
@@ -228,9 +230,7 @@ const ConfigurationPage = (props) => {
             <div>
               <Divider />
               {props.selectedReview1 && (
-                <PeerReviewQuestionsTable
-                  questions={props.selectedReview1.questions}
-                />
+                <PeerReviewQuestionsTable questions={props.selectedReview1.questions} />
               )}
             </div>
           </ExpansionPanelDetails>
@@ -238,20 +238,14 @@ const ConfigurationPage = (props) => {
             <Select
               data-cy="select-review-questions-1"
               name="review1"
-              value={props.selectedReview1
-                ? props.selectedReview1.id
-                : 'default'}
+              value={props.selectedReview1 ? props.selectedReview1.id : 'default'}
               onChange={handleQuestionSetChange}
             >
               <MenuItem value="default" disabled>
                 Pick review 1 questions
               </MenuItem>
               {props.allReviewQuestions.map((item) => (
-                <MenuItem
-                  key={item.id}
-                  value={item.id}
-                  data-cy="menu-item-review-questions-1"
-                >
+                <MenuItem key={item.id} value={item.id} data-cy="menu-item-review-questions-1">
                   {item.name}
                 </MenuItem>
               ))}
@@ -283,18 +277,14 @@ const ConfigurationPage = (props) => {
             <div>
               <Divider />
               {props.selectedReview2 && (
-                <PeerReviewQuestionsTable
-                  questions={props.selectedReview2.questions}
-                />
+                <PeerReviewQuestionsTable questions={props.selectedReview2.questions} />
               )}
             </div>
           </ExpansionPanelDetails>
           <ExpansionPanelActions>
             <Select
               name="review2"
-              value={props.selectedReview2
-                ? props.selectedReview2.id
-                : 'default'}
+              value={props.selectedReview2 ? props.selectedReview2.id : 'default'}
               onChange={handleQuestionSetChange}
             >
               <MenuItem value="default" disabled>
@@ -333,20 +323,14 @@ const ConfigurationPage = (props) => {
             <div>
               <Divider />
               {props.selectedCustomerReview && (
-                <PeerReviewQuestionsTable
-                  questions={props.selectedCustomerReview.questions}
-                />
+                <PeerReviewQuestionsTable questions={props.selectedCustomerReview.questions} />
               )}
             </div>
           </ExpansionPanelDetails>
           <ExpansionPanelActions>
             <Select
               name="customer-review"
-              value={
-                props.selectedCustomerReview
-                  ? props.selectedCustomerReview.id
-                  : 'default'
-              }
+              value={props.selectedCustomerReview ? props.selectedCustomerReview.id : 'default'}
               onChange={handleQuestionSetChange}
             >
               <MenuItem value="default" disabled>
@@ -368,7 +352,7 @@ const ConfigurationPage = (props) => {
             </Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
-        <div style={{ marginTop: '10px'}}>
+        <div style={{ marginTop: '10px' }}>
           <Switch
             style={{ marginRight: '10px', height: '40px' }}
             color="primary"
@@ -376,7 +360,7 @@ const ConfigurationPage = (props) => {
             checked={props.form.active}
             onChange={(e) => props.updateActive(e.target.checked)}
           />
-          <p style={{ display: "inline" }}>{props.form.active ? "Active" : "Closed"}</p>
+          <p style={{ display: 'inline' }}>{props.form.active ? 'Active' : 'Closed'}</p>
         </div>
       </div>
       <Button
@@ -395,8 +379,7 @@ const mapStateToProps = (state) => ({
   selectedConfig: state.configurationPage.selectedConfig,
   allRegistrationQuestions: state.configurationPage.allRegistrationQuestions,
   allReviewQuestions: state.configurationPage.allReviewQuestions,
-  allCustomerReviewQuestions:
-    state.configurationPage.allCustomerReviewQuestions,
+  allCustomerReviewQuestions: state.configurationPage.allCustomerReviewQuestions,
   selectedRegister: state.configurationPage.selectedRegister,
   selectedReview1: state.configurationPage.selectedReview1,
   selectedReview2: state.configurationPage.selectedReview2,
@@ -413,6 +396,4 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ConfigurationPage)
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ConfigurationPage))

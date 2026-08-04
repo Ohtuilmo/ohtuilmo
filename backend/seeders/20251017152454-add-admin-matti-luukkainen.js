@@ -9,8 +9,8 @@ const newUsers = [
     email: 'eiainakaanluukkaisensäpö@example.com',
     admin: true,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
 
 module.exports = {
@@ -19,6 +19,6 @@ module.exports = {
   },
 
   down: async (query) => {
-    await query.bulkDelete('users', { username: [ 'mluukkai' ] }, {})
-  }
+    await query.bulkDelete('users', { username: ['mluukkai'] }, {})
+  },
 }

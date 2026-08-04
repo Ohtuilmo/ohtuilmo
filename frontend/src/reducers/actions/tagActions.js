@@ -2,11 +2,11 @@ import tagService from '../../services/tags'
 
 const setAvailableTags = (tags) => ({
   type: 'SET_AVAILABLE_TAGS',
-  payload: tags
+  payload: tags,
 })
 
 const resetTags = () => ({
-  type: 'RESET_TAGS'
+  type: 'RESET_TAGS',
 })
 
 const fetchAvailableTags = () => {
@@ -19,5 +19,5 @@ const fetchAvailableTags = () => {
 export default {
   setAvailableTags,
   resetTags,
-  fetchAvailableTags
+  fetchAvailableTags,
 }

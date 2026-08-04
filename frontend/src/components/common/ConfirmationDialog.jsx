@@ -8,11 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 const ConfirmationDialog = (props) => {
   const { title, children, open, setOpen, onConfirm } = props
   return (
-    <Dialog
-      open={open}
-      onClose={() => setOpen(false)}
-      className="confirmation-dialog"
-    >
+    <Dialog open={open} onClose={() => setOpen(false)} className="confirmation-dialog">
       <DialogTitle id="confirmation-dialog">{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>

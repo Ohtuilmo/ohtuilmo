@@ -10,7 +10,7 @@ import {
   TextField,
   Switch,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@material-ui/core'
 
 // Actions
@@ -25,7 +25,7 @@ const ProjectRegistrationSettings = ({
   updateProjectConf,
   updateProjectMessage,
   updateProjectInfo,
-  configurationMenuItems
+  configurationMenuItems,
 }) => {
   return (
     <Card style={{ marginBottom: '10px' }}>
@@ -33,10 +33,7 @@ const ProjectRegistrationSettings = ({
         <h4>Student registration</h4>
         <FormControlLabel
           control={
-            <Switch
-              checked={projectOpen}
-              onChange={() => updateProjectOpen(!projectOpen)}
-            />
+            <Switch checked={projectOpen} onChange={() => updateProjectOpen(!projectOpen)} />
           }
           label="Student registration open"
         />
@@ -50,9 +47,7 @@ const ProjectRegistrationSettings = ({
           >
             {configurationMenuItems()}
           </Select>
-          <FormHelperText>
-            Active configuration for project registration
-          </FormHelperText>
+          <FormHelperText>Active configuration for project registration</FormHelperText>
         </FormControl>
 
         <TextField
@@ -80,21 +75,15 @@ const mapStateToProps = (state) => {
     projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
-    projectInfo: state.registrationManagement.projectRegistrationInfo
+    projectInfo: state.registrationManagement.projectRegistrationInfo,
   }
 }
 
 const mapDispatchToProps = {
-  updateProjectOpen:
-    registrationManagementActions.updateProjectRegistrationOpen,
-  updateProjectConf:
-    registrationManagementActions.updateProjectRegistrationConf,
-  updateProjectMessage:
-    registrationManagementActions.updateProjectRegistrationMessage,
-  updateProjectInfo: registrationManagementActions.updateProjectRegistrationInfo
+  updateProjectOpen: registrationManagementActions.updateProjectRegistrationOpen,
+  updateProjectConf: registrationManagementActions.updateProjectRegistrationConf,
+  updateProjectMessage: registrationManagementActions.updateProjectRegistrationMessage,
+  updateProjectInfo: registrationManagementActions.updateProjectRegistrationInfo,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectRegistrationSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectRegistrationSettings)

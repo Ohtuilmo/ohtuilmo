@@ -1,27 +1,38 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { createAndLoginAs, testAdmin, resetUsers } = require('../utils/login')
 
-
 describe('Review question sets', () => {
   test('should be created with name and correct permissions', async () => {
-    expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(0)
+    expect(
+      await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } }),
+    ).toHaveLength(0)
 
     const login = await createAndLoginAs(db, app, testAdmin)
     const res = await request(app)
       .post('/api/reviewQuestions')
       .set('Authorization', `bearer ${login.token}`)
-      .send({ name: 'Vaikeat kysymykset', questions: [ { 'type': 'scale', 'question': 'Ossaakkonää koodata?' }, { 'type': 'text', 'question': 'Mitä muuta ossaat?' } ] })
+      .send({
+        name: 'Vaikeat kysymykset',
+        questions: [
+          { type: 'scale', question: 'Ossaakkonää koodata?' },
+          { type: 'text', question: 'Mitä muuta ossaat?' },
+        ],
+      })
 
     expect(res.statusCode).toEqual(200)
     expect(Object.keys(res.body)).toContain('questionSet')
-    expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(1)
+    expect(
+      await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } }),
+    ).toHaveLength(1)
   })
 
   test('should not be created with missing or pre-existing name', async () => {
-    expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(0)
+    expect(
+      await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } }),
+    ).toHaveLength(0)
 
     const login = await createAndLoginAs(db, app, testAdmin)
     const res = await request(app)
@@ -41,7 +52,9 @@ describe('Review question sets', () => {
     expect(Object.keys(resDuplicate.body)).toContain('error')
 
     // Only one is created
-    expect(await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } })).toHaveLength(1)
+    expect(
+      await db.ReviewQuestionSet.findAll({ where: { name: 'Vaikeat kysymykset' } }),
+    ).toHaveLength(1)
   })
 
   beforeEach(async () => {
@@ -49,7 +62,6 @@ describe('Review question sets', () => {
     await db.ReviewQuestionSet.truncate({ cascade: true })
   })
 })
-
 
 beforeAll(async () => {
   await db.sequelize.truncate({ cascade: true, restartIdentity: true })

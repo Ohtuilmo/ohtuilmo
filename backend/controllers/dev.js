@@ -9,19 +9,19 @@ console.info('Initial user', test_user.test_user)
 devRouter.post('/', (req, res) => {
   const role = req.body.role
   switch (role) {
-  case 'student':
-    test_user.test_user = test_users.student
-    break
-  case 'instructor':
-    test_user.test_user = test_users.instructor
-    break
-  case 'admin':
-    test_user.test_user = test_users.admin
-    break
-  default:
-    console.warn('Didn\'t match any, defaulting to student')
-    test_user.test_user = test_users.student
-    break
+    case 'student':
+      test_user.test_user = test_users.student
+      break
+    case 'instructor':
+      test_user.test_user = test_users.instructor
+      break
+    case 'admin':
+      test_user.test_user = test_users.admin
+      break
+    default:
+      console.warn("Didn't match any, defaulting to student")
+      test_user.test_user = test_users.student
+      break
   }
 
   console.info('Logged in as', test_user.test_user)

@@ -53,21 +53,17 @@ const ItemControls = ({ onEditClicked }) => {
 }
 
 ItemControls.propTypes = {
-  onEditClicked: PropTypes.func
+  onEditClicked: PropTypes.func,
 }
 
 const QuestionSetItem = ({ title, children, onEditClicked, theme }) => {
   const headerStyle = {
-    borderColor: theme.palette.primary.main
+    borderColor: theme.palette.primary.main,
   }
 
   return (
     <div className="question-set-item">
-      <Paper
-        elevation={2}
-        className="question-set-item__header"
-        style={headerStyle}
-      >
+      <Paper elevation={2} className="question-set-item__header" style={headerStyle}>
         <h3 className="question-set-item__title">{title}</h3>
         <div className="question-set-item__controls">
           <ItemControls onEditClicked={onEditClicked} />
@@ -84,7 +80,7 @@ QuestionSetItem.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
   onEditClicked: PropTypes.func,
-  theme: PropTypes.object
+  theme: PropTypes.object,
 }
 
 export default withTheme(QuestionSetItem)

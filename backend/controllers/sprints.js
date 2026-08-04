@@ -4,16 +4,17 @@ const { checkLogin, checkInstructor, checkAdmin } = require('../middleware')
 const sprintsRouter = express.Router()
 const db = require('../models/index')
 
-
 // latest group, because student may belong to multiple groups (dropout, etc.)
 const findLatestGroupId = async (studentNumber) => {
   const latestGroup = await db.Group.findOne({
-    include: [{
-      model: db.User,
-      as: 'students',
-      where: { student_number: studentNumber.toString() }
-    }],
-    order: [['createdAt', 'DESC']]
+    include: [
+      {
+        model: db.User,
+        as: 'students',
+        where: { student_number: studentNumber.toString() },
+      },
+    ],
+    order: [['createdAt', 'DESC']],
   })
   if (!latestGroup) {
     throw new Error('User does not belong to any group or not found.')
@@ -22,14 +23,16 @@ const findLatestGroupId = async (studentNumber) => {
   }
 }
 
-const findLatestSprint = async groupId => {
+const findLatestSprint = async (groupId) => {
   const latestSprint = await db.Sprint.findOne({
-    include: [{
-      model: db.Group,
-      as: 'group',
-      where: { id: groupId }
-    }],
-    order: [['sprint', 'DESC']]
+    include: [
+      {
+        model: db.Group,
+        as: 'group',
+        where: { id: groupId },
+      },
+    ],
+    order: [['sprint', 'DESC']],
   })
   return latestSprint
 }
@@ -52,15 +55,17 @@ const validateSprint = ({ start_date, end_date, sprint }, latest) => {
   if (typeof sprint !== 'number' || isNaN(sprint) || parseInt(sprint, 10) !== sprint) {
     throw new Error('Sprint must be a valid number.')
   }
-  if (!!latest.sprint && sprint !== latest.sprint+1) {
+  if (!!latest.sprint && sprint !== latest.sprint + 1) {
     throw new Error('New sprint must be the successor for the latest sprint.')
   }
 }
 
-const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_id }, originalSprint, groupSprints) => {
-  if (!start_date || !end_date)
-    throw new Error('Start date or end date is invalid.')
-
+const validateSprintUpdate = async (
+  { start_date, end_date, sprintNumber, group_id },
+  originalSprint,
+  groupSprints,
+) => {
+  if (!start_date || !end_date) throw new Error('Start date or end date is invalid.')
 
   const startDate = new Date(start_date)
   const endDate = new Date(end_date)
@@ -72,12 +77,14 @@ const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_
     throw new Error('Start date must be before end date.')
   }
 
-  const sprintNumbers = groupSprints.map(sprint => sprint.sprint).filter(sprintNum => sprintNum !== originalSprint.sprint)
+  const sprintNumbers = groupSprints
+    .map((sprint) => sprint.sprint)
+    .filter((sprintNum) => sprintNum !== originalSprint.sprint)
   if (sprintNumbers.includes(sprintNumber))
     throw new Error('Invalid sprint number, sprint already exists.')
 
-  const previousSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint+1)
-  const nextSprint = groupSprints.find(sprint => sprintNumber === sprint.sprint-1)
+  const previousSprint = groupSprints.find((sprint) => sprintNumber === sprint.sprint + 1)
+  const nextSprint = groupSprints.find((sprint) => sprintNumber === sprint.sprint - 1)
 
   if (previousSprint && new Date(previousSprint.end_date) >= startDate)
     throw new Error('Start date is before the end date of the previous sprint.')
@@ -87,8 +94,7 @@ const validateSprintUpdate = async ({ start_date, end_date, sprintNumber, group_
 
   if (group_id && typeof group_id === 'number') {
     const group = await db.Group.findByPk(group_id)
-    if (!group)
-      throw new Error('New group doesn\'t exist.')
+    if (!group) throw new Error("New group doesn't exist.")
   }
 }
 
@@ -101,10 +107,10 @@ const fetchSprintsFromDbByGroup = async (groupId) => {
     where: { group_id: groupId },
     // add group_id to attributes if needed for frontend
     attributes: ['id', 'start_date', 'end_date', 'sprint'],
-    raw: true
+    raw: true,
   })
 
-  const formattedSprints = groupSprints.map(sprint => ({
+  const formattedSprints = groupSprints.map((sprint) => ({
     id: sprint.id,
     start_date: new Date(sprint.start_date).toISOString().slice(0, 10),
     end_date: new Date(sprint.end_date).toISOString().slice(0, 10),
@@ -168,8 +174,7 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
   try {
     const groupId = await findLatestGroupId(user_id)
     let latestSprint = await findLatestSprint(groupId)
-    if (!latestSprint)
-      latestSprint = { end_date: null, sprint: null }
+    if (!latestSprint) latestSprint = { end_date: null, sprint: null }
 
     try {
       validateSprint(req.body, latestSprint)
@@ -183,7 +188,7 @@ sprintsRouter.post('/', checkLogin, async (req, res) => {
       start_date,
       end_date,
       sprint,
-      group_id: groupId
+      group_id: groupId,
     })
     const sprints = await fetchSprintsFromDbByStudent(user_id)
     res.status(201).json(sprints)
@@ -212,21 +217,25 @@ sprintsRouter.put('/:id', checkAdmin, async (req, res) => {
 
     const groupSprints = await db.Sprint.findAll({
       where: { group_id: group.id },
-      attributes: ['id', 'start_date', 'end_date', 'sprint']
+      attributes: ['id', 'start_date', 'end_date', 'sprint'],
     })
 
-    await validateSprintUpdate({ start_date, end_date, sprintNumber: sprint, group_id }, originalSprint, groupSprints)
+    await validateSprintUpdate(
+      { start_date, end_date, sprintNumber: sprint, group_id },
+      originalSprint,
+      groupSprints,
+    )
 
     await db.Sprint.update(
       {
         start_date,
         end_date,
         sprint,
-        group_id
+        group_id,
       },
       {
-        where: { id }
-      }
+        where: { id },
+      },
     )
     return res.status(200).json({ message: 'Update successful' })
   } catch (error) {

@@ -1,9 +1,12 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { createAndLoginAs, testAdmin, resetUsers } = require('../utils/login')
-const { createTestRegistrationQuestionSet, resetRegistrationQuestionSets } = require('../utils/registrationQuestionSet')
+const {
+  createTestRegistrationQuestionSet,
+  resetRegistrationQuestionSets,
+} = require('../utils/registrationQuestionSet')
 
 describe('Configurations', () => {
   test('should not be created with missing data', async () => {

@@ -12,7 +12,7 @@ const handleDatabaseError = (res, error) => {
 const createReviewQuestionSet = (req, res) => {
   db.ReviewQuestionSet.create({
     name: req.body.name,
-    questions: req.body.questions
+    questions: req.body.questions,
   })
     .then((createdSet) => res.status(200).json({ questionSet: createdSet }))
     .catch((error) => handleDatabaseError(res, error))
@@ -22,7 +22,7 @@ const updateReviewQuestionSet = (req, res, questionSet) => {
   questionSet
     .update({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
     .then((questionSet) => {
       questionSet
@@ -39,8 +39,7 @@ const createChecks = (req, res) => {
   if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
   db.ReviewQuestionSet.findOne({ where: { name: req.body.name } })
     .then((foundSet) => {
-      if (foundSet)
-        return res.status(400).json({ error: 'name already in use' })
+      if (foundSet) return res.status(400).json({ error: 'name already in use' })
       createReviewQuestionSet(req, res)
     })
     .catch((error) => handleDatabaseError(res, error))
@@ -49,21 +48,14 @@ const createChecks = (req, res) => {
 const updateChecks = (req, res) => {
   if (isNaN(req.params.id)) return res.status(400).json({ error: 'invalid id' })
   if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
-  db.ReviewQuestionSet.findOne({ where: { name: req.body.name } }).then(
-    (duplicateNameSet) => {
-      if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id))
-        return res.status(400).json({ error: 'name already in use' })
-      db.ReviewQuestionSet.findOne({ where: { id: req.params.id } }).then(
-        (foundSet) => {
-          if (!foundSet)
-            return res
-              .status(400)
-              .json({ error: 'no review question set with that id' })
-          updateReviewQuestionSet(req, res, foundSet)
-        }
-      )
-    }
-  )
+  db.ReviewQuestionSet.findOne({ where: { name: req.body.name } }).then((duplicateNameSet) => {
+    if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id))
+      return res.status(400).json({ error: 'name already in use' })
+    db.ReviewQuestionSet.findOne({ where: { id: req.params.id } }).then((foundSet) => {
+      if (!foundSet) return res.status(400).json({ error: 'no review question set with that id' })
+      updateReviewQuestionSet(req, res, foundSet)
+    })
+  })
 }
 
 reviewQuestionSetsRouter.post('/', checkAdmin, (req, res) => {
@@ -107,11 +99,7 @@ reviewQuestionSetsRouter.delete('/:id', checkAdmin, async (req, res) => {
     await targetSet.destroy()
     return res.status(204).end()
   } catch (err) {
-    console.error(
-      'error while deleting question set with id',
-      req.params.id,
-      err
-    )
+    console.error('error while deleting question set with id', req.params.id, err)
     return res.status(500).json({ error: 'internal server error' })
   }
 })

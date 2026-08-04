@@ -44,19 +44,16 @@ const mapStateToProps = (state) => {
   return {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
-    ownRegistrations: state.registrations
+    ownRegistrations: state.registrations,
   }
 }
 
 const mapDispatchToProps = {
   fetchRegistrations: registrationActions.fetchRegistrations,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
-const ConnectedLandingPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LandingPage)
+const ConnectedLandingPage = connect(mapStateToProps, mapDispatchToProps)(LandingPage)
 
 export default withRouter(ConnectedLandingPage)

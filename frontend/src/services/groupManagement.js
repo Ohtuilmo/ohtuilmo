@@ -63,12 +63,9 @@ const getByInstructor = async (studentNumber = null) => {
     studentNumberToUse = user ? user.student_number : undefined
   }
 
-  const response = await axios.get(
-    `${url}/byinstructor/${studentNumberToUse}`,
-    {
-      headers: { Authorization: 'Bearer ' + getUserToken() },
-    }
-  )
+  const response = await axios.get(`${url}/byinstructor/${studentNumberToUse}`, {
+    headers: { Authorization: 'Bearer ' + getUserToken() },
+  })
 
   return response.data
 }

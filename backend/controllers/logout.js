@@ -2,9 +2,7 @@ const logoutRouter = require('express').Router()
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res
-    .status(500)
-    .json({ error: 'Something is wrong... try reloading the page' })
+  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
 logoutRouter.post('/', async (req, res) => {
@@ -18,11 +16,7 @@ logoutRouter.post('/', async (req, res) => {
         .send({ logoutUrl: `${logoutUrl}?return=${returnUrl}` })
         .end()
     }
-    res
-      .status(200)
-      .set('Cache-Control', 'no-store')
-      .send({ logoutUrl: returnUrl })
-      .end()
+    res.status(200).set('Cache-Control', 'no-store').send({ logoutUrl: returnUrl }).end()
   } catch (error) {
     handleDatabaseError(res, error)
   }

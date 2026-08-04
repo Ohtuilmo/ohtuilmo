@@ -50,10 +50,7 @@ class ViewTopicPage extends React.Component {
     return (
       <div className="topic-view-page-container">
         {this.props.isOnEditMode ? (
-          <TopicEditPage
-            topic={this.props.topic.content}
-            id={this.props.match.params.id}
-          />
+          <TopicEditPage topic={this.props.topic.content} id={this.props.match.params.id} />
         ) : (
           <Topic
             content={this.props.topic.content}
@@ -82,6 +79,4 @@ const mapDispatchToProps = {
   setSuccess: notificationActions.setSuccess,
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ViewTopicPage)
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewTopicPage))

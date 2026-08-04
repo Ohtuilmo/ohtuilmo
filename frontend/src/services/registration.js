@@ -8,14 +8,14 @@ const create = async ({ questions, preferred_topics }) => {
   const response = await axios.post(
     url,
     { questions, preferred_topics },
-    { headers: { Authorization: 'Bearer ' + getUserToken() } }
+    { headers: { Authorization: 'Bearer ' + getUserToken() } },
   )
   return response.data.registration
 }
 
 const getOwn = async () => {
   const response = await axios.get(url, {
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
 
   /**
@@ -30,7 +30,7 @@ const getOwn = async () => {
 
 const current = async () => {
   const response = await axios.get(url + '/current', {
-    headers: { Authorization: 'Bearer ' + getUserToken() }
+    headers: { Authorization: 'Bearer ' + getUserToken() },
   })
 
   return response.data.registrations

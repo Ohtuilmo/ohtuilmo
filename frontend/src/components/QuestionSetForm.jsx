@@ -14,12 +14,7 @@ const validateQuestionsJson = (str) => {
   }
 }
 
-const QuestionSetForm = ({
-  initialName,
-  initialQuestionsJson,
-  onSubmit,
-  controls,
-}) => {
+const QuestionSetForm = ({ initialName, initialQuestionsJson, onSubmit, controls }) => {
   const [name, setName] = useState(initialName || '')
   const [questionsJson, setQuestionsJson] = useState(initialQuestionsJson || '')
   const [questionsError, setQuestionsError] = useState('')
@@ -68,8 +63,7 @@ const QuestionSetForm = ({
         error={!!questionsError}
         inputProps={{
           style: {
-            fontFamily:
-              'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
+            fontFamily: 'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
             fontSize: '0.9em',
           },
           className: 'question-set-form__questions',

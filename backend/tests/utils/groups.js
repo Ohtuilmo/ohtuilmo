@@ -2,13 +2,12 @@ const { createTestUsers, createTestUser, resetUsers, testUsers } = require('./lo
 const { createTestConfiguration, resetConfigurations } = require('./configuration')
 const { createTestTopic, resetTopics } = require('./topic')
 
-
 const testGroup = {
   name: 'Testiryhmä',
   topicId: 0,
   configurationId: 0,
   instructorId: 0,
-  studentIds: [0, 0]
+  studentIds: [0, 0],
 }
 
 const testInstructor = {
@@ -17,16 +16,20 @@ const testInstructor = {
   first_names: 'Pius',
   last_name: 'XII',
   email: 'puavi@vatikaani.fi',
-  admin: false
+  admin: false,
 }
-
 
 const createTestInstructor = async (db) => {
   await createTestGroup(db)
   return testInstructor.student_number
 }
 
-const createTestGroup = async (db, users=testUsers, instructor=testInstructor, createUsers=true) => {
+const createTestGroup = async (
+  db,
+  users = testUsers,
+  instructor = testInstructor,
+  createUsers = true,
+) => {
   const createdUsers = createUsers ? await createTestUsers(db, users) : users
   const createdInstructor = createUsers ? await createTestUser(db, instructor) : instructor
 
@@ -39,7 +42,7 @@ const createTestGroup = async (db, users=testUsers, instructor=testInstructor, c
     configurationId: configurationId,
     instructorId: createdInstructor.student_number,
   })
-  await createdGroup.setStudents(createdUsers.map(user => user.student_number))
+  await createdGroup.setStudents(createdUsers.map((user) => user.student_number))
   return createdGroup.id
 }
 
@@ -60,5 +63,5 @@ module.exports = {
   createTestInstructor,
   testInstructor,
   resetGroups,
-  resetInstructor
+  resetInstructor,
 }

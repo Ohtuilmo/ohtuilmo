@@ -12,19 +12,19 @@ const updateQuestionSet = (state, updatedSet) => {
 
 const questionSets = (state = [], action) => {
   switch (action.type) {
-  case 'FETCH_REGISTRATION_QUESTION_SETS_SUCCESS':
-    return action.payload
-  case 'CREATE_REGISTRATION_QUESTION_SET_SUCCESS':
-    return createQuestionSet(state, action.payload)
-  case 'UPDATE_REGISTRATION_QUESTION_SET_SUCCESS':
-    return updateQuestionSet(state, action.payload)
-  default:
-    return state
+    case 'FETCH_REGISTRATION_QUESTION_SETS_SUCCESS':
+      return action.payload
+    case 'CREATE_REGISTRATION_QUESTION_SET_SUCCESS':
+      return createQuestionSet(state, action.payload)
+    case 'UPDATE_REGISTRATION_QUESTION_SET_SUCCESS':
+      return updateQuestionSet(state, action.payload)
+    default:
+      return state
   }
 }
 
 const registrationQuestionsPageReducer = combineReducers({
-  questionSets
+  questionSets,
 })
 
 export default registrationQuestionsPageReducer

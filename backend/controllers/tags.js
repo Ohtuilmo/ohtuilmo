@@ -4,7 +4,6 @@ const { checkAdmin, checkLogin } = require('../middleware')
 const tagsRouter = express.Router()
 const db = require('../models/index')
 
-
 const validateTag = async ({ title }) => {
   if (!title) {
     return 'Title is missing.'
@@ -13,7 +12,7 @@ const validateTag = async ({ title }) => {
     return 'Title must be at least 3 characters.'
   }
   const current_tags = await fetchFromDb()
-  const current_titles = current_tags.map(tag => tag.title)
+  const current_titles = current_tags.map((tag) => tag.title)
   if (current_titles.includes(title)) {
     return 'Tag already exists.'
   }
@@ -23,7 +22,7 @@ const validateTag = async ({ title }) => {
 const fetchFromDb = async () => {
   const tags = await db.Tag.findAll({
     attributes: ['id', 'title'],
-    raw: true
+    raw: true,
   })
   return tags
 }
@@ -106,7 +105,7 @@ tagsRouter.get('/tagsByStudent/:id', checkLogin, async (req, res) => {
           tags[tagTitle] = []
         }
 
-        const existingTagEntry = tags[tagTitle].find(entry => entry.sprint_id === sprintId)
+        const existingTagEntry = tags[tagTitle].find((entry) => entry.sprint_id === sprintId)
 
         if (existingTagEntry) {
           existingTagEntry.minutes += minutes
@@ -114,7 +113,7 @@ tagsRouter.get('/tagsByStudent/:id', checkLogin, async (req, res) => {
           tags[tagTitle].push({
             sprint_id: sprintId,
             minutes: minutes,
-            sprint_number: sprintData.sprint
+            sprint_number: sprintData.sprint,
           })
         }
       }

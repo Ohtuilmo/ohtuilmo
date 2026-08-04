@@ -6,11 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
 
-const ConfigurationSelect = ({
-  groupConfigurationID,
-  onConfigurationChange,
-  configurations,
-}) => {
+const ConfigurationSelect = ({ groupConfigurationID, onConfigurationChange, configurations }) => {
   return (
     <Select
       className="configuration-selector"
@@ -47,7 +43,4 @@ const mapDispatchToPropsForm = {
   onConfigurationChange: groupManagementActions.updateGroupConfigurationID,
 }
 
-export default connect(
-  mapStateToPropsForm,
-  mapDispatchToPropsForm
-)(ConfigurationSelect)
+export default connect(mapStateToPropsForm, mapDispatchToPropsForm)(ConfigurationSelect)

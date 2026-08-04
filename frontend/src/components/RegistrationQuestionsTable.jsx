@@ -1,13 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from '@material-ui/core'
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 
 import { registrationQuestionShape } from './common/sharedPropTypes'
 
@@ -39,11 +33,7 @@ const RegistrationQuestionsTable = ({ questions }) => (
     </TableHead>
     <TableBody>
       {questions.map(({ question, type }) => (
-        <RegistrationQuestionsTableRow
-          key={question}
-          question={question}
-          type={type}
-        />
+        <RegistrationQuestionsTableRow key={question} question={question} type={type} />
       ))}
     </TableBody>
   </Table>

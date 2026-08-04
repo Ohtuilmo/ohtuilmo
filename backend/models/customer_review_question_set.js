@@ -5,28 +5,28 @@ module.exports = (sequelize, Sequelize) => {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       questions: {
         type: Sequelize.JSONB,
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {
-      underscored: true
-    }
+      underscored: true,
+    },
   )
 
   return Customer_review_question_set

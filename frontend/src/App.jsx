@@ -34,7 +34,7 @@ import TimeLogsPage from './components/TimeLogsPage/TimeLogsPage'
 import InstructorTimeLogsPage from './components/TimeLogsPage/InstructorTimeLogsPage'
 import SprintsDashboard from './components/SprintsPage/SprintsDashboard'
 import TagsDashboard from './components/TagManagementPage/TagsDashboard'
-import AdminSprintsPage from "./components/AdminSprintsPage/AdminSprintsPage"
+import AdminSprintsPage from './components/AdminSprintsPage/AdminSprintsPage'
 import StudentTagPage from './components/TagPage/StudentTagPage'
 import StaffTagPage from './components/TagPage/StaffTagPage'
 
@@ -50,11 +50,7 @@ import * as userActions from './reducers/actions/userActions'
 import myGroupActions from './reducers/actions/myGroupActions'
 
 // Protected routes
-import {
-  AdminRoute,
-  LoginRoute,
-  InstructorRoute,
-} from './utils/protectedRoutes'
+import { AdminRoute, LoginRoute, InstructorRoute } from './utils/protectedRoutes'
 
 import loginService from './services/login'
 
@@ -79,13 +75,13 @@ const App = (props) => {
     clearRegistrations,
     isLoading,
     user,
-    initializeMyGroup
+    initializeMyGroup,
   } = props
 
   useEffect(() => {
     // NODE_ENV
-    console.log("MODE:", import.meta.env.MODE)
-  },[])
+    console.log('MODE:', import.meta.env.MODE)
+  }, [])
 
   useEffect(() => {
     const isCustomerReviewPage = window.location.href.includes('customer-review/')
@@ -157,21 +153,9 @@ const App = (props) => {
         <div id="app-content">
           <Switch>
             <Route path="/login" render={renderWithLoadingCheck(null)} />
-            <LoginRoute
-              exact
-              path="/"
-              render={renderWithLoadingCheck(<LandingPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/topics"
-              render={renderWithLoadingCheck(<TopicListPage />)}
-            />
-            <Route
-              exact
-              path="/topics/create"
-              render={renderWithLoadingCheck(<TopicFormPage />)}
-            />
+            <LoginRoute exact path="/" render={renderWithLoadingCheck(<LandingPage />)} />
+            <AdminRoute exact path="/topics" render={renderWithLoadingCheck(<TopicListPage />)} />
+            <Route exact path="/topics/create" render={renderWithLoadingCheck(<TopicFormPage />)} />
             <Route
               exact
               path="/topics/:id"
@@ -275,18 +259,14 @@ const App = (props) => {
             />
             <InstructorRoute
               path="/instructor-timelogs"
-              render = {renderWithLoadingCheck(<InstructorTimeLogsPage />)}
+              render={renderWithLoadingCheck(<InstructorTimeLogsPage />)}
             />
             <LoginRoute
               exact
               path="/registrationdetails"
               render={renderWithLoadingCheck(<RegistrationDetailsPage />)}
             />
-            <LoginRoute
-              exact
-              path="/timelogs"
-              render={renderWithLoadingCheck(<TimeLogsPage />)}
-            />
+            <LoginRoute exact path="/timelogs" render={renderWithLoadingCheck(<TimeLogsPage />)} />
             <LoginRoute
               exact
               path="/sprints"
@@ -327,8 +307,7 @@ const mapDispatchToProps = {
   ...loginPageActions,
   ...appActions,
   fetchConfigurations: configurationPageActions.fetchConfigurations,
-  fetchRegistrationManagement:
-    registrationmanagementActions.fetchRegistrationManagement,
+  fetchRegistrationManagement: registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
   ...peerReviewPageActions,
   logoutUser: userActions.logoutUser,

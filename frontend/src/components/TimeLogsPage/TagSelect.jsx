@@ -54,13 +54,7 @@ const TagSelect = ({ disabled, tags, handleTagsChange, availableTags }) => {
         multiple
         value={tags}
         onChange={handleTagsChange}
-        input={
-          <StyledOutlinedInput
-            id="select-multiple-chip"
-            labelWidth={35}
-            notched
-          />
-        }
+        input={<StyledOutlinedInput id="select-multiple-chip" labelWidth={35} notched />}
         renderValue={(selected) => (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
             {selected.map((value) => (

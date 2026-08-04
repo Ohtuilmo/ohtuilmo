@@ -48,8 +48,7 @@ const emailTypeToTemplateName = (messageType, messageLanguage) =>
  * @param {TemplateName} templateName
  * @returns {{type: MessageType, language: MessageLanguage}}
  */
-const templateNameToEmailType = (templateName) =>
-  dbColumnToMsgType[templateName]
+const templateNameToEmailType = (templateName) => dbColumnToMsgType[templateName]
 
 /**
  * reverse(uppercase(trim(str)))
@@ -58,8 +57,8 @@ const templateNameToEmailType = (templateName) =>
  */
 const pipe =
   (...fns) =>
-    (value) =>
-      fns.reduce((v, fn) => fn(v), value)
+  (value) =>
+    fns.reduce((v, fn) => fn(v), value)
 
 const getRandomId = () => {
   return 'a' + randomstring.generate(16)

@@ -14,72 +14,68 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       questions: {
         type: Sequelize.JSONB,
-        allowNull: false
+        allowNull: false,
       },
       // Sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     })
 
     await query.createTable('customer_reviews', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       answer_sheet: {
-        type: Sequelize.JSONB
+        type: Sequelize.JSONB,
       },
       // Sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       // foreign keys
       group_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       topic_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       configuration_id: {
-        type: Sequelize.INTEGER
-      }
+        type: Sequelize.INTEGER,
+      },
     })
 
-    await query.addColumn(
-      'configurations',
-      'customer_review_question_set_id',
-      Sequelize.INTEGER
-    )
+    await query.addColumn('configurations', 'customer_review_question_set_id', Sequelize.INTEGER)
 
     await query.addConstraint('customer_reviews', ['group_id'], {
       name: 'customer_reviews_group_id_fkey',
       type: 'FOREIGN KEY',
       references: {
         table: 'groups',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
 
     await query.addConstraint('customer_reviews', ['topic_id'], {
@@ -87,10 +83,10 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'topics',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
 
     await query.addConstraint('customer_reviews', ['configuration_id'], {
@@ -98,26 +94,22 @@ module.exports = {
       type: 'FOREIGN KEY',
       references: {
         table: 'configurations',
-        field: 'id'
+        field: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'SET NULL',
     })
 
-    await query.addConstraint(
-      'configurations',
-      ['customer_review_question_set_id'],
-      {
-        name: 'configurations_customer_review_question_set_id_fkey',
-        type: 'FOREIGN KEY',
-        references: {
-          table: 'customer_review_question_sets',
-          field: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      }
-    )
+    await query.addConstraint('configurations', ['customer_review_question_set_id'], {
+      name: 'configurations_customer_review_question_set_id_fkey',
+      type: 'FOREIGN KEY',
+      references: {
+        table: 'customer_review_question_sets',
+        field: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+    })
   },
 
   down: async (query) => {
@@ -130,28 +122,16 @@ module.exports = {
     */
     await query.removeConstraint(
       'configurations',
-      'configurations_customer_review_question_set_id_fkey'
+      'configurations_customer_review_question_set_id_fkey',
     )
 
-    await query.removeColumn(
-      'configurations',
-      'customer_review_question_set_id'
-    )
+    await query.removeColumn('configurations', 'customer_review_question_set_id')
 
-    await query.removeConstraint(
-      'customer_reviews',
-      'customer_reviews_configuration_fkey'
-    )
-    await query.removeConstraint(
-      'customer_reviews',
-      'customer_reviews_group_fkey'
-    )
-    await query.removeConstraint(
-      'customer_reviews',
-      'customer_reviews_topic_fkey'
-    )
+    await query.removeConstraint('customer_reviews', 'customer_reviews_configuration_fkey')
+    await query.removeConstraint('customer_reviews', 'customer_reviews_group_fkey')
+    await query.removeConstraint('customer_reviews', 'customer_reviews_topic_fkey')
 
     await query.dropTable('customer_review_question_sets')
     await query.dropTable('customer_review')
-  }
+  },
 }

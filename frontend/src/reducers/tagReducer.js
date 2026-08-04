@@ -4,12 +4,12 @@ const initialState = {
 
 const tagsReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'SET_AVAILABLE_TAGS':
-    return { ...state, availableTags: action.payload }
-  case 'RESET_TAGS':
-    return initialState
-  default:
-    return state
+    case 'SET_AVAILABLE_TAGS':
+      return { ...state, availableTags: action.payload }
+    case 'RESET_TAGS':
+      return initialState
+    default:
+      return state
   }
 }
 

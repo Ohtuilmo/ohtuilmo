@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts'
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles'
 
 const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
   const theme = useTheme()
@@ -17,8 +17,7 @@ const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
   const data = allTags
     .filter((tag) => selectedTags.includes(tag))
     .map((tag) => {
-      const totalHours =
-        tagData[tag]?.reduce((sum, sprint) => sum + sprint.minutes / 60, 0) ?? 0
+      const totalHours = tagData[tag]?.reduce((sum, sprint) => sum + sprint.minutes / 60, 0) ?? 0
 
       return {
         name: tag,
@@ -39,9 +38,7 @@ const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
           tick={{ fill: theme.palette.text.primary }}
           tickLine={{ stroke: theme.custom.chartAxis.stroke }}
           axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
-          tickFormatter={(value) =>
-            value.length > 10 ? `${value.substring(0, 10)}...` : value
-          }
+          tickFormatter={(value) => (value.length > 10 ? `${value.substring(0, 10)}...` : value)}
         />
         <YAxis
           label={{

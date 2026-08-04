@@ -40,7 +40,7 @@ const RegistrationManagement = (props) => {
       setSuccess,
       setError,
       summerProject,
-      summerDates
+      summerDates,
     } = props
 
     updateIsLoading(true)
@@ -79,33 +79,26 @@ const RegistrationManagement = (props) => {
       .concat(
         <MenuItem value={-1} key={-1} disabled>
           <em>Pick one</em>
-        </MenuItem>
+        </MenuItem>,
       )
       .concat(
         configurations.map((configuration) => (
           <MenuItem value={configuration.id} key={configuration.id}>
             {configuration.name}
           </MenuItem>
-        ))
+        )),
       )
   }
 
   return (
     <div className="registrationManagement-container">
       <h3>Registration and review management</h3>
-      <form
-        className="registration-management-form"
-        onSubmit={saveConfiguration}
-      >
+      <form className="registration-management-form" onSubmit={saveConfiguration}>
         <p>Control state of registrations and reviews</p>
 
-        <ProjectRegistrationSettings
-          configurationMenuItems={configurationMenuItems}
-        />
+        <ProjectRegistrationSettings configurationMenuItems={configurationMenuItems} />
 
-        <TopicRegistrationSettings
-          configurationMenuItems={configurationMenuItems}
-        />
+        <TopicRegistrationSettings configurationMenuItems={configurationMenuItems} />
 
         <PeerReviewSettings configurationMenuItems={configurationMenuItems} />
 
@@ -147,6 +140,4 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RegistrationManagement)
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RegistrationManagement))

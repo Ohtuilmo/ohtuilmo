@@ -12,9 +12,7 @@ const includeArray = [
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res
-    .status(500)
-    .json({ error: 'Something is wrong... try reloading the page' })
+  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const returnPopulatedConfiguration = (req, res, unPopulatedConfiguration) => {
@@ -35,9 +33,7 @@ const setForeignKeys = async (configuration, req, res) => {
         where: { id: req.body.review_question_set1_id },
       })
       if (!foundSet)
-        return res
-          .status(400)
-          .json({ error: 'no peer review question set with that id' })
+        return res.status(400).json({ error: 'no peer review question set with that id' })
       await configuration.setReview_question_set1(foundSet)
     }
     if (req.body.review_question_set2_id) {
@@ -45,9 +41,7 @@ const setForeignKeys = async (configuration, req, res) => {
         where: { id: req.body.review_question_set2_id },
       })
       if (!foundSet)
-        return res
-          .status(400)
-          .json({ error: 'no peer review question set with that id' })
+        return res.status(400).json({ error: 'no peer review question set with that id' })
       await configuration.setReview_question_set2(foundSet)
     }
     if (req.body.registration_question_set_id) {
@@ -55,21 +49,15 @@ const setForeignKeys = async (configuration, req, res) => {
         where: { id: req.body.registration_question_set_id },
       })
       if (!foundSet)
-        return res
-          .status(400)
-          .json({ error: 'no registration question set with that id' })
-      await configuration.setRegistration_question_set(
-        req.body.registration_question_set_id
-      )
+        return res.status(400).json({ error: 'no registration question set with that id' })
+      await configuration.setRegistration_question_set(req.body.registration_question_set_id)
     }
     if (req.body.customer_review_question_set_id) {
       const foundSet = await db.CustomerReviewQuestionSet.findOne({
         where: { id: req.body.customer_review_question_set_id },
       })
       if (!foundSet)
-        return res
-          .status(400)
-          .json({ error: 'no customer review question set with that id' })
+        return res.status(400).json({ error: 'no customer review question set with that id' })
       await configuration.setCustomer_review_question_set(foundSet)
     }
     returnPopulatedConfiguration(req, res, configuration)
@@ -82,7 +70,7 @@ const createConfiguration = (req, res) => {
   db.Configuration.create({
     name: req.body.name,
     content: req.body.content,
-    active: true
+    active: true,
   })
     .then((created) => setForeignKeys(created, req, res))
     .catch((error) => handleDatabaseError(res, error))
@@ -137,9 +125,7 @@ const updateChecks = async (req, res) => {
     })
 
     if (!configuration) {
-      return res
-        .status(400)
-        .json({ error: 'no configuration with provided id' })
+      return res.status(400).json({ error: 'no configuration with provided id' })
     }
 
     updateConfiguration(configuration, req, res)
@@ -177,30 +163,22 @@ configurationsRouter.get('/:id', async (req, res) => {
   }
 })
 
-configurationsRouter.get(
-  '/:id/reviewquestions/:reviewround',
-  checkLogin,
-  async (req, res) => {
-    try {
-      const response = await db.Configuration.findByPk(req.params.id, {
-        include: [
-          'review_question_set1',
-          'review_question_set2',
-          'registration_question_set',
-        ],
-      })
-      if (req.params.reviewround === '1') {
-        res.status(200).json(response.review_question_set1)
-      } else if (req.params.reviewround === '2') {
-        res.status(200).json(response.review_question_set2)
-      } else {
-        res.status(400).json({ error: 'bad review round' })
-      }
-    } catch (error) {
-      handleDatabaseError(res, error)
+configurationsRouter.get('/:id/reviewquestions/:reviewround', checkLogin, async (req, res) => {
+  try {
+    const response = await db.Configuration.findByPk(req.params.id, {
+      include: ['review_question_set1', 'review_question_set2', 'registration_question_set'],
+    })
+    if (req.params.reviewround === '1') {
+      res.status(200).json(response.review_question_set1)
+    } else if (req.params.reviewround === '2') {
+      res.status(200).json(response.review_question_set2)
+    } else {
+      res.status(400).json({ error: 'bad review round' })
     }
+  } catch (error) {
+    handleDatabaseError(res, error)
   }
-)
+})
 
 configurationsRouter.get('/:id/customerreviewquestions', async (req, res) => {
   try {
@@ -213,20 +191,16 @@ configurationsRouter.get('/:id/customerreviewquestions', async (req, res) => {
   }
 })
 
-configurationsRouter.delete(
-  '/:configurationId',
-  checkAdmin,
-  async (req, res) => {
-    const success = await db.Configuration.destroy({
-      where: { id: req.params.configurationId },
-    })
-    if (success) {
-      console.log(`Configuration ${req.params.configurationId} destroyed.`)
-    } else {
-      console.log('Nothing to delete.')
-    }
-    return res.status(204).end()
+configurationsRouter.delete('/:configurationId', checkAdmin, async (req, res) => {
+  const success = await db.Configuration.destroy({
+    where: { id: req.params.configurationId },
+  })
+  if (success) {
+    console.log(`Configuration ${req.params.configurationId} destroyed.`)
+  } else {
+    console.log('Nothing to delete.')
   }
-)
+  return res.status(204).end()
+})
 
 module.exports = configurationsRouter

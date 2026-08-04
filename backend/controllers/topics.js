@@ -19,14 +19,12 @@ const isSecretId = (id) => {
 const registrationCheck = async (req, res, next) => {
   try {
     const latestConfig = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!latestConfig || !latestConfig.topic_registration_open) {
       // registration config was not found or the topic registration was closed
-      return res
-        .status(400)
-        .json({ error: 'topic registration is not currently open' })
+      return res.status(400).json({ error: 'topic registration is not currently open' })
     }
 
     // pass request on to the next handler
@@ -39,7 +37,7 @@ const registrationCheck = async (req, res, next) => {
 
 topicsRouter.post('/:id/copy', async (req, res) => {
   const conf = await db.RegistrationManagement.findOne({
-    order: [['createdAt', 'DESC']]
+    order: [['createdAt', 'DESC']],
   })
 
   const from = await db.Topic.findByPk(req.params.id)
@@ -51,7 +49,7 @@ topicsRouter.post('/:id/copy', async (req, res) => {
     configuration_id: conf.topic_registration_conf,
     content: from.content,
     acronym: from.acronym,
-    secret_id
+    secret_id,
   })
     .then((topic) => {
       res.status(200).json({ topic })
@@ -63,13 +61,10 @@ topicsRouter.post('/:id/copy', async (req, res) => {
 })
 
 topicsRouter.post('/', registrationCheck, (req, res) => {
-  if (!req.body.content)
-    return res.status(400).json({ error: 'content undefined' })
+  if (!req.body.content) return res.status(400).json({ error: 'content undefined' })
 
   if (!req.body.configuration_id) {
-    return res
-      .status(400)
-      .json({ error: 'Topic must be associated with configuration' })
+    return res.status(400).json({ error: 'Topic must be associated with configuration' })
   }
 
   const secret_id = getRandomId()
@@ -79,7 +74,7 @@ topicsRouter.post('/', registrationCheck, (req, res) => {
     configuration_id: req.body.configuration_id,
     content: req.body.content,
     acronym: req.body.acronym,
-    secret_id
+    secret_id,
   })
     .then((topic) => {
       email.sendSecretLink(topic.secret_id, topic.content.email)
@@ -107,17 +102,16 @@ topicsRouter.put(
     if (res.locals.isSecret) {
       db.Topic.findOne({
         where: {
-          secret_id: req.params.id
-        }
+          secret_id: req.params.id,
+        },
       })
         .then((topic) => {
-          if (!topic)
-            return res.status(400).json({ error: 'no topic with that id' })
+          if (!topic) return res.status(400).json({ error: 'no topic with that id' })
           topic
             .update({
               active: req.body.active,
               content: req.body.content,
-              acronym: req.body.acronym
+              acronym: req.body.acronym,
             })
             .then((topic) => {
               topic.reload().then((topic) => {
@@ -137,13 +131,12 @@ topicsRouter.put(
     } else {
       db.Topic.findByPk(req.params.id)
         .then((topic) => {
-          if (!topic)
-            return res.status(400).json({ error: 'no topic with that id' })
+          if (!topic) return res.status(400).json({ error: 'no topic with that id' })
           topic
             .update({
               active: req.body.active,
               content: req.body.content,
-              acronym: req.body.acronym
+              acronym: req.body.acronym,
             })
             .then((topic) => {
               topic.reload().then((topic) => {
@@ -161,7 +154,7 @@ topicsRouter.put(
           res.status(500).json({ error: 'Something is wrong... try reloading the page' })
         })
     }
-  }
+  },
 )
 
 const serializeHasReviewed = (plainTopic) => {
@@ -171,7 +164,7 @@ const serializeHasReviewed = (plainTopic) => {
 
   return {
     ...topic,
-    hasReviewed
+    hasReviewed,
   }
 }
 
@@ -181,7 +174,7 @@ const serializeSentEmails = (plainTopic) => {
 
   return {
     ...topicWithoutSentEmails,
-    sentEmails
+    sentEmails,
   }
 }
 
@@ -192,13 +185,13 @@ topicsRouter.get('/', checkAdmin, async (req, res) => {
       include: [
         {
           model: db.CustomerReview,
-          as: 'customer_review'
+          as: 'customer_review',
         },
         {
           model: db.SentTopicEmail,
-          as: 'sent_emails'
-        }
-      ]
+          as: 'sent_emails',
+        },
+      ],
     })
 
     const serializer = pipe(
@@ -206,7 +199,7 @@ topicsRouter.get('/', checkAdmin, async (req, res) => {
       // JSON.stringify exploding due to circular references
       (topicModel) => topicModel.get({ plain: true }),
       serializeHasReviewed,
-      serializeSentEmails
+      serializeSentEmails,
     )
 
     return res.status(200).json({ topics: topics.map(serializer) })
@@ -222,35 +215,28 @@ topicsRouter.get('/', checkAdmin, async (req, res) => {
 topicsRouter.get('/active', async (req, res) => {
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!registrationManagement) {
-      return res
-        .status(400)
-        .json({ error: 'no active configuration for project registration' })
+      return res.status(400).json({ error: 'no active configuration for project registration' })
     }
 
     const activeTopics = await db.Topic.findAll({
       attributes: {
         exclude: ['content'],
         include: [
-          [
-            db.sequelize.literal(
-              `COALESCE("content", '{}'::jsonb) - 'phoneNumber'`
-            ),
-            'content'
-          ]
-        ]
+          [db.sequelize.literal(`COALESCE("content", '{}'::jsonb) - 'phoneNumber'`), 'content'],
+        ],
       },
       where: {
         active: true,
-        configuration_id: registrationManagement.project_registration_conf
-      }
+        configuration_id: registrationManagement.project_registration_conf,
+      },
     })
 
     return res.status(200).json({
-      topics: shuffle(activeTopics.map((topic) => censorSecretId(topic)))
+      topics: shuffle(activeTopics.map((topic) => censorSecretId(topic))),
     })
   } catch (error) {
     console.log(error)
@@ -261,17 +247,15 @@ topicsRouter.get('/active', async (req, res) => {
 // optionalLogin is needed to check admin status: phoneNumber should be omitted for users without
 // the edit link and admin rights
 topicsRouter.get('/:id', optionalLogin, async (req, res) => {
-
   const id = req.params.id
   if (isSecretId(id)) {
     db.Topic.findOne({
       where: {
-        secret_id: id
-      }
+        secret_id: id,
+      },
     })
       .then((topic) => {
-        if (!topic)
-          return res.status(400).json({ error: 'no topic with that id' })
+        if (!topic) return res.status(400).json({ error: 'no topic with that id' })
         topic = censorSecretId(topic)
         res.status(200).json({ topic })
       })
@@ -282,12 +266,11 @@ topicsRouter.get('/:id', optionalLogin, async (req, res) => {
   } else if (req.user && req.user.admin) {
     db.Topic.findOne({
       where: {
-        id: id
-      }
+        id: id,
+      },
     })
       .then((topic) => {
-        if (!topic)
-          return res.status(400).json({ error: 'no topic with that id' })
+        if (!topic) return res.status(400).json({ error: 'no topic with that id' })
         topic = censorSecretId(topic)
         res.status(200).json({ topic })
       })
@@ -300,21 +283,15 @@ topicsRouter.get('/:id', optionalLogin, async (req, res) => {
       attributes: {
         exclude: ['content'],
         include: [
-          [
-            db.sequelize.literal(
-              `COALESCE("content", '{}'::jsonb) - 'phoneNumber'`
-            ),
-            'content'
-          ]
-        ]
+          [db.sequelize.literal(`COALESCE("content", '{}'::jsonb) - 'phoneNumber'`), 'content'],
+        ],
       },
       where: {
-        id: id
-      }
+        id: id,
+      },
     })
       .then((topic) => {
-        if (!topic)
-          return res.status(400).json({ error: 'no topic with that id' })
+        if (!topic) return res.status(400).json({ error: 'no topic with that id' })
         topic = censorSecretId(topic)
         res.status(200).json({ topic })
       })

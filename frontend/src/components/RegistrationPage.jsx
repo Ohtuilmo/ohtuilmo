@@ -27,14 +27,7 @@ import * as notificationActions from '../reducers/actions/notificationActions'
 import registrationActions from '../reducers/actions/registrationActions'
 import registrationmanagementActions from '../reducers/actions/registrationManagementActions'
 
-const Prerequisites = ({
-  checkbox1,
-  checkbox2,
-  checkbox3,
-  onToggle1,
-  onToggle2,
-  onToggle3,
-}) => {
+const Prerequisites = ({ checkbox1, checkbox2, checkbox3, onToggle1, onToggle2, onToggle3 }) => {
   return (
     <div
       style={{
@@ -50,9 +43,8 @@ const Prerequisites = ({
         <a href="https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/blob/master/README.md#arvosteluperusteet">
           arvosteluperusteissa
         </a>{' '}
-        erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely.
-        Vaatimuksena on noin 200 tuntia työtä koko kurssin aikana, mikä on noin
-        15 tuntia viikossa.
+        erääksi kriteeriksi mainitaan työmäärä ja tasainen työskentely. Vaatimuksena on noin 200
+        tuntia työtä koko kurssin aikana, mikä on noin 15 tuntia viikossa.
       </div>
       <label
         style={{
@@ -86,9 +78,7 @@ const Prerequisites = ({
         />
         sitoudun työskentelemään koko projektin ajan tasaisesti
       </label>
-      <label
-        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-      >
+      <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
         <input
           type="checkbox"
           checked={checkbox3}
@@ -130,10 +120,7 @@ class RegistrationPage extends React.Component {
       await this.props.fetchRegistrationManagement()
     } catch (e) {
       console.log('error happened', e)
-      this.props.setError(
-        'Error fetching registration management configuration',
-        5000,
-      )
+      this.props.setError('Error fetching registration management configuration', 5000)
     }
   }
 
@@ -142,10 +129,7 @@ class RegistrationPage extends React.Component {
       await this.props.fetchRegistrations()
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError(
-        'Error fetching own registration... try reloading the page',
-        3000,
-      )
+      this.props.setError('Error fetching own registration... try reloading the page', 3000)
     }
   }
 
@@ -164,11 +148,9 @@ class RegistrationPage extends React.Component {
 
   async fetchTopics() {
     try {
-      const fetchedTopics = await topicService
-        .getAllActive()
-        .then(function (defs) {
-          return defs
-        })
+      const fetchedTopics = await topicService.getAllActive().then(function (defs) {
+        return defs
+      })
 
       this.props.updateTopics(fetchedTopics)
     } catch (e) {
@@ -234,11 +216,7 @@ class RegistrationPage extends React.Component {
   submitRegistration = async (e) => {
     e.preventDefault()
 
-    if (
-      !this.state.checkbox1 ||
-      !this.state.checkbox2 ||
-      !this.state.prerequisitesConfirmed
-    ) {
+    if (!this.state.checkbox1 || !this.state.checkbox2 || !this.state.prerequisitesConfirmed) {
       this.props.setError('Please check all boxes to enable submission', 3000)
       return
     }
@@ -259,10 +237,7 @@ class RegistrationPage extends React.Component {
     } catch (e) {
       console.log(e)
       if (e.response.data.error === 'student already registered') {
-        this.props.setError(
-          'You have already registered for this course',
-          15000,
-        )
+        this.props.setError('You have already registered for this course', 15000)
       } else if (e.response.data.error === 'missing email') {
         this.props.setError('Email is missing', 5000)
       } else {
@@ -276,9 +251,7 @@ class RegistrationPage extends React.Component {
 
     if (
       ownRegistrations.length > 0 &&
-      ownRegistrations.find(
-        (registration) => registration.configuration_id === projectConf,
-      )
+      ownRegistrations.find((registration) => registration.configuration_id === projectConf)
     ) {
       return <h2>You have already registered to current project.</h2>
     }
@@ -303,9 +276,7 @@ class RegistrationPage extends React.Component {
                     ? -1
                     : this.props.questions[idx].answer
                 }
-                onChange={(event) =>
-                  this.props.updateQuestionAnswer(event.target.value, idx)
-                }
+                onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
               >
                 <MenuItem value={-1} disabled>
                   <em>Pick a number</em>
@@ -322,9 +293,7 @@ class RegistrationPage extends React.Component {
           {item.type === 'text' ? (
             <Input
               value={this.props.questions[idx].answer}
-              onChange={(event) =>
-                this.props.updateQuestionAnswer(event.target.value, idx)
-              }
+              onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
               placeholder="Answer"
               fullWidth
               multiline
@@ -366,9 +335,8 @@ class RegistrationPage extends React.Component {
               }}
             >
               <h3 style={{ marginTop: 0, marginBottom: '15px' }}>
-                Huomaa, että projektiin osallistuminen edellyttää että kaikki
-                esitietona olevat opintojaksot on suoritettu tai palautettu
-                arvosteltavaksi projektin alkuun mennessä:
+                Huomaa, että projektiin osallistuminen edellyttää että kaikki esitietona olevat
+                opintojaksot on suoritettu tai palautettu arvosteltavaksi projektin alkuun mennessä:
               </h3>
               <ul style={{ marginTop: '10px', marginBottom: '10px' }}>
                 <li>
@@ -482,9 +450,8 @@ class RegistrationPage extends React.Component {
                     borderRadius: 10,
                   }}
                 >
-                  Set the order of the list of topics according to your
-                  preference (1 = favorite) by dragging and dropping, click to
-                  expand details
+                  Set the order of the list of topics according to your preference (1 = favorite) by
+                  dragging and dropping, click to expand details
                 </div>
                 <div className="dragndrop-container">
                   <div className="dragndrop-indexes-container">{indexes}</div>
@@ -494,9 +461,7 @@ class RegistrationPage extends React.Component {
                     dataSource={this.props.topics}
                     onUpdate={this.handleUpdate}
                     rowKey="id"
-                    row={(topic) => (
-                      <TopicDialog topic={topic} key={topic.content.title} />
-                    )}
+                    row={(topic) => <TopicDialog topic={topic} key={topic.content.title} />}
                   />
                 </div>
               </>
@@ -548,8 +513,7 @@ const mapStateToProps = (state) => {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectInfo: state.registrationManagement.projectRegistrationInfo,
     ownRegistrations: state.registrations,
-    registrationManagementFetched:
-      state.registrationManagement.registrationManagementFetched,
+    registrationManagementFetched: state.registrationManagement.registrationManagementFetched,
   }
 }
 
@@ -558,13 +522,9 @@ const mapDispatchToProps = {
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchRegistrations: registrationActions.fetchRegistrations,
-  fetchRegistrationManagement:
-    registrationmanagementActions.fetchRegistrationManagement,
+  fetchRegistrationManagement: registrationmanagementActions.fetchRegistrationManagement,
 }
 
-const ConnectedRegistrationPage = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RegistrationPage)
+const ConnectedRegistrationPage = connect(mapStateToProps, mapDispatchToProps)(RegistrationPage)
 
 export default withRouter(ConnectedRegistrationPage)

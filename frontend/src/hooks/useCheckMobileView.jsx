@@ -13,7 +13,7 @@ const useCheckMobileView = () => {
     }
   }, [])
 
-  return (width <= 768)
+  return width <= 768
 }
 
 export default useCheckMobileView

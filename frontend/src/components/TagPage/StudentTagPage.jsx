@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import LoadingSpinner from '../common/LoadingSpinner'
 import { Typography } from '@material-ui/core'
-import {
-  NotInGroupPlaceholder,
-  NoSprintsPlaceholder,
-} from '../common/Placeholders'
+import { NotInGroupPlaceholder, NoSprintsPlaceholder } from '../common/Placeholders'
 import CheckboxMultiSelect from '../common/CheckboxMultiSelect'
 import TagUsageLineChart from './TagUsageLineChart'
 import TagUsageBarChart from './TagUsageBarChart'
@@ -35,12 +32,7 @@ const colourSet = [
 ]
 
 const StudentTagPage = (props) => {
-  const {
-    user,
-    group,
-    availableTags,
-    fetchAvailableTags,
-  } = props
+  const { user, group, availableTags, fetchAvailableTags } = props
 
   const [isLoading, setIsLoading] = useState(true)
   const [allSprints, setAllSprints] = useState([])
@@ -58,12 +50,7 @@ const StudentTagPage = (props) => {
         const fetchedData = await sprintService.getSprints()
         setAllSprints(fetchedData)
       } catch (error) {
-        console.error(
-          'Error fetching sprints:',
-          error.message,
-          ' / ',
-          error.response.data.error,
-        )
+        console.error('Error fetching sprints:', error.message, ' / ', error.response.data.error)
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -143,6 +130,4 @@ const mapDispatchToProps = {
   fetchAvailableTags: tagsActions.fetchAvailableTags,
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(StudentTagPage),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StudentTagPage))

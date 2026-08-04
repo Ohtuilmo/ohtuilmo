@@ -11,10 +11,10 @@ const createRegistrationQuestionSet = async (req, res) => {
   try {
     const createdSet = await db.RegistrationQuestionSet.create({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
     res.status(200).json({ questionSet: createdSet })
-  } catch(error) {
+  } catch (error) {
     return handleDatabaseError(res, error)
   }
 }
@@ -23,7 +23,7 @@ const updateRegistrationQuestionSet = (req, res, questionSet) => {
   questionSet
     .update({
       name: req.body.name,
-      questions: req.body.questions
+      questions: req.body.questions,
     })
     .then((questionSet) => {
       questionSet
@@ -37,15 +37,13 @@ const updateRegistrationQuestionSet = (req, res, questionSet) => {
 }
 
 const createChecks = async (req, res) => {
-  if (!req.body.name)
-    return res.status(400).json({ error: 'name undefined' })
+  if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
 
   try {
     const foundSet = await db.RegistrationQuestionSet.findOne({ where: { name: req.body.name } })
-    if (foundSet)
-      return res.status(400).json({ error: 'name already in use' })
+    if (foundSet) return res.status(400).json({ error: 'name already in use' })
     await createRegistrationQuestionSet(req, res)
-  } catch(error) {
+  } catch (error) {
     return handleDatabaseError(res, error)
   }
 }
@@ -57,16 +55,12 @@ const updateChecks = (req, res) => {
     (duplicateNameSet) => {
       if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id))
         return res.status(400).json({ error: 'name already in use' })
-      db.RegistrationQuestionSet.findOne({ where: { id: req.params.id } }).then(
-        (foundSet) => {
-          if (!foundSet)
-            return res
-              .status(400)
-              .json({ error: 'no registration question set with that id' })
-          updateRegistrationQuestionSet(req, res, foundSet)
-        }
-      )
-    }
+      db.RegistrationQuestionSet.findOne({ where: { id: req.params.id } }).then((foundSet) => {
+        if (!foundSet)
+          return res.status(400).json({ error: 'no registration question set with that id' })
+        updateRegistrationQuestionSet(req, res, foundSet)
+      })
+    },
   )
 }
 
@@ -94,11 +88,7 @@ registrationQuestionSetsRouter.delete('/:id', checkAdmin, async (req, res) => {
     await targetSet.destroy()
     return res.status(204).end()
   } catch (err) {
-    console.error(
-      'error while deleting question set with id',
-      req.params.id,
-      err
-    )
+    console.error('error while deleting question set with id', req.params.id, err)
     return res.status(500).json({ error: 'internal server error' })
   }
 })

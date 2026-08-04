@@ -11,14 +11,12 @@ const handleDatabaseError = (res, error) => {
 const registrationCheck = async (req, res, next) => {
   try {
     const latestConfig = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     if (!latestConfig || !latestConfig.project_registration_open) {
       // registration config was not found or the registration was closed
-      return res
-        .status(400)
-        .json({ error: 'project registration is not currently open' })
+      return res.status(400).json({ error: 'project registration is not currently open' })
     }
 
     // pass request on to the next handler
@@ -29,67 +27,58 @@ const registrationCheck = async (req, res, next) => {
   }
 }
 
-registrationsRouter.post(
-  '/',
-  checkLogin,
-  registrationCheck,
-  async (req, res) => {
-    if (!req.body.questions)
-      return res.status(400).json({ error: 'questions missing' })
-    if (!req.body.preferred_topics)
-      return res.status(400).json({ error: 'preferred_topics missing' })
-    const loggedInUserStudentNumber = req.user.id
+registrationsRouter.post('/', checkLogin, registrationCheck, async (req, res) => {
+  if (!req.body.questions) return res.status(400).json({ error: 'questions missing' })
+  if (!req.body.preferred_topics) return res.status(400).json({ error: 'preferred_topics missing' })
+  const loggedInUserStudentNumber = req.user.id
 
-    try {
-      const user = await db.User.findOne({
-        where: { student_number: loggedInUserStudentNumber }
-      })
+  try {
+    const user = await db.User.findOne({
+      where: { student_number: loggedInUserStudentNumber },
+    })
 
-      if (!user) {
-        return res.status(400).json({ error: 'student not found' })
-      }
-
-      const registrationManagement = await db.RegistrationManagement.findOne({
-        order: [['createdAt', 'DESC']]
-      })
-
-      if (!registrationManagement) {
-        return res
-          .status(400)
-          .json({ error: 'registration management configuration not found' })
-      }
-
-      const configuration = await db.Configuration.findByPk(
-        registrationManagement.project_registration_conf
-      )
-
-      if (!configuration) {
-        return res.status(400).json({ error: 'configuration not found' })
-      }
-
-      const registration = await db.Registration.findOne({
-        where: {
-          configuration_id: configuration.id,
-          studentStudentNumber: loggedInUserStudentNumber
-        }
-      })
-
-      if (registration) {
-        return res.status(400).json({ error: 'student already registered' })
-      }
-
-      const newRegistration = await db.Registration.create({
-        preferred_topics: req.body.preferred_topics,
-        questions: req.body.questions,
-        configuration_id: configuration.id
-      })
-      await newRegistration.setStudent(loggedInUserStudentNumber)
-      return res.status(201).json({ newRegistration })
-    } catch (error) {
-      handleDatabaseError(res, error)
+    if (!user) {
+      return res.status(400).json({ error: 'student not found' })
     }
+
+    const registrationManagement = await db.RegistrationManagement.findOne({
+      order: [['createdAt', 'DESC']],
+    })
+
+    if (!registrationManagement) {
+      return res.status(400).json({ error: 'registration management configuration not found' })
+    }
+
+    const configuration = await db.Configuration.findByPk(
+      registrationManagement.project_registration_conf,
+    )
+
+    if (!configuration) {
+      return res.status(400).json({ error: 'configuration not found' })
+    }
+
+    const registration = await db.Registration.findOne({
+      where: {
+        configuration_id: configuration.id,
+        studentStudentNumber: loggedInUserStudentNumber,
+      },
+    })
+
+    if (registration) {
+      return res.status(400).json({ error: 'student already registered' })
+    }
+
+    const newRegistration = await db.Registration.create({
+      preferred_topics: req.body.preferred_topics,
+      questions: req.body.questions,
+      configuration_id: configuration.id,
+    })
+    await newRegistration.setStudent(loggedInUserStudentNumber)
+    return res.status(201).json({ newRegistration })
+  } catch (error) {
+    handleDatabaseError(res, error)
   }
-)
+})
 
 registrationsRouter.get('/current', checkAdmin, async (req, res) => {
   const formatJson = (registration) => {
@@ -108,30 +97,30 @@ registrationsRouter.get('/current', checkAdmin, async (req, res) => {
       first_names: registration.student.first_names,
       email: registration.student.email,
       preferred_topics: registration.preferred_topics,
-      questions: registration.questions
+      questions: registration.questions,
     }
   }
 
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     const registrations = await db.Registration.findAll({
       where: {
-        configuration_id: registrationManagement.project_registration_conf
+        configuration_id: registrationManagement.project_registration_conf,
       },
       include: [
         {
           model: db.User,
-          as: 'student'
-        }
-      ]
+          as: 'student',
+        },
+      ],
     })
 
     res.status(200).json({
       registrationCount: registrations.length,
-      registrations: registrations.map(formatJson)
+      registrations: registrations.map(formatJson),
     })
   } catch (error) {
     handleDatabaseError(res, error)
@@ -143,7 +132,7 @@ registrationsRouter.get('/', checkLogin, async (req, res) => {
 
   try {
     const registrationManagement = await db.RegistrationManagement.findOne({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     })
 
     const peerReviewConf = registrationManagement.peer_review_conf
@@ -151,13 +140,10 @@ registrationsRouter.get('/', checkLogin, async (req, res) => {
 
     const registrations = await db.Registration.findAll({
       where: {
-        [Op.or]: [
-          { configuration_id: peerReviewConf },
-          { configuration_id: projectConf }
-        ],
-        studentStudentNumber: loggedInUserStudentNumber
+        [Op.or]: [{ configuration_id: peerReviewConf }, { configuration_id: projectConf }],
+        studentStudentNumber: loggedInUserStudentNumber,
       },
-      include: ['student']
+      include: ['student'],
     })
 
     if (!registrations) {

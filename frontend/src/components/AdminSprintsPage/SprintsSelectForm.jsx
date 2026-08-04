@@ -4,9 +4,13 @@ import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 
 export const SprintsSelectForm = ({
-  configurations, selectedConfiguration, handleConfigurationChange,
-  groups, selectedGroup, handleGroupChange }) => {
-
+  configurations,
+  selectedConfiguration,
+  handleConfigurationChange,
+  groups,
+  selectedGroup,
+  handleGroupChange,
+}) => {
   const SelectorWrapper = ({ label, children }) => (
     <div style={{ padding: 20 }}>
       <Typography variant="caption">{label}</Typography>
@@ -40,36 +44,33 @@ export const SprintsSelectForm = ({
           </MenuItem>
         ))}
       </Select>
-    )}
+    )
+  }
 
-  const GroupIsInConfiguration = ( group, configuration ) => {
+  const GroupIsInConfiguration = (group, configuration) => {
     return group.configurationId === configuration.id
   }
 
-  const GroupSelect = ({
-    groups,
-    selectedGroup,
-    handleGroupChange
-  }) => {
+  const GroupSelect = ({ groups, selectedGroup, handleGroupChange }) => {
     return (
       <Select
         data-cy="group-selector"
         value={selectedGroup}
-        onChange={(e) => { handleGroupChange(e.target.value) }}
+        onChange={(e) => {
+          handleGroupChange(e.target.value)
+        }}
         MenuProps={{ style: { zIndex: 1600 } }}
       >
-        {groups.filter(group => GroupIsInConfiguration(group, selectedConfiguration))
+        {groups
+          .filter((group) => GroupIsInConfiguration(group, selectedConfiguration))
           .map((group) => (
-            <MenuItem
-              key={group.id}
-              className="group-menu-item"
-              value={group}
-            >
+            <MenuItem key={group.id} className="group-menu-item" value={group}>
               {group.name}
             </MenuItem>
           ))}
       </Select>
-    )}
+    )
+  }
 
   return (
     <div className="timelog-select-container">
@@ -82,7 +83,7 @@ export const SprintsSelectForm = ({
             handleGroupChange={handleGroupChange}
           />
         </SelectorWrapper>
-        {Object.keys(selectedConfiguration).length !== 0 &&
+        {Object.keys(selectedConfiguration).length !== 0 && (
           <SelectorWrapper label="Select group">
             <GroupSelect
               selectedGroup={selectedGroup}
@@ -90,7 +91,7 @@ export const SprintsSelectForm = ({
               groups={groups}
             />
           </SelectorWrapper>
-        }
+        )}
       </div>
     </div>
   )

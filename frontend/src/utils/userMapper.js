@@ -1,4 +1,3 @@
-
 import groupManagementService from '../services/groupManagement'
 import userService from '../services/user'
 import configurationService from '../services/configuration'
@@ -12,7 +11,7 @@ const mapSemesterField = (content) => {
     /spring/i,
     /summer/i,
     /autumn/i,
-    /winter/i
+    /winter/i,
   ]
   const yearPattern = /20\d\d/
   const replacements = [
@@ -23,9 +22,9 @@ const mapSemesterField = (content) => {
     'Spring',
     'Summer',
     'Autumn',
-    'Winter'
+    'Winter',
   ]
-  const parts = ['',0]
+  const parts = ['', 0]
   for (let i = 0; i < patterns.length; i++) {
     if (content.match(patterns[i])) {
       parts[0] = replacements[i]
@@ -41,14 +40,16 @@ const mapSemesterField = (content) => {
 
 const mapInstructorField = (content, configurations) => {
   const activities = []
-  content.forEach(element => {
-    const semesterConfiguration = configurations.filter(conf => conf.id === element.configurationId)[0]
+  content.forEach((element) => {
+    const semesterConfiguration = configurations.filter(
+      (conf) => conf.id === element.configurationId,
+    )[0]
     const activity = {
       groupName: element.name,
       semester: mapSemesterField(semesterConfiguration.name),
       topic: element.topicId,
       instructor: element.instructorId,
-      students: element.studentIds
+      students: element.studentIds,
     }
     activities.push(activity)
   })
@@ -57,14 +58,16 @@ const mapInstructorField = (content, configurations) => {
 
 const mapParticipationField = (content, configurations) => {
   const participations = []
-  content.forEach(element => {
-    const semesterConfiguration = configurations.filter(conf => conf.id === element.configurationId)[0]
+  content.forEach((element) => {
+    const semesterConfiguration = configurations.filter(
+      (conf) => conf.id === element.configurationId,
+    )[0]
     const activity = {
       groupName: element.name,
       semester: mapSemesterField(semesterConfiguration.name),
       topic: element.topicId,
       instructor: element.instructorId,
-      students: element.studentIds
+      students: element.studentIds,
     }
     participations.push(activity)
   })
@@ -77,9 +80,9 @@ export const getMappedUsers = async () => {
   const groups = await groupManagementService.get()
   const configurations = await configurationService.getAll()
   const mappedUsers = []
-  users.forEach(user => {
-    const participated = groups.filter(group => group.studentIds.includes(user.student_number))
-    const instructor = groups.filter(group => group.instructorId === user.student_number)
+  users.forEach((user) => {
+    const participated = groups.filter((group) => group.studentIds.includes(user.student_number))
+    const instructor = groups.filter((group) => group.instructorId === user.student_number)
     mappedUsers.push({
       admin: user.admin,
       email: user.email,
@@ -88,7 +91,7 @@ export const getMappedUsers = async () => {
       last_name: user.last_name,
       student_number: user.student_number,
       username: user.username,
-      participated: mapParticipationField(participated, configurations.configurations)
+      participated: mapParticipationField(participated, configurations.configurations),
     })
   })
   mappedUsers.sort((a, b) => a.last_name.localeCompare(b.last_name))

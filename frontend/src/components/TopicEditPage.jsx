@@ -24,7 +24,7 @@ class TopicEditPage extends React.Component {
     event.preventDefault()
     const topic = {
       id: this.props.id,
-      content: this.props.content
+      content: this.props.content,
     }
     try {
       await topicService.update(topic)
@@ -35,22 +35,14 @@ class TopicEditPage extends React.Component {
       console.log(e)
       if (e.response) {
         if (e.response.status === 401) {
-          this.props.setError(
-            'You do not have permission to edit this topic',
-            3000
-          )
+          this.props.setError('You do not have permission to edit this topic', 3000)
         } else {
-          this.props.setError(
-            'Some error happened',
-            3000
-          )
+          this.props.setError('Some error happened', 3000)
         }
       }
       this.props.setEditMode(false)
     }
   }
-
-
 
   render() {
     return (
@@ -88,7 +80,7 @@ class TopicEditPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     content: state.topicFormPage.content,
-    preview: state.topicFormPage.preview
+    preview: state.topicFormPage.preview,
   }
 }
 
@@ -96,12 +88,9 @@ const mapDispatchToProps = {
   ...topicFormPageActions,
   ...viewTopicPageActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
-const ConnectedTopicEditPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopicEditPage)
+const ConnectedTopicEditPage = connect(mapStateToProps, mapDispatchToProps)(TopicEditPage)
 
 export default ConnectedTopicEditPage

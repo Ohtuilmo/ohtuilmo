@@ -7,24 +7,18 @@ import { clearNotifications } from '../../reducers/actions/notificationActions'
 
 const getBackgroundColor = (type) => {
   switch (type) {
-  case 'error':
-    return 'red'
-  case 'success':
-    return 'green'
-  default:
-    return 'skyblue'
+    case 'error':
+      return 'red'
+    case 'success':
+      return 'green'
+    default:
+      return 'skyblue'
   }
 }
 
-const Notification = ({
-  type,
-  message,
-  open,
-  duration,
-  onNotificationClose
-}) => {
+const Notification = ({ type, message, open, duration, onNotificationClose }) => {
   const style = {
-    backgroundColor: getBackgroundColor(type)
+    backgroundColor: getBackgroundColor(type),
   }
 
   return (
@@ -32,7 +26,7 @@ const Notification = ({
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         open={open}
         autoHideDuration={duration}
@@ -43,7 +37,7 @@ const Notification = ({
           message={<span data-testid="notification-message">{message}</span>}
           headlineMapping={{
             body1: 'div',
-            body2: 'div'
+            body2: 'div',
           }}
         />
       </Snackbar>
@@ -59,15 +53,12 @@ const mapStateToProps = (state) => {
     type,
     open,
     message,
-    duration
+    duration,
   }
 }
 
 const mapDispatchToProps = {
-  onNotificationClose: clearNotifications
+  onNotificationClose: clearNotifications,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Notification)
+export default connect(mapStateToProps, mapDispatchToProps)(Notification)

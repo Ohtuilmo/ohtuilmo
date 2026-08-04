@@ -6,33 +6,33 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       project_registration_open: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       project_registration_message: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       topic_registration_open: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       topic_registration_message: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       // Sequelize timestamps
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     })
   },
 
   down: (query) => {
     return query.dropTable('registration_managements')
-  }
+  },
 }

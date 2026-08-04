@@ -8,12 +8,12 @@ module.exports = {
       {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     )
   },
   // eslint-disable-next-line no-unused-vars
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('configurations', 'active')
-  }
+  },
 }

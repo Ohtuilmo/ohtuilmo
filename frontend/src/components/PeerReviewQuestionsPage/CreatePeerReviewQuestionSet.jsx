@@ -2,28 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import { createPeerReviewQuestionSet } from '../../reducers/actions/peerReviewQuestionsPageActions'
-import {
-  setError,
-  setSuccess
-} from '../../reducers/actions/notificationActions'
+import { setError, setSuccess } from '../../reducers/actions/notificationActions'
 import QuestionSetForm from '../QuestionSetForm'
 
 const isValidationError = (err) => err.response && err.response.status === 400
 
-const CreatePeerReviewQuestionSet = ({
-  onCreateRequested,
-  onSuccess,
-  onError
-}) => {
+const CreatePeerReviewQuestionSet = ({ onCreateRequested, onSuccess, onError }) => {
   const handleError = (err) => {
     console.error('Error while creating peer review question set', err)
 
     if (isValidationError(err)) {
       onError(
-        `An error occurred while creating peer review question set: ${
-          err.response.data.error
-        }`,
-        5000
+        `An error occurred while creating peer review question set: ${err.response.data.error}`,
+        5000,
       )
     } else {
       onError('Some error happened', 3000)
@@ -51,10 +42,7 @@ const CreatePeerReviewQuestionSet = ({
 const mapDispatchToProps = {
   onCreateRequested: createPeerReviewQuestionSet,
   onSuccess: setSuccess,
-  onError: setError
+  onError: setError,
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(CreatePeerReviewQuestionSet)
+export default connect(null, mapDispatchToProps)(CreatePeerReviewQuestionSet)

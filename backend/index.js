@@ -84,9 +84,7 @@ app.use('/api/instructorTimeLogs', instructorTimeLogsRouter)
 app.use('/api/sprints', sprintRouter)
 app.use('/api/groupSprintSummary', groupSprintSummaryRouter)
 app.use('/api/tags', tagsRouter)
-if (process.env.NODE_ENV === 'development')
-  app.use('/api/role', devRouter)
-
+if (process.env.NODE_ENV === 'development') app.use('/api/role', devRouter)
 
 console.log('NODE_ENV:', process.env.NODE_ENV)
 
@@ -107,7 +105,7 @@ server.on('close', async () => {
   try {
     await db.sequelize.close()
     console.log('client has disconnected')
-  } catch(err) {
+  } catch (err) {
     console.error('error during disconnection', err.stack)
   }
 })
@@ -115,5 +113,5 @@ server.on('close', async () => {
 module.exports = {
   app,
   server,
-  db
+  db,
 }

@@ -53,31 +53,19 @@ const GroupStudents = ({ myGroup }) => {
   }
 }
 
-const Answers = ({
-  answers,
-  currentConfiguration,
-  currentGroupID,
-  viewMode,
-}) => {
-  answers = answers.filter(
-    (group) => group.group.configurationId === currentConfiguration,
-  )
+const Answers = ({ answers, currentConfiguration, currentGroupID, viewMode }) => {
+  answers = answers.filter((group) => group.group.configurationId === currentConfiguration)
 
   return (
     <div>
       {answers.map((projectGroup, index) => {
-        if (
-          currentGroupID === projectGroup.group.id ||
-          currentGroupID === '0'
-        ) {
+        if (currentGroupID === projectGroup.group.id || currentGroupID === '0') {
           return (
             <div key={index} className="flex-column-32-container divider-48">
               <br />
               <div className="group-title-container">
                 <h1 className="group-name">{projectGroup.group.name}</h1>
-                <h4 className="instructor-name">
-                  Instructor: {projectGroup.group.instructorName}
-                </h4>
+                <h4 className="instructor-name">Instructor: {projectGroup.group.instructorName}</h4>
               </div>
               <GroupStudents myGroup={projectGroup.group.studentNames} />
               <div>
@@ -88,9 +76,7 @@ const Answers = ({
                       <h2 className="peer-review-subheader">/ 1st Round</h2>
                     </div>
                     {viewMode === 'students' ? (
-                      <StudentViewGroupAnswers
-                        answers={projectGroup.round1Answers}
-                      />
+                      <StudentViewGroupAnswers answers={projectGroup.round1Answers} />
                     ) : (
                       <GroupAnswers
                         answers={projectGroup.round1Answers}
@@ -101,10 +87,7 @@ const Answers = ({
                 ) : (
                   <div className="group-notification-container">
                     <Error />
-                    <h4>
-                      This group has not answered to the first peer review round
-                      yet.
-                    </h4>
+                    <h4>This group has not answered to the first peer review round yet.</h4>
                   </div>
                 )}
 
@@ -115,9 +98,7 @@ const Answers = ({
                       <h2 className="peer-review-subheader">/ 2nd Round</h2>
                     </div>
                     {viewMode === 'students' ? (
-                      <StudentViewGroupAnswers
-                        answers={projectGroup.round2Answers}
-                      />
+                      <StudentViewGroupAnswers answers={projectGroup.round2Answers} />
                     ) : (
                       <GroupAnswers
                         answers={projectGroup.round2Answers}
@@ -128,10 +109,7 @@ const Answers = ({
                 ) : (
                   <div className="group-notification-container">
                     <Error />
-                    <h4>
-                      This group has not answered to the second peer review
-                      round yet.
-                    </h4>
+                    <h4>This group has not answered to the second peer review round yet.</h4>
                   </div>
                 )}
               </div>
@@ -182,11 +160,7 @@ const GroupAnswers = ({ answers, students }) => {
         } else if (question.type === 'radio') {
           return (
             <Question key={index} title={question.questionHeader}>
-              <RadioAnswer
-                answers={answers}
-                questionNumber={index}
-                students={students}
-              />
+              <RadioAnswer answers={answers} questionNumber={index} students={students} />
             </Question>
           )
         } else {
@@ -206,13 +180,9 @@ const PeerReviewAnswer = ({ answers, questionNumber }) => {
             ? member.answer_sheet[questionNumber].peers
             : null
         return (
-          <div
-            className="peer-review-and-author-container"
-            key={`${member}-${index}`}
-          >
+          <div className="peer-review-and-author-container" key={`${member}-${index}`}>
             <p className="peer-review-author-text">
-              Reviews by{' '}
-              {`${member.student.first_names} ${member.student.last_name}`}:
+              Reviews by {`${member.student.first_names} ${member.student.last_name}`}:
             </p>
             <div className="peer-review-container">
               {peers &&
@@ -337,22 +307,16 @@ const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
     .map((ratingInfo) => ratingInfo.rating)
 
   const averageRating =
-    validRatings.length > 0
-      ? (sum(validRatings) / validRatings.length).toFixed(2)
-      : 'N/A'
+    validRatings.length > 0 ? (sum(validRatings) / validRatings.length).toFixed(2) : 'N/A'
 
   return (
     <React.Fragment>
       {allPeersRatings.map((ratingInfo, index) => (
         <TableCell className="radio-button" key={`peer-row-${index}`}>
-          {typeof ratingInfo.rating === 'number'
-            ? ratingInfo.rating.toFixed(2)
-            : ratingInfo.rating}
+          {typeof ratingInfo.rating === 'number' ? ratingInfo.rating.toFixed(2) : ratingInfo.rating}
         </TableCell>
       ))}
-      <TableCell className="radio-button">
-        {averageRating}
-      </TableCell>
+      <TableCell className="radio-button">{averageRating}</TableCell>
     </React.Fragment>
   )
 }
@@ -362,13 +326,7 @@ const DownloadButton = ({ jsonData, fileName }) => {
   const href = `data:${data}`
 
   return (
-    <StyledButton
-      component="a"
-      href={href}
-      download={fileName}
-      variant="contained"
-      color="primary"
-    >
+    <StyledButton component="a" href={href} download={fileName} variant="contained" color="primary">
       Download JSON
     </StyledButton>
   )
@@ -435,11 +393,7 @@ const GroupSelectWrapper = ({ label, children }) => (
   </div>
 )
 
-const GroupSelect = ({
-  currentGroupID,
-  setCurrentGroupID,
-  allGroupsInConfig,
-}) => {
+const GroupSelect = ({ currentGroupID, setCurrentGroupID, allGroupsInConfig }) => {
   return (
     <StyledSelect
       MenuProps={{
@@ -457,11 +411,7 @@ const GroupSelect = ({
         All groups
       </MenuItem>
       {allGroupsInConfig.map((group) => (
-        <MenuItem
-          key={group.id}
-          className="specified-group-menu-item"
-          value={group.id}
-        >
+        <MenuItem key={group.id} className="specified-group-menu-item" value={group.id}>
           {group.name}
         </MenuItem>
       ))}
@@ -555,10 +505,7 @@ const InstructorPage = (props) => {
           </GroupSelectWrapper>
         </div>
         <div className="button-container">
-          <DownloadButton
-            jsonData={JSON.stringify(answers)}
-            fileName="peerReviews.json"
-          />
+          <DownloadButton jsonData={JSON.stringify(answers)} fileName="peerReviews.json" />
           <SelectViewButton viewMode={viewMode} setViewMode={setViewMode} />
         </div>
       </div>
@@ -591,9 +538,6 @@ const mapDispatchToProps = {
   setCurrentGroupID: instructorPageActions.setCurrentGroupID,
 }
 
-const ConnectedInstructorPage = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(InstructorPage)
+const ConnectedInstructorPage = connect(mapStateToProps, mapDispatchToProps)(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)

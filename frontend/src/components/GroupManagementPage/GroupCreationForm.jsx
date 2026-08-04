@@ -164,10 +164,7 @@ const GroupCreationForm = ({
             </FormInput>
 
             <FormInput label="Project length">
-              <ProjectLengthInput
-                value={projectLength}
-                onChange={onProjectLengthChange}
-              />
+              <ProjectLengthInput value={projectLength} onChange={onProjectLengthChange} />
             </FormInput>
 
             <FormInput label="Students">
@@ -219,7 +216,4 @@ const mapDispatchToPropsForm = {
   setSuccess: notificationActions.setSuccess,
 }
 
-export default connect(
-  mapStateToPropsForm,
-  mapDispatchToPropsForm,
-)(GroupCreationForm)
+export default connect(mapStateToPropsForm, mapDispatchToPropsForm)(GroupCreationForm)

@@ -4,9 +4,7 @@ const { checkLogin, checkAdmin } = require('../middleware')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res
-    .status(500)
-    .json({ error: 'Something is wrong... try reloading the page' })
+  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const isNil = (value) => value === undefined || value === null
@@ -18,12 +16,7 @@ const validateAnswerSheet = (peerReview) => {
 
   const { user_id, answer_sheet, configuration_id, review_round } = peerReview
 
-  if (
-    isNil(user_id) ||
-    isNil(answer_sheet) ||
-    isNil(configuration_id) ||
-    isNil(review_round)
-  ) {
+  if (isNil(user_id) || isNil(answer_sheet) || isNil(configuration_id) || isNil(review_round)) {
     return 'All attributes must be defined.'
   }
   let error = null
@@ -150,9 +143,7 @@ const createTestData = async (req, res) => {
   let returnLog = []
   for (let peerReview in peerReviews) {
     try {
-      const sentAnswerSheet = await db.PeerReview.create(
-        peerReviews[peerReview]
-      )
+      const sentAnswerSheet = await db.PeerReview.create(peerReviews[peerReview])
       returnLog = returnLog.concat(sentAnswerSheet)
     } catch (err) {
       return handleDatabaseError(res, err)
@@ -196,17 +187,15 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
     const query = req.user.admin
       ? {}
       : {
-        where: { instructorId: req.user.id },
-      }
+          where: { instructorId: req.user.id },
+        }
     const instructedGroups = await db.Group.findAll(query)
 
     if (instructedGroups.length === 0) {
       return res.status(401).json({ error: 'Not instructor' })
     }
 
-    const instructedConfigurations = instructedGroups.map(
-      (group) => group.configurationId
-    )
+    const instructedConfigurations = instructedGroups.map((group) => group.configurationId)
 
     const groupsOfInstructedConfigurations = await db.Group.findAll({
       where: { configurationId: instructedConfigurations },
@@ -240,7 +229,7 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
               .map(({ student_number }) => student_number)
               .includes(answer.user.student_number) &&
             answer.configuration_id === group.configurationId &&
-            answer.review_round === round
+            answer.review_round === round,
         )
         .map((answer) => {
           return {
@@ -253,32 +242,29 @@ peerReviewRouter.get('/forInstructor', checkLogin, async (req, res) => {
         })
     }
 
-    const answersByGroup = groupsOfInstructedConfigurations.reduce(
-      (list, group) => {
-        const round1Answers = filterAndFormatAnswers(allAnswers, group, 1)
-        const round2Answers = filterAndFormatAnswers(allAnswers, group, 2)
+    const answersByGroup = groupsOfInstructedConfigurations.reduce((list, group) => {
+      const round1Answers = filterAndFormatAnswers(allAnswers, group, 1)
+      const round2Answers = filterAndFormatAnswers(allAnswers, group, 2)
 
-        list = list.concat({
-          group: {
-            id: group.id,
-            name: group.name,
-            studentNames: group.students.map(
-              (student) => student.first_names + ' ' + student.last_name
-            ),
-            configurationId: group.configurationId,
-            configurationName: group.configuration.name,
-            instructorName: group.instructor
-              ? group.instructor.first_names + ' ' + group.instructor.last_name
-              : '',
-          },
-          round1Answers,
-          round2Answers,
-        })
+      list = list.concat({
+        group: {
+          id: group.id,
+          name: group.name,
+          studentNames: group.students.map(
+            (student) => student.first_names + ' ' + student.last_name,
+          ),
+          configurationId: group.configurationId,
+          configurationName: group.configuration.name,
+          instructorName: group.instructor
+            ? group.instructor.first_names + ' ' + group.instructor.last_name
+            : '',
+        },
+        round1Answers,
+        round2Answers,
+      })
 
-        return list
-      },
-      []
-    )
+      return list
+    }, [])
 
     return res.status(200).json(answersByGroup)
   } catch (error) {
@@ -302,11 +288,7 @@ peerReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
     await targetSet.destroy()
     return res.status(204).end()
   } catch (err) {
-    console.error(
-      'error while deleting question set with id',
-      req.params.id,
-      err
-    )
+    console.error('error while deleting question set with id', req.params.id, err)
     return res.status(500).json({ error: 'internal server error' })
   }
 })

@@ -3,17 +3,10 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import LoadingSpinner from '../common/LoadingSpinner'
-import { SprintsSelectForm } from "./SprintsSelectForm"
-import { SprintListItem } from "./SprintListItem"
+import { SprintsSelectForm } from './SprintsSelectForm'
+import { SprintListItem } from './SprintListItem'
 
-import {
-  Typography,
-  Table,
-  TableRow,
-  TableBody,
-  TableHead,
-  TableCell
-} from '@material-ui/core'
+import { Typography, Table, TableRow, TableBody, TableHead, TableCell } from '@material-ui/core'
 
 import sprintService from '../../services/sprints'
 import configurationService from '../../services/configuration'
@@ -21,12 +14,8 @@ import groupManagementService from '../../services/groupManagement'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
-
 const AdminSprintsPage = (props) => {
-  const {
-    setError,
-    setSuccess
-  } = props
+  const { setError, setSuccess } = props
 
   const [allConfigurations, setAllConfigurations] = useState([])
   const [allGroups, setAllGroups] = useState([])
@@ -36,7 +25,6 @@ const AdminSprintsPage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
-
   useEffect(() => {
     // TODO set newest configuration by default
     const fetchAllConfigurations = async () => {
@@ -44,12 +32,7 @@ const AdminSprintsPage = (props) => {
         const allConfigurations = await configurationService.getAll()
         setAllConfigurations(allConfigurations.configurations)
       } catch (error) {
-        console.error(
-          'Error fetching groups:',
-          error.message,
-          ' / ',
-          error.response.data.error
-        )
+        console.error('Error fetching groups:', error.message, ' / ', error.response.data.error)
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -59,12 +42,7 @@ const AdminSprintsPage = (props) => {
         const allGroups = await groupManagementService.get()
         setAllGroups(allGroups)
       } catch (error) {
-        console.error(
-          'Error fetching groups:',
-          error.message,
-          ' / ',
-          error.response.data.error
-        )
+        console.error('Error fetching groups:', error.message, ' / ', error.response.data.error)
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -80,15 +58,10 @@ const AdminSprintsPage = (props) => {
   useEffect(() => {
     const fetchSprints = async (group_id) => {
       try {
-        const sprintData = await sprintService.getSprintsByGroup(group_id);
-        setAllSprints(sprintData);
+        const sprintData = await sprintService.getSprintsByGroup(group_id)
+        setAllSprints(sprintData)
       } catch (error) {
-        console.error(
-          'Error fetching all sprints:',
-          error.message,
-          ' / ',
-          error.message.data.error
-        )
+        console.error('Error fetching all sprints:', error.message, ' / ', error.message.data.error)
         notificationActions.setError(error.response.data.error)
       }
     }
@@ -100,45 +73,52 @@ const AdminSprintsPage = (props) => {
     if (selectedGroup?.id) fetchData(selectedGroup.id)
   }, [selectedGroup, selectedConfiguration])
 
-
-
   if (isLoading) return <LoadingSpinner />
 
   return (
-  <div>
-    <SprintsSelectForm
-      configurations={allConfigurations}
-      groups={allGroups}
-      selectedConfiguration={selectedConfiguration}
-      selectedGroup={selectedGroup}
-      handleConfigurationChange={setSelectedConfiguration}
-      handleGroupChange={setSelectedGroup}
-    />
-    {selectedGroup && (
-      <div>
-        <Typography variant='h5'>Sprints by {selectedGroup.name}</Typography>
-      {allSprints.length > 0 && (
-        <div className="sprint-list-container">
-          <Table>
-            <TableHead>
-              <TableRow hover>
-                <TableCell>Sprint Number</TableCell>
-                <TableCell>Start Date</TableCell>
-                <TableCell>End Date</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody id="sprint-list-rows">
-              {allSprints.sort((a, b) => b.sprint - a.sprint).map((sprint) => {
-                return <SprintListItem sprint={sprint} setError={setError} setSuccess={setSuccess} key={sprint.id}/>
-              })}
-            </TableBody>
-          </Table>
+    <div>
+      <SprintsSelectForm
+        configurations={allConfigurations}
+        groups={allGroups}
+        selectedConfiguration={selectedConfiguration}
+        selectedGroup={selectedGroup}
+        handleConfigurationChange={setSelectedConfiguration}
+        handleGroupChange={setSelectedGroup}
+      />
+      {selectedGroup && (
+        <div>
+          <Typography variant="h5">Sprints by {selectedGroup.name}</Typography>
+          {allSprints.length > 0 && (
+            <div className="sprint-list-container">
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell>Sprint Number</TableCell>
+                    <TableCell>Start Date</TableCell>
+                    <TableCell>End Date</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody id="sprint-list-rows">
+                  {allSprints
+                    .sort((a, b) => b.sprint - a.sprint)
+                    .map((sprint) => {
+                      return (
+                        <SprintListItem
+                          sprint={sprint}
+                          setError={setError}
+                          setSuccess={setSuccess}
+                          key={sprint.id}
+                        />
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </div>
       )}
-      </div>
-    )}
-  </div>
+    </div>
   )
 }
 
@@ -152,7 +132,4 @@ const mapDispatchToProps = {
   setSuccess: notificationActions.setSuccess,
 }
 
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(AdminSprintsPage)
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminSprintsPage))

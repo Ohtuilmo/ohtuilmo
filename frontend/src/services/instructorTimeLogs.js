@@ -7,7 +7,7 @@ const urlTimelogs = `${BACKEND_API_BASE}/instructorTimelogs`
 const getTimeLogs = async () => {
   try {
     const response = await axios.get(urlTimelogs, {
-      headers: { Authorization: `Bearer ${getUserToken()}` }
+      headers: { Authorization: `Bearer ${getUserToken()}` },
     })
     return response.data
   } catch (error) {
@@ -19,14 +19,22 @@ const getTimeLogs = async () => {
 const moveTimeLog = async (direction, id) => {
   try {
     if (direction === 'previous') {
-      const response = await axios.patch(`${urlTimelogs}/${id}/moveToPrevious`, {}, {
-        headers: { Authorization: `Bearer ${getUserToken()}` }
-      })
+      const response = await axios.patch(
+        `${urlTimelogs}/${id}/moveToPrevious`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${getUserToken()}` },
+        },
+      )
       return response.data
     } else if (direction === 'next') {
-      const response = await axios.patch(`${urlTimelogs}/${id}/moveToNext`, {}, {
-        headers: { Authorization: `Bearer ${getUserToken()}` }
-      })
+      const response = await axios.patch(
+        `${urlTimelogs}/${id}/moveToNext`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${getUserToken()}` },
+        },
+      )
       return response.data
     } else {
       console.error('Invalid direction:', direction)
@@ -41,7 +49,7 @@ const moveTimeLog = async (direction, id) => {
 const deleteTimeLog = async (id) => {
   try {
     const response = await axios.delete(`${urlTimelogs}/${id}`, {
-      headers: { Authorization: `Bearer ${getUserToken()}` }
+      headers: { Authorization: `Bearer ${getUserToken()}` },
     })
     return response.data
   } catch (error) {

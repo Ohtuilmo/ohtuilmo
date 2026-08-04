@@ -4,13 +4,13 @@ const initialState = {
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'UPDATE_IS_LOADING':
-    return {
-      ...state,
-      isLoading: action.payload
-    }
-  default:
-    return state
+    case 'UPDATE_IS_LOADING':
+      return {
+        ...state,
+        isLoading: action.payload,
+      }
+    default:
+      return state
   }
 }
 

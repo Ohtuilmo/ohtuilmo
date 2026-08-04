@@ -67,16 +67,7 @@ const fetchFromDb = async (studentNumber) => {
 
     const timeLogMap = new Map()
     rawLogs.forEach((log) => {
-      const {
-        id,
-        studentNumber,
-        sprint,
-        date,
-        minutes,
-        description,
-        groupId,
-        ...rest
-      } = log
+      const { id, studentNumber, sprint, date, minutes, description, groupId, ...rest } = log
       const formattedDate = new Date(date).toISOString().slice(0, 10)
       const timeLog = timeLogMap.get(id) || {
         id,
@@ -135,16 +126,7 @@ const fetchAllFromDb = async () => {
 
     const timeLogMap = new Map()
     rawLogs.forEach((log) => {
-      const {
-        id,
-        studentNumber,
-        sprint,
-        date,
-        minutes,
-        description,
-        groupId,
-        ...rest
-      } = log
+      const { id, studentNumber, sprint, date, minutes, description, groupId, ...rest } = log
       const formattedDate = new Date(date).toISOString().slice(0, 10)
       const timeLog = timeLogMap.get(id) || {
         id,
@@ -258,9 +240,7 @@ timeLogsRouter.delete('/:id', checkLogin, async (req, res) => {
     })
 
     if (!timeLog) {
-      return res
-        .status(404)
-        .json({ error: 'Time log not found or unauthorized to delete' })
+      return res.status(404).json({ error: 'Time log not found or unauthorized to delete' })
     }
 
     await db.TimeLog.destroy({ where: { id: id } })
@@ -286,7 +266,9 @@ timeLogsRouter.get('/projectHoursByStudent', checkLogin, async (req, res) => {
       return res.status(404).json({ error: 'Student is not in any group' })
     }
 
-    const latestGroup = student.groups.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]
+    const latestGroup = student.groups.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    )[0]
 
     const sprints = await db.Sprint.findAll({
       where: {
@@ -294,7 +276,7 @@ timeLogsRouter.get('/projectHoursByStudent', checkLogin, async (req, res) => {
       },
     })
 
-    const sprintIds = sprints.map(sprint => sprint.id)
+    const sprintIds = sprints.map((sprint) => sprint.id)
 
     if (sprintIds.length === 0) {
       return res.status(200).json(0)

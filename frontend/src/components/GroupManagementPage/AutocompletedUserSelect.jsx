@@ -64,7 +64,7 @@ const AutocompletedUserSelect = ({
           ...theme.colors,
           primary25: muiTheme.palette.type === 'dark' ? 'rgba(255,255,255,0.08)' : 'lightgrey',
           neutral80: muiTheme.palette.text.primary,
-          neutral0: muiTheme.palette.type === 'dark' ? '#303030' : 'white'
+          neutral0: muiTheme.palette.type === 'dark' ? '#303030' : 'white',
         },
       })}
     />

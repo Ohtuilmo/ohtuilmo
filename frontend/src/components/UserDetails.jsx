@@ -5,19 +5,16 @@ import Typography from '@material-ui/core/Typography'
 class UserDetails extends React.Component {
   render() {
     var firstname = this.props.user ? this.props.user.user.first_names : ''
-    if (firstname.includes('*'))
-      firstname = firstname.split('*')[1].split(' ')[0]
+    if (firstname.includes('*')) firstname = firstname.split('*')[1].split(' ')[0]
     else firstname = firstname.split(' ')[0]
 
     return (
       <div>
         <Typography variant="h6" id="title">
-          Name: {firstname}{' '}
-          {this.props.user ? this.props.user.user.last_name : null}
+          Name: {firstname} {this.props.user ? this.props.user.user.last_name : null}
         </Typography>
         <Typography variant="h6" id="title">
-          Student number:{' '}
-          {this.props.user ? this.props.user.user.student_number : null}
+          Student number: {this.props.user ? this.props.user.user.student_number : null}
         </Typography>
       </div>
     )
@@ -26,7 +23,7 @@ class UserDetails extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user
+    user: state.login.user,
   }
 }
 

@@ -74,7 +74,7 @@ class NavigationMenu extends React.Component {
             aria-haspopup="true"
             onClick={this.handleToggle}
           >
-            <MenuIcon style={{ color: '#323232' }}/>
+            <MenuIcon style={{ color: '#323232' }} />
           </IconButton>
           <Popper
             id="hamburger-menu-popper"
@@ -89,8 +89,7 @@ class NavigationMenu extends React.Component {
                 {...TransitionProps}
                 id="menu-list-grow"
                 style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom',
+                  transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
                 }}
               >
                 <Paper>
@@ -106,7 +105,7 @@ class NavigationMenu extends React.Component {
                           </React.Fragment>
                         ) : (
                           renderMenuItems(group)
-                        )
+                        ),
                       )}
                     </>
                   </ClickAwayListener>

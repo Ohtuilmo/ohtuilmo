@@ -14,14 +14,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableHead,
-  useTheme,
-} from '@material-ui/core'
+import { Table, TableBody, TableRow, TableCell, TableHead, useTheme } from '@material-ui/core'
 import Icon from '@material-ui/icons/Input'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -64,23 +57,13 @@ const ThemedButton = ({ theme, ...props }) => (
   </MuiThemeProvider>
 )
 
-const GreenButton = (props) => (
-  <ThemedButton {...props} theme={redGreenTheme} color="primary" />
-)
-const RedButton = (props) => (
-  <ThemedButton {...props} theme={redGreenTheme} color="secondary" />
-)
-const OrangeButton = (props) => (
-  <ThemedButton {...props} theme={orangeTheme} color="primary" />
-)
+const GreenButton = (props) => <ThemedButton {...props} theme={redGreenTheme} color="primary" />
+const RedButton = (props) => <ThemedButton {...props} theme={redGreenTheme} color="secondary" />
+const OrangeButton = (props) => <ThemedButton {...props} theme={orangeTheme} color="primary" />
 
-const FinnishFlag = (props) => (
-  <img alt="Flag of Finland" {...props} src={'/img/fi.svg'} />
-)
+const FinnishFlag = (props) => <img alt="Flag of Finland" {...props} src={'/img/fi.svg'} />
 
-const BritishFlag = (props) => (
-  <img alt="Flag of Great Britain" {...props} src={'/img/gb.svg'} />
-)
+const BritishFlag = (props) => <img alt="Flag of Great Britain" {...props} src={'/img/gb.svg'} />
 
 const AcceptButton = (props) => (
   <GreenButton
@@ -147,19 +130,13 @@ const CustomerReviewEmailButton = ({ text, onSendRequested }) => {
         onClose={handleMenuClose}
       >
         <MenuItem disabled>Choose email language</MenuItem>
-        <MenuItem
-          data-cy-send-mail-lang="finnish"
-          onClick={createHandleLanguageClicked('finnish')}
-        >
+        <MenuItem data-cy-send-mail-lang="finnish" onClick={createHandleLanguageClicked('finnish')}>
           <ListItemIcon>
             <FinnishFlag width="16px" />
           </ListItemIcon>
           <ListItemText>Finnish</ListItemText>
         </MenuItem>
-        <MenuItem
-          data-cy-send-mail-lang="english"
-          onClick={createHandleLanguageClicked('english')}
-        >
+        <MenuItem data-cy-send-mail-lang="english" onClick={createHandleLanguageClicked('english')}>
           <ListItemIcon>
             <BritishFlag width="16px" />
           </ListItemIcon>
@@ -202,18 +179,10 @@ const AcceptRejectEmailButtons = ({
 
   return (
     <>
-      <AcceptButton
-        data-cy="send-accept-mail"
-        value="topicAccepted"
-        onClick={handleButtonClick}
-      >
+      <AcceptButton data-cy="send-accept-mail" value="topicAccepted" onClick={handleButtonClick}>
         {acceptText}
       </AcceptButton>
-      <RejectButton
-        data-cy="send-reject-mail"
-        value="topicRejected"
-        onClick={handleButtonClick}
-      >
+      <RejectButton data-cy="send-reject-mail" value="topicRejected" onClick={handleButtonClick}>
         {rejectText}
       </RejectButton>
 
@@ -224,19 +193,13 @@ const AcceptRejectEmailButtons = ({
         onClose={handleMenuClose}
       >
         <MenuItem disabled>Choose email language</MenuItem>
-        <MenuItem
-          data-cy-send-mail-lang="finnish"
-          onClick={createHandleLanguageClicked('finnish')}
-        >
+        <MenuItem data-cy-send-mail-lang="finnish" onClick={createHandleLanguageClicked('finnish')}>
           <ListItemIcon>
             <FinnishFlag width="16px" />
           </ListItemIcon>
           <ListItemText>Finnish</ListItemText>
         </MenuItem>
-        <MenuItem
-          data-cy-send-mail-lang="english"
-          onClick={createHandleLanguageClicked('english')}
-        >
+        <MenuItem data-cy-send-mail-lang="english" onClick={createHandleLanguageClicked('english')}>
           <ListItemIcon>
             <BritishFlag width="16px" />
           </ListItemIcon>
@@ -253,16 +216,11 @@ AcceptRejectEmailButtons.propTypes = {
   rejectText: PropTypes.string,
 }
 
-const TopicDetailsLink = ({ topicId, ...props }) => (
-  <Link {...props} to={`/topics/${topicId}`} />
-)
+const TopicDetailsLink = ({ topicId, ...props }) => <Link {...props} to={`/topics/${topicId}`} />
 
-const isTopicAcceptedMail = (sentMail) =>
-  sentMail.email.type === 'topicAccepted'
-const isTopicRejectedMail = (sentMail) =>
-  sentMail.email.type === 'topicRejected'
-const isCustomerReviewMail = (sentMail) =>
-  sentMail.email.type === 'customerReviewLink'
+const isTopicAcceptedMail = (sentMail) => sentMail.email.type === 'topicAccepted'
+const isTopicRejectedMail = (sentMail) => sentMail.email.type === 'topicRejected'
+const isCustomerReviewMail = (sentMail) => sentMail.email.type === 'customerReviewLink'
 
 /**
  * @param {{ topic: any, onEmailSendRequested: (info: EmailInfo) => void, onActiveToggle: () => void }} props
@@ -271,12 +229,10 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
   const theme = useTheme()
   const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
   const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
-  const hasCustomerReviewMailBeenSent =
-    topic.sentEmails.some(isCustomerReviewMail)
+  const hasCustomerReviewMailBeenSent = topic.sentEmails.some(isCustomerReviewMail)
 
   const isSummer =
-    topic.content.summerDates &&
-    (topic.content.summerDates.short || topic.content.summerDates.long)
+    topic.content.summerDates && (topic.content.summerDates.short || topic.content.summerDates.long)
 
   const className = () => {
     if (hasAcceptMailBeenSent) {
@@ -310,9 +266,7 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
     >
       <TableCell padding="dense">
         <p className="topic-table-row__topic-title">
-          <TopicDetailsLink topicId={topic.id}>
-            {topic.content.title}
-          </TopicDetailsLink>
+          <TopicDetailsLink topicId={topic.id}>{topic.content.title}</TopicDetailsLink>
           <Link to={`/topics/${topic.secret_id}`} style={{ padding: 10 }}>
             <Icon />
           </Link>
@@ -320,9 +274,7 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         <p className="topic-table-row__customer">
           {`${topic.content.customerName} (${topic.content.email})`}
         </p>
-        <p className="topic-table-row__submit-date">
-          Submitted {formatDate(topic.createdAt)}
-        </p>
+        <p className="topic-table-row__submit-date">Submitted {formatDate(topic.createdAt)}</p>
         {isSummer && (
           <p>
             Suitable timing: {topic.content.summerDates.short && 'early summer'}{' '}
@@ -399,9 +351,7 @@ const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
           <TopicTableRow
             key={topic.id}
             topic={topic}
-            onEmailSendRequested={(emailInfo) =>
-              onEmailSendRequested({ ...emailInfo, topic })
-            }
+            onEmailSendRequested={(emailInfo) => onEmailSendRequested({ ...emailInfo, topic })}
             onActiveToggle={() => onActiveToggle(topic)}
           />
         ))}
@@ -519,10 +469,7 @@ const TopicListPage = (props) => {
       await setTopicActive(topic, newActiveState)
 
       const activeDescription = newActiveState ? 'active' : 'inactive'
-      setSuccess(
-        `Topic '${topic.content.title}' has been set ${activeDescription}.`,
-        3000,
-      )
+      setSuccess(`Topic '${topic.content.title}' has been set ${activeDescription}.`, 3000)
     } catch (err) {
       console.error('error happened', err.response)
       setError('Some error happened', 3000)
@@ -551,26 +498,14 @@ const TopicListPage = (props) => {
       if (isAxiosError(err)) {
         console.error(err.response.data)
       }
-      const errorMsg =
-        getApiError(err) || 'server error, see console for details'
-      setError(
-        `Failed to generate preview. See console for details. Error: ${errorMsg}`,
-        10000,
-      )
+      const errorMsg = getApiError(err) || 'server error, see console for details'
+      setError(`Failed to generate preview. See console for details. Error: ${errorMsg}`, 10000)
       return false
     }
   }
 
-  const handleEmailSendRequested = async ({
-    topic,
-    messageType,
-    messageLanguage,
-  }) => {
-    const userConfirmedPreview = await confirmEmailPreview(
-      messageType,
-      messageLanguage,
-      topic.id,
-    )
+  const handleEmailSendRequested = async ({ topic, messageType, messageLanguage }) => {
+    const userConfirmedPreview = await confirmEmailPreview(messageType, messageLanguage, topic.id)
 
     if (!userConfirmedPreview) {
       return
@@ -584,12 +519,8 @@ const TopicListPage = (props) => {
       if (isAxiosError(err)) {
         console.error(err.response.data)
       }
-      const errorMsg =
-        getApiError(err) || 'server error, see console for details'
-      setError(
-        `Failed to send email. See console for details. Error: '${errorMsg}'`,
-        10000,
-      )
+      const errorMsg = getApiError(err) || 'server error, see console for details'
+      setError(`Failed to send email. See console for details. Error: '${errorMsg}'`, 10000)
     }
   }
 
@@ -638,32 +569,24 @@ const TopicListPage = (props) => {
       ? topics
           .filter((topic) =>
             acceptanceFilter === 'accepted'
-              ? topic.sentEmails.length > 0 &&
-                topic.sentEmails[0].email.type === 'topicAccepted'
-              : topic.sentEmails.length > 0 &&
-                topic.sentEmails[0].email.type === 'topicRejected',
+              ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
+              : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected',
           )
           .sort(activeFirstThenByTitle)
       : acceptanceFilter === 'all'
-        ? topics
-            .filter((topic) => topic.configuration_id === filter)
-            .sort(activeFirstThenByTitle)
+        ? topics.filter((topic) => topic.configuration_id === filter).sort(activeFirstThenByTitle)
         : topics
             .filter((topic) => topic.configuration_id === filter)
             .filter((topic) =>
               acceptanceFilter === 'accepted'
-                ? topic.sentEmails.length > 0 &&
-                  topic.sentEmails[0].email.type === 'topicAccepted'
-                : topic.sentEmails.length > 0 &&
-                  topic.sentEmails[0].email.type === 'topicRejected',
+                ? topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicAccepted'
+                : topic.sentEmails.length > 0 && topic.sentEmails[0].email.type === 'topicRejected',
             )
             .sort(activeFirstThenByTitle)
 
   return (
     <div className="topics-container">
-      {isLoading && (
-        <LoadingCover className="topics-container__loading-cover" />
-      )}
+      {isLoading && <LoadingCover className="topics-container__loading-cover" />}
 
       <div className="topics-filter-container">
         <Select
@@ -724,6 +647,4 @@ const mapDispatchToProps = {
   fetchConfigurations: configurationPageActions.fetchConfigurations,
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TopicListPage),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopicListPage))

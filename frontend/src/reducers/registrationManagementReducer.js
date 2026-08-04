@@ -15,84 +15,84 @@ const initialState = {
 
 const registrationManagementReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'SET_REGISTRATION_MANAGEMENT':
-    return {
-      registrationManagementFetched: true,
-      peerReviewConf: action.payload.peerReviewConf,
-      peerReviewOpen: action.payload.peerReviewOpen,
-      peerReviewRound: action.payload.peerReviewRound,
-      projectRegistrationConf: action.payload.projectRegistrationConf,
-      projectRegistrationOpen: action.payload.projectRegistrationOpen,
-      projectRegistrationMessage: action.payload.projectRegistrationMessage,
-      projectRegistrationInfo: action.payload.projectRegistrationInfo,
-      topicRegistrationConf: action.payload.topicRegistrationConf,
-      topicRegistrationOpen: action.payload.topicRegistrationOpen,
-      topicRegistrationMessage: action.payload.topicRegistrationMessage,
-      summerProject: action.payload.summerProject,
-      summerDates: action.payload.summerDates
-    }
-  case 'UPDATE_PEER_REVIEW_CONF':
-    return {
-      ...state,
-      peerReviewConf: action.payload
-    }
-  case 'UPDATE_PEER_REVIEW_OPEN':
-    return {
-      ...state,
-      peerReviewOpen: action.payload
-    }
-  case 'UPDATE_SUMMER_TOPIC':
-    return {
-      ...state,
-      summerProject: action.payload
-    }
-  case 'UPDATE_SUMMER_DATES':
-    return {
-      ...state,
-      summerDates: action.payload
-    }
-  case 'UPDATE_PEER_REVIEW_ROUND':
-    return {
-      ...state,
-      peerReviewRound: action.payload
-    }
-  case 'UPDATE_PROJECT_REGISTRATION_CONF':
-    return {
-      ...state,
-      projectRegistrationConf: action.payload
-    }
-  case 'UPDATE_PROJECT_REGISTRATION_OPEN':
-    return {
-      ...state,
-      projectRegistrationOpen: action.payload
-    }
-  case 'UPDATE_PROJECT_REGISTRATION_MESSAGE':
-    return {
-      ...state,
-      projectRegistrationMessage: action.payload
-    }
-  case 'UPDATE_PROJECT_REGISTRATION_INFO':
-    return {
-      ...state,
-      projectRegistrationInfo: action.payload
-    }
-  case 'UPDATE_TOPIC_REGISTRATION_CONF':
-    return {
-      ...state,
-      topicRegistrationConf: action.payload
-    }
-  case 'UPDATE_TOPIC_REGISTRATION_OPEN':
-    return {
-      ...state,
-      topicRegistrationOpen: action.payload
-    }
-  case 'UPDATE_TOPIC_REGISTRATION_MESSAGE':
-    return {
-      ...state,
-      topicRegistrationMessage: action.payload
-    }
-  default:
-    return state
+    case 'SET_REGISTRATION_MANAGEMENT':
+      return {
+        registrationManagementFetched: true,
+        peerReviewConf: action.payload.peerReviewConf,
+        peerReviewOpen: action.payload.peerReviewOpen,
+        peerReviewRound: action.payload.peerReviewRound,
+        projectRegistrationConf: action.payload.projectRegistrationConf,
+        projectRegistrationOpen: action.payload.projectRegistrationOpen,
+        projectRegistrationMessage: action.payload.projectRegistrationMessage,
+        projectRegistrationInfo: action.payload.projectRegistrationInfo,
+        topicRegistrationConf: action.payload.topicRegistrationConf,
+        topicRegistrationOpen: action.payload.topicRegistrationOpen,
+        topicRegistrationMessage: action.payload.topicRegistrationMessage,
+        summerProject: action.payload.summerProject,
+        summerDates: action.payload.summerDates,
+      }
+    case 'UPDATE_PEER_REVIEW_CONF':
+      return {
+        ...state,
+        peerReviewConf: action.payload,
+      }
+    case 'UPDATE_PEER_REVIEW_OPEN':
+      return {
+        ...state,
+        peerReviewOpen: action.payload,
+      }
+    case 'UPDATE_SUMMER_TOPIC':
+      return {
+        ...state,
+        summerProject: action.payload,
+      }
+    case 'UPDATE_SUMMER_DATES':
+      return {
+        ...state,
+        summerDates: action.payload,
+      }
+    case 'UPDATE_PEER_REVIEW_ROUND':
+      return {
+        ...state,
+        peerReviewRound: action.payload,
+      }
+    case 'UPDATE_PROJECT_REGISTRATION_CONF':
+      return {
+        ...state,
+        projectRegistrationConf: action.payload,
+      }
+    case 'UPDATE_PROJECT_REGISTRATION_OPEN':
+      return {
+        ...state,
+        projectRegistrationOpen: action.payload,
+      }
+    case 'UPDATE_PROJECT_REGISTRATION_MESSAGE':
+      return {
+        ...state,
+        projectRegistrationMessage: action.payload,
+      }
+    case 'UPDATE_PROJECT_REGISTRATION_INFO':
+      return {
+        ...state,
+        projectRegistrationInfo: action.payload,
+      }
+    case 'UPDATE_TOPIC_REGISTRATION_CONF':
+      return {
+        ...state,
+        topicRegistrationConf: action.payload,
+      }
+    case 'UPDATE_TOPIC_REGISTRATION_OPEN':
+      return {
+        ...state,
+        topicRegistrationOpen: action.payload,
+      }
+    case 'UPDATE_TOPIC_REGISTRATION_MESSAGE':
+      return {
+        ...state,
+        topicRegistrationMessage: action.payload,
+      }
+    default:
+      return state
   }
 }
 

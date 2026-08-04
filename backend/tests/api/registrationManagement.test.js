@@ -1,11 +1,13 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { createAndLoginAs, testUser, testAdmin, resetUsers } = require('../utils/login')
 const { createTestConfiguration, resetConfigurations } = require('../utils/configuration')
-const { testRegistrationManagement, resetRegistrationManagements } = require('../utils/registrationManagement')
-
+const {
+  testRegistrationManagement,
+  resetRegistrationManagements,
+} = require('../utils/registrationManagement')
 
 describe('Registration management', () => {
   test('creation should fail without permissions', async () => {
@@ -16,7 +18,7 @@ describe('Registration management', () => {
       .set('Authorization', `bearer ${login.token}`)
 
     expect(res.statusCode).toEqual(401)
-    expect(res.body).toEqual({ 'error': 'not admin' })
+    expect(res.body).toEqual({ error: 'not admin' })
   })
   test('creation should fail with missing data', async () => {
     const login = await createAndLoginAs(db, app, testAdmin)
@@ -27,7 +29,7 @@ describe('Registration management', () => {
       .set('Authorization', `bearer ${login.token}`)
 
     expect(res.statusCode).toEqual(400)
-    expect(res.body).toEqual({ 'error': 'All attributes must be defined' })
+    expect(res.body).toEqual({ error: 'All attributes must be defined' })
   })
   test('creation should fail with incorrect peer_review_round', async () => {
     const login = await createAndLoginAs(db, app, testAdmin)
@@ -72,11 +74,15 @@ describe('Registration management', () => {
 
     expect(resProject.statusCode).toEqual(400)
     expect(Object.keys(resProject.body)).toContain('error')
-    expect(resProject.body.error).toEqual('Message must be provided when project registration is closed')
+    expect(resProject.body.error).toEqual(
+      'Message must be provided when project registration is closed',
+    )
 
     expect(resTopic.statusCode).toEqual(400)
     expect(Object.keys(resTopic.body)).toContain('error')
-    expect(resTopic.body.error).toEqual('Message must be provided when topic registration is closed')
+    expect(resTopic.body.error).toEqual(
+      'Message must be provided when topic registration is closed',
+    )
   })
   test('creation should fail with missing configurations', async () => {
     const login = await createAndLoginAs(db, app, testAdmin)
@@ -108,7 +114,6 @@ describe('Registration management', () => {
     await resetRegistrationManagements(db)
   })
 })
-
 
 beforeAll(async () => {
   await db.sequelize.truncate({ cascade: true, restartIdentity: true })

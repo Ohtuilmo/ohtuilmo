@@ -10,7 +10,7 @@ import {
   TextField,
   Switch,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@material-ui/core'
 
 // Actions
@@ -34,12 +34,7 @@ const TopicRegistrationSettings = ({
       <CardContent>
         <h4>Topic registration</h4>
         <FormControlLabel
-          control={
-            <Switch
-              checked={topicOpen}
-              onChange={() => updateTopicOpen(!topicOpen)}
-            />
-          }
+          control={<Switch checked={topicOpen} onChange={() => updateTopicOpen(!topicOpen)} />}
           label="Topic registration open"
         />
         <p />
@@ -52,9 +47,7 @@ const TopicRegistrationSettings = ({
           >
             {configurationMenuItems()}
           </Select>
-          <FormHelperText>
-            Active configuration for topic registration
-          </FormHelperText>
+          <FormHelperText>Active configuration for topic registration</FormHelperText>
         </FormControl>
         <TextField
           fullWidth
@@ -66,10 +59,7 @@ const TopicRegistrationSettings = ({
         />
         <FormControlLabel
           control={
-            <Switch
-              checked={summerProject}
-              onChange={() => updateSummerProject(!summerProject)}
-            />
+            <Switch checked={summerProject} onChange={() => updateSummerProject(!summerProject)} />
           }
           label="Summer project"
         />
@@ -102,7 +92,7 @@ const mapStateToProps = (state) => {
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     summerProject: state.registrationManagement.summerProject,
-    summerDates: state.registrationManagement.summerDates
+    summerDates: state.registrationManagement.summerDates,
   }
 }
 
@@ -111,11 +101,7 @@ const mapDispatchToProps = {
   updateTopicOpen: registrationManagementActions.updateTopicRegistrationOpen,
   updateSummerProject: registrationManagementActions.updateSummerProject,
   updateSummerDates: registrationManagementActions.updateSummerDates,
-  updateTopicMessage:
-    registrationManagementActions.updateTopicRegistrationMessage
+  updateTopicMessage: registrationManagementActions.updateTopicRegistrationMessage,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopicRegistrationSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(TopicRegistrationSettings)

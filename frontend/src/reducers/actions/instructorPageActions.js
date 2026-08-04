@@ -1,36 +1,42 @@
 const setConfigurations = (configurations) => {
   return {
     type: 'SET_INSTRUCTORPAGE_CONFIGURATIONS',
-    payload: configurations
+    payload: configurations,
   }
 }
 
 const setCurrentConfiguration = (configurationNumber) => {
   return {
     type: 'SET_INSTRUCTORPAGE_CURRENT_CONFIGURATION',
-    payload: configurationNumber
+    payload: configurationNumber,
   }
 }
 
 const setAnswers = (answers) => {
   return {
     type: 'SET_INSTRUCTORPAGE_CURRENT_ANSWERS',
-    payload: answers
+    payload: answers,
   }
 }
 
 const setGroups = (groups) => {
   return {
     type: 'SET_INSTRUCTORPAGE_GROUPS',
-    payload: groups
+    payload: groups,
   }
 }
 
 const setCurrentGroupID = (groupId) => {
   return {
     type: 'SET_INSTRUCTORPAGE_CURRENT_GROUP_ID',
-    payload: groupId
+    payload: groupId,
   }
 }
 
-export default { setCurrentConfiguration, setConfigurations, setAnswers, setCurrentGroupID, setGroups }
+export default {
+  setCurrentConfiguration,
+  setConfigurations,
+  setAnswers,
+  setCurrentGroupID,
+  setGroups,
+}

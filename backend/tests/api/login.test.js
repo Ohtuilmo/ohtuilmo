@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const jwt = require('jsonwebtoken')
 const request = require('supertest')
 
@@ -12,7 +12,7 @@ const testUser = {
   first_names: 'Matti',
   last_name: 'Luukkainen',
   email: 'jokutosihassu@sähköposti.fi',
-  admin: false
+  admin: false,
 }
 
 // JWT creates changing iat field depending on the time signed, not good for tests
@@ -45,12 +45,20 @@ describe('Login', () => {
     expect(resHyPersonId.statusCode).toEqual(200)
     expect(resHyPersonId.headers['cache-control']).toEqual('no-store')
     expect(Object.keys(resHyPersonId.body)).toContain('user', 'token')
-    expect(tokenHyPersonId).toEqual({ id: testUser.student_number, admin: testUser.admin, instructor: false })
+    expect(tokenHyPersonId).toEqual({
+      id: testUser.student_number,
+      admin: testUser.admin,
+      instructor: false,
+    })
 
     expect(resSchacCode.statusCode).toEqual(200)
     expect(resSchacCode.headers['cache-control']).toEqual('no-store')
     expect(Object.keys(resSchacCode.body)).toContain('user', 'token')
-    expect(tokenSchacCode).toEqual({ id: testUser.student_number, admin: testUser.admin, instructor: false })
+    expect(tokenSchacCode).toEqual({
+      id: testUser.student_number,
+      admin: testUser.admin,
+      instructor: false,
+    })
   })
   test('is successful with new student number', async () => {
     // user doesn't exist in database
@@ -72,7 +80,9 @@ describe('Login', () => {
     expect(token).toEqual({ id: '13355557777777', admin: testUser.admin, instructor: false })
 
     // User is created after query
-    expect(await db.User.findAll({ where: { student_number: '13355557777777' } })).not.toHaveLength(0)
+    expect(await db.User.findAll({ where: { student_number: '13355557777777' } })).not.toHaveLength(
+      0,
+    )
   })
 
   beforeAll(async () => {

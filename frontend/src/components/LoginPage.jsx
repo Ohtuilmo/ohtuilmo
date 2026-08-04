@@ -47,9 +47,7 @@ class LoginPage extends React.Component {
     return (
       <div className="loginpage-container">
         <h1 className="loginpage-header">Login</h1>
-        <p className="loginpage-information">
-          University of Helsinki account required for login.
-        </p>
+        <p className="loginpage-information">University of Helsinki account required for login.</p>
         <form onSubmit={this.login} className="loginpage-form">
           <div>
             <TextField
@@ -103,9 +101,6 @@ const mapDispatchToProps = {
   loginUser: userActions.loginUser,
 }
 
-const ConnectedLoginPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginPage)
+const ConnectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(LoginPage)
 
 export default ConnectedLoginPage

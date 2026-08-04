@@ -4,13 +4,13 @@ const initialQuestionsWithAnswers = [
   {
     type: 'scale',
     answer: 5,
-    question: 'Osaatko koodata?'
+    question: 'Osaatko koodata?',
   },
   {
     type: 'text',
     answer: 'En mutta olen nopea oppimaan :))))',
-    question: 'Oletko varma, että osaat koodata?'
-  }
+    question: 'Oletko varma, että osaat koodata?',
+  },
 ]
 const newUsers = [
   {
@@ -21,7 +21,7 @@ const newUsers = [
     email: 'olliohjaaja@example.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     student_number: '112345700',
@@ -31,7 +31,7 @@ const newUsers = [
     email: 'newuser1@example.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     student_number: '112345701',
@@ -41,7 +41,7 @@ const newUsers = [
     email: 'johnsmith@email.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     student_number: '112345702',
@@ -51,7 +51,7 @@ const newUsers = [
     email: 'test@gmail.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     student_number: '112345703',
@@ -61,7 +61,7 @@ const newUsers = [
     email: 'inst@gmail.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     student_number: '112345704',
@@ -71,7 +71,7 @@ const newUsers = [
     email: 'timoTeko@gmail.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     student_number: '112345705',
@@ -81,18 +81,17 @@ const newUsers = [
     email: 'kodari@gmail.com',
     admin: false,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
-
 
 const newConfiguration1 = [
   {
     name: 'Kevät 2023',
     registration_question_set_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
 
 const newConfiguration2 = [
@@ -100,8 +99,8 @@ const newConfiguration2 = [
     name: 'Syksy 2023',
     registration_question_set_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
 
 const newConfiguration3 = [
@@ -109,11 +108,9 @@ const newConfiguration3 = [
     name: 'Kevät 2024',
     registration_question_set_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
-  }
+    updated_at: new Date(),
+  },
 ]
-
-
 
 const newTopics = [
   {
@@ -122,16 +119,17 @@ const newTopics = [
     content: JSON.stringify({
       email: 'contact@newtopic1.com',
       title: 'Ohjelmistotuotantoprojektin laajennus',
-      description: 'Parannetaan ohjelmistotuotantoprojektin toimintaa lisäämällä uusia ominaisuuksia.',
+      description:
+        'Parannetaan ohjelmistotuotantoprojektin toimintaa lisäämällä uusia ominaisuuksia.',
       environment: 'Node.js, React',
       customerName: 'Uusi Asiakas',
       additionalInfo: 'Lisätietoja Uusi Aihe 1',
-      specialRequests: 'Erityistoiveet Uusi Aihe 1'
+      specialRequests: 'Erityistoiveet Uusi Aihe 1',
     }),
     secret_id: 'newtopic1secret',
     configuration_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     active: true,
@@ -143,12 +141,12 @@ const newTopics = [
       environment: 'Python, Django',
       customerName: 'Uusi Asiakas 2',
       additionalInfo: 'Lisätietoja TeKOäLYn soveltaminen',
-      specialRequests: 'Erityistoiveet TeKOäLYn soveltaminen'
+      specialRequests: 'Erityistoiveet TeKOäLYn soveltaminen',
     }),
     secret_id: 'newtopic2secret',
     configuration_id: 1,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     active: true,
@@ -160,12 +158,12 @@ const newTopics = [
       environment: 'React, Node.js, MongoDB',
       customerName: 'Logistics Company',
       additionalInfo: 'More information about the topic',
-      specialRequests: 'Special requests for the topic'
+      specialRequests: 'Special requests for the topic',
     }),
     secret_id: 'topic123secret',
     configuration_id: 3,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
   {
     active: true,
@@ -177,12 +175,12 @@ const newTopics = [
       environment: 'React Native, Node.js',
       customerName: 'Mobile Application Company',
       additionalInfo: 'More information about the topic',
-      specialRequests: 'Special requests for the topic'
+      specialRequests: 'Special requests for the topic',
     }),
     secret_id: 'topic897secret',
     configuration_id: 3,
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
   },
 ]
 
@@ -194,15 +192,16 @@ const initialPreferredTopics = [
     content: JSON.stringify({
       email: 'contact@newtopic1.com',
       title: 'Ohjelmistotuotantoprojektin laajennus',
-      description: 'Parannetaan ohjelmistotuotantoprojektin toimintaa lisäämällä uusia ominaisuuksia.',
+      description:
+        'Parannetaan ohjelmistotuotantoprojektin toimintaa lisäämällä uusia ominaisuuksia.',
       environment: 'Node.js, React',
       customerName: 'Uusi Asiakas',
       additionalInfo: 'Lisätietoja Uusi Aihe 1',
-      specialRequests: 'Erityistoiveet Uusi Aihe 1'
+      specialRequests: 'Erityistoiveet Uusi Aihe 1',
     }),
     secret_id: 'newtopic1secret',
     configuration_id: 1,
-  }
+  },
 ]
 
 const initialRegistration = [
@@ -210,32 +209,32 @@ const initialRegistration = [
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    student_student_number: '112345700'
+    student_student_number: '112345700',
   },
   {
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    student_student_number: '112345701'
+    student_student_number: '112345701',
   },
   {
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    student_student_number: '112345702'
+    student_student_number: '112345702',
   },
   {
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    student_student_number: '112345704'
+    student_student_number: '112345704',
   },
   {
     preferred_topics: JSON.stringify(initialPreferredTopics),
     questions: JSON.stringify(initialQuestionsWithAnswers),
     configuration_id: 1,
-    student_student_number: '112345705'
-  }
+    student_student_number: '112345705',
+  },
 ]
 
 const newGroup = [
@@ -249,7 +248,7 @@ const newGroup = [
     name: 'tekOäly-ryhmä',
     topic_id: 5,
     configuration_id: 1,
-    instructor_id: 112345703 ,
+    instructor_id: 112345703,
   },
   {
     name: 'ohtuilmo-ryhmä2',
@@ -262,24 +261,24 @@ const newGroup = [
 const group_students = [
   {
     group_id: 1,
-    user_student_number: 112345700
+    user_student_number: 112345700,
   },
   {
     group_id: 1,
-    user_student_number: 112345701
+    user_student_number: 112345701,
   },
   {
     group_id: 1,
-    user_student_number: 112345702
+    user_student_number: 112345702,
   },
   {
     group_id: 2,
-    user_student_number: 112345704
+    user_student_number: 112345704,
   },
   {
     group_id: 2,
-    user_student_number: 112345705
-  }
+    user_student_number: 112345705,
+  },
 ]
 
 const addTimeStamps = (arr) => {
@@ -287,7 +286,7 @@ const addTimeStamps = (arr) => {
     return {
       ...item,
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date(),
     }
   })
 }
@@ -301,19 +300,41 @@ module.exports = {
     await query.bulkInsert('topics', addTimeStamps(newTopics), {})
     await query.bulkInsert('groups', addTimeStamps(newGroup), {})
     await query.bulkInsert('group_students', addTimeStamps(group_students), {})
-    await query.bulkInsert(
-      'registrations',
-      addTimeStamps(initialRegistration),
-      {}
-    )
+    await query.bulkInsert('registrations', addTimeStamps(initialRegistration), {})
   },
 
   down: async (query) => {
-    await query.bulkDelete('topics', { secret_id: ['newtopic1secret', 'newtopic2secret', 'topic123secret', 'topic897secret'] }, {})
-    await query.bulkDelete('configurations', { name: ['Kevät 2024', 'Syksy 2023', 'Kevät 2023'] }, {})
-    await query.bulkDelete('users', { username: ['olliohj', 'newuser1', 'johnsmith', 'jane.madison', 'instruct1', 'timoTekoäly', 'johannakoodari'] }, {})
+    await query.bulkDelete(
+      'topics',
+      { secret_id: ['newtopic1secret', 'newtopic2secret', 'topic123secret', 'topic897secret'] },
+      {},
+    )
+    await query.bulkDelete(
+      'configurations',
+      { name: ['Kevät 2024', 'Syksy 2023', 'Kevät 2023'] },
+      {},
+    )
+    await query.bulkDelete(
+      'users',
+      {
+        username: [
+          'olliohj',
+          'newuser1',
+          'johnsmith',
+          'jane.madison',
+          'instruct1',
+          'timoTekoäly',
+          'johannakoodari',
+        ],
+      },
+      {},
+    )
     await query.bulkDelete('groups', { name: ['ohtuilmo-ryhmä', 'tekOäly-ryhmä'] }, {})
     await query.bulkDelete('group_students', { group_id: [1, 2] }, {})
-    await query.bulkDelete('registrations', { student_student_number: ['112345700', '112345701', '112345702', '112345704', '112345705'] }, {})
-  }
+    await query.bulkDelete(
+      'registrations',
+      { student_student_number: ['112345700', '112345701', '112345702', '112345704', '112345705'] },
+      {},
+    )
+  },
 }

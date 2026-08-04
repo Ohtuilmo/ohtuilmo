@@ -6,12 +6,9 @@ import Paper from '@material-ui/core/Paper'
 
 import {
   fetchRegistrationQuestionSets,
-  updateRegistrationQuestionSet
+  updateRegistrationQuestionSet,
 } from '../../reducers/actions/registrationQuestionsPageActions'
-import {
-  setError,
-  setSuccess
-} from '../../reducers/actions/notificationActions'
+import { setError, setSuccess } from '../../reducers/actions/notificationActions'
 
 import { registrationQuestionSetShape } from '../common/sharedPropTypes'
 import CreateRegistrationQuestionSet from './CreateRegistrationQuestionSet'
@@ -63,10 +60,7 @@ class RegistrationQuestionsPage extends React.Component {
         <div className="registration-questions-page__container">
           <section style={{ marginBottom: '2rem' }}>
             <h2>Create question set</h2>
-            <Paper
-              depth={1}
-              className="registration-questions-page__create-form"
-            >
+            <Paper depth={1} className="registration-questions-page__create-form">
               <CreateRegistrationQuestionSet />
             </Paper>
           </section>
@@ -89,23 +83,23 @@ RegistrationQuestionsPage.propTypes = {
   setError: PropTypes.func,
   setSuccess: PropTypes.func,
   fetchRegistrationQuestionSets: PropTypes.func,
-  updateRegistrationQuestionSet: PropTypes.func
+  updateRegistrationQuestionSet: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
-  questionSets: state.registrationQuestionsPage.questionSets
+  questionSets: state.registrationQuestionsPage.questionSets,
 })
 
 const mapDispatchToProps = {
   fetchRegistrationQuestionSets,
   updateRegistrationQuestionSet,
   setError,
-  setSuccess
+  setSuccess,
 }
 
 const ConnectedRegistrationQuestionsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(RegistrationQuestionsPage)
 
 export default withRouter(ConnectedRegistrationQuestionsPage)

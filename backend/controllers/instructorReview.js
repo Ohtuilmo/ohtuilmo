@@ -75,9 +75,9 @@ const create = async (req, res) => {
     answer_sheet: {
       answer_sheet,
       group_name,
-      group_id
+      group_id,
     },
-    user_id
+    user_id,
   }
 
   try {
@@ -91,17 +91,13 @@ const create = async (req, res) => {
 instructorReviewRouter.post('/', checkLogin, async (req, res) => {
   const { instructorReview } = req.body
 
-  if (
-    !instructorReview ||
-    !instructorReview.user_id ||
-    req.user.id !== instructorReview.user_id
-  ) {
+  if (!instructorReview || !instructorReview.user_id || req.user.id !== instructorReview.user_id) {
     return res.status(401).json({ error: 'unauthorized' })
   }
 
   try {
     const instructedGroups = await db.Group.findAll({
-      where: { instructorId: req.user.id }
+      where: { instructorId: req.user.id },
     })
     if (instructedGroups.length === 0) {
       return res.status(401).json({ error: 'unauthorized' })
@@ -127,25 +123,21 @@ instructorReviewRouter.get('/', checkAdmin, async (req, res) => {
   }
 })
 
-instructorReviewRouter.get(
-  '/getAllAnsweredGroupId',
-  checkLogin,
-  async (req, res) => {
-    try {
-      const reviews = await db.InstructorReview.findAll({
-        where: {
-          user_id: req.user.id
-        }
-      })
+instructorReviewRouter.get('/getAllAnsweredGroupId', checkLogin, async (req, res) => {
+  try {
+    const reviews = await db.InstructorReview.findAll({
+      where: {
+        user_id: req.user.id,
+      },
+    })
 
-      const reviewGroups = reviews.map((review) => review.answer_sheet.group_id)
+    const reviewGroups = reviews.map((review) => review.answer_sheet.group_id)
 
-      return res.status(200).json(reviewGroups)
-    } catch (error) {
-      return handleDatabaseError(res, error)
-    }
+    return res.status(200).json(reviewGroups)
+  } catch (error) {
+    return handleDatabaseError(res, error)
   }
-)
+})
 
 instructorReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
   const instructorReviewId = req.params.id
@@ -155,7 +147,7 @@ instructorReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
 
   try {
     const instructorReview = await db.InstructorReview.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     })
 
     if (!instructorReview) {
@@ -166,11 +158,7 @@ instructorReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
 
     return res.status(204).send()
   } catch (err) {
-    console.error(
-      'error while deleting instructor review with id',
-      req.params.id,
-      err
-    )
+    console.error('error while deleting instructor review with id', req.params.id, err)
     return res.status(500).json({ error: 'internal server error' })
   }
 })

@@ -1,4 +1,7 @@
-const { createTestRegistrationQuestionSet, resetRegistrationQuestionSets } = require('./registrationQuestionSet')
+const {
+  createTestRegistrationQuestionSet,
+  resetRegistrationQuestionSets,
+} = require('./registrationQuestionSet')
 
 const createTestConfiguration = async (db) => {
   const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
@@ -17,5 +20,5 @@ const resetConfigurations = async (db) => {
 
 module.exports = {
   createTestConfiguration,
-  resetConfigurations
+  resetConfigurations,
 }

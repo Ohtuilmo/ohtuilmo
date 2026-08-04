@@ -14,12 +14,12 @@
       "header": "Poimintoja sanallisista vertaisarvioista",
       "description": "",
       "type": "text"
-    },  
+    },
     {
       "header": "Ohjaajan kommentit",
       "description": "",
       "type": "text"
-    },        
+    },
     {
       "header": "Tekninen kontribuutio: arvosana",
       "description": "",
@@ -39,12 +39,12 @@
       "header": "Poimintoja sanallisista vertaisarvioista",
       "description": "",
       "type": "text"
-    },  
+    },
     {
       "header": "Ohjaajan kommentit",
       "description": "",
       "type": "text"
-    },        
+    },
     {
       "header": "Prosessin noudattaminen: arvosana",
       "description": "",

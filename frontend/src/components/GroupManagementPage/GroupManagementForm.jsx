@@ -19,18 +19,13 @@ const GroupManagementForm = ({
   setSuccess,
   setError,
 }) => {
-  const filteredGroups = groups.filter(
-    (group) => group.configurationId === groupConfigurationID,
-  )
+  const filteredGroups = groups.filter((group) => group.configurationId === groupConfigurationID)
 
   return (
     <div>
       {filteredGroups.map((group) => {
         return (
-          <div
-            key={group.id}
-            style={{ clear: 'both', display: 'table', padding: '15px' }}
-          >
+          <div key={group.id} style={{ clear: 'both', display: 'table', padding: '15px' }}>
             <Paper>
               <Table>
                 <TableBody>
@@ -71,7 +66,4 @@ const mapDispatchToPropsForm = {
   setSuccess: notificationActions.setSuccess,
 }
 
-export default connect(
-  mapStateToPropsForm,
-  mapDispatchToPropsForm,
-)(GroupManagementForm)
+export default connect(mapStateToPropsForm, mapDispatchToPropsForm)(GroupManagementForm)

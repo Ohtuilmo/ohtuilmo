@@ -1,29 +1,29 @@
 import emailService from '../../services/email'
 
 const fetchEmailTemplatesRequest = () => ({
-  type: 'FETCH_EMAIL_TEMPLATES_REQUEST'
+  type: 'FETCH_EMAIL_TEMPLATES_REQUEST',
 })
 
 const fetchEmailTemplatesSuccess = (templates) => ({
   type: 'FETCH_EMAIL_TEMPLATES_SUCCESS',
-  payload: templates
+  payload: templates,
 })
 
 const fetchEmailTemplatesFailed = () => ({
-  type: 'FETCH_EMAIL_TEMPLATES_FAILED'
+  type: 'FETCH_EMAIL_TEMPLATES_FAILED',
 })
 
 const updateEmailTemplatesRequest = () => ({
-  type: 'UPDATE_EMAIL_TEMPLATES_REQUEST'
+  type: 'UPDATE_EMAIL_TEMPLATES_REQUEST',
 })
 
 const updateEmailTemplatesSuccess = (templates) => ({
   type: 'UPDATE_EMAIL_TEMPLATES_SUCCESS',
-  payload: templates
+  payload: templates,
 })
 
 const updateEmailTemplatesFailed = () => ({
-  type: 'UPDATE_EMAIL_TEMPLATES_FAILED'
+  type: 'UPDATE_EMAIL_TEMPLATES_FAILED',
 })
 
 const fetchEmailTemplates = () => {

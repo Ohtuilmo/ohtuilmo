@@ -4,12 +4,12 @@ module.exports = {
   development: {
     url: process.env.DATABASE_URL,
     seederStorage: 'sequelize',
-    seederStorageTableName: 'SeederMeta'
+    seederStorageTableName: 'SeederMeta',
   },
   test: {
     url: process.env.DATABASE_URL,
     seederStorage: 'sequelize',
-    seederStorageTableName: 'SeederMeta'
+    seederStorageTableName: 'SeederMeta',
   },
   production: {
     url: process.env.DATABASE_URL,
@@ -18,8 +18,8 @@ module.exports = {
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: true
-      }
-    }
-  }
+        rejectUnauthorized: true,
+      },
+    },
+  },
 }

@@ -77,12 +77,8 @@ const Topic = ({
         <div className="block">
           <p className="title">Suitable timing</p>
           <ul>
-            {content.summerDates.short && (
-              <li>the early summer project {dates.short}</li>
-            )}
-            {content.summerDates.long && (
-              <li>the whole summer project {dates.long}</li>
-            )}
+            {content.summerDates.short && <li>the early summer project {dates.short}</li>}
+            {content.summerDates.long && <li>the whole summer project {dates.long}</li>}
           </ul>
         </div>
       )}
@@ -126,11 +122,7 @@ const Topic = ({
       )}
       {isAdmin && (
         <div className="topic-edit-button">
-          <Button
-            variant="contained"
-            color="default"
-            onClick={copyToConfiguration}
-          >
+          <Button variant="contained" color="default" onClick={copyToConfiguration}>
             Copy to most recent configuration
           </Button>
         </div>

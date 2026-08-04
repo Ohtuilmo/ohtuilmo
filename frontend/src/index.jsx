@@ -16,7 +16,7 @@ const getInitialMode = () => {
 
 const Root = () => {
   const [themeMode, setThemeMode] = useState(getInitialMode)
-  const isDark =themeMode === 'dark'
+  const isDark = themeMode === 'dark'
 
   const theme = createTheme({
     palette: {
@@ -57,9 +57,7 @@ const Root = () => {
       chartTooltip: {
         background: isDark ? '#202020' : '#ffffff',
         border: isDark ? '#73292c' : '#d88488',
-        shadow: isDark
-          ? '1px 1px 2px #73292c'
-          : '1px 1px 2px #d88488',
+        shadow: isDark ? '1px 1px 2px #73292c' : '1px 1px 2px #d88488',
       },
       chartAxis: {
         stroke: isDark ? '#ffffff' : '#4d4d4d',
@@ -78,21 +76,15 @@ const Root = () => {
       },
       MuiTableCell: {
         head: {
-          backgroundColor: isDark
-            ? 'rgba(255,255,255,0.12)'
-            : 'rgba(0,0,0,0.02)',
+          backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.02)',
         },
         body: {
-          backgroundColor: isDark
-            ? 'rgba(255,255,255,0.03)'
-            : 'rgba(0,0,0,0.01)',
+          backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.01)',
         },
       },
       MuiTableRow: {
         '&:hover': {
-          backgroundColor: isDark
-            ? 'rgba(255,255,255,0.08)'
-            : 'rgba(0,0,0,0.04)',
+          backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
         },
       },
     },
@@ -100,9 +92,7 @@ const Root = () => {
 
   return (
     <Provider store={store}>
-      <ColorModeContext.Provider
-        value={{ mode: themeMode, setMode: setThemeMode }}
-      >
+      <ColorModeContext.Provider value={{ mode: themeMode, setMode: setThemeMode }}>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <App />

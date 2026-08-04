@@ -9,21 +9,23 @@ export const SprintListItem = (props) => {
   const { sprint, setError, setSuccess } = props
 
   const [isEditing, setIsEditing] = useState(false)
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const [newStartDate, setNewStartDate] = useState("")
-  const [newEndDate, setNewEndDate] = useState("")
-  const [startDateErrorMessage, setStartDateErrorMessage] = useState("")
-  const [endDateErrorMessage, setEndDateErrorMessage] = useState("")
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [newStartDate, setNewStartDate] = useState('')
+  const [newEndDate, setNewEndDate] = useState('')
+  const [startDateErrorMessage, setStartDateErrorMessage] = useState('')
+  const [endDateErrorMessage, setEndDateErrorMessage] = useState('')
 
   const formatDate = (date) => {
     const dateObj = new Date(date)
 
-    const formattedDate = dateObj.toLocaleDateString('fi-FI', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).replace(/\./g, '/')
+    const formattedDate = dateObj
+      .toLocaleDateString('fi-FI', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      })
+      .replace(/\./g, '/')
 
     return formattedDate
   }
@@ -38,15 +40,14 @@ export const SprintListItem = (props) => {
     }
   }, [sprint])
 
-
   const handleEditButtonClick = () => {
     // Editing -> Cancel -> Reset back to normal
     if (isEditing) {
       setNewStartDate(startDate)
       setNewEndDate(endDate)
 
-      setStartDateErrorMessage("")
-      setEndDateErrorMessage("")
+      setStartDateErrorMessage('')
+      setEndDateErrorMessage('')
     }
 
     setIsEditing(!isEditing)
@@ -58,9 +59,9 @@ export const SprintListItem = (props) => {
     // This happens through the backend
     let valid = true
     if (new Date(newStartDate) > new Date(newEndDate)) {
-      setStartDateErrorMessage("Start date is higher than end date.")
-      setEndDateErrorMessage("End date is lower than start date.")
-      setError("Start date is higher than end date.")
+      setStartDateErrorMessage('Start date is higher than end date.')
+      setEndDateErrorMessage('End date is lower than start date.')
+      setError('Start date is higher than end date.')
       valid = false
     }
     return valid
@@ -68,15 +69,15 @@ export const SprintListItem = (props) => {
 
   const handleUpdate = async () => {
     if (validDates()) {
-      setStartDateErrorMessage("")
-      setEndDateErrorMessage("")
+      setStartDateErrorMessage('')
+      setEndDateErrorMessage('')
 
       try {
         const res = await sprintService.updateSprint({
           id: sprint.id,
           start_date: newStartDate,
           end_date: newEndDate,
-          sprint: sprint.sprint
+          sprint: sprint.sprint,
         })
 
         setSuccess(res.message)
@@ -85,17 +86,18 @@ export const SprintListItem = (props) => {
         setIsEditing(false)
       } catch (error) {
         console.error(error.response?.data?.error)
-        setError(error.response?.data?.error, 15*1000)
+        setError(error.response?.data?.error, 15 * 1000)
       }
     }
   }
-
 
   return (
     <TableRow hover>
       <TableCell className="sprint-list-sprint-number">{sprint.sprint}</TableCell>
       <TableCell>
-        {!isEditing ? formatDate(startDate) :
+        {!isEditing ? (
+          formatDate(startDate)
+        ) : (
           <TextField
             errors={(!!startDateErrorMessage).toString()}
             helperText={startDateErrorMessage}
@@ -111,10 +113,12 @@ export const SprintListItem = (props) => {
             }}
             variant="outlined"
           />
-        }
+        )}
       </TableCell>
       <TableCell>
-        {!isEditing ? formatDate(endDate) :
+        {!isEditing ? (
+          formatDate(endDate)
+        ) : (
           <TextField
             errors={(!!endDateErrorMessage).toString()}
             helperText={endDateErrorMessage}
@@ -130,10 +134,10 @@ export const SprintListItem = (props) => {
             }}
             variant="outlined"
           />
-        }
+        )}
       </TableCell>
       <TableCell>
-        {isEditing &&
+        {isEditing && (
           <Button
             id={`sprint-edit-save-button-${sprint.id}`}
             onClick={handleUpdate}
@@ -143,7 +147,7 @@ export const SprintListItem = (props) => {
           >
             Save
           </Button>
-        }
+        )}
         <Button
           id={`sprint-edit-button-${sprint.id}`}
           onClick={handleEditButtonClick}
@@ -151,7 +155,7 @@ export const SprintListItem = (props) => {
           variant="contained"
           color="secondary"
         >
-          {isEditing ? "Cancel" : "Edit" }
+          {isEditing ? 'Cancel' : 'Edit'}
         </Button>
       </TableCell>
     </TableRow>

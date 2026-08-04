@@ -19,15 +19,7 @@ import TopicSelect from './TopicSelect'
 const updateCreatedGroup = async (event, props) => {
   event.preventDefault()
 
-  const {
-    id,
-    name,
-    topicId,
-    studentIds,
-    instructor,
-    configurationId,
-    projectLength
-  } = props.group
+  const { id, name, topicId, studentIds, instructor, configurationId, projectLength } = props.group
 
   const splitStudents = studentIds
     .split(/[;, \n]/)
@@ -72,11 +64,9 @@ class SingleGroupEdit extends React.Component {
       name: props.group.name,
       topicId: props.group.topicId,
       configurationId: props.group.configurationId,
-      instructor: props.users.find(
-        (user) => user.student_number === props.group.instructorId
-      ),
+      instructor: props.users.find((user) => user.student_number === props.group.instructorId),
       studentIds: props.group.studentIds.join('\n'),
-      projectLength: props.group.isShortProject ? 'short' : 'long'
+      projectLength: props.group.isShortProject ? 'short' : 'long',
     }
   }
 
@@ -101,7 +91,7 @@ class SingleGroupEdit extends React.Component {
 
     this.setState({
       topicId: newTopicId,
-      name: thistopic.content.title
+      name: thistopic.content.title,
     })
   }
 
@@ -114,7 +104,7 @@ class SingleGroupEdit extends React.Component {
 
     try {
       await groupManagementService.del({
-        id: groupId
+        id: groupId,
       })
       this.props.deleteGroup(groupId)
 
@@ -133,12 +123,11 @@ class SingleGroupEdit extends React.Component {
       toggleEditMode,
       setSuccess,
       setError,
-      clearNotifications
+      clearNotifications,
     } = this.props
 
     const defaultInstructor =
-      group.instructorId &&
-      users.find((user) => user.student_number === group.instructorId)
+      group.instructorId && users.find((user) => user.student_number === group.instructorId)
 
     return (
       <div style={{ align: 'top', minWidth: '400px' }}>
@@ -154,7 +143,7 @@ class SingleGroupEdit extends React.Component {
         <TextField
           inputProps={{
             className: `edit-group-no__${group.id}__name`,
-            'data-cy': 'edit-group-name-field'
+            'data-cy': 'edit-group-name-field',
           }}
           fullWidth={true}
           value={this.state.name}
@@ -189,7 +178,7 @@ class SingleGroupEdit extends React.Component {
         <TextField
           inputProps={{
             className: `edit-group-no__${group.id}__students`,
-            'data-cy': 'edit-students-input'
+            'data-cy': 'edit-students-input',
           }}
           value={this.state.studentIds}
           onChange={this.handleStudentChange}
@@ -219,7 +208,7 @@ class SingleGroupEdit extends React.Component {
                 toggleEditMode,
                 setSuccess,
                 setError,
-                clearNotifications
+                clearNotifications,
               })
             }
             data-cy="edit-group-save-button"
@@ -242,7 +231,7 @@ class SingleGroupEdit extends React.Component {
 
 const mapStateToPropsForm = (state) => ({
   topics: state.topicListPage.topics,
-  users: state.groupPage.users
+  users: state.groupPage.users,
 })
 
 const mapDispatchToPropsForm = {
@@ -250,10 +239,7 @@ const mapDispatchToPropsForm = {
   updateExistingGroup: groupManagementActions.updateExistingGroup,
   deleteGroup: groupManagementActions.deleteGroup,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
 }
 
-export default connect(
-  mapStateToPropsForm,
-  mapDispatchToPropsForm
-)(SingleGroupEdit)
+export default connect(mapStateToPropsForm, mapDispatchToPropsForm)(SingleGroupEdit)

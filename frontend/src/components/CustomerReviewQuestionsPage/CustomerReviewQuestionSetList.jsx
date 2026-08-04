@@ -2,13 +2,10 @@ import React from 'react'
 import EditableCustomerReviewQuestionSet from './EditableCustomerReviewQuestionSet'
 import './CustomerReviewQuestionSetList.css'
 
-const compareQuestionSetCreatedAtDesc = (a, b) =>
-  b.createdAt.localeCompare(a.createdAt)
+const compareQuestionSetCreatedAtDesc = (a, b) => b.createdAt.localeCompare(a.createdAt)
 
 const RegistrationQuestionSetList = ({ questionSets, onQuestionSetUpdate }) => {
-  const byCreatedAtDesc = [...questionSets].sort(
-    compareQuestionSetCreatedAtDesc
-  )
+  const byCreatedAtDesc = [...questionSets].sort(compareQuestionSetCreatedAtDesc)
 
   return (
     <ul className="customer-review-question-set-list">

@@ -1,7 +1,7 @@
 const initializeAnswerSheet = (answerSheet) => {
   return {
     type: 'INSTRUCTOR_INITIALIZE_ANSWER_SHEET',
-    payload: answerSheet
+    payload: answerSheet,
   }
 }
 
@@ -10,27 +10,27 @@ const updateAnswer = (answer, userId, questionId) => {
     type: 'INSTRUCTOR_UPDATE_ANSWER',
     answer: answer,
     user: userId,
-    question: questionId
+    question: questionId,
   }
 }
 
 const setGroups = (groups) => {
   return {
     type: 'SET_INSTRUCTOR_REVIEW_GROUPS',
-    payload: groups
+    payload: groups,
   }
 }
 const setSubmittedReview = (submittedReview) => {
   return {
     type: 'INSTRUCTOR_SET_SUBMITTED_REVIEW',
-    payload: submittedReview
+    payload: submittedReview,
   }
 }
 
 const selectGroup = (groupId) => {
   return {
     type: 'INSTRUCTOR_SELECT_GROUP',
-    payload: groupId
+    payload: groupId,
   }
 }
 
@@ -39,5 +39,5 @@ export default {
   initializeAnswerSheet,
   setSubmittedReview,
   selectGroup,
-  setGroups
+  setGroups,
 }

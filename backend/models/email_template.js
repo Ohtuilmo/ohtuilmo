@@ -2,11 +2,9 @@
 const { pipe } = require('../utils')
 const { urls } = require('../config')
 
-const replaceTopicName = (name) => (template) =>
-  template.replace(/{{topicName}}/g, name)
+const replaceTopicName = (name) => (template) => template.replace(/{{topicName}}/g, name)
 
-const replaceSecretLink = (link) => (template) =>
-  template.replace(/{{secretLink}}/g, link)
+const replaceSecretLink = (link) => (template) => template.replace(/{{secretLink}}/g, link)
 
 module.exports = (sequelize, Sequelize) => {
   const EmailTemplate = sequelize.define(
@@ -17,11 +15,11 @@ module.exports = (sequelize, Sequelize) => {
       topic_accepted_eng: Sequelize.TEXT,
       topic_rejected_eng: Sequelize.TEXT,
       customer_review_link_fin: Sequelize.TEXT,
-      customer_review_link_eng: Sequelize.TEXT
+      customer_review_link_eng: Sequelize.TEXT,
     },
     {
-      underscored: true
-    }
+      underscored: true,
+    },
   )
 
   const isCustomerReviewLinkTemplate = (str) =>

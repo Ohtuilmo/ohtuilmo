@@ -1,6 +1,5 @@
-const { expect } =  require('@jest/globals')
+const { expect } = require('@jest/globals')
 const request = require('supertest')
-
 
 const createTestUser = async (db, user) => {
   const createdUser = await db.User.create(user)
@@ -9,7 +8,7 @@ const createTestUser = async (db, user) => {
 
 const createTestUsers = async (db, users) => {
   let createdUsers = []
-  users.forEach(async user => {
+  users.forEach(async (user) => {
     createdUsers.push(await createTestUser(db, user))
   })
   return createdUsers
@@ -25,9 +24,7 @@ const resetUsers = async (db) => {
 }
 
 const loginAs = async (app, studentNumber) => {
-  const res = await request(app)
-    .post('/api/login')
-    .set('hypersonstudentid', studentNumber)
+  const res = await request(app).post('/api/login').set('hypersonstudentid', studentNumber)
 
   // Sanity-check
   expect(Object.keys(res.body)).toContain('user', 'token')
@@ -40,7 +37,7 @@ const testUser = {
   first_names: 'Minä',
   last_name: 'Sukunimi',
   email: 'minä@me.fi',
-  admin: false
+  admin: false,
 }
 
 const testAdmin = {
@@ -49,7 +46,7 @@ const testAdmin = {
   first_names: 'Matti',
   last_name: 'Luukkainen',
   email: 'jokutosihassu@sähköposti.fi',
-  admin: true
+  admin: true,
 }
 
 const testUsers = [
@@ -60,7 +57,7 @@ const testUsers = [
     first_names: 'Sinä',
     last_name: 'Sukunimi',
     email: 'sinä@you.fi',
-    admin: false
+    admin: false,
   },
   {
     username: 'hänn',
@@ -68,8 +65,17 @@ const testUsers = [
     first_names: 'Hän',
     last_name: 'Sukunimi',
     email: 'hän@shhe.fi',
-    admin: false
-  }
+    admin: false,
+  },
 ]
 
-module.exports = { loginAs, createTestUser, createTestUsers, createAndLoginAs, testUser, testAdmin, testUsers, resetUsers }
+module.exports = {
+  loginAs,
+  createTestUser,
+  createTestUsers,
+  createAndLoginAs,
+  testUser,
+  testAdmin,
+  testUsers,
+  resetUsers,
+}

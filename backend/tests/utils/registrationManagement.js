@@ -10,7 +10,7 @@ const testRegistrationManagement = {
   project_registration_info: 'Ompi auki toestaseks',
   topic_registration_conf: 1,
   topic_registration_open: 1,
-  topic_registration_message: 'Aukeloo joskus syssymmällä kans'
+  topic_registration_message: 'Aukeloo joskus syssymmällä kans',
 }
 
 const updateRegManConfigurationId = (testRegMan, confId) => {
@@ -20,11 +20,14 @@ const updateRegManConfigurationId = (testRegMan, confId) => {
   return testRegMan
 }
 
-const createTestRegistrationManagement = async (db, configurationId=0) => {
-  const actualConfigurationId = configurationId === 0 ? await createTestConfiguration(db) : configurationId
+const createTestRegistrationManagement = async (db, configurationId = 0) => {
+  const actualConfigurationId =
+    configurationId === 0 ? await createTestConfiguration(db) : configurationId
   const testRegManCopy = JSON.parse(JSON.stringify(testRegistrationManagement))
 
-  const createdRegistrationManagement = await db.RegistrationManagement.create(updateRegManConfigurationId(testRegManCopy, actualConfigurationId))
+  const createdRegistrationManagement = await db.RegistrationManagement.create(
+    updateRegManConfigurationId(testRegManCopy, actualConfigurationId),
+  )
   return createdRegistrationManagement.id
 }
 
@@ -35,5 +38,5 @@ const resetRegistrationManagements = async (db) => {
 module.exports = {
   createTestRegistrationManagement,
   testRegistrationManagement,
-  resetRegistrationManagements
+  resetRegistrationManagements,
 }

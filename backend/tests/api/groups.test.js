@@ -2,11 +2,17 @@ const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@je
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
-const { loginAs, createAndLoginAs, createTestUsers, testAdmin, testUsers, resetUsers } = require('../utils/login')
+const {
+  loginAs,
+  createAndLoginAs,
+  createTestUsers,
+  testAdmin,
+  testUsers,
+  resetUsers,
+} = require('../utils/login')
 const { createTestTopic, resetTopics } = require('../utils/topic')
 const { createTestConfiguration, resetConfigurations } = require('../utils/configuration')
 const { createTestInstructor, resetInstructor } = require('../utils/groups')
-
 
 describe('POST Groups', () => {
   test('should fail with missing fields', async () => {
@@ -35,7 +41,7 @@ describe('POST Groups', () => {
       .send({
         name: 'Hassunimi',
         topicId: testTopicId,
-        configurationId: testConfigurationId
+        configurationId: testConfigurationId,
       })
 
     expect(resName.statusCode).toEqual(400)
@@ -68,7 +74,9 @@ describe('POST Groups', () => {
         topicId: testTopicId,
         configurationId: testConfigurationId,
         isShortProject: true,
-        studentIds: createdTestUsers.concat(testUsers[0]).map(user => user.student_number.toString())
+        studentIds: createdTestUsers
+          .concat(testUsers[0])
+          .map((user) => user.student_number.toString()),
       })
 
     expect(res.statusCode).toEqual(400)
@@ -89,7 +97,9 @@ describe('POST Groups', () => {
         topicId: testTopicId,
         configurationId: testConfigurationId,
         isShortProject: true,
-        studentIds: createdTestUsers.map(user => user.student_number.toString()).concat('eiainakaansn')
+        studentIds: createdTestUsers
+          .map((user) => user.student_number.toString())
+          .concat('eiainakaansn'),
       })
 
     expect(res.statusCode).toEqual(400)
@@ -110,7 +120,7 @@ describe('POST Groups', () => {
         topicId: testTopicId,
         configurationId: testConfigurationId,
         isShortProject: true,
-        studentIds: createdTestUsers.map(user => user.student_number.toString())
+        studentIds: createdTestUsers.map((user) => user.student_number.toString()),
       })
 
     expect(res.statusCode).toEqual(200)
@@ -126,7 +136,6 @@ describe('POST Groups', () => {
     )
   })
 
-
   beforeEach(async () => {
     await resetUsers(db)
     await resetTopics(db)
@@ -139,8 +148,7 @@ describe('GET /api/groups', () => {
   test('should fail as non-logined user or as a student', async () => {
     const login = await createAndLoginAs(db, app, testUsers[0])
 
-    const resNonLogin = await request(app)
-      .get('/api/groups')
+    const resNonLogin = await request(app).get('/api/groups')
 
     const resUser = await request(app)
       .get('/api/groups')
@@ -172,14 +180,12 @@ describe('GET /api/groups', () => {
     expect(resAdmin.body).not.toHaveLength(0)
   })
 
-
   beforeEach(async () => {
     await resetUsers(db)
     await resetInstructor(db)
     await db.Group.truncate({ cascade: true, restartIdentity: true })
   })
 })
-
 
 beforeAll(async () => {
   await db.sequelize.truncate({ cascade: true, restartIdentity: true })

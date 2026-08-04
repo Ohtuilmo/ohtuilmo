@@ -5,12 +5,7 @@ import { Typography } from '@material-ui/core'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import './TopicFormPageInfo.css'
 
-const TopicFormPageInfo = ({
-  topicOpen,
-  topicMessage,
-  updateShowInfo,
-  toggle,
-}) => {
+const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) => {
   const allowCretion = topicOpen && toggle
 
   return (
@@ -32,9 +27,7 @@ const TopicFormPageInfo = ({
           Create Topic
         </Button>
       )}
-      {!allowCretion && (
-        <div className="topic-form-page-info-message">{topicMessage}</div>
-      )}
+      {!allowCretion && <div className="topic-form-page-info-message">{topicMessage}</div>}
     </div>
   )
 }
@@ -51,10 +44,7 @@ const mapDispatchToProps = {
   ...topicFormPageActions,
 }
 
-const ConnectedTopicFormPageInfo = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TopicFormPageInfo)
+const ConnectedTopicFormPageInfo = connect(mapStateToProps, mapDispatchToProps)(TopicFormPageInfo)
 
 export default ConnectedTopicFormPageInfo
 

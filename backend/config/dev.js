@@ -34,5 +34,5 @@ let test_user = { test_user: test_users.student }
 
 module.exports = {
   test_user,
-  test_users
+  test_users,
 }

@@ -6,11 +6,11 @@ const initializeMyGroup = () => {
     if (myGroup) {
       dispatch({
         type: 'INITIALIZE_MYGROUP',
-        payload: myGroup
+        payload: myGroup,
       })
     } else {
       dispatch({
-        type: 'CLEAR_GROUP'
+        type: 'CLEAR_GROUP',
       })
     }
   }

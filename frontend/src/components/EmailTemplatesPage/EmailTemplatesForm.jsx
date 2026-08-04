@@ -23,7 +23,7 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
   const createHandleTemplateEdited = (templateName) => (editedTemplate) => {
     setTemplates({
       ...templates,
-      [templateName]: editedTemplate
+      [templateName]: editedTemplate,
     })
   }
 
@@ -74,7 +74,7 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
 EmailTemplatesForm.propTypes = {
   onSave: PropTypes.func.isRequired,
   initialTemplates: templatesShape.isRequired,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
 }
 
 export default EmailTemplatesForm

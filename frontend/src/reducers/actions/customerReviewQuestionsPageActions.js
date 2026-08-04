@@ -2,17 +2,17 @@ import customerReviewQuestionsService from '../../services/customerReviewQuestio
 
 const fetchCustomerReviewQuestionSetsSuccess = (questionSets) => ({
   type: 'FETCH_CUSTOMER_REVIEW_QUESTION_SETS_SUCCESS',
-  payload: questionSets
+  payload: questionSets,
 })
 
 const createCustomerReviewQuestionSetSuccess = (createdSet) => ({
   type: 'CREATE_CUSTOMER_REVIEW_QUESTION_SET_SUCCESS',
-  payload: createdSet
+  payload: createdSet,
 })
 
 const updateCustomerReviewQuestionSetSuccess = (updatedSet) => ({
   type: 'UPDATE_CUSTOMER_REVIEW_QUESTION_SET_SUCCESS',
-  payload: updatedSet
+  payload: updatedSet,
 })
 
 /**
@@ -29,7 +29,7 @@ export const createCustomerReviewQuestionSet = (name, questions) => {
   return async (dispatch) => {
     const createdSet = await customerReviewQuestionsService.create({
       name,
-      questions
+      questions,
     })
     dispatch(createCustomerReviewQuestionSetSuccess(createdSet))
   }

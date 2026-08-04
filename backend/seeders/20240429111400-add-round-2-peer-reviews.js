@@ -9,8 +9,7 @@ const initialQuestionsWithAnswers = [
   },
   {
     type: 'number',
-    header:
-      'Aikaisempi kokemus ohjelmistokehitysprojekteista ja -työstä kuukausissa laskettuna',
+    header: 'Aikaisempi kokemus ohjelmistokehitysprojekteista ja -työstä kuukausissa laskettuna',
     description: '',
   },
   {
@@ -20,8 +19,7 @@ const initialQuestionsWithAnswers = [
   },
   {
     type: 'radio',
-    header:
-      'Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.',
+    header: 'Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.',
     options: [
       'En osaa sanoa',
       'Ei lainkaan',
@@ -30,13 +28,11 @@ const initialQuestionsWithAnswers = [
       'Paljon',
       'Erittäin paljon',
     ],
-    description:
-      '(Slackin ja muiden pikaviestimien aktiivinen käyttö lasketaan myös läsnäoloksi.)',
+    description: '(Slackin ja muiden pikaviestimien aktiivinen käyttö lasketaan myös läsnäoloksi.)',
   },
   {
     type: 'number',
-    header:
-      'Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).',
+    header: 'Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).',
     description: '',
   },
   {
@@ -146,7 +142,7 @@ const initialReviewQuestionSet = [
           type: item.type,
           options: item.options,
         }
-      })
+      }),
     ),
   },
 ]
@@ -170,31 +166,26 @@ const initialPeerReviewAnswers1 = [
     id: 2,
     type: 'number',
     answer: '160',
-    questionHeader:
-      'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?',
+    questionHeader: 'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?',
   },
   {
     id: 3,
     type: 'radio',
     peers: { 'New User': 2, 'John Smith': 3, 'Jane Madison': 4 },
-    questionHeader:
-      'Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.',
+    questionHeader: 'Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.',
   },
   {
     id: 4,
     type: 'number',
     answer: '4',
-    questionHeader:
-      'Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).',
+    questionHeader: 'Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).',
   },
   {
     id: 5,
     type: 'peerReview',
     peers: {
-      'New User':
-        'Aktiivinen osallistuminen teknisen suunnittelun kaikissa vaiheissa.',
-      'John Smith':
-        'Vastuullinen tehtävien hallinnassa, erinomainen erityisosaaminen. (itsearvio)',
+      'New User': 'Aktiivinen osallistuminen teknisen suunnittelun kaikissa vaiheissa.',
+      'John Smith': 'Vastuullinen tehtävien hallinnassa, erinomainen erityisosaaminen. (itsearvio)',
       'Jane Madison': 'Tehokas vastuualueiden hoito ja ongelmien ratkaisu.',
     },
     questionHeader: 'Tekninen kontribuutio',
@@ -217,10 +208,8 @@ const initialPeerReviewAnswers1 = [
     peers: {
       'New User':
         'Hyvin noudatettu prosesseja ja aktiivinen osallistuminen päivittäisiin kokouksiin.',
-      'John Smith':
-        'Erinomainen läpinäkyvyys ja DoD:n noudattaminen. (itsearvio)',
-      'Jane Madison':
-        'Aktiivinen sprint planningissä ja hyvä käyttö backlogille.',
+      'John Smith': 'Erinomainen läpinäkyvyys ja DoD:n noudattaminen. (itsearvio)',
+      'Jane Madison': 'Aktiivinen sprint planningissä ja hyvä käyttö backlogille.',
     },
     questionHeader: 'Prosessin noudattaminen',
   },
@@ -234,10 +223,8 @@ const initialPeerReviewAnswers1 = [
     id: 10,
     type: 'peerReview',
     peers: {
-      'New User':
-        'Proaktiivinen ongelmien tunnistamisessa ja ratkaisujen kehittämisessä.',
-      'John Smith':
-        'Aktiivinen osallistuminen retroissa ja prosessien parantamisessa. (itsearvio)',
+      'New User': 'Proaktiivinen ongelmien tunnistamisessa ja ratkaisujen kehittämisessä.',
+      'John Smith': 'Aktiivinen osallistuminen retroissa ja prosessien parantamisessa. (itsearvio)',
       'Jane Madison':
         'Jatkuvasti parannettu user storyjen laatua ja asiakaspalavereihin valmistautumista.',
     },
@@ -253,10 +240,8 @@ const initialPeerReviewAnswers1 = [
     id: 12,
     type: 'peerReview',
     peers: {
-      'New User':
-        'Loistava kyky koordinoida toimintaa muiden kanssa ja tukea tiimiä.',
-      'John Smith':
-        'Luotettava, täsmällinen ja hyvä ryhmähengen ylläpitäjä. (itsearvio)',
+      'New User': 'Loistava kyky koordinoida toimintaa muiden kanssa ja tukea tiimiä.',
+      'John Smith': 'Luotettava, täsmällinen ja hyvä ryhmähengen ylläpitäjä. (itsearvio)',
       'Jane Madison': 'Monipuoliset taidot ja aktiivinen auttaminen tiimille.',
     },
     questionHeader: 'Ryhmätyö',
@@ -278,10 +263,8 @@ const initialPeerReviewAnswers1 = [
     id: 15,
     type: 'peerReview',
     peers: {
-      'New User':
-        'Erinomainen demojen valmistelu ja sujuva kommunikointi asiakkaan kanssa.',
-      'John Smith':
-        'Asiallinen käytös ja täsmällisyys demoissa ja palavereissa. (itsearvio)',
+      'New User': 'Erinomainen demojen valmistelu ja sujuva kommunikointi asiakkaan kanssa.',
+      'John Smith': 'Asiallinen käytös ja täsmällisyys demoissa ja palavereissa. (itsearvio)',
       'Jane Madison':
         'Aktiivinen osallistuminen user storyjen muodostamiseen ja demojen sujuvuuteen.',
     },
@@ -320,32 +303,27 @@ const initialPeerReviewAnswers2 = [
     id: 2,
     type: 'number',
     answer: '124',
-    questionHeader:
-      'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?',
+    questionHeader: 'Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?',
   },
   {
     id: 3,
     type: 'radio',
     peers: { 'New User': 1, 'John Smith': 3, 'Jane Madison': 1 },
-    questionHeader:
-      'Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.',
+    questionHeader: 'Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.',
   },
   {
     id: 4,
     type: 'number',
     answer: '2',
-    questionHeader:
-      'Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).',
+    questionHeader: 'Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).',
   },
   {
     id: 5,
     type: 'peerReview',
     peers: {
       'New User': 'Ihan ok tekninen kontribuutio, mutta voisi olla enemmän.',
-      'John Smith':
-        'Jatkuvasti parantanut osaamistaan ja tuonut lisäarvoa tiimille.',
-      'Jane Madison':
-        'Erinomainen tekninen osaaminen ja vastuualueiden hoito. (itsearvio)',
+      'John Smith': 'Jatkuvasti parantanut osaamistaan ja tuonut lisäarvoa tiimille.',
+      'Jane Madison': 'Erinomainen tekninen osaaminen ja vastuualueiden hoito. (itsearvio)',
     },
     questionHeader: 'Tekninen kontribuutio',
   },
@@ -365,10 +343,8 @@ const initialPeerReviewAnswers2 = [
     id: 8,
     type: 'peerReview',
     peers: {
-      'New User':
-        'on ollut aktiivinen ja vastuullinen prosessien noudattamisessa.',
-      'John Smith':
-        'on ollut erinomainen esimerkki muille prosessien noudattamisessa.',
+      'New User': 'on ollut aktiivinen ja vastuullinen prosessien noudattamisessa.',
+      'John Smith': 'on ollut erinomainen esimerkki muille prosessien noudattamisessa.',
       'Jane Madison': 'ihan jees (itsearvio)',
     },
     questionHeader: 'Prosessin noudattaminen',
@@ -383,8 +359,7 @@ const initialPeerReviewAnswers2 = [
     id: 10,
     type: 'peerReview',
     peers: {
-      'New User':
-        'juuri sopivasti osallistunut prosessien kehittämiseen ja parantanut niitä.',
+      'New User': 'juuri sopivasti osallistunut prosessien kehittämiseen ja parantanut niitä.',
       'John Smith': 'ihanaa että on ollut mukana prosessien kehittämisessä.',
       'Jane Madison':
         'on ollut aktiivinen ja tehnyt paljon töitä prosessien parantamiseksi. (itsearvio)',
@@ -401,11 +376,9 @@ const initialPeerReviewAnswers2 = [
     id: 12,
     type: 'peerReview',
     peers: {
-      'New User':
-        'on ollut mukava ja ystävällinen ryhmätyöskentelyssä ja tukenut muita.',
+      'New User': 'on ollut mukava ja ystävällinen ryhmätyöskentelyssä ja tukenut muita.',
       'John Smith': 'ihan jees ryhmätyöskentelyssä ja tukenut muita.',
-      'Jane Madison':
-        'kiva tyyppi ja tukenut muita ryhmätyöskentelyssä. (itsearvio)',
+      'Jane Madison': 'kiva tyyppi ja tukenut muita ryhmätyöskentelyssä. (itsearvio)',
     },
     questionHeader: 'Ryhmätyö',
   },
@@ -426,12 +399,9 @@ const initialPeerReviewAnswers2 = [
     id: 15,
     type: 'peerReview',
     peers: {
-      'New User':
-        'kyllä on ollut mukana asiakastyöskentelyssä ja tukenut muita.',
-      'John Smith':
-        'ei ole ollut mukana asiakastyöskentelyssä ja tukenut muita.',
-      'Jane Madison':
-        'jaa-a, on ollut mukana asiakastyöskentelyssä ja tukenut muita. (itsearvio)',
+      'New User': 'kyllä on ollut mukana asiakastyöskentelyssä ja tukenut muita.',
+      'John Smith': 'ei ole ollut mukana asiakastyöskentelyssä ja tukenut muita.',
+      'Jane Madison': 'jaa-a, on ollut mukana asiakastyöskentelyssä ja tukenut muita. (itsearvio)',
     },
     questionHeader: 'Asiakastyöskentely',
   },
@@ -476,26 +446,14 @@ const addTimeStamps = (arr) => {
 
 module.exports = {
   up: async (query) => {
-    await query.bulkInsert(
-      'review_question_sets',
-      addTimeStamps(initialReviewQuestionSet),
-      {}
-    )
+    await query.bulkInsert('review_question_sets', addTimeStamps(initialReviewQuestionSet), {})
     await query.bulkInsert('peer_reviews', addTimeStamps(InitialPeerReview), {})
-    await query.bulkUpdate(
-      'configurations',
-      { review_question_set2_id: 2 },
-      { id: 1 }
-    )
+    await query.bulkUpdate('configurations', { review_question_set2_id: 2 }, { id: 1 })
   },
 
   down: async (query) => {
     await query.bulkDelete('review_question_sets', null, {})
     await query.bulkDelete('peer_reviews', null, {})
-    await query.bulkUpdate(
-      'configurations',
-      { review_question_set2_id: null },
-      { id: 1 }
-    )
+    await query.bulkUpdate('configurations', { review_question_set2_id: null }, { id: 1 })
   },
 }

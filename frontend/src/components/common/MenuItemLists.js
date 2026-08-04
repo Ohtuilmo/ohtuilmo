@@ -129,7 +129,7 @@ const adminItems = (history) => {
     },
     {
       text: 'Users',
-      handler: () => history.push('/administration/users')
+      handler: () => history.push('/administration/users'),
     },
     {
       text: 'Registration Questions',
@@ -157,8 +157,8 @@ const adminItems = (history) => {
       className: 'tags-statistics-menu-item',
       text: 'Tag statistics',
       handler: () => history.push('/administration/tags-statistics'),
-    }
+    },
   ]
 }
 
-export { regularItems, loggedInUnregisteredItems,loggedInItems, adminItems, instructorItems }
+export { regularItems, loggedInUnregisteredItems, loggedInItems, adminItems, instructorItems }

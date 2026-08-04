@@ -6,18 +6,13 @@ import QuestionSetForm from './QuestionSetForm'
 import './QuestionSetItemEditor.css'
 
 const SaveButton = ({ className }) => (
-  <Button
-    className={className}
-    type="submit"
-    variant="contained"
-    color="primary"
-  >
+  <Button className={className} type="submit" variant="contained" color="primary">
     Save changes
   </Button>
 )
 
 SaveButton.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 const CancelButton = ({ className, onClick }) => (
@@ -28,22 +23,14 @@ const CancelButton = ({ className, onClick }) => (
 
 CancelButton.propTypes = {
   className: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 }
 
-const QuestionSetItemEditor = ({
-  initialName,
-  initialQuestionsJson,
-  onSave,
-  onCancel
-}) => {
+const QuestionSetItemEditor = ({ initialName, initialQuestionsJson, onSave, onCancel }) => {
   const formControls = (
     <>
       <SaveButton className="question-set-item-editor__save-button" />
-      <CancelButton
-        className="question-set-item-editor__cancel-button"
-        onClick={onCancel}
-      />
+      <CancelButton className="question-set-item-editor__cancel-button" onClick={onCancel} />
     </>
   )
 
@@ -65,7 +52,7 @@ QuestionSetItemEditor.propTypes = {
   initialName: PropTypes.string,
   initialQuestionsJson: PropTypes.string,
   onSave: PropTypes.func,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
 }
 
 export default QuestionSetItemEditor

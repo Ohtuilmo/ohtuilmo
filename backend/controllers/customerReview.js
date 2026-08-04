@@ -112,7 +112,7 @@ customerReviewRouter.post('/', async (req, res) => {
 customerReviewRouter.get('/', checkAdmin, async (req, res) => {
   try {
     const foundReviews = await db.CustomerReview.findAll({
-      include: ['group']
+      include: ['group'],
     })
     return res.status(200).json({ reviews: foundReviews })
   } catch (error) {
@@ -125,13 +125,11 @@ customerReviewRouter.get('/all', checkAdmin, async (req, res) => {
     const groups = await db.Group.findAll()
 
     const reviews = await db.CustomerReview.findAll({
-      include: ['group']
+      include: ['group'],
     })
 
     const connectAnswerToGroup = (answers, group) => {
-      const connectedAnswers = answers.filter(
-        (answer) => answer.group.id === group.id
-      )
+      const connectedAnswers = answers.filter((answer) => answer.group.id === group.id)
       if (connectedAnswers.length < 1) {
         return null
       }
@@ -145,8 +143,8 @@ customerReviewRouter.get('/all', checkAdmin, async (req, res) => {
         group: {
           id: group.id,
           name: group.name,
-          answerSheet: groupAnswer
-        }
+          answerSheet: groupAnswer,
+        },
       })
       return list
     }, [])
@@ -157,58 +155,52 @@ customerReviewRouter.get('/all', checkAdmin, async (req, res) => {
   }
 })
 
-customerReviewRouter.get(
-  '/all/forconfiguration/:id',
-  checkAdmin,
-  async (req, res) => {
-    const id = req.params.id
-    try {
-      const groups = await db.Group.findAll({
-        where: {
-          configurationId: id
-        }
-      })
+customerReviewRouter.get('/all/forconfiguration/:id', checkAdmin, async (req, res) => {
+  const id = req.params.id
+  try {
+    const groups = await db.Group.findAll({
+      where: {
+        configurationId: id,
+      },
+    })
 
-      const reviews = await db.CustomerReview.findAll({
-        where: {
-          configuration_id: id
-        },
-        include: ['group']
-      })
+    const reviews = await db.CustomerReview.findAll({
+      where: {
+        configuration_id: id,
+      },
+      include: ['group'],
+    })
 
-      const connectAnswerToGroup = (answers, group) => {
-        const connectedAnswers = answers.filter(
-          (answer) => answer.group.id === group.id
-        )
-        if (connectedAnswers.length < 1) {
-          return null
-        }
-        return connectedAnswers[0].answer_sheet
+    const connectAnswerToGroup = (answers, group) => {
+      const connectedAnswers = answers.filter((answer) => answer.group.id === group.id)
+      if (connectedAnswers.length < 1) {
+        return null
       }
-
-      const answerByGroup = groups.reduce((list, group) => {
-        const groupAnswer = connectAnswerToGroup(reviews, group)
-
-        list = list.concat({
-          group: {
-            id: group.id,
-            name: group.name,
-            answerSheet: groupAnswer
-          }
-        })
-        return list
-      }, [])
-
-      return res.status(200).json(answerByGroup)
-    } catch (error) {
-      return handleDatabaseError(res, error)
+      return connectedAnswers[0].answer_sheet
     }
+
+    const answerByGroup = groups.reduce((list, group) => {
+      const groupAnswer = connectAnswerToGroup(reviews, group)
+
+      list = list.concat({
+        group: {
+          id: group.id,
+          name: group.name,
+          answerSheet: groupAnswer,
+        },
+      })
+      return list
+    }, [])
+
+    return res.status(200).json(answerByGroup)
+  } catch (error) {
+    return handleDatabaseError(res, error)
   }
-)
+})
 
 const hasCustomerAlreadyAnswered = async (groupId) => {
   const foundAnswer = await db.CustomerReview.findOne({
-    where: { group_id: groupId }
+    where: { group_id: groupId },
   })
   return !!foundAnswer
 }
@@ -220,8 +212,8 @@ customerReviewRouter.get('/:id', async (req, res) => {
   try {
     const topic = await db.Topic.findOne({
       where: {
-        secret_id: id
-      }
+        secret_id: id,
+      },
     })
 
     if (!topic) {
@@ -232,8 +224,8 @@ customerReviewRouter.get('/:id', async (req, res) => {
 
     const group = await db.Group.findOne({
       where: {
-        topicId: topic.id
-      }
+        topicId: topic.id,
+      },
     })
 
     if (!group) {
@@ -249,7 +241,7 @@ customerReviewRouter.get('/:id', async (req, res) => {
       groupName: group.name,
       topicId: topic.id,
       configuration: group.configurationId,
-      hasAnswered: hasAnswered
+      hasAnswered: hasAnswered,
     })
   } catch (error) {
     console.error('Error while updating group', error)
@@ -265,7 +257,7 @@ customerReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
 
   try {
     const customerReview = await db.CustomerReview.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     })
 
     if (!customerReview) {
@@ -276,11 +268,7 @@ customerReviewRouter.delete('/:id', checkAdmin, async (req, res) => {
 
     return res.status(204).send()
   } catch (err) {
-    console.error(
-      'error while deleting customer review with id',
-      req.params.id,
-      err
-    )
+    console.error('error while deleting customer review with id', req.params.id, err)
     return res.status(500).json({ error: 'internal server error' })
   }
 })

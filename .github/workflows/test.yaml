@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  eslint:
+  lint_and_format:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +26,12 @@ jobs:
         with:
           node-version: ${{ steps.backend-engines.outputs.nodeVersion }}
 
-      - name: Install backend dependencies & run linter
+      - name: Install backend dependencies, lint & format
         working-directory: ./backend
         run: |
           npm install
           npm run lint
+          npm run format:check
 
       - name: Read frontend node version from package.json
         uses: skjnldsv/read-package-engines-version-actions@v3
@@ -43,11 +44,12 @@ jobs:
         with:
           node-version: ${{ steps.frontend-engines.outputs.nodeVersion }}
 
-      - name: Install frontend dependencies & run linter
+      - name: Install frontend dependencies, lint & format
         working-directory: ./frontend
         run: |
           npm install
           npm run lint
+          npm run format:check
 
   backend-unit-tests:
     runs-on: ubuntu-latest

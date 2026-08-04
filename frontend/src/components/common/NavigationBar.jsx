@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { updateRole } from "../../services/dev"
+import { updateRole } from '../../services/dev'
 import * as userActions from '../../reducers/actions/userActions'
 import myGroupActions from '../../reducers/actions/myGroupActions'
 import registrationmanagementActions from '../../reducers/actions/registrationManagementActions'
@@ -11,20 +11,28 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import GroupIcon from '@material-ui/icons/Group'
-import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
-import Brightness7RoundedIcon from '@material-ui/icons/Brightness7Rounded';
+import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded'
+import Brightness7RoundedIcon from '@material-ui/icons/Brightness7Rounded'
 import NavigationMenu from './NavigationMenu'
 import {
   regularItems,
   loggedInItems,
   adminItems,
   instructorItems,
-  loggedInUnregisteredItems
+  loggedInUnregisteredItems,
 } from './MenuItemLists'
 import './NavigationBar.css'
 import { ColorModeContext } from '../../context/ColorModeContext'
 
-const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistrationManagement, history, logout }) => {
+const NavigationBar = ({
+  group,
+  user,
+  loginUser,
+  initializeMyGroup,
+  fetchRegistrationManagement,
+  history,
+  logout,
+}) => {
   const { mode: theme, setMode: setTheme } = useContext(ColorModeContext)
   const getAppropriateMenuItemList = () => {
     if (user === null) {
@@ -37,7 +45,7 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
           { title: 'Admin', items: adminItems(history) },
           { title: 'Instructor', items: instructorItems(history) },
           { title: 'Student', items: loggedInItems(history) },
-          { title: 'Student - no group', items: loggedInUnregisteredItems(history) }
+          { title: 'Student - no group', items: loggedInUnregisteredItems(history) },
         ],
       }
     } else if (user.user.instructor) {
@@ -45,7 +53,7 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
         items: [
           { title: 'Instructor', items: instructorItems(history) },
           { title: 'Student', items: loggedInItems(history) },
-          { title: 'Student - no group', items: loggedInUnregisteredItems(history) }
+          { title: 'Student - no group', items: loggedInUnregisteredItems(history) },
         ],
       }
     } else if (group) {
@@ -75,9 +83,7 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
     )
   let username =
     user && user.user ? (
-      <h4 className="navigation-bar-username tracking-in-expand">
-        {user.user.username}
-      </h4>
+      <h4 className="navigation-bar-username tracking-in-expand">{user.user.username}</h4>
     ) : (
       ''
     )
@@ -100,43 +106,43 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
 
   const handleClick = async (role) => {
     try {
-      console.log("New role:", await updateRole(role))
+      console.log('New role:', await updateRole(role))
       await loginUser()
       await initializeMyGroup()
       await fetchRegistrationManagement()
     } catch (e) {
-      console.error("Failed to update role:", e)
+      console.error('Failed to update role:', e)
     }
   }
 
   let select_role =
-    import.meta.env.MODE === "development"
-      ? (
-        <div style={{ marginRight: "10px"}}>
-          <Button
-            variant="outlined"
-            style={{ color: '#323232', borderColor: '#c2a628' }}
-            onClick={async () => await handleClick("student")}
-          >
-            Student
-          </Button>
-          <Button
-            variant="outlined"
-            style={{ color: '#323232', borderColor: '#c2a628' }}
-            onClick={async () => await handleClick("instructor")}
-          >
-            Instructor
-          </Button>
-          <Button
-            variant="outlined"
-            style={{ color: '#323232', borderColor: '#c2a628' }}
-            onClick={async () => await handleClick("admin")}
-          >
-            Admin
-          </Button>
-        </div>
-      )
-      : ""
+    import.meta.env.MODE === 'development' ? (
+      <div style={{ marginRight: '10px' }}>
+        <Button
+          variant="outlined"
+          style={{ color: '#323232', borderColor: '#c2a628' }}
+          onClick={async () => await handleClick('student')}
+        >
+          Student
+        </Button>
+        <Button
+          variant="outlined"
+          style={{ color: '#323232', borderColor: '#c2a628' }}
+          onClick={async () => await handleClick('instructor')}
+        >
+          Instructor
+        </Button>
+        <Button
+          variant="outlined"
+          style={{ color: '#323232', borderColor: '#c2a628' }}
+          onClick={async () => await handleClick('admin')}
+        >
+          Admin
+        </Button>
+      </div>
+    ) : (
+      ''
+    )
 
   const switchTheme = (theme) => {
     setTheme(theme)
@@ -145,15 +151,12 @@ const NavigationBar = ({ group, user, loginUser, initializeMyGroup, fetchRegistr
 
   const ThemeSelection = () => (
     <Button
-      variant='outlined'
+      variant="outlined"
       style={{ color: '#323232', marginLeft: '5px', borderColor: '#c2a628' }}
       onClick={() => switchTheme(theme === 'dark' ? 'light' : 'dark')}
-      data-cy='theme-toggle'
+      data-cy="theme-toggle"
     >
-      {theme === 'dark'
-        ? <Brightness7RoundedIcon />
-        : <Brightness4RoundedIcon />
-      }
+      {theme === 'dark' ? <Brightness7RoundedIcon /> : <Brightness4RoundedIcon />}
       Theme
     </Button>
   )

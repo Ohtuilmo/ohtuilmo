@@ -5,24 +5,22 @@ const db = require('../models/index')
 
 const handleDatabaseError = (res, error) => {
   console.log(error)
-  res
-    .status(500)
-    .json({ error: 'Something is wrong... try reloading the page' })
+  res.status(500).json({ error: 'Something is wrong... try reloading the page' })
 }
 
 const userIsInstructorForCurrentGroup = async (student_number) => {
   try {
     const group = await db.Group.findOne({
       where: {
-        instructor_id: student_number
+        instructor_id: student_number,
       },
       include: {
         model: db.Configuration,
         as: 'configuration',
         where: {
-          active: true
-        }
-      }
+          active: true,
+        },
+      },
     })
     return group ? true : false
   } catch (error) {
@@ -52,9 +50,12 @@ loginRouter.post('/', async (req, res) => {
       console.log('[Login] user found')
       //user already in database, no need to add
       const token = jwt.sign(
-        { id: foundUser.student_number, admin: foundUser.admin,
-          instructor: await userIsInstructorForCurrentGroup(foundUser.student_number) },
-        config.secret
+        {
+          id: foundUser.student_number,
+          admin: foundUser.admin,
+          instructor: await userIsInstructorForCurrentGroup(foundUser.student_number),
+        },
+        config.secret,
       )
       console.log('[Login] return')
       return res.status(200).set('Cache-Control', 'no-store').json({
@@ -78,7 +79,7 @@ loginRouter.post('/', async (req, res) => {
           admin: savedUser.admin,
           instructor: await userIsInstructorForCurrentGroup(savedUser.student_number),
         },
-        config.secret
+        config.secret,
       )
       console.log('[Login] return')
       return res.status(200).set('Cache-Control', 'no-store').json({
@@ -86,7 +87,7 @@ loginRouter.post('/', async (req, res) => {
         user: savedUser,
       })
     }
-  } catch(error) {
+  } catch (error) {
     handleDatabaseError(res, error)
   }
 })

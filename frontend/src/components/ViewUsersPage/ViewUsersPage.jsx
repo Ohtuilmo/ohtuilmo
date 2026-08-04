@@ -2,13 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 
@@ -26,9 +20,7 @@ const customTheme = createMuiTheme({
   },
 })
 
-const TopicDetailsLink = ({ topicId, ...props }) => (
-  <Link {...props} to={`/topics/${topicId}`} />
-)
+const TopicDetailsLink = ({ topicId, ...props }) => <Link {...props} to={`/topics/${topicId}`} />
 
 const AdminMarker = () => {
   return (
@@ -56,10 +48,7 @@ const LinkedCell = (props) => {
       <TableCell padding="dense">
         {props.participated.map((group, index) => {
           return (
-            <TopicDetailsLink
-              key={'participated' + index}
-              topicId={group.topic}
-            >
+            <TopicDetailsLink key={'participated' + index} topicId={group.topic}>
               {group.semester}: {group.groupName}
             </TopicDetailsLink>
           )
@@ -107,18 +96,14 @@ const UserTableBody = (props) => {
               <LinkedCell participated={user.participated} />
             ) : (
               <TableCell padding="dense">
-                <Typography variant="overline">
-                  No course participation
-                </Typography>
+                <Typography variant="overline">No course participation</Typography>
               </TableCell>
             )}
             {user.instructor && user.instructor.length > 0 ? (
               <LinkedCell instructor={user.instructor} />
             ) : (
               <TableCell padding="dense">
-                <Typography variant="overline">
-                  No instructor activities
-                </Typography>
+                <Typography variant="overline">No instructor activities</Typography>
               </TableCell>
             )}
           </TableRow>
@@ -175,6 +160,4 @@ const mapDispatchToProps = {
   setTestUsers: userListActions.setTestUsers,
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ViewUsersPage),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewUsersPage))

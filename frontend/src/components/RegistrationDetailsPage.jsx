@@ -27,7 +27,7 @@ class PeerReviewInfo extends React.Component {
     const data = await peerReviewService.get()
     if (data) {
       this.setState({
-        submittedReviews: data
+        submittedReviews: data,
       })
     }
   }
@@ -79,7 +79,7 @@ const GroupDetails = ({ groupDetails }) => {
           </Typography>
           <h4>Project length</h4>
           <Typography variant="body1" gutterBottom>
-            {groupDetails.isShortProject ? "Short" : "Normal"}
+            {groupDetails.isShortProject ? 'Short' : 'Normal'}
           </Typography>
           <h4>Instructor</h4>
           <Typography variant="body1" gutterBottom>
@@ -168,13 +168,7 @@ const RegistrationAnswers = ({ questions }) => {
                   <MenuItem value={5}>5</MenuItem>
                 </Select>
               ) : (
-                <Input
-                  value={question.answer}
-                  fullWidth
-                  multiline
-                  rowsMax="3"
-                  disabled
-                />
+                <Input value={question.answer} fullWidth multiline rowsMax="3" disabled />
               )}
             </CardContent>
           </Card>
@@ -210,7 +204,7 @@ class RegistrationDetailsPage extends React.Component {
       peerReviewConf,
       projectRegistrationConf,
       peerReviewOpen,
-      peerReviewRound
+      peerReviewRound,
     } = this.props
 
     if (groupDetails) {
@@ -231,12 +225,11 @@ class RegistrationDetailsPage extends React.Component {
     }
 
     const projectReg = ownRegistrations.find(
-      (registration) =>
-        registration.configuration_id === projectRegistrationConf
+      (registration) => registration.configuration_id === projectRegistrationConf,
     )
 
     const reviewConf = ownRegistrations.find(
-      (registration) => registration.configuration_id === peerReviewConf
+      (registration) => registration.configuration_id === peerReviewConf,
     )
 
     const registration = reviewConf ? reviewConf : projectReg
@@ -273,19 +266,18 @@ const mapStateToProps = (state) => {
     groupDetails: state.registrationDetails.myGroup,
     peerReviewRound: state.registrationManagement.peerReviewRound,
     peerReviewConf: state.registrationManagement.peerReviewConf,
-    projectRegistrationConf:
-      state.registrationManagement.projectRegistrationConf
+    projectRegistrationConf: state.registrationManagement.projectRegistrationConf,
   }
 }
 
 const mapDispatchToProps = {
   fetchRegistrations: registrationActions.fetchRegistrations,
-  setError
+  setError,
 }
 
 const ConnectedRegistrationDetailsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(RegistrationDetailsPage)
 
 export default withRouter(ConnectedRegistrationDetailsPage)

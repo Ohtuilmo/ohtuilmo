@@ -1,12 +1,14 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const request = require('supertest')
 
 const { app, server, db } = require('../../index')
 const { createAndLoginAs, testAdmin, resetUsers } = require('../utils/login')
-const { createTestRegistrationManagement, resetRegistrationManagements } = require('../utils/registrationManagement')
+const {
+  createTestRegistrationManagement,
+  resetRegistrationManagements,
+} = require('../utils/registrationManagement')
 const { createTestConfiguration, resetConfigurations } = require('../utils/configuration')
 const { testContent } = require('../utils/topic')
-
 
 describe('Topics', () => {
   test('should not be created with missing registration management open', async () => {
@@ -55,7 +57,6 @@ describe('Topics', () => {
 
     expect(res.statusCode).toEqual(200)
   })
-
 
   beforeEach(async () => {
     await resetUsers(db)

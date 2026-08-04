@@ -3,7 +3,6 @@ const Sequelize = require('sequelize')
 const db = {}
 
 db.connect = () => {
-
   const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false })
 
   console.log('connecting to db ' + process.env.DATABASE_URL)
@@ -48,19 +47,10 @@ db.connect = () => {
   const TopicDate = TopicDateModel(sequelize, Sequelize)
   const Registration = RegistrationModel(sequelize, Sequelize)
   const Configuration = ConfigurationModel(sequelize, Sequelize)
-  const RegistrationQuestionSet = RegistrationQuestionSetModel(
-    sequelize,
-    Sequelize
-  )
+  const RegistrationQuestionSet = RegistrationQuestionSetModel(sequelize, Sequelize)
   const ReviewQuestionSet = ReviewQuestionSetModel(sequelize, Sequelize)
-  const CustomerReviewQuestionSet = CustomerReviewQuestionSetModel(
-    sequelize,
-    Sequelize
-  )
-  const RegistrationManagement = RegistrationManagementModel(
-    sequelize,
-    Sequelize
-  )
+  const CustomerReviewQuestionSet = CustomerReviewQuestionSetModel(sequelize, Sequelize)
+  const RegistrationManagement = RegistrationManagementModel(sequelize, Sequelize)
   const PeerReview = PeerReviewModel(sequelize, Sequelize)
   const EmailTemplate = EmailTemplateModel(sequelize, Sequelize)
   const CustomerReview = CustomerReviewModel(sequelize, Sequelize)

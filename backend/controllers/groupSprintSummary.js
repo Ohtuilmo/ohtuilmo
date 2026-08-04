@@ -15,33 +15,27 @@ const validateAccess = async (groupId, userId) => {
 }
 
 const getGroupSprintSummary = async (groupId) => {
-
   const sprints = await db.Sprint.findAll({
     where: { group_id: groupId },
-    attributes: [
-      'id',
-      'sprint',
-      'start_date',
-      'end_date'
-    ]
+    attributes: ['id', 'sprint', 'start_date', 'end_date'],
   })
 
-  const sprintIds = sprints.map(sprint => sprint.id)
+  const sprintIds = sprints.map((sprint) => sprint.id)
 
   const rawLogs = await db.TimeLog.findAll({
     where: { sprint_id: { [db.Sequelize.Op.in]: sprintIds } },
     attributes: [
       'sprint_id',
       'student_number',
-      [db.Sequelize.fn('sum', db.Sequelize.col('minutes')), 'total_minutes']
+      [db.Sequelize.fn('sum', db.Sequelize.col('minutes')), 'total_minutes'],
     ],
-    group: ['sprint_id', 'student_number']
+    group: ['sprint_id', 'student_number'],
   })
 
-  const studentNumbers = rawLogs.map(log => log.student_number)
+  const studentNumbers = rawLogs.map((log) => log.student_number)
   const users = await db.User.findAll({
     where: { student_number: { [db.Sequelize.Op.in]: studentNumbers } },
-    attributes: ['student_number', 'first_names', 'last_name']
+    attributes: ['student_number', 'first_names', 'last_name'],
   })
 
   const nameMap = users.reduce((map, user) => {
@@ -67,20 +61,21 @@ const getGroupSprintSummary = async (groupId) => {
     return map
   }, {})
 
-  const result = sprints.map(sprint => ({
-    [sprint.sprint]: Object.entries(logsMap[sprint.id] || {}).map(([name, total_minutes]) => ({
-      [name]: parseInt(total_minutes, 10) || 0
-    }))
+  const result = sprints.map((sprint) => ({
+    [sprint.sprint]: Object.entries(logsMap[sprint.id] || {})
+      .map(([name, total_minutes]) => ({
+        [name]: parseInt(total_minutes, 10) || 0,
+      }))
       .concat({
         start_date: sprint.start_date,
-        end_date: sprint.end_date
-      })
+        end_date: sprint.end_date,
+      }),
   }))
 
   result.push({
-    'Total': Object.entries(totalMap).map(([name, total_minutes]) => ({
-      [name]: total_minutes
-    }))
+    Total: Object.entries(totalMap).map(([name, total_minutes]) => ({
+      [name]: total_minutes,
+    })),
   })
 
   return JSON.stringify(result, null, 2)
@@ -93,13 +88,12 @@ groupSprintSummaryRouter.get('/:id', checkLogin, async (req, res) => {
 
   //console.log('Group sprint summary request for group: ', groupId, ' by user: ', userId)
 
-  const access = await validateAccess(groupId, userId) || isAdmin
+  const access = (await validateAccess(groupId, userId)) || isAdmin
 
   if (!access) {
     console.error('Group not found or user not authorized.')
     return res.status(403).json({ error: 'Group not found or user not authorized.' })
   }
-
 
   const result = await getGroupSprintSummary(groupId)
   if (result === undefined) {

@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, ReferenceLine, LabelList, Bar, Cell } from 'recharts'
+import {
+  ResponsiveContainer,
+  BarChart,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ReferenceLine,
+  LabelList,
+  Bar,
+  Cell,
+} from 'recharts'
 import { NoTimeLogsPlaceholderSprint, NoTimeLogsPlaceholderProject } from '../common/Placeholders'
 import Error from '@material-ui/icons/Error'
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles'
 
 import './TimeLogsPage.css'
 
@@ -22,7 +32,7 @@ const barColourSet = [
   '#e63375',
   '#256ec7',
   '#e95c55',
-  '#a3af07'
+  '#a3af07',
 ]
 
 const CustomizedTick = (props) => {
@@ -30,18 +40,24 @@ const CustomizedTick = (props) => {
   const parts = payload.value.split(' ')
   return (
     <g transform={`translate(${x},${y})`} id={`timelogs-chart-${variant}-tick-${payload.index}`}>
-      <text x={0} y={0} dy={-8} dx={-40} transform='rotate(270)' fill={barColourSet[payload.index % barColourSet.length]}>
-        <tspan textAnchor='middle' x='0' dx={-36}>
+      <text
+        x={0}
+        y={0}
+        dy={-8}
+        dx={-40}
+        transform="rotate(270)"
+        fill={barColourSet[payload.index % barColourSet.length]}
+      >
+        <tspan textAnchor="middle" x="0" dx={-36}>
           {parts[0]}
         </tspan>
-        <tspan textAnchor='middle' x='0' dy='16' dx={-36}>
+        <tspan textAnchor="middle" x="0" dy="16" dx={-36}>
           {parts[1]}
         </tspan>
       </text>
     </g>
   )
 }
-
 
 const durationInDays = (start_date, end_date) => {
   // This is a... ahem... _borrowed_ solution
@@ -51,7 +67,7 @@ const durationInDays = (start_date, end_date) => {
   const utc1 = Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate())
   const utc2 = Date.UTC(end_date.getFullYear(), end_date.getMonth(), end_date.getDate())
 
-  return Math.floor(Math.abs((utc2 - utc1)) / _MS_PER_DAY) + 1
+  return Math.floor(Math.abs(utc2 - utc1) / _MS_PER_DAY) + 1
 }
 
 // The ideal hours per project is 200h
@@ -69,15 +85,17 @@ const durationInDays = (start_date, end_date) => {
 // 22h/week to 154h
 // if less that that... good luck
 const getProjectHours = (isShortProject) => {
-  return isShortProject ? {
-    idealHoursPerDay: 30 / 7,
-    okHoursPerDay: 26 / 7,
-    dangerousHoursPerDay: 22 / 7,
-  } : {
-    idealHoursPerDay: 14 / 7,
-    okHoursPerDay: 12 / 7,
-    dangerousHoursPerDay: 8 / 7,
-  }
+  return isShortProject
+    ? {
+        idealHoursPerDay: 30 / 7,
+        okHoursPerDay: 26 / 7,
+        dangerousHoursPerDay: 22 / 7,
+      }
+    : {
+        idealHoursPerDay: 14 / 7,
+        okHoursPerDay: 12 / 7,
+        dangerousHoursPerDay: 8 / 7,
+      }
 }
 
 const projectDurationFromSprints = (allSprintDates) => {
@@ -95,30 +113,37 @@ const idealHours = (durationDays, isShortProject) => {
 
 const barBorderColorByPace = (pace) => {
   switch (pace) {
-  case 'Ideal':
-    return 'none'
-  case 'Ok':
-    return 'none'
-  case 'Dangerous':
-    return 'orange'
-  case 'Panic':
-    return 'red'
-  default:
-    console.error('Student pace not matched:', studentName, pace, '- skipping.')
-    return 'none'
+    case 'Ideal':
+      return 'none'
+    case 'Ok':
+      return 'none'
+    case 'Dangerous':
+      return 'orange'
+    case 'Panic':
+      return 'red'
+    default:
+      console.error('Student pace not matched:', studentName, pace, '- skipping.')
+      return 'none'
   }
 }
 
-const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDuration, isShortProject) => {
+const checkStudentProgressPaceTotal = (
+  studentName,
+  allStudentHours,
+  totalDuration,
+  isShortProject,
+) => {
   const { idealHoursPerDay, okHoursPerDay, dangerousHoursPerDay } = getProjectHours(isShortProject)
-  const totalHours = allStudentHours.find(sprint => sprint.name === studentName && sprint.sprint === -1)?.altHours
+  const totalHours = allStudentHours.find(
+    (sprint) => sprint.name === studentName && sprint.sprint === -1,
+  )?.altHours
 
   let pace = ''
-  if (totalHours >= totalDuration*idealHoursPerDay) {
+  if (totalHours >= totalDuration * idealHoursPerDay) {
     pace = 'Ideal'
-  } else if (totalHours >= totalDuration*okHoursPerDay) {
+  } else if (totalHours >= totalDuration * okHoursPerDay) {
     pace = 'Ok'
-  } else if (totalHours >= totalDuration*dangerousHoursPerDay) {
+  } else if (totalHours >= totalDuration * dangerousHoursPerDay) {
     pace = 'Dangerous'
   } else {
     pace = 'Panic'
@@ -127,70 +152,83 @@ const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDurati
   return { pace, paceColor, totalHours, idealHours: idealHours(totalDuration, isShortProject) }
 }
 
-const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSprintDates, isShortProject) => {
+const checkStudentProgressPacePerSprint = (
+  targetStudent,
+  allStudentHours,
+  allSprintDates,
+  isShortProject,
+) => {
   const { idealHoursPerDay, okHoursPerDay, dangerousHoursPerDay } = getProjectHours(isShortProject)
   const sprintPaces = {}
   allStudentHours.forEach((student, _index) => {
-    if (student.sprint === -1)
-      return
+    if (student.sprint === -1) return
 
     const studentName = student.name
     const studentHours = student.altHours
     const sprintDates = allSprintDates[student.sprint]
 
-    if (studentName !== targetStudent)
-      return
-    if (!sprintDates)
-      return
+    if (studentName !== targetStudent) return
+    if (!sprintDates) return
 
     const sprintDuration = durationInDays(sprintDates.start_date, sprintDates.end_date)
     const sprintDays = Math.min(
       Math.max(durationInDays(sprintDates.start_date, new Date()), 1),
-      sprintDuration
+      sprintDuration,
     )
 
     let pace = ''
-    if (studentHours >= sprintDays*idealHoursPerDay) {
+    if (studentHours >= sprintDays * idealHoursPerDay) {
       pace = 'Ideal'
-    } else if (studentHours >= sprintDays*okHoursPerDay) {
+    } else if (studentHours >= sprintDays * okHoursPerDay) {
       pace = 'Ok'
-    } else if (studentHours >= sprintDays*dangerousHoursPerDay) {
+    } else if (studentHours >= sprintDays * dangerousHoursPerDay) {
       pace = 'Dangerous'
     } else {
       pace = 'Panic'
     }
 
     const paceColor = barBorderColorByPace(pace)
-    sprintPaces[student.sprint] = { pace, paceColor, hours: studentHours, idealHours: idealHours(sprintDays, isShortProject) }
+    sprintPaces[student.sprint] = {
+      pace,
+      paceColor,
+      hours: studentHours,
+      idealHours: idealHours(sprintDays, isShortProject),
+    }
   })
   return sprintPaces
 }
 
 const checkStudentProgress = (mappedData, allSprintDates, isShortProject) => {
-  const students = [...new Set(mappedData.map(sprint => sprint.name))]
+  const students = [...new Set(mappedData.map((sprint) => sprint.name))]
   const paces = {}
 
-  const firstSprintStart = allSprintDates && Object.keys(allSprintDates).length > 0
-    ? allSprintDates[Math.min(...Object.keys(allSprintDates).map(Number))].start_date
-    : null
+  const firstSprintStart =
+    allSprintDates && Object.keys(allSprintDates).length > 0
+      ? allSprintDates[Math.min(...Object.keys(allSprintDates).map(Number))].start_date
+      : null
 
   const projectDurationSinceStart = Math.max(durationInDays(firstSprintStart, new Date()), 1)
 
-  students.forEach(student => {
-    const studentPaceTotal = checkStudentProgressPaceTotal(student, mappedData, projectDurationSinceStart, isShortProject)
-    const studentPacePerSprint = checkStudentProgressPacePerSprint(student, mappedData, allSprintDates, isShortProject)
-    paces[student] = { total: studentPaceTotal, sprints: studentPacePerSprint}
+  students.forEach((student) => {
+    const studentPaceTotal = checkStudentProgressPaceTotal(
+      student,
+      mappedData,
+      projectDurationSinceStart,
+      isShortProject,
+    )
+    const studentPacePerSprint = checkStudentProgressPacePerSprint(
+      student,
+      mappedData,
+      allSprintDates,
+      isShortProject,
+    )
+    paces[student] = { total: studentPaceTotal, sprints: studentPacePerSprint }
   })
   return paces
 }
 
 const TimeLogChart = (props) => {
-  const {
-    groupSprintSummary,
-    selectedSprintNumber,
-    chartVariant,
-    isShortProject,
-  } = props
+  const { groupSprintSummary, selectedSprintNumber, chartVariant, isShortProject } = props
   const [chartData, setChartData] = useState([])
   const [sprints, setSprints] = useState([])
   const [studentPaces, setStudentPaces] = useState({})
@@ -213,9 +251,9 @@ const TimeLogChart = (props) => {
         for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
           const name = Object.keys(sprintData[entryIndex])[0]
           const minutes = Object.values(sprintData[entryIndex])[0]
-          const hours = parseInt(minutes/60)
+          const hours = parseInt(minutes / 60)
           const minutesLeft = minutes % 60
-          const altHours = minutes/60
+          const altHours = minutes / 60
           mappedData.push({
             sprint: -1,
             name: name,
@@ -225,26 +263,32 @@ const TimeLogChart = (props) => {
             hLabel: `${hours} hours`,
             minutes: minutesLeft,
             mLabel: `${minutesLeft} minutes`,
-            defaultLabel: `${altHours.toFixed(1)} h`
+            defaultLabel: `${altHours.toFixed(1)} h`,
           })
         }
       } else {
         for (let entryIndex = 0; entryIndex < sprintData.length; entryIndex++) {
-
           // Filter out sprint start+end dates and return them in an object grouped by sprint number
-          if (Object.keys(sprintData[entryIndex]).includes('start_date') || Object.keys(sprintData[entryIndex]).includes('end_date')) {
+          if (
+            Object.keys(sprintData[entryIndex]).includes('start_date') ||
+            Object.keys(sprintData[entryIndex]).includes('end_date')
+          ) {
             const start_date = new Date(sprintData[entryIndex].start_date)
             const end_date = new Date(sprintData[entryIndex].end_date)
-            sprintDates[sprint] = { start_date, end_date, duration: durationInDays(start_date, end_date) }
+            sprintDates[sprint] = {
+              start_date,
+              end_date,
+              duration: durationInDays(start_date, end_date),
+            }
 
             continue
           }
 
           const name = Object.keys(sprintData[entryIndex])[0]
           const minutes = Object.values(sprintData[entryIndex])[0]
-          const hours = parseInt(minutes/60)
+          const hours = parseInt(minutes / 60)
           const minutesLeft = minutes % 60
-          const altHours = minutes/60
+          const altHours = minutes / 60
           mappedData.push({
             sprint: Number(sprint),
             name: name,
@@ -254,23 +298,26 @@ const TimeLogChart = (props) => {
             hLabel: `${hours} hours`,
             minutes: minutesLeft,
             mLabel: `${minutesLeft} minutes`,
-            defaultLabel: `${altHours.toFixed(1)} h`
+            defaultLabel: `${altHours.toFixed(1)} h`,
           })
         }
       }
     }
-    return { mappedData: mappedData.sort((a, b) => a.name.localeCompare(b.name)), sprintDates: sprintDates }
+    return {
+      mappedData: mappedData.sort((a, b) => a.name.localeCompare(b.name)),
+      sprintDates: sprintDates,
+    }
   }
 
   useEffect(() => {
-    if (groupSprintSummary?.length === 0)
-      return
+    if (groupSprintSummary?.length === 0) return
 
     const { mappedData, sprintDates } = mapSprintSummaryData(groupSprintSummary)
-    if (mappedData.length === 0)
-      return
+    if (mappedData.length === 0) return
 
-    setSprints([...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1))])
+    setSprints([
+      ...new Set(mappedData.map((entry) => entry.sprint).filter((entry) => entry !== -1)),
+    ])
     setChartData(mappedData)
     setSprintDates(sprintDates)
 
@@ -281,45 +328,49 @@ const TimeLogChart = (props) => {
   }, [groupSprintSummary, isShortProject])
 
   useEffect(() => {
-    if (!sprintDates)
-      return
+    if (!sprintDates) return
 
-    if (selectedSprintNumber !== null && Object.keys(sprintDates).includes(selectedSprintNumber.toString())) {
-      const sprintDuration = durationInDays(sprintDates[selectedSprintNumber].start_date, sprintDates[selectedSprintNumber].end_date)
+    if (
+      selectedSprintNumber !== null &&
+      Object.keys(sprintDates).includes(selectedSprintNumber.toString())
+    ) {
+      const sprintDuration = durationInDays(
+        sprintDates[selectedSprintNumber].start_date,
+        sprintDates[selectedSprintNumber].end_date,
+      )
       setSelectedSprintDuration(sprintDuration)
     } else {
       setSelectedSprintDuration(0)
     }
   }, [selectedSprintNumber, sprintDates])
 
-  const firstSprintStart = sprintDates && Object.keys(sprintDates).length > 0
-    ? sprintDates[Math.min(...Object.keys(sprintDates).map(Number))].start_date
-    : null
+  const firstSprintStart =
+    sprintDates && Object.keys(sprintDates).length > 0
+      ? sprintDates[Math.min(...Object.keys(sprintDates).map(Number))].start_date
+      : null
 
   const totalIdealHours = firstSprintStart
     ? idealHours(
-      Math.min(
-        Math.max(durationInDays(firstSprintStart, new Date()), 1),
-        projectDuration
-      ),
-      isShortProject
-    )
+        Math.min(Math.max(durationInDays(firstSprintStart, new Date()), 1), projectDuration),
+        isShortProject,
+      )
     : 0
 
-  const selectedSprintStart = selectedSprintNumber !== null && sprintDates?.[selectedSprintNumber]
-    ? sprintDates[selectedSprintNumber].start_date
-    : null
+  const selectedSprintStart =
+    selectedSprintNumber !== null && sprintDates?.[selectedSprintNumber]
+      ? sprintDates[selectedSprintNumber].start_date
+      : null
 
-  const currentSprintIdealHours = selectedSprintStart && selectedSprintDuration > 0
-    ? idealHours(
-      Math.min(
-        Math.max(durationInDays(selectedSprintStart, new Date()), 1),
-        selectedSprintDuration
-      ),
-      isShortProject
-    )
-    : 0
-
+  const currentSprintIdealHours =
+    selectedSprintStart && selectedSprintDuration > 0
+      ? idealHours(
+          Math.min(
+            Math.max(durationInDays(selectedSprintStart, new Date()), 1),
+            selectedSprintDuration,
+          ),
+          isShortProject,
+        )
+      : 0
 
   const showSprintTooltip = ({ payload, label, active }) => {
     if (active && payload && payload.length) {
@@ -345,10 +396,13 @@ const TimeLogChart = (props) => {
         >
           <h3>{`${label} : ${fixedValue}h`}</h3>
           <h4>
-            Student's pace: { pace } { currentSprintIdealHours - totalHours > 0 ? `(missing: ${ missingHours }h)` : `(ahead ${aheadHours}h)`}
+            Student's pace: {pace}{' '}
+            {currentSprintIdealHours - totalHours > 0
+              ? `(missing: ${missingHours}h)`
+              : `(ahead ${aheadHours}h)`}
           </h4>
           <p className="desc" style={{ margin: '0' }}>
-            Student should have around { fixedIdealHours } hours by now, has { fixedTotalHours } hours
+            Student should have around {fixedIdealHours} hours by now, has {fixedTotalHours} hours
           </p>
         </div>
       )
@@ -382,10 +436,13 @@ const TimeLogChart = (props) => {
         >
           <h3>{`${label} : ${fixedValue}h`}</h3>
           <h4>
-            Student's pace: { pace } { idealHoursToDate-totalHours>0 ? `(missing: ${ missingHours }h)` : `(ahead ${aheadHours}h)`}
+            Student's pace: {pace}{' '}
+            {idealHoursToDate - totalHours > 0
+              ? `(missing: ${missingHours}h)`
+              : `(ahead ${aheadHours}h)`}
           </h4>
           <p className="desc" style={{ margin: '0' }}>
-            Student should have around { fixedIdealHours } hours, has { fixedTotalHours } hours
+            Student should have around {fixedIdealHours} hours, has {fixedTotalHours} hours
           </p>
         </div>
       )
@@ -395,17 +452,17 @@ const TimeLogChart = (props) => {
   }
 
   if (chartData && chartData.length > 0) {
-    return chartVariant === 'total'
-      ? (<div className='timelogs-chart-container'>
+    return chartVariant === 'total' ? (
+      <div className="timelogs-chart-container">
         <ResponsiveContainer>
           <BarChart
             margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-            id='timelogs-chart-total'
-            className='timelogs-chart'
+            id="timelogs-chart-total"
+            className="timelogs-chart"
             data={chartData.filter((entry) => entry.sprint === -1)}
           >
             <XAxis
-              dataKey='name'
+              dataKey="name"
               minTickGap={0}
               height={70}
               tick={<CustomizedTick variant={chartVariant} />}
@@ -414,10 +471,11 @@ const TimeLogChart = (props) => {
               axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
             />
             <YAxis
-              domain={[0, (dataMax) => Math.max(
-                dataMax,
-                Math.round(idealHours(projectDuration, isShortProject))
-              )]}
+              domain={[
+                0,
+                (dataMax) =>
+                  Math.max(dataMax, Math.round(idealHours(projectDuration, isShortProject))),
+              ]}
               axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
               tickLine={{ stroke: theme.custom.chartAxis.stroke }}
               tick={{ fill: theme.custom.chartAxis.stroke }}
@@ -426,103 +484,153 @@ const TimeLogChart = (props) => {
               y={Math.round(idealHours(projectDuration, isShortProject))}
               stroke="red"
               strokeDasharray="3 3"
-              label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
+              label={{
+                value: 'goal',
+                dy: -10,
+                offset: -30,
+                position: 'left',
+                fill: 'red',
+                fontSize: 12,
+              }}
             />
             <ReferenceLine
               y={totalIdealHours}
               stroke="grey"
               strokeDasharray="4 3"
-              label={{ value: 'ideal pace', dy: -10, offset:-60, position: 'left', fill: 'grey', fontSize: 12 }}
+              label={{
+                value: 'ideal pace',
+                dy: -10,
+                offset: -60,
+                position: 'left',
+                fill: 'grey',
+                fontSize: 12,
+              }}
             />
-            <Tooltip
-              content={showTotalTooltip}
-              cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }}
-            />
-            <Bar
-              dataKey='altHours'
-              background={false}
-            >
-              <LabelList dataKey='defaultLabel' position='top' />
-              {chartData.filter((entry) => entry.sprint === -1).map((entry, index) => {
-                const paceColor = entry.sprint === -1
-                  ? studentPaces[entry.name].total.paceColor
-                  : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
-                return (<Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} stroke={paceColor} strokeWidth={1} />)
-              })}
+            <Tooltip content={showTotalTooltip} cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }} />
+            <Bar dataKey="altHours" background={false}>
+              <LabelList dataKey="defaultLabel" position="top" />
+              {chartData
+                .filter((entry) => entry.sprint === -1)
+                .map((entry, index) => {
+                  const paceColor =
+                    entry.sprint === -1
+                      ? studentPaces[entry.name].total.paceColor
+                      : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
+                  return (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={barColourSet[index % barColourSet.length]}
+                      stroke={paceColor}
+                      strokeWidth={1}
+                    />
+                  )
+                })}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>)
-      : selectedSprintNumber !== null && sprints.includes(selectedSprintNumber)
-        ? (<div className='timelogs-chart-container'>
-          <ResponsiveContainer>
-            <BarChart
-              margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-              id='timelogs-chart-sprint'
-              className='timelogs-chart'
-              data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
-            >
-              <XAxis
-                dataKey='name'
-                minTickGap={0}
-                height={70}
-                tick={<CustomizedTick variant={chartVariant} />}
-                angle={270}
-                tickLine={{ stroke: theme.custom.chartAxis.stroke }}
-                axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
-              />
-              <YAxis
-                domain={[0, (dataMax) => Math.max(
-                  dataMax,
-                  Math.round(idealHours(selectedSprintDuration, isShortProject))
-                )]}
-                axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
-                tickLine={{ stroke: theme.custom.chartAxis.stroke }}
-                tick={{ fill: theme.custom.chartAxis.stroke }}
-              />
-              <ReferenceLine
-                y={Math.round(idealHours(selectedSprintDuration, isShortProject))}
-                stroke="red"
-                strokeDasharray="3 3"
-                label={{ value: 'goal', dy: -10, offset:-30, position: 'left', fill: 'red', fontSize: 12 }}
-              />
-              <ReferenceLine
-                y={currentSprintIdealHours}
-                stroke="grey"
-                strokeDasharray="4 3"
-                label={{ value: 'ideal pace', dy: -10, offset:-60, position: 'left', fill: 'grey', fontSize: 12 }}
-              />
-              <Tooltip
-                content={showSprintTooltip}
-                cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }}
-              />
-              <Bar
-                dataKey='altHours'
-                background={false}
-              >
-                <LabelList dataKey='defaultLabel' position='top' />
-                {chartData.filter((entry) => entry.sprint === selectedSprintNumber).map((entry, index) => {
-                  const paceColor = entry.sprint === -1
-                    ? studentPaces[entry.name].total.paceColor
-                    : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
-                  return (<Cell key={`cell-${index}`} fill={barColourSet[index % barColourSet.length]} stroke={paceColor} strokeWidth={1} />)
+      </div>
+    ) : selectedSprintNumber !== null && sprints.includes(selectedSprintNumber) ? (
+      <div className="timelogs-chart-container">
+        <ResponsiveContainer>
+          <BarChart
+            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+            id="timelogs-chart-sprint"
+            className="timelogs-chart"
+            data={chartData.filter((entry) => entry.sprint === selectedSprintNumber)}
+          >
+            <XAxis
+              dataKey="name"
+              minTickGap={0}
+              height={70}
+              tick={<CustomizedTick variant={chartVariant} />}
+              angle={270}
+              tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+              axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
+            />
+            <YAxis
+              domain={[
+                0,
+                (dataMax) =>
+                  Math.max(dataMax, Math.round(idealHours(selectedSprintDuration, isShortProject))),
+              ]}
+              axisLine={{ stroke: theme.custom.chartAxis.stroke, strokeWidth: 1 }}
+              tickLine={{ stroke: theme.custom.chartAxis.stroke }}
+              tick={{ fill: theme.custom.chartAxis.stroke }}
+            />
+            <ReferenceLine
+              y={Math.round(idealHours(selectedSprintDuration, isShortProject))}
+              stroke="red"
+              strokeDasharray="3 3"
+              label={{
+                value: 'goal',
+                dy: -10,
+                offset: -30,
+                position: 'left',
+                fill: 'red',
+                fontSize: 12,
+              }}
+            />
+            <ReferenceLine
+              y={currentSprintIdealHours}
+              stroke="grey"
+              strokeDasharray="4 3"
+              label={{
+                value: 'ideal pace',
+                dy: -10,
+                offset: -60,
+                position: 'left',
+                fill: 'grey',
+                fontSize: 12,
+              }}
+            />
+            <Tooltip content={showSprintTooltip} cursor={{ fill: '#4d4d4d', fillOpacity: 0.2 }} />
+            <Bar dataKey="altHours" background={false}>
+              <LabelList dataKey="defaultLabel" position="top" />
+              {chartData
+                .filter((entry) => entry.sprint === selectedSprintNumber)
+                .map((entry, index) => {
+                  const paceColor =
+                    entry.sprint === -1
+                      ? studentPaces[entry.name].total.paceColor
+                      : studentPaces[entry.name].sprints[selectedSprintNumber]?.paceColor
+                  return (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={barColourSet[index % barColourSet.length]}
+                      stroke={paceColor}
+                      strokeWidth={1}
+                    />
+                  )
                 })}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>)
-        : (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderSprint /></div>)
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    ) : (
+      <div className="timelogs-not-available-message-and-icon">
+        <Error />
+        <NoTimeLogsPlaceholderSprint />
+      </div>
+    )
   } else {
-    return chartVariant === 'total'
-      ? (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderProject /></div>)
-      : (<div className='timelogs-not-available-message-and-icon'><Error /><NoTimeLogsPlaceholderSprint /></div>)
+    return chartVariant === 'total' ? (
+      <div className="timelogs-not-available-message-and-icon">
+        <Error />
+        <NoTimeLogsPlaceholderProject />
+      </div>
+    ) : (
+      <div className="timelogs-not-available-message-and-icon">
+        <Error />
+        <NoTimeLogsPlaceholderSprint />
+      </div>
+    )
   }
 }
 
 const mapStateToProps = (state) => ({
   state: state,
   groupSprintSummary: state.timeLogs.groupSprintSummary,
-  selectedSprintNumber: state.timeLogs.selectedSprintNumber
+  selectedSprintNumber: state.timeLogs.selectedSprintNumber,
 })
 
 const mapDispatchToProps = {}

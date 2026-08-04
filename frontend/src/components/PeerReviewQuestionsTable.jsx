@@ -1,21 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from '@material-ui/core'
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 
 import { peerReviewQuestionShape } from './common/sharedPropTypes'
 
-const PeerReviewQuestionsTableRow = ({
-  type,
-  header,
-  description,
-  options,
-}) => (
+const PeerReviewQuestionsTableRow = ({ type, header, description, options }) => (
   <TableRow hover className="registration-questions-table-row">
     <TableCell component="th" scope="row">
       {header}

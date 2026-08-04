@@ -165,9 +165,7 @@ const SprintsPage = (props) => {
 
                   return (
                     <TableRow hover key={sprint.id} data-cy={`sprint-${sprint.sprint}`}>
-                      <TableCell className="sprint-list-sprint-number">
-                        {sprint.sprint}
-                      </TableCell>
+                      <TableCell className="sprint-list-sprint-number">{sprint.sprint}</TableCell>
                       <TableCell>{formattedStartDate}</TableCell>
                       <TableCell>{formattedEndDate}</TableCell>
                       <TableCell>
@@ -202,6 +200,4 @@ const mapStateToProps = (state) => ({
   group: state.registrationDetails.myGroup,
 })
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(SprintsPage),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SprintsPage))

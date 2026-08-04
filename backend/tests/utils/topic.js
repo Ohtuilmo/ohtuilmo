@@ -7,11 +7,12 @@ const testContent = {
   environment: 'Joku hyvä toteutusympäristö',
   customerName: 'Aasiakas',
   additionalInfo: 'Joku hyvä lisätieto',
-  specialRequests: 'Joku hyvä erityistoive'
+  specialRequests: 'Joku hyvä erityistoive',
 }
 
-const createTestTopic = async (db, configurationId=0) => {
-  const configuration_id = configurationId === 0 ? await createTestConfiguration(db) : configurationId
+const createTestTopic = async (db, configurationId = 0) => {
+  const configuration_id =
+    configurationId === 0 ? await createTestConfiguration(db) : configurationId
 
   const createdTopic = await db.Topic.create({
     active: true,
@@ -33,5 +34,5 @@ const resetTopics = async (db) => {
 module.exports = {
   testContent,
   createTestTopic,
-  resetTopics
+  resetTopics,
 }

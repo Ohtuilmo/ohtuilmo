@@ -16,12 +16,12 @@ module.exports = (sequelize, Sequelize) => {
       active: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
-        allowNull: false
+        allowNull: false,
       },
     },
     {
       underscored: true,
-    }
+    },
   )
 
   Configuration.associate = (models) => {

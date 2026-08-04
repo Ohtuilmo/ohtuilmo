@@ -2,7 +2,7 @@ import registrationService from '../../services/registration'
 
 const clearRegistrations = () => {
   return {
-    type: 'CLEAR_REGISTRATIONS'
+    type: 'CLEAR_REGISTRATIONS',
   }
 }
 
@@ -12,11 +12,11 @@ const fetchRegistrations = () => {
     if (registrations) {
       dispatch({
         type: 'SET_REGISTRATIONS',
-        payload: registrations
+        payload: registrations,
       })
     } else {
       dispatch({
-        type: 'CLEAR_REGISTRATIONS'
+        type: 'CLEAR_REGISTRATIONS',
       })
     }
   }

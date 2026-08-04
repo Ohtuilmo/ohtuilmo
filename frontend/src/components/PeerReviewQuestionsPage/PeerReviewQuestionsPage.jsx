@@ -6,12 +6,9 @@ import Paper from '@material-ui/core/Paper'
 
 import {
   fetchPeerReviewQuestionSets,
-  updatePeerReviewQuestionSet
+  updatePeerReviewQuestionSet,
 } from '../../reducers/actions/peerReviewQuestionsPageActions'
-import {
-  setError,
-  setSuccess
-} from '../../reducers/actions/notificationActions'
+import { setError, setSuccess } from '../../reducers/actions/notificationActions'
 
 import { peerReviewQuestionSetShape } from '../common/sharedPropTypes'
 import PeerReviewQuestionSetList from './PeerReviewQuestionSetList'
@@ -63,10 +60,7 @@ class PeerReviewQuestionsPage extends React.Component {
         <div className="peer-review-questions-page__container">
           <section style={{ marginBottom: '2rem' }}>
             <h2>Create question set</h2>
-            <Paper
-              depth={1}
-              className="peer-review-questions-page__create-form"
-            >
+            <Paper depth={1} className="peer-review-questions-page__create-form">
               <CreatePeerReviewQuestionSet />
             </Paper>
           </section>
@@ -89,23 +83,23 @@ PeerReviewQuestionsPage.propTypes = {
   setError: PropTypes.func,
   setSuccess: PropTypes.func,
   fetchPeerReviewQuestionSets: PropTypes.func,
-  updatePeerReviewQuestionSet: PropTypes.func
+  updatePeerReviewQuestionSet: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
-  questionSets: state.peerReviewQuestionsPage.questionSets
+  questionSets: state.peerReviewQuestionsPage.questionSets,
 })
 
 const mapDispatchToProps = {
   fetchPeerReviewQuestionSets,
   updatePeerReviewQuestionSet,
   setError,
-  setSuccess
+  setSuccess,
 }
 
 const ConnectedPeerReviewQuestionsPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PeerReviewQuestionsPage)
 
 export default withRouter(ConnectedPeerReviewQuestionsPage)

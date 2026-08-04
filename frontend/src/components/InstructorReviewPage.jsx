@@ -37,27 +37,22 @@ class InstructorReviewPage extends React.Component {
         this.fetchInstructorReviewQuestions(
           filteredGroups[0].students,
           questionsJson,
-          this.props.initializeAnswerSheet
+          this.props.initializeAnswerSheet,
         )
       }
-
     } catch (e) {
       console.error('Error happened:', e.response?.data?.error)
       this.props.setError('Something is wrong... try reloading the page')
     }
   }
 
-  async fetchInstructorReviewQuestions(
-    students,
-    questions,
-    initializeAnswerSheet
-  ) {
+  async fetchInstructorReviewQuestions(students, questions, initializeAnswerSheet) {
     const initializeNumberAnswer = (question, questionId) => {
       return {
         type: 'number',
         header: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
 
@@ -66,7 +61,7 @@ class InstructorReviewPage extends React.Component {
         type: 'text',
         header: question.header,
         id: questionId,
-        answer: ''
+        answer: '',
       }
     }
     const emptyAnswers = questions.questions.map((question, questionId) => {
@@ -83,7 +78,7 @@ class InstructorReviewPage extends React.Component {
       const sheet = emptyAnswers
       return {
         name: name,
-        answers: sheet
+        answers: sheet,
       }
     }
 
@@ -97,7 +92,7 @@ class InstructorReviewPage extends React.Component {
 
     let savedAnswerSheet = localStorage.getItem('savedAnswerSheet')
     if (savedAnswerSheet && JSON.parse(savedAnswerSheet).length > 0) {
-      console.info("Found previous saved answer. Loading saved answers.")
+      console.info('Found previous saved answer. Loading saved answers.')
       initializeAnswerSheet(JSON.parse(savedAnswerSheet))
     } else {
       console.info("Didn't find previously edited sheet. Loading empty sheet.")
@@ -106,18 +101,16 @@ class InstructorReviewPage extends React.Component {
 
     // "Autosave" each 5s
     setInterval(() => {
-        if (this.props.answerSheet.length > 0) {
-          localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
-        }
+      if (this.props.answerSheet.length > 0) {
+        localStorage.setItem('savedAnswerSheet', JSON.stringify(this.props.answerSheet))
+      }
     }, 5000)
   }
 
   Submit = async (event, answerSheet, groupName, groupId) => {
     event.preventDefault()
 
-    const answer = window.confirm(
-      'Answers can not be changed after submitting. Continue?'
-    )
+    const answer = window.confirm('Answers can not be changed after submitting. Continue?')
     if (!answer) return
     this.props.selectGroup(0)
     try {
@@ -126,8 +119,8 @@ class InstructorReviewPage extends React.Component {
           group_id: groupId,
           group_name: groupName,
           answer_sheet: answerSheet,
-          user_id: getUser().student_number
-        }
+          user_id: getUser().student_number,
+        },
       })
 
       this.props.setSuccess('Instructor review saved!')
@@ -145,7 +138,7 @@ class InstructorReviewPage extends React.Component {
         this.fetchInstructorReviewQuestions(
           filteredGroups[0].students,
           questionsJson,
-          this.props.initializeAnswerSheet
+          this.props.initializeAnswerSheet,
         )
       }
     } catch (e) {
@@ -162,7 +155,7 @@ class InstructorReviewPage extends React.Component {
       groups,
       selectedGroup,
       selectGroup,
-      initializeAnswerSheet
+      initializeAnswerSheet,
     } = this.props
 
     if (submittedReview === true) {
@@ -180,39 +173,36 @@ class InstructorReviewPage extends React.Component {
               groups={groups}
               groupSelectHandler={groupSelectHandler}
               selectGroup={selectGroup}
-              fetchInstructorReviewQuestions={
-                this.fetchInstructorReviewQuestions
-              }
+              fetchInstructorReviewQuestions={this.fetchInstructorReviewQuestions}
               initializeAnswerSheet={initializeAnswerSheet}
             />
           </ConfigurationSelectWrapper>
           <h1>{groups[selectedGroup].groupName}</h1>
 
-        {groups[selectedGroup].students.length === 0 && (
-          <h2>No students in this group</h2>
-        )}
-        {groups[selectedGroup].students.length > 0 && (<>
-          <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
-          <Button
-            margin-right="auto"
-            margin-left="auto"
-            variant="contained"
-            color="primary"
-            data-cy="submit-instructor-review-button"
-            onClick={(event) =>
-              this.Submit(
-                event,
-                answerSheet,
-                groups[selectedGroup].groupName,
-                groups[selectedGroup].id
-              )
-            }
-          >
-            Submit
-          </Button>
-          </>
-        )}
-      </div>
+          {groups[selectedGroup].students.length === 0 && <h2>No students in this group</h2>}
+          {groups[selectedGroup].students.length > 0 && (
+            <>
+              <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
+              <Button
+                margin-right="auto"
+                margin-left="auto"
+                variant="contained"
+                color="primary"
+                data-cy="submit-instructor-review-button"
+                onClick={(event) =>
+                  this.Submit(
+                    event,
+                    answerSheet,
+                    groups[selectedGroup].groupName,
+                    groups[selectedGroup].id,
+                  )
+                }
+              >
+                Submit
+              </Button>
+            </>
+          )}
+        </div>
       )
     } else {
       return (
@@ -229,20 +219,14 @@ const groupSelectHandler = (
   selectGroup,
   fetchInstructorReviewQuestions,
   groups,
-  initializeAnswerSheet
+  initializeAnswerSheet,
 ) => {
-  if (
-    !window.confirm('Changing group will wipe current inserted information.')
-  ) {
+  if (!window.confirm('Changing group will wipe current inserted information.')) {
     return
   }
 
   selectGroup(value)
-  fetchInstructorReviewQuestions(
-    groups[value].students,
-    questionsJson,
-    initializeAnswerSheet
-  )
+  fetchInstructorReviewQuestions(groups[value].students, questionsJson, initializeAnswerSheet)
 }
 const ConfigurationSelectWrapper = ({ label, children }) => (
   <div style={{ padding: 20 }}>
@@ -257,7 +241,7 @@ const ConfigurationSelect = ({
   groups,
   fetchInstructorReviewQuestions,
   selectGroup,
-  initializeAnswerSheet
+  initializeAnswerSheet,
 }) => {
   return (
     <Select
@@ -269,7 +253,7 @@ const ConfigurationSelect = ({
           selectGroup,
           fetchInstructorReviewQuestions,
           groups,
-          initializeAnswerSheet
+          initializeAnswerSheet,
         )
       }
     >
@@ -296,23 +280,16 @@ const Review = ({ student, updateAnswer, index }) => {
         )}
         {visible ? <ExpandLess /> : <ExpandMore />}
       </div>
-      {
-        visible &&
-        <Questions
-          studentAnswers={student.answers}
-          updateAnswer={updateAnswer}
-          userId={index}
-        />
-      }
+      {visible && (
+        <Questions studentAnswers={student.answers} updateAnswer={updateAnswer} userId={index} />
+      )}
     </div>
   )
 }
 
 const Reviews = ({ answerSheet, updateAnswer }) => {
   return answerSheet.map((student, index) => {
-    return (
-      <Review key={index} student={student} updateAnswer={updateAnswer} index={index} />
-    )
+    return <Review key={index} student={student} updateAnswer={updateAnswer} index={index} />
   })
 }
 
@@ -331,9 +308,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
             multiline
             variant="outlined"
             data-cy={`textInput-${question.header} user:${userId}`}
-            onChange={(e) =>
-              textFieldHandler(e.target.value, userId, questionId, updateAnswer)
-            }
+            onChange={(e) => textFieldHandler(e.target.value, userId, questionId, updateAnswer)}
           />
         </div>
       )
@@ -347,14 +322,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
             type="number"
             value={question.answer}
             data-cy={`numberInput-${question.header} user:${userId}`}
-            onChange={(e) =>
-              numberFieldHandler(
-                e.target.value,
-                userId,
-                questionId,
-                updateAnswer
-              )
-            }
+            onChange={(e) => numberFieldHandler(e.target.value, userId, questionId, updateAnswer)}
           />
         </div>
       )
@@ -386,18 +354,18 @@ const mapStateToProps = (state) => {
     answerSheet: state.instructorReviewPage.answerSheet,
     submittedReview: state.instructorReviewPage.submittedReview,
     groups: state.instructorReviewPage.groups,
-    selectedGroup: state.instructorReviewPage.selectedGroup
+    selectedGroup: state.instructorReviewPage.selectedGroup,
   }
 }
 
 const mapDispatchToProps = {
   ...instructorReviewPageActions,
   ...notificationActions,
-  ...appActions
+  ...appActions,
 }
 const ConnectedInstructorReviewPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(InstructorReviewPage)
 
 export default withRouter(ConnectedInstructorReviewPage)

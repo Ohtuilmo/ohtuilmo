@@ -1,7 +1,7 @@
 const initializeAnswerSheet = (answerSheet) => {
   return {
     type: 'CUSTOMER_REVIEW_INITIALIZE_ANSWER_SHEET',
-    payload: answerSheet
+    payload: answerSheet,
   }
 }
 
@@ -9,63 +9,63 @@ const updateAnswer = (answer, questionId) => {
   return {
     type: 'CUSTOMER_REVIEW_UPDATE_ANSWER',
     answer: answer,
-    questionId: questionId
+    questionId: questionId,
   }
 }
 
 const setLoading = (loading) => {
   return {
     type: 'CUSTOMER_REVIEW_LOADING',
-    payload: loading
+    payload: loading,
   }
 }
 
 const setReview = (review) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_REVIEW',
-    payload: review
+    payload: review,
   }
 }
 
 const setQuestions = (questions) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_QUESTIONS',
-    payload: questions
+    payload: questions,
   }
 }
 
 const setGroupName = (group) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_GROUP_NAME',
-    payload: group
+    payload: group,
   }
 }
 
 const setGroupId = (groupId) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_GROUP_ID',
-    payload: groupId
+    payload: groupId,
   }
 }
 
 const setTopicId = (topicId) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_TOPIC_ID',
-    payload: topicId
+    payload: topicId,
   }
 }
 
 const setConfiguration = (configurationId) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_CONFIGURATION',
-    payload: configurationId
+    payload: configurationId,
   }
 }
 
 const setNoGroup = (noGroupFound) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_NOGROUP',
-    payload: noGroupFound
+    payload: noGroupFound,
   }
 }
 
@@ -79,5 +79,5 @@ export default {
   setGroupId,
   setTopicId,
   setConfiguration,
-  setNoGroup
+  setNoGroup,
 }

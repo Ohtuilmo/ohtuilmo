@@ -1,11 +1,17 @@
-const { describe, test, expect, beforeEach, beforeAll, afterAll } =  require('@jest/globals')
+const { describe, test, expect, beforeEach, beforeAll, afterAll } = require('@jest/globals')
 const jwt = require('jsonwebtoken')
 
 const config = require('../../config/index')
 const { app, server, db } = require('../../index')
-const { loginAs, createTestUser, createTestUsers, resetUsers, testUser, testUsers } = require('../utils/login')
+const {
+  loginAs,
+  createTestUser,
+  createTestUsers,
+  resetUsers,
+  testUser,
+  testUsers,
+} = require('../utils/login')
 const { createTestGroup, resetGroups, testInstructor } = require('../utils/groups')
-
 
 describe('Instructor flag', () => {
   test('should be false for a new user without a group', async () => {
@@ -63,17 +69,13 @@ describe('Instructor flag', () => {
     await createTestGroup(db, [testUsers[1], testUsers[2]], testInstructor, false)
     await createTestGroup(db, [testUsers[0]], anotherInstructor, false)
 
-    await db.Configuration.update(
-      { active: false },
-      { where: { id: 1 } }
-    )
+    await db.Configuration.update({ active: false }, { where: { id: 1 } })
 
     const login = await loginAs(app, testInstructor.student_number)
 
     const decodedToken = jwt.verify(login.token, config.secret)
     expect(decodedToken.instructor).toEqual(false)
   })
-
 
   beforeEach(async () => {
     await resetUsers(db)
