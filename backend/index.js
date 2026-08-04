@@ -31,6 +31,10 @@ const shibbolethHeaders = [
 // Middleware
 app.use(cors())
 app.use(express.json({ limit: '100mb' }))
+app.use((req, _res, next) => {
+  if (!req.body) req.body = {}
+  next()
+})
 app.use(headersMiddleware(shibbolethHeaders))
 if (isDevelopmentEnvironment()) app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
