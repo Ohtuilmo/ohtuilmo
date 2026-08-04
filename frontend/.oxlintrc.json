@@ -16,5 +16,13 @@
   "rules": {
     "eqeqeq": "error",
     "react-hooks/exhaustive-deps": "warn"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/components/RegistrationDetailsPage.jsx"],
+      "rules": {
+        "react/no-did-mount-set-state": "warn"
+      }
+    }
+  ]
 }

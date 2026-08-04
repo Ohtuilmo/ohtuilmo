@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { TimeLogForm } from './TimeLogForm'
@@ -107,9 +107,9 @@ const TimeLogsPage = (props) => {
     }
     const fetchData = async () => {
       setIsLoading(true)
-      group?.id && await fetchSprints()
+      if (group?.id) await fetchSprints()
       await fetchTimeLogs()
-      group?.id && await fetchGroupSprintSummary(group.id)
+      if (group?.id) await fetchGroupSprintSummary(group.id)
       await fetchTags()
       setIsLoading(false)
     }
@@ -131,12 +131,14 @@ const TimeLogsPage = (props) => {
       }
     )
 
-    currentSprintObject && setCurrentSprintNumber(currentSprintObject.sprint)
-    currentSprintObject && setSelectedSprintNumber(currentSprintObject.sprint)
-    !currentSprintObject &&
+    if (currentSprintObject) {
+      setCurrentSprintNumber(currentSprintObject.sprint)
+      setSelectedSprintNumber(currentSprintObject.sprint)
+    } else {
       setSelectedSprintNumber(
         existingSprintNumbers.length > 0 ? existingSprintNumbers.at(-1) : null
       )
+    }
   }, [allSprints])
 
   const handleSubmit = async (date, time, description, tags) => {

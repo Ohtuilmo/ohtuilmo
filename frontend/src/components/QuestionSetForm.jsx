@@ -9,7 +9,7 @@ const validateQuestionsJson = (str) => {
       return { ok: false, error: 'Questions should be an array' }
     }
     return { ok: true }
-  } catch (err) {
+  } catch {
     return { ok: false, error: 'Field contains invalid JSON' }
   }
 }

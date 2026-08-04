@@ -33,7 +33,7 @@ const shibbolethHeaders = [
 app.use(cors())
 app.use(bodyParser.json({ limit: '100mb' }))
 app.use(headersMiddleware(shibbolethHeaders))
-isDevelopmentEnvironment() && app.use(fakeshibbo)
+if (isDevelopmentEnvironment()) app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
 
 // Routers

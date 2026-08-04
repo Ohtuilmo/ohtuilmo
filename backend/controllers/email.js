@@ -242,7 +242,7 @@ emailRouter.get('/templates', checkAdmin, async (req, res) => {
 
     const payload = templates.length > 0 ? templates[0] : defaultEmailTemplates
     return res.json(serializeTemplatesByLanguage(payload))
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Something is wrong... try reloading the page' })
   }
 })
@@ -281,7 +281,7 @@ const parseTemplates = (req, res, next) => {
       templates: deserialized
     }
     next()
-  } catch (e) {
+  } catch {
     res.status(500).json({ error: 'internal server error' })
   }
 }
@@ -311,7 +311,7 @@ emailRouter.post(
         customer_review_link_eng
       })
       res.status(200).json(serializeTemplatesByLanguage(createdTemplates))
-    } catch (e) {
+    } catch {
       res.status(500).json({ error: 'Something is wrong... try reloading the page' })
     }
   }

@@ -19,12 +19,10 @@ const customTheme = createMuiTheme({
     overline: {
       color: 'darkOrange',
     },
+    useNextVariants: true,
   },
   link: {
     color: 'darkOrange',
-  },
-  typography: {
-    useNextVariants: true,
   },
 })
 

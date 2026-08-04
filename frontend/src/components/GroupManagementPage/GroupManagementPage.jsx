@@ -37,7 +37,7 @@ const GroupManagementPage = (props) => {
         setUsers(fetchedUsers)
         setGroups(fetchedGroups)
         await fetchTopics()
-      } catch (err) {
+      } catch {
         setError('Some error happened')
       }
     }

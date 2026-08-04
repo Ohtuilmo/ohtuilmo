@@ -283,9 +283,11 @@ router.put('/:groupId', checkAdmin, async (req, res) => {
 
 router.delete('/:groupId', checkAdmin, async (req, res) => {
   const success = await db.Group.destroy({ where: { id: req.params.groupId } })
-  success
-    ? console.log(`Group ${req.params.groupId} destroyed.`)
-    : console.log('Nothing to delete.')
+  if (success) {
+    console.log(`Group ${req.params.groupId} destroyed.`)
+  } else {
+    console.log('Nothing to delete.')
+  }
   return res.status(204).end()
 })
 

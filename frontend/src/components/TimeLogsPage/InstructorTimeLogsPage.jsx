@@ -196,7 +196,7 @@ const InstructorTimeLogsPage = (props) => {
       await fetchSprintData(selectedGroupId)
       setIsLoading(false)
     }
-    selectedGroupId && fetchChartData(selectedGroupId)
+    if (selectedGroupId) fetchChartData(selectedGroupId)
   }, [selectedGroupId])
 
   const handleTimeLogCheck = (logId) => {
@@ -233,7 +233,7 @@ const InstructorTimeLogsPage = (props) => {
       const updatedLogs = await instructorTimeLogsService.deleteTimeLog(logId)
       setAllLogs(updatedLogs)
       setSuccess('Time log deleted successfully')
-    } catch (error) {
+    } catch {
       setError('Error deleting time log')
     }
   }

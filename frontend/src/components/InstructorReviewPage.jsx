@@ -311,7 +311,7 @@ const Review = ({ student, updateAnswer, index }) => {
 const Reviews = ({ answerSheet, updateAnswer }) => {
   return answerSheet.map((student, index) => {
     return (
-      <Review student={student} updateAnswer={updateAnswer} index={index} />
+      <Review key={index} student={student} updateAnswer={updateAnswer} index={index} />
     )
   })
 }

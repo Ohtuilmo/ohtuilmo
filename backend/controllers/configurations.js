@@ -220,9 +220,11 @@ configurationsRouter.delete(
     const success = await db.Configuration.destroy({
       where: { id: req.params.configurationId },
     })
-    success
-      ? console.log(`Configuration ${req.params.configurationId} destroyed.`)
-      : console.log('Nothing to delete.')
+    if (success) {
+      console.log(`Configuration ${req.params.configurationId} destroyed.`)
+    } else {
+      console.log('Nothing to delete.')
+    }
     return res.status(204).end()
   }
 )

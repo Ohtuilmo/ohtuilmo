@@ -178,7 +178,7 @@ timeLogsRouter.get('/', checkLogin, async (req, res) => {
     const user_id = req.user.id
     const timeLogs = user_id ? await fetchFromDb(user_id) : []
     return res.status(200).json(timeLogs)
-  } catch (error) {
+  } catch {
     return res.status(500).json({ error: 'Error fetching time logs.' })
   }
 })

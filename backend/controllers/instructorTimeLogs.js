@@ -75,7 +75,7 @@ instructorTimeLogsRouter.get('/', checkInstructor, async (req, res) => {
   try {
     const timeLogs = await fetchAllFromDb()
     return res.status(200).json(timeLogs)
-  } catch (error) {
+  } catch {
     return res.status(500).json({ error: 'Error fetching time logs.' })
   }
 })

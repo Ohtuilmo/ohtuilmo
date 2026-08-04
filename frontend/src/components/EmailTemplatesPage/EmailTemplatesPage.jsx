@@ -27,7 +27,7 @@ class EmailTemplatesPage extends React.Component {
     try {
       await this.props.updateEmailTemplates(newTemplates)
       this.props.setSuccess('Email templates saved!')
-    } catch (e) {
+    } catch {
       this.props.setError('Failed to update email templates')
     }
   }

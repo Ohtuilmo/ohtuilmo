@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, ReferenceLine, Label, LabelList, Bar, Cell } from 'recharts'
+import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, ReferenceLine, LabelList, Bar, Cell } from 'recharts'
 import { NoTimeLogsPlaceholderSprint, NoTimeLogsPlaceholderProject } from '../common/Placeholders'
 import Error from '@material-ui/icons/Error'
 import { useTheme } from '@material-ui/core/styles';
@@ -130,7 +130,7 @@ const checkStudentProgressPaceTotal = (studentName, allStudentHours, totalDurati
 const checkStudentProgressPacePerSprint = (targetStudent, allStudentHours, allSprintDates, isShortProject) => {
   const { idealHoursPerDay, okHoursPerDay, dangerousHoursPerDay } = getProjectHours(isShortProject)
   const sprintPaces = {}
-  allStudentHours.forEach((student, index) => {
+  allStudentHours.forEach((student, _index) => {
     if (student.sprint === -1)
       return
 

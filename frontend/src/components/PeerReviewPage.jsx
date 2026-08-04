@@ -19,7 +19,13 @@ import timeLogService from '../services/timeLogs'
 
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core'
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+} from '@material-ui/core'
 
 class PeerReview extends React.Component {
   async componentDidMount() {
@@ -264,7 +270,7 @@ const Question = ({
   updateAnswer,
   updatePeerReview,
 }) => {
-  if (!questionId === undefined) {
+  if (!questionId) {
     console.error('No questionId given')
     return (
       <div>
@@ -281,10 +287,7 @@ const Question = ({
     return (
       <div className="peer-review-box">
         <h3 className="peer-review-box__h3">{question.header}</h3>
-        <Table
-          size="small"
-          className="peer-review-box__radio-button-table"
-        >
+        <Table size="small" className="peer-review-box__radio-button-table">
           <TableHead>
             <TableRow hover>
               <TableCell className="peer-review-box__radio-header" />

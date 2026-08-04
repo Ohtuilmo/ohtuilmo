@@ -97,7 +97,7 @@ const AdminSprintsPage = (props) => {
       await fetchSprints(selectedGroupId)
       setIsLoading(false)
     }
-    selectedGroup?.id && fetchData(selectedGroup.id)
+    if (selectedGroup?.id) fetchData(selectedGroup.id)
   }, [selectedGroup, selectedConfiguration])
 
 

@@ -116,8 +116,8 @@ const App = (props) => {
 
     const fetchData = async () => {
       updateIsLoading(true)
-      !isCustomerReviewPage && (await handleLogin())
-      user && (await handleGroupInit())
+      if (!isCustomerReviewPage) await handleLogin()
+      if (user) await handleGroupInit()
       await fetchRegistrationManagementData()
       updateIsLoading(false)
     }

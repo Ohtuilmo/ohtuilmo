@@ -70,7 +70,7 @@ const StudentTagPage = (props) => {
 
     const fetchData = async () => {
       setIsLoading(true)
-      group?.id && (await fetchSprints())
+      if (group?.id) await fetchSprints()
       await tagService.getTagsByStudent(user.studentNumber).then((data) => {
         setStudentTags(data)
       })

@@ -5,7 +5,12 @@ import { Typography } from '@material-ui/core'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import './TopicFormPageInfo.css'
 
-const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) => {
+const TopicFormPageInfo = ({
+  topicOpen,
+  topicMessage,
+  updateShowInfo,
+  toggle,
+}) => {
   const allowCretion = topicOpen && toggle
 
   return (
@@ -30,26 +35,25 @@ const TopicFormPageInfo = ({ topicOpen, topicMessage, updateShowInfo, toggle }) 
       {!allowCretion && (
         <div className="topic-form-page-info-message">{topicMessage}</div>
       )}
-      {false && <span style={{ margin: 10,  color: 'white' }} onClick={() => updateShowInfo(false)}>.</span>}
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    toggle: true || state && state.login && state.login.user && state.login.user.user && state.login.user.user.username === 'mluukkai2',
+    toggle: true,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
-    topicMessage: state.registrationManagement.topicRegistrationMessage
+    topicMessage: state.registrationManagement.topicRegistrationMessage,
   }
 }
 
 const mapDispatchToProps = {
-  ...topicFormPageActions
+  ...topicFormPageActions,
 }
 
 const ConnectedTopicFormPageInfo = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TopicFormPageInfo)
 
 export default ConnectedTopicFormPageInfo
