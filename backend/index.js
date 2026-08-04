@@ -104,12 +104,12 @@ server.listen(PORT, () => {
 
 server.on('close', async () => {
   // Close database connection
-  console.log('Closing the server and connection to database')
+  if (process.env.NODE_ENV !== 'test') console.log('Closing the server and connection to database')
   try {
     await db.sequelize.close()
-    console.log('client has disconnected')
+    if (process.env.NODE_ENV !== 'test') console.log('client has disconnected')
   } catch (err) {
-    console.error('error during disconnection', err.stack)
+    if (process.env.NODE_ENV !== 'test') console.error('error during disconnection', err.stack)
   }
 })
 
