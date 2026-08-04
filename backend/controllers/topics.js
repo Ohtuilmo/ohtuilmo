@@ -120,7 +120,7 @@ topicsRouter.put(
               acronym: req.body.acronym,
             })
             .then((topic) => {
-              topic.reload().then((topic) => {
+              return topic.reload().then((topic) => {
                 topic = censorSecretId(topic)
                 res.status(200).json({ topic })
               })
@@ -145,7 +145,7 @@ topicsRouter.put(
               acronym: req.body.acronym,
             })
             .then((topic) => {
-              topic.reload().then((topic) => {
+              return topic.reload().then((topic) => {
                 topic = censorSecretId(topic)
                 res.status(200).json({ topic })
               })
