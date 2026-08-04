@@ -25,7 +25,8 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
     })
-    await query.addConstraint('sent_topic_emails', ['topic_id'], {
+    await query.addConstraint('sent_topic_emails', {
+      fields: ['topic_id'],
       name: 'sent_topic_emails_topic_id_fkey',
       type: 'FOREIGN KEY',
       references: {

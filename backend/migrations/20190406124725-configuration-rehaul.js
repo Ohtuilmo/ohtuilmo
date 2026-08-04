@@ -14,7 +14,8 @@ module.exports = {
 
     await query.addColumn('topics', 'configuration_id', Sequelize.INTEGER)
 
-    await query.addConstraint('registration_managements', ['project_registration_conf'], {
+    await query.addConstraint('registration_managements', {
+      fields: ['project_registration_conf'],
       name: 'registration_managements_project_registration_conf_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -25,7 +26,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
 
-    await query.addConstraint('registration_managements', ['peer_review_conf'], {
+    await query.addConstraint('registration_managements', {
+      fields: ['peer_review_conf'],
       name: 'registration_managements_peer_review_conf_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -36,7 +38,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
 
-    await query.addConstraint('registration_managements', ['topic_registration_conf'], {
+    await query.addConstraint('registration_managements', {
+      fields: ['topic_registration_conf'],
       name: 'registration_managements_topic_registration_conf_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -47,7 +50,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
 
-    await query.addConstraint('topics', ['configuration_id'], {
+    await query.addConstraint('topics', {
+      fields: ['configuration_id'],
       name: 'topics_configuration_id_fkey',
       type: 'FOREIGN KEY',
       references: {

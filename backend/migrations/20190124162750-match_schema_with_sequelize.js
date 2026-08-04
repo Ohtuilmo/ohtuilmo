@@ -17,7 +17,8 @@ module.exports = {
 
     // Add missing FK associations
     // memberships.group_id <-> groups.id
-    await query.addConstraint('memberships', ['group_id'], {
+    await query.addConstraint('memberships', {
+      fields: ['group_id'],
       name: 'memberships_group_id_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -28,7 +29,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
     // memberships.student_number <-> users.student_number
-    return query.addConstraint('memberships', ['student_number'], {
+    return query.addConstraint('memberships', {
+      fields: ['student_number'],
       name: 'memberships_student_number_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -48,7 +50,8 @@ module.exports = {
     // remove added column
     await query.removeColumn('memberships', 'group_id')
     // add removed association memberships.id <-> groups.id
-    return query.addConstraint('memberships', ['id'], {
+    return query.addConstraint('memberships', {
+      fields: ['id'],
       name: 'memberships_id_fkey',
       type: 'FOREIGN KEY',
       references: {

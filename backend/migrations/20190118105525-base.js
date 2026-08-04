@@ -193,7 +193,8 @@ module.exports = {
       const [table, field] = targetTable
       const [foreignTable, foreignField] = referencedTable
 
-      return query.addConstraint(table, [field], {
+      return query.addConstraint(table, {
+        fields: [field],
         name: constraintName,
         type: 'FOREIGN KEY',
         references: {

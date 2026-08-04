@@ -40,7 +40,8 @@ module.exports = {
 
     // create foreign key constraints
 
-    await query.addConstraint('memberships', ['group_id'], {
+    await query.addConstraint('memberships', {
+      fields: ['group_id'],
       name: 'memberships_group_id_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -50,7 +51,8 @@ module.exports = {
       onUpdate: 'CASCADE',
       onDelete: 'SET NULL',
     })
-    return query.addConstraint('memberships', ['student_number'], {
+    return query.addConstraint('memberships', {
+      fields: ['student_number'],
       name: 'memberships_student_number_fkey',
       type: 'FOREIGN KEY',
       references: {

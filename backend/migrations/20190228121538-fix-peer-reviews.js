@@ -35,7 +35,8 @@ module.exports = {
     })
 
     // peer_reviews.user <-> users.student_number
-    await query.addConstraint('peer_reviews', ['user_id'], {
+    await query.addConstraint('peer_reviews', {
+      fields: ['user_id'],
       name: 'peer_reviews_user_id_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -47,7 +48,8 @@ module.exports = {
     })
 
     // peer_reviews.configuration <-> configuration.id
-    await query.addConstraint('peer_reviews', ['configuration_id'], {
+    await query.addConstraint('peer_reviews', {
+      fields: ['configuration_id'],
       name: 'peer_reviews_configuration_id_fkey',
       type: 'FOREIGN KEY',
       references: {

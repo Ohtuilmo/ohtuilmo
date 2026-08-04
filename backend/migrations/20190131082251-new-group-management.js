@@ -25,7 +25,8 @@ const createAddForeignKey = (query) => {
     const [table, field] = targetTable
     const [foreignTable, foreignField] = referencedTable
 
-    return query.addConstraint(table, [field], {
+    return query.addConstraint(table, {
+      fields: [field],
       name: constraintName,
       type: 'foreign key',
       references: {
@@ -89,7 +90,8 @@ const up = async (query, Sequelize) => {
   const addForeignKey = createAddForeignKey(query)
 
   // group_students uses composite primary keyi
-  await query.addConstraint('group_students', ['group_id', 'user_student_number'], {
+  await query.addConstraint('group_students', {
+    fields: ['group_id', 'user_student_number'],
     type: 'primary key',
     name: 'group_students_pkey',
   })

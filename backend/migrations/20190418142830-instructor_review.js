@@ -29,7 +29,8 @@ module.exports = {
     })
 
     // instructor_reviews.user <-> users.student_number
-    await query.addConstraint('instructor_reviews', ['user_id'], {
+    await query.addConstraint('instructor_reviews', {
+      fields: ['user_id'],
       name: 'instructor_reviews_user_id_fkey',
       type: 'FOREIGN KEY',
       references: {

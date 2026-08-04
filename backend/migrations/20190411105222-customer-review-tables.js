@@ -67,7 +67,8 @@ module.exports = {
 
     await query.addColumn('configurations', 'customer_review_question_set_id', Sequelize.INTEGER)
 
-    await query.addConstraint('customer_reviews', ['group_id'], {
+    await query.addConstraint('customer_reviews', {
+      fields: ['group_id'],
       name: 'customer_reviews_group_id_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -78,7 +79,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
 
-    await query.addConstraint('customer_reviews', ['topic_id'], {
+    await query.addConstraint('customer_reviews', {
+      fields: ['topic_id'],
       name: 'customer_reviews_topic_id_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -89,7 +91,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
 
-    await query.addConstraint('customer_reviews', ['configuration_id'], {
+    await query.addConstraint('customer_reviews', {
+      fields: ['configuration_id'],
       name: 'customer_reviews_configuration_id_fkey',
       type: 'FOREIGN KEY',
       references: {
@@ -100,7 +103,8 @@ module.exports = {
       onDelete: 'SET NULL',
     })
 
-    await query.addConstraint('configurations', ['customer_review_question_set_id'], {
+    await query.addConstraint('configurations', {
+      fields: ['customer_review_question_set_id'],
       name: 'configurations_customer_review_question_set_id_fkey',
       type: 'FOREIGN KEY',
       references: {
