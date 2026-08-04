@@ -1,6 +1,5 @@
 const http = require('http')
 const express = require('express')
-const bodyParser = require('body-parser')
 const cors = require('cors')
 const { logger, fakeshibbo } = require('./middleware')
 const { isDevelopmentEnvironment } = require('./utils/index')
@@ -31,7 +30,7 @@ const shibbolethHeaders = [
 
 // Middleware
 app.use(cors())
-app.use(bodyParser.json({ limit: '100mb' }))
+app.use(express.json({ limit: '100mb' }))
 app.use(headersMiddleware(shibbolethHeaders))
 if (isDevelopmentEnvironment()) app.use(fakeshibbo)
 app.use(unless('/api/login', logger))
