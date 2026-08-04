@@ -31,7 +31,7 @@ describe('Configurations', () => {
 
     expect(res.statusCode).toEqual(200)
     expect(Object.keys(res.body)).toContain('configuration')
-    expect(res.body.configuratio).toEqual()
+    expect(res.body.configuration.name).toEqual('Konfiguraatiolainen')
   })
   test('should not be created with duplicate name', async () => {
     const registrationQuestionSetId = await createTestRegistrationQuestionSet(db)
@@ -49,7 +49,7 @@ describe('Configurations', () => {
 
     expect(res.statusCode).toEqual(200)
     expect(Object.keys(res.body)).toContain('configuration')
-    expect(res.body.configuratio).toEqual()
+    expect(res.body.configuration.name).toEqual('Konfiguraatiolainen')
 
     expect(resDuplicate.statusCode).toEqual(400)
     expect(Object.keys(resDuplicate.body)).toContain('error')
