@@ -1,4 +1,4 @@
-const randomstring = require('randomstring')
+const crypto = require('crypto')
 
 /**
  * @typedef {'topicAccepted' | 'topicRejected' | 'customerReviewLink'} MessageType
@@ -61,7 +61,7 @@ const pipe =
     fns.reduce((v, fn) => fn(v), value)
 
 const getRandomId = () => {
-  return 'a' + randomstring.generate(16)
+  return 'a' + crypto.randomBytes(8).toString('hex')
 }
 
 const isDevelopmentEnvironment = () => process.env.NODE_ENV === 'development'
