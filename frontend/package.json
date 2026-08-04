@@ -31,18 +31,15 @@
     "test:docker:down": "docker compose -f ../compose.local-test.yaml --profile e2e down",
     "test": "CYPRESS_baseUrl=http://localhost:5000 npx cypress open",
     "test:headless": "CYPRESS_VIDEO=false CYPRESS_baseUrl=http://localhost:5000 npx cypress run",
-    "lint": "eslint src/",
-    "lint:fix": "eslint --fix src/"
+    "lint": "oxlint src/",
+    "lint:fix": "oxlint --fix src/"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "@vitejs/plugin-react-refresh": "^1.3.6",
     "cypress": "^13.17.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
     "husky": "^1.2.0",
+    "oxlint": "^1.77.0",
     "vite": "^5.2.0"
   },
   "husky": {
