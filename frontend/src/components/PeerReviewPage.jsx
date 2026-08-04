@@ -230,7 +230,7 @@ const Questions = ({ questions, peers, answerSheet, updateAnswer, updatePeerRevi
 }
 
 const Question = ({ peers, question, questionId, answerSheet, updateAnswer, updatePeerReview }) => {
-  if (!questionId) {
+  if (questionId === undefined) {
     console.error('No questionId given')
     return (
       <div>
