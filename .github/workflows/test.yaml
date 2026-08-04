@@ -122,7 +122,7 @@ jobs:
       - name: Setup Node.js for initializing db with backend's npm scripts
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6

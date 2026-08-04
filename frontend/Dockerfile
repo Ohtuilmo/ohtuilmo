@@ -1,5 +1,5 @@
 # specify base image
-FROM registry.access.redhat.com/ubi9/nodejs-20
+FROM registry.access.redhat.com/ubi9/nodejs-24
 
 # npm run build needs this set when building so
 # it needs to be set as a build argument, not only as env var

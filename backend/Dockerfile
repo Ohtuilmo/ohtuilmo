@@ -1,5 +1,5 @@
 # Set base image
-FROM registry.access.redhat.com/ubi8/nodejs-20
+FROM registry.access.redhat.com/ubi8/nodejs-24
 
 # Set NODE_ENV to the image at the build stage
 ARG NODE_ENV="production"

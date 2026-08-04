@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/nodejs-20
+FROM registry.access.redhat.com/ubi9/nodejs-24
 
 ENV NODE_ENV="development"
 USER root

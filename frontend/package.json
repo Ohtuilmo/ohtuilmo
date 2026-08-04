@@ -57,6 +57,6 @@
     "not op_mini all"
   ],
   "engines": {
-    "node": "20"
+    "node": "24"
   }
 }
