@@ -58,13 +58,9 @@ const updateChecks = (req, res) => {
   })
 }
 
-reviewQuestionSetsRouter.post('/', checkAdmin, (req, res) => {
-  createChecks(req, res)
-})
+reviewQuestionSetsRouter.post('/', checkAdmin, createChecks)
 
-reviewQuestionSetsRouter.put('/:id', checkAdmin, (req, res) => {
-  updateChecks(req, res)
-})
+reviewQuestionSetsRouter.put('/:id', checkAdmin, updateChecks)
 
 reviewQuestionSetsRouter.get('/', checkAdmin, (req, res) => {
   db.ReviewQuestionSet.findAll({})

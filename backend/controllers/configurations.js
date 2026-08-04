@@ -134,13 +134,9 @@ const updateChecks = async (req, res) => {
   }
 }
 
-configurationsRouter.post('/', checkAdmin, (req, res) => {
-  createChecks(req, res)
-})
+configurationsRouter.post('/', checkAdmin, createChecks)
 
-configurationsRouter.put('/:id', checkAdmin, (req, res) => {
-  updateChecks(req, res)
-})
+configurationsRouter.put('/:id', checkAdmin, updateChecks)
 
 configurationsRouter.get('/', checkInstructor, (req, res) => {
   db.Configuration.findAll({

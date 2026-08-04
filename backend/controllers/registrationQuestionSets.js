@@ -64,13 +64,9 @@ const updateChecks = (req, res) => {
   )
 }
 
-registrationQuestionSetsRouter.post('/', checkAdmin, async (req, res) => {
-  await createChecks(req, res)
-})
+registrationQuestionSetsRouter.post('/', checkAdmin, createChecks)
 
-registrationQuestionSetsRouter.put('/:id', checkAdmin, (req, res) => {
-  updateChecks(req, res)
-})
+registrationQuestionSetsRouter.put('/:id', checkAdmin, updateChecks)
 
 registrationQuestionSetsRouter.delete('/:id', checkAdmin, async (req, res) => {
   const questionSetId = parseInt(req.params.id, 10)
