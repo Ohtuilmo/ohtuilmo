@@ -35,27 +35,34 @@ const updateReviewQuestionSet = (req, res, questionSet) => {
     .catch((error) => handleDatabaseError(res, error))
 }
 
-const createChecks = (req, res) => {
+const createChecks = async (req, res) => {
   if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
-  db.ReviewQuestionSet.findOne({ where: { name: req.body.name } })
-    .then((foundSet) => {
-      if (foundSet) return res.status(400).json({ error: 'name already in use' })
-      createReviewQuestionSet(req, res)
-    })
-    .catch((error) => handleDatabaseError(res, error))
+
+  try {
+    const foundSet = await db.ReviewQuestionSet.findOne({ where: { name: req.body.name } })
+    if (foundSet) return res.status(400).json({ error: 'name already in use' })
+    createReviewQuestionSet(req, res)
+  } catch (error) {
+    handleDatabaseError(res, error)
+  }
 }
 
-const updateChecks = (req, res) => {
+const updateChecks = async (req, res) => {
   if (isNaN(req.params.id)) return res.status(400).json({ error: 'invalid id' })
   if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
-  db.ReviewQuestionSet.findOne({ where: { name: req.body.name } }).then((duplicateNameSet) => {
+
+  try {
+    const duplicateNameSet = await db.ReviewQuestionSet.findOne({ where: { name: req.body.name } })
     if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id))
       return res.status(400).json({ error: 'name already in use' })
-    db.ReviewQuestionSet.findOne({ where: { id: req.params.id } }).then((foundSet) => {
-      if (!foundSet) return res.status(400).json({ error: 'no review question set with that id' })
-      updateReviewQuestionSet(req, res, foundSet)
-    })
-  })
+
+    const foundSet = await db.ReviewQuestionSet.findOne({ where: { id: req.params.id } })
+    if (!foundSet) return res.status(400).json({ error: 'no review question set with that id' })
+
+    updateReviewQuestionSet(req, res, foundSet)
+  } catch (error) {
+    handleDatabaseError(res, error)
+  }
 }
 
 reviewQuestionSetsRouter.post('/', checkAdmin, createChecks)

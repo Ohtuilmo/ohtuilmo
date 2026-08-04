@@ -48,20 +48,27 @@ const createChecks = async (req, res) => {
   }
 }
 
-const updateChecks = (req, res) => {
+const updateChecks = async (req, res) => {
   if (isNaN(req.params.id)) return res.status(400).json({ error: 'invalid id' })
   if (!req.body.name) return res.status(400).json({ error: 'name undefined' })
-  db.RegistrationQuestionSet.findOne({ where: { name: req.body.name } }).then(
-    (duplicateNameSet) => {
-      if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id))
-        return res.status(400).json({ error: 'name already in use' })
-      db.RegistrationQuestionSet.findOne({ where: { id: req.params.id } }).then((foundSet) => {
-        if (!foundSet)
-          return res.status(400).json({ error: 'no registration question set with that id' })
-        updateRegistrationQuestionSet(req, res, foundSet)
-      })
-    },
-  )
+
+  try {
+    const duplicateNameSet = await db.RegistrationQuestionSet.findOne({
+      where: { name: req.body.name },
+    })
+    if (duplicateNameSet && duplicateNameSet.id !== parseInt(req.params.id)) {
+      return res.status(400).json({ error: 'name already in use' })
+    }
+
+    const foundSet = await db.RegistrationQuestionSet.findOne({ where: { id: req.params.id } })
+    if (!foundSet) {
+      return res.status(400).json({ error: 'no registration question set with that id' })
+    }
+
+    updateRegistrationQuestionSet(req, res, foundSet)
+  } catch (error) {
+    handleDatabaseError(res, error)
+  }
 }
 
 registrationQuestionSetsRouter.post('/', checkAdmin, createChecks)
