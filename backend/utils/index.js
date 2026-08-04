@@ -61,7 +61,7 @@ const pipe =
     fns.reduce((v, fn) => fn(v), value)
 
 const getRandomId = () => {
-  return 'a' + crypto.randomBytes(8).toString('hex')
+  return 'a' + crypto.randomBytes(24).toString('hex')
 }
 
 const isDevelopmentEnvironment = () => process.env.NODE_ENV === 'development'
