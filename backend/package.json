@@ -2,6 +2,19 @@
   "name": "ohtuilmo-backend",
   "version": "1.0.0",
   "description": "Node.js backend",
+  "keywords": [
+    "node"
+  ],
+  "homepage": "https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend#readme",
+  "bugs": {
+    "url": "https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend/issues"
+  },
+  "license": "MIT",
+  "author": "jexniemi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend.git"
+  },
   "main": "index.js",
   "scripts": {
     "watch": "cross-env NODE_ENV=development nodemon index.js",
@@ -14,6 +27,8 @@
     "test:docker": "docker compose -f ../compose.local-test.yaml down && docker compose -f ../compose.local-test.yaml  --profile api up --exit-code-from api-test",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
     "db:create": "sequelize db:create",
     "db:drop": "sequelize db:drop",
     "db:migrate": "sequelize db:migrate",
@@ -21,19 +36,6 @@
     "db:nuke": "npm run db:drop && npm run db:create",
     "db:recreate": "npm run db:nuke && npm run db:migrate && npm run db:seed:all"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend.git"
-  },
-  "keywords": [
-    "node"
-  ],
-  "author": "jexniemi",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend/issues"
-  },
-  "homepage": "https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
@@ -55,6 +57,7 @@
     "husky": "^1.2.0",
     "jest": "^30.2.0",
     "nodemon": "^1.18.7",
+    "oxfmt": "^0.62.0",
     "oxlint": "^1.77.0",
     "supertest": "^7.1.4"
   },
