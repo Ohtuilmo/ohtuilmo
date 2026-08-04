@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "install:all": "npm install && npm --prefix frontend install && npm --prefix backend install",
+    "start": "docker compose up",
+    "format": "npm --prefix frontend run format && npm --prefix backend run format",
+    "lint": "npm --prefix frontend run lint && npm --prefix backend run lint"
   },
   "repository": {
     "type": "git",
