@@ -166,7 +166,7 @@ class RegistrationPage extends React.Component {
 
   updateUser = async () => {
     const user = {
-      student_number: this.props.user.student_number,
+      student_number: this.props.user.user.student_number,
       email: { email: this.props.email },
     }
     try {
