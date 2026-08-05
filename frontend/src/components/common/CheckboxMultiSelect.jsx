@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 
 const CheckboxMultiSelect = ({ allItems, selectedItems, setSelectedItems, isHorizontal }) => {
   const allSelected = selectedItems.length === allItems.length

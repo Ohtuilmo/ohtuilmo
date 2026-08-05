@@ -1,6 +1,7 @@
+import { withRouter } from '../utils/withRouter'
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import './PeerReviewPage.css'
 import { getUser, extractCallingName } from '../utils/functions'
 import { NotInGroupPlaceholder, LoadingPlaceholder } from './common/Placeholders'
@@ -14,9 +15,9 @@ import peerReviewService from '../services/peerReview'
 import groupManagementService from '../services/groupManagement'
 import timeLogService from '../services/timeLogs'
 
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { Table, TableHead, TableRow, TableBody, TableCell } from '@mui/material'
 
 class PeerReview extends React.Component {
   async componentDidMount() {

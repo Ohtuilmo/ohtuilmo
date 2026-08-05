@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import Paper from '@material-ui/core/Paper'
-import { Table, TableBody, TableRow, TableCell } from '@material-ui/core'
+import Paper from '@mui/material/Paper'
+import { Table, TableBody, TableRow, TableCell } from '@mui/material'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'

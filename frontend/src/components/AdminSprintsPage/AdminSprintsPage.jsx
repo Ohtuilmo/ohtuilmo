@@ -1,12 +1,13 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+
 import { connect } from 'react-redux'
 
 import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintsSelectForm } from './SprintsSelectForm'
 import { SprintListItem } from './SprintListItem'
 
-import { Typography, Table, TableRow, TableBody, TableHead, TableCell } from '@material-ui/core'
+import { Typography, Table, TableRow, TableBody, TableHead, TableCell } from '@mui/material'
 
 import sprintService from '../../services/sprints'
 import configurationService from '../../services/configuration'

@@ -1,14 +1,15 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import Typography from '@mui/material/Typography'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import * as userListActions from '../../reducers/actions/userListActions'
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   typography: {
     overline: {
       color: 'darkOrange',
@@ -24,9 +25,9 @@ const TopicDetailsLink = ({ topicId, ...props }) => <Link {...props} to={`/topic
 
 const AdminMarker = () => {
   return (
-    <MuiThemeProvider theme={customTheme}>
+    <ThemeProvider theme={customTheme}>
       <Typography variant="overline">Currently admin</Typography>
-    </MuiThemeProvider>
+    </ThemeProvider>
   )
 }
 

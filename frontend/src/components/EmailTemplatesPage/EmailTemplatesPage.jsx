@@ -1,9 +1,10 @@
+import { withRouter } from '../../utils/withRouter'
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import Paper from '@material-ui/core/Paper'
+import Paper from '@mui/material/Paper'
 
 import emailTemplatesActions from '../../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'

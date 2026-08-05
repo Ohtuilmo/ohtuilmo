@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Snackbar from '@material-ui/core/Snackbar'
-import SnackbarContent from '@material-ui/core/SnackbarContent'
+import Snackbar from '@mui/material/Snackbar'
+import SnackbarContent from '@mui/material/SnackbarContent'
 
 import { clearNotifications } from '../../reducers/actions/notificationActions'
 

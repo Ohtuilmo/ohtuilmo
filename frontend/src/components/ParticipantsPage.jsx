@@ -1,16 +1,17 @@
+import { withRouter } from '../utils/withRouter'
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { withStyles } from '@material-ui/core/styles'
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper'
-import Button from '@material-ui/core/Button'
+
+import { withStyles } from '@mui/styles'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import Paper from '@mui/material/Paper'
+import Button from '@mui/material/Button'
 import * as notificationActions from '../reducers/actions/notificationActions'
 
 const styles = (theme) => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
   table: {

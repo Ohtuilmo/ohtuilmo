@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Paper from '@material-ui/core/Paper'
-import { withTheme } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Paper from '@mui/material/Paper'
+import { useTheme } from '@mui/material/styles'
+import IconButton from '@mui/material/IconButton'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import './QuestionSetItem.css'
 
 const ItemControls = ({ onEditClicked }) => {
@@ -56,7 +56,8 @@ ItemControls.propTypes = {
   onEditClicked: PropTypes.func,
 }
 
-const QuestionSetItem = ({ title, children, onEditClicked, theme }) => {
+const QuestionSetItem = ({ title, children, onEditClicked }) => {
+  const theme = useTheme()
   const headerStyle = {
     borderColor: theme.palette.primary.main,
   }
@@ -80,7 +81,6 @@ QuestionSetItem.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
   onEditClicked: PropTypes.func,
-  theme: PropTypes.object,
 }
 
-export default withTheme(QuestionSetItem)
+export default QuestionSetItem

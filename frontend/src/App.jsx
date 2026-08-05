@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Router, Route, Switch, Link } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+
 import './App.css'
 
 // Components
@@ -53,8 +53,6 @@ import myGroupActions from './reducers/actions/myGroupActions'
 import { AdminRoute, LoginRoute, InstructorRoute } from './utils/protectedRoutes'
 
 import loginService from './services/login'
-
-const history = createBrowserHistory({ basename: import.meta.env.BASE_URL })
 
 const NotFound = () => (
   <div className="not-found-page">
@@ -142,156 +140,171 @@ const App = (props) => {
     updateIsLoading(false)
   }
 
-  const renderWithLoadingCheck = (component) =>
-    isLoading ? () => <LoadingSpinner /> : () => component
+  const renderWithLoadingCheck = (component) => (isLoading ? <LoadingSpinner /> : component)
 
   return (
-    <Router history={history}>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <div id="app-wrapper">
         <NavigationBar logout={logout} />
         <Notification />
         <div id="app-content">
-          <Switch>
-            <Route path="/login" render={renderWithLoadingCheck(null)} />
-            <LoginRoute exact path="/" render={renderWithLoadingCheck(<LandingPage />)} />
-            <AdminRoute exact path="/topics" render={renderWithLoadingCheck(<TopicListPage />)} />
-            <Route exact path="/topics/create" render={renderWithLoadingCheck(<TopicFormPage />)} />
+          <Routes>
+            <Route path="/login" element={renderWithLoadingCheck(null)} />
             <Route
-              exact
+              path="/"
+              element={<LoginRoute render={() => renderWithLoadingCheck(<LandingPage />)} />}
+            />
+            <Route
+              path="/topics"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<TopicListPage />)} />}
+            />
+            <Route path="/topics/create" element={renderWithLoadingCheck(<TopicFormPage />)} />
+            <Route
               path="/topics/:id"
-              render={renderWithLoadingCheck(<ViewTopicPage {...props} />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/configuration"
-              render={renderWithLoadingCheck(<ConfigurationPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/participants"
-              render={renderWithLoadingCheck(<ParticipantsPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/users"
-              render={renderWithLoadingCheck(<ViewUsersPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/customer-review-questions"
-              render={renderWithLoadingCheck(<CustomerReviewQuestionsPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/peer-review-questions"
-              render={renderWithLoadingCheck(<PeerReviewQuestionsPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/registration-questions"
-              render={renderWithLoadingCheck(<RegistrationQuestionsPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/groups"
-              render={renderWithLoadingCheck(<GroupManagementPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/email-templates"
-              render={renderWithLoadingCheck(<EmailTemplatesPage />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/registrations"
-              render={renderWithLoadingCheck(<Registrations />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/reviews"
-              render={renderWithLoadingCheck(<InstructorReviews />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/tags"
-              render={renderWithLoadingCheck(<TagsDashboard />)}
-            />
-            <AdminRoute
-              exact
-              path="/administration/sprints"
-              render={renderWithLoadingCheck(<AdminSprintsPage />)}
+              element={renderWithLoadingCheck(<ViewTopicPage {...props} />)}
             />
             <Route
-              exact
+              path="/administration/configuration"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<ConfigurationPage />)} />}
+            />
+            <Route
+              path="/administration/participants"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<ParticipantsPage />)} />}
+            />
+            <Route
+              path="/administration/users"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<ViewUsersPage />)} />}
+            />
+            <Route
+              path="/administration/customer-review-questions"
+              element={
+                <AdminRoute
+                  render={() => renderWithLoadingCheck(<CustomerReviewQuestionsPage />)}
+                />
+              }
+            />
+            <Route
+              path="/administration/peer-review-questions"
+              element={
+                <AdminRoute render={() => renderWithLoadingCheck(<PeerReviewQuestionsPage />)} />
+              }
+            />
+            <Route
+              path="/administration/registration-questions"
+              element={
+                <AdminRoute render={() => renderWithLoadingCheck(<RegistrationQuestionsPage />)} />
+              }
+            />
+            <Route
+              path="/administration/groups"
+              element={
+                <AdminRoute render={() => renderWithLoadingCheck(<GroupManagementPage />)} />
+              }
+            />
+            <Route
+              path="/administration/email-templates"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<EmailTemplatesPage />)} />}
+            />
+            <Route
+              path="/administration/registrations"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<Registrations />)} />}
+            />
+            <Route
+              path="/administration/reviews"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<InstructorReviews />)} />}
+            />
+            <Route
+              path="/administration/tags"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<TagsDashboard />)} />}
+            />
+            <Route
+              path="/administration/sprints"
+              element={<AdminRoute render={() => renderWithLoadingCheck(<AdminSprintsPage />)} />}
+            />
+            <Route
               path="/customer-review/:id"
-              render={renderWithLoadingCheck(<CustomerReviewPage {...props} />)}
+              element={renderWithLoadingCheck(<CustomerReviewPage {...props} />)}
             />
-            <LoginRoute
-              exact
+            <Route
               path="/register"
-              user={user}
-              render={renderWithLoadingCheck(<RegistrationPage />)}
+              element={
+                <LoginRoute
+                  user={user}
+                  render={() => renderWithLoadingCheck(<RegistrationPage />)}
+                />
+              }
             />
-            <LoginRoute
-              exact
+            <Route
               path="/peerreview"
-              user={user}
-              render={renderWithLoadingCheck(<PeerReviewPage />)}
+              element={
+                <LoginRoute user={user} render={() => renderWithLoadingCheck(<PeerReviewPage />)} />
+              }
             />
-            <AdminRoute
-              exact
+            <Route
               path="/administration/registrationmanagement"
-              render={renderWithLoadingCheck(<RegistrationManagementPage />)}
+              element={
+                <AdminRoute render={() => renderWithLoadingCheck(<RegistrationManagementPage />)} />
+              }
             />
-            <InstructorRoute
-              exact
+            <Route
               path="/instructorpage"
-              render={renderWithLoadingCheck(<InstructorPage />)}
+              element={
+                <InstructorRoute render={() => renderWithLoadingCheck(<InstructorPage />)} />
+              }
             />
-            <InstructorRoute
-              exact
+            <Route
               path="/instructorreviewpage"
-              render={renderWithLoadingCheck(<InstructorReviewPage />)}
+              element={
+                <InstructorRoute render={() => renderWithLoadingCheck(<InstructorReviewPage />)} />
+              }
             />
-            <InstructorRoute
+            <Route
               path="/adminstration/customer-reviews"
-              render={renderWithLoadingCheck(<ViewCustomerReviewsPage />)}
+              element={
+                <InstructorRoute
+                  render={() => renderWithLoadingCheck(<ViewCustomerReviewsPage />)}
+                />
+              }
             />
-            <InstructorRoute
+            <Route
               path="/instructor-timelogs"
-              render={renderWithLoadingCheck(<InstructorTimeLogsPage />)}
+              element={
+                <InstructorRoute
+                  render={() => renderWithLoadingCheck(<InstructorTimeLogsPage />)}
+                />
+              }
             />
-            <LoginRoute
-              exact
+            <Route
               path="/registrationdetails"
-              render={renderWithLoadingCheck(<RegistrationDetailsPage />)}
+              element={
+                <LoginRoute render={() => renderWithLoadingCheck(<RegistrationDetailsPage />)} />
+              }
             />
-            <LoginRoute exact path="/timelogs" render={renderWithLoadingCheck(<TimeLogsPage />)} />
-            <LoginRoute
-              exact
+            <Route
+              path="/timelogs"
+              element={<LoginRoute render={() => renderWithLoadingCheck(<TimeLogsPage />)} />}
+            />
+            <Route
               path="/sprints"
-              render={renderWithLoadingCheck(<SprintsDashboard />)}
+              element={<LoginRoute render={() => renderWithLoadingCheck(<SprintsDashboard />)} />}
             />
-            <LoginRoute
-              exact
+            <Route
               path="/student-tags"
-              render={renderWithLoadingCheck(<StudentTagPage />)}
+              element={<LoginRoute render={() => renderWithLoadingCheck(<StudentTagPage />)} />}
             />
-            <InstructorRoute
-              exact
+            <Route
               path="/instructor-tags"
-              render={renderWithLoadingCheck(<StaffTagPage />)}
+              element={<InstructorRoute render={() => renderWithLoadingCheck(<StaffTagPage />)} />}
             />
-            <AdminRoute
-              exact
+            <Route
               path="/administration/tags-statistics"
-              render={renderWithLoadingCheck(<StaffTagPage />)}
+              element={<AdminRoute render={() => renderWithLoadingCheck(<StaffTagPage />)} />}
             />
-            <Route component={NotFound} />
-          </Switch>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 

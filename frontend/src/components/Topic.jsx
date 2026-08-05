@@ -1,12 +1,12 @@
 import React from 'react'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 import ReactMarkdown from 'react-markdown'
 import { connect } from 'react-redux'
 import './Topic.css'
 
-const markdownRenderers = {
-  link: ({ children, href, ...otherProps }) => {
+const markdownComponents = {
+  a: ({ children, href, ...otherProps }) => {
     // add rel and target for external links so we don't leak information :)
     const externalLinkProps = /^https?:\/\//i.test(href)
       ? { rel: 'nofollow noreferrer noopener', target: '_blank' }
@@ -21,7 +21,7 @@ const markdownRenderers = {
 }
 
 const Markdown = ({ children }) => (
-  <ReactMarkdown renderers={markdownRenderers}>{children}</ReactMarkdown>
+  <ReactMarkdown components={markdownComponents}>{children}</ReactMarkdown>
 )
 
 const Topic = ({

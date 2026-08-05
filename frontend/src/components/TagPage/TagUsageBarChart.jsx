@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts'
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles'
 
 const TagUsageBarChart = ({ allTags, selectedTags, tagData, tagColors }) => {
   const theme = useTheme()

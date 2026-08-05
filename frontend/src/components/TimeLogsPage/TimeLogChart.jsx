@@ -12,8 +12,8 @@ import {
   Cell,
 } from 'recharts'
 import { NoTimeLogsPlaceholderSprint, NoTimeLogsPlaceholderProject } from '../common/Placeholders'
-import Error from '@material-ui/icons/Error'
-import { useTheme } from '@material-ui/core/styles'
+import Error from '@mui/icons-material/Error'
+import { useTheme } from '@mui/material/styles'
 
 import './TimeLogsPage.css'
 

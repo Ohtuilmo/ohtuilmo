@@ -11,7 +11,7 @@ import {
   Switch,
   FormControl,
   FormHelperText,
-} from '@material-ui/core'
+} from '@mui/material'
 
 // Actions
 import registrationManagementActions from '../../reducers/actions/registrationManagementActions'

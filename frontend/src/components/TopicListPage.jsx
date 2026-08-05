@@ -1,24 +1,25 @@
+import { withRouter } from '../utils/withRouter'
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import Button from '@material-ui/core/Button'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import Radio from '@material-ui/core/Radio'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import Switch from '@material-ui/core/Switch'
-import { Table, TableBody, TableRow, TableCell, TableHead, useTheme } from '@material-ui/core'
-import Icon from '@material-ui/icons/Input'
+import Button from '@mui/material/Button'
+import RadioGroup from '@mui/material/RadioGroup'
+import Radio from '@mui/material/Radio'
+import FormControl from '@mui/material/FormControl'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import Switch from '@mui/material/Switch'
+import { Table, TableBody, TableRow, TableCell, TableHead, useTheme } from '@mui/material'
+import Icon from '@mui/icons-material/Input'
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { green, red, orange } from '@material-ui/core/colors'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { green, red, orange } from '@mui/material/colors'
 
 import emailService from '../services/email'
 import { formatDate } from '../utils/functions'
@@ -31,7 +32,7 @@ import './TopicListPage.css'
 import { NoneAvailable } from './common/Placeholders'
 import configurationMapper from '../utils/configurationMapper'
 
-const redGreenTheme = createMuiTheme({
+const redGreenTheme = createTheme({
   palette: {
     primary: green,
     secondary: red,
@@ -41,7 +42,7 @@ const redGreenTheme = createMuiTheme({
   },
 })
 
-const orangeTheme = createMuiTheme({
+const orangeTheme = createTheme({
   palette: {
     primary: orange,
     secondary: orange,
@@ -52,9 +53,9 @@ const orangeTheme = createMuiTheme({
 })
 
 const ThemedButton = ({ theme, ...props }) => (
-  <MuiThemeProvider theme={theme}>
+  <ThemeProvider theme={theme}>
     <Button {...props} />
-  </MuiThemeProvider>
+  </ThemeProvider>
 )
 
 const GreenButton = (props) => <ThemedButton {...props} theme={redGreenTheme} color="primary" />
@@ -391,7 +392,7 @@ const TopicAcceptanceFilter = (props) => {
   return (
     <Fragment>
       <FormControl sx={{ margin: '0 4rem' }}>
-        <MuiThemeProvider theme={redGreenTheme}>
+        <ThemeProvider theme={redGreenTheme}>
           <RadioGroup
             row
             defaultValue="all"
@@ -418,7 +419,7 @@ const TopicAcceptanceFilter = (props) => {
               label="Rejected"
             />
           </RadioGroup>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </FormControl>
     </Fragment>
   )

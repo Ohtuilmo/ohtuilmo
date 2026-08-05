@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state) => {
@@ -17,35 +17,20 @@ const Unauthorized = () => (
   </div>
 )
 
-export const AdminRoute = connect(mapStateToProps)(({ render: Component, user, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      if (user) {
-        return user.user.admin ? <Component {...props} /> : <Unauthorized />
-      }
-      return null
-    }}
-  />
-))
+export const AdminRoute = connect(mapStateToProps)(({ render: Component, user }) => {
+  if (user) {
+    return user.user.admin ? <Component /> : <Unauthorized />
+  }
+  return null
+})
 
-export const InstructorRoute = connect(mapStateToProps)(({ render: Component, user, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      if (user) {
-        return user.user.instructor || user.user.admin ? <Component {...props} /> : <Unauthorized />
-      }
-      return null
-    }}
-  />
-))
+export const InstructorRoute = connect(mapStateToProps)(({ render: Component, user }) => {
+  if (user) {
+    return user.user.instructor || user.user.admin ? <Component /> : <Unauthorized />
+  }
+  return null
+})
 
-export const LoginRoute = connect(mapStateToProps)(({ render: Component, user, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      return user ? <Component {...props} /> : null
-    }}
-  />
-))
+export const LoginRoute = connect(mapStateToProps)(({ render: Component, user }) => {
+  return user ? <Component /> : null
+})

@@ -1,12 +1,13 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useState, useEffect, useRef } from 'react'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 import tagService from '../../services/tags'
 import './TagsDashboard.css'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
+
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import ConfirmationDialog from '../common/ConfirmationDialog'
 

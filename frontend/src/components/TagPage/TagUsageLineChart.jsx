@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@mui/material/styles'
 
 const TagUsageLineChart = ({ allSprints, allTags, selectedTags, tagData, tagColors }) => {
   const theme = useTheme()

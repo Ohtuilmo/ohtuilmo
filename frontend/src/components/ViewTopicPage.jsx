@@ -1,6 +1,7 @@
+import { withRouter } from '../utils/withRouter'
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import Topic from './Topic'
 import TopicEditPage from './TopicEditPage'
 import viewTopicPageActions from '../reducers/actions/viewTopicPageActions'

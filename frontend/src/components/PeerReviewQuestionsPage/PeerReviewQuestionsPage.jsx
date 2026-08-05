@@ -1,8 +1,9 @@
+import { withRouter } from '../../utils/withRouter'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import Paper from '@material-ui/core/Paper'
+
+import Paper from '@mui/material/Paper'
 
 import {
   fetchPeerReviewQuestionSets,

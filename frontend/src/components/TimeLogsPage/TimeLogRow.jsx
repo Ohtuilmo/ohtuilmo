@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { minutesToFormattedHoursAndMinutes } from '../../utils/functions'
-import { DeleteOutlineRounded } from '@material-ui/icons'
-import { IconButton, Chip } from '@material-ui/core'
+import { DeleteOutlineRounded } from '@mui/icons-material'
+import { IconButton, Chip } from '@mui/material'
 import ConfirmationDialog from '../common/ConfirmationDialog'
-import Checkbox from '@material-ui/core/Checkbox'
+import Checkbox from '@mui/material/Checkbox'
 
 import './TimeLogsPage.css'
 

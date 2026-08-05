@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 import { createCustomerReviewQuestionSet } from '../../reducers/actions/customerReviewQuestionsPageActions'
 import { setError, setSuccess } from '../../reducers/actions/notificationActions'
 import QuestionSetForm from '../QuestionSetForm'

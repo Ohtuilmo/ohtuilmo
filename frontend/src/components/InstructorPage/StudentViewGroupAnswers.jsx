@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, TableRow, TableCell, TableHead, TableBody } from '@material-ui/core'
+import { Table, TableRow, TableCell, TableHead, TableBody } from '@mui/material'
 
 import './InstructorPage.css'
 

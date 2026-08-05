@@ -1,10 +1,10 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import Button from '@mui/material/Button'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import configurationPageActions from '../../reducers/actions/configurationPageActions'

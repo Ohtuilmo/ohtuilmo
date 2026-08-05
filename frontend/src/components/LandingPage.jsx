@@ -1,6 +1,7 @@
+import { withRouter } from '../utils/withRouter'
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import * as notificationActions from '../reducers/actions/notificationActions'
 
 import './LandingPage.css'

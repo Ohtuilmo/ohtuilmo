@@ -1,6 +1,6 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import { Check } from '@material-ui/icons'
+import { withStyles } from '@mui/styles'
+import { Check } from '@mui/icons-material'
 import {
   FormControl,
   InputLabel,
@@ -9,7 +9,7 @@ import {
   Chip,
   OutlinedInput,
   ListItemIcon,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import './TimeLogsPage.css'
 

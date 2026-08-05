@@ -1,5 +1,6 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+
 import { connect } from 'react-redux'
 import { StudentSelectionForm } from '../common/StudentSelectionForm'
 import { TimeLogRow } from './TimeLogRow'
@@ -8,8 +9,8 @@ import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintSelect } from './SprintSelect'
 import ConfirmationDialog from '../common/ConfirmationDialog'
 
-import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+import { Typography } from '@mui/material'
+import Button from '@mui/material/Button'
 
 import userService from '../../services/user'
 import sprintService from '../../services/sprints'

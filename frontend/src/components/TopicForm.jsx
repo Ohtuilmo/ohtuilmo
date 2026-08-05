@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
-import TextField from '@material-ui/core/TextField'
-import { Radio, RadioGroup, Checkbox } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import { useTheme } from '@material-ui/core'
+import TextField from '@mui/material/TextField'
+import { Radio, RadioGroup, Checkbox } from '@mui/material'
+import Button from '@mui/material/Button'
+import { useTheme } from '@mui/material'
 import './TopicForm.css'
 
 const TopicForm = (props) => {

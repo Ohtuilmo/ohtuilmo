@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
 
 import appActions from '../reducers/actions/appActions'
 import loginPageActions from '../reducers/actions/loginPageActions'

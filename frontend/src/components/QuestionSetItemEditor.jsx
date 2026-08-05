@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
 import QuestionSetForm from './QuestionSetForm'
 import './QuestionSetItemEditor.css'
 

@@ -1,20 +1,21 @@
+import { withRouter } from '../utils/withRouter'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import './TopicFormPage.css'
 
 // MUI
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import Switch from '@material-ui/core/Switch'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Divider from '@material-ui/core/Divider'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import Switch from '@mui/material/Switch'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionActions from '@mui/material/AccordionActions'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Divider from '@mui/material/Divider'
 
 // Service
 import configurationService from '../services/configuration'
@@ -167,8 +168,8 @@ const ConfigurationPage = (props) => {
       </div>
       <h3>Questions</h3>
       <div style={{ paddingBottom: 10 }}>
-        <ExpansionPanel data-cy="expansion-registration-questions">
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion data-cy="expansion-registration-questions">
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <div
               style={{
                 width: '100%',
@@ -179,16 +180,16 @@ const ConfigurationPage = (props) => {
             >
               <p>Registration questions</p>
             </div>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <div>
               <Divider />
               {props.selectedRegister && (
                 <RegistrationQuestionsTable questions={props.selectedRegister.questions} />
               )}
             </div>
-          </ExpansionPanelDetails>
-          <ExpansionPanelActions>
+          </AccordionDetails>
+          <AccordionActions>
             <Select
               name="registration"
               value={props.selectedRegister ? props.selectedRegister.id : 'default'}
@@ -211,10 +212,10 @@ const ConfigurationPage = (props) => {
             >
               Configure
             </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
-        <ExpansionPanel data-cy="expansion-review-questions-1">
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          </AccordionActions>
+        </Accordion>
+        <Accordion data-cy="expansion-review-questions-1">
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <div
               style={{
                 width: '100%',
@@ -225,16 +226,16 @@ const ConfigurationPage = (props) => {
             >
               <p>Peer review questions 1</p>
             </div>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <div>
               <Divider />
               {props.selectedReview1 && (
                 <PeerReviewQuestionsTable questions={props.selectedReview1.questions} />
               )}
             </div>
-          </ExpansionPanelDetails>
-          <ExpansionPanelActions>
+          </AccordionDetails>
+          <AccordionActions>
             <Select
               data-cy="select-review-questions-1"
               name="review1"
@@ -258,10 +259,10 @@ const ConfigurationPage = (props) => {
             >
               Configure
             </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
-        <ExpansionPanel data-cy="expansion-review-questions-2">
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          </AccordionActions>
+        </Accordion>
+        <Accordion data-cy="expansion-review-questions-2">
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <div
               style={{
                 width: '100%',
@@ -272,16 +273,16 @@ const ConfigurationPage = (props) => {
             >
               <p>Peer review questions 2</p>
             </div>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <div>
               <Divider />
               {props.selectedReview2 && (
                 <PeerReviewQuestionsTable questions={props.selectedReview2.questions} />
               )}
             </div>
-          </ExpansionPanelDetails>
-          <ExpansionPanelActions>
+          </AccordionDetails>
+          <AccordionActions>
             <Select
               name="review2"
               value={props.selectedReview2 ? props.selectedReview2.id : 'default'}
@@ -304,10 +305,10 @@ const ConfigurationPage = (props) => {
             >
               Configure
             </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
-        <ExpansionPanel data-cy="expansion-customer-review-questions">
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          </AccordionActions>
+        </Accordion>
+        <Accordion data-cy="expansion-customer-review-questions">
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <div
               style={{
                 width: '100%',
@@ -318,16 +319,16 @@ const ConfigurationPage = (props) => {
             >
               <p>Customer review questions</p>
             </div>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <div>
               <Divider />
               {props.selectedCustomerReview && (
                 <PeerReviewQuestionsTable questions={props.selectedCustomerReview.questions} />
               )}
             </div>
-          </ExpansionPanelDetails>
-          <ExpansionPanelActions>
+          </AccordionDetails>
+          <AccordionActions>
             <Select
               name="customer-review"
               value={props.selectedCustomerReview ? props.selectedCustomerReview.id : 'default'}
@@ -350,8 +351,8 @@ const ConfigurationPage = (props) => {
             >
               Configure
             </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
+          </AccordionActions>
+        </Accordion>
         <div style={{ marginTop: '10px' }}>
           <Switch
             style={{ marginRight: '10px', height: '40px' }}

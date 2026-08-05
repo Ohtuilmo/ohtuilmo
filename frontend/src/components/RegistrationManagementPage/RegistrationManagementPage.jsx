@@ -1,13 +1,13 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
 import ProjectRegistrationSettings from './ProjectRegistrationSettings'
 import TopicRegistrationSettings from './TopicRegistrationSettings'
 import PeerReviewSettings from './PeerReviewSettings'
 
 // MUI
-import { MenuItem, Button } from '@material-ui/core'
+import { MenuItem, Button } from '@mui/material'
 
 // Actions
 import appActions from '../../reducers/actions/appActions'

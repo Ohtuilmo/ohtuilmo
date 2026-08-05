@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AsyncSelect from 'react-select/lib/Async'
-import { useTheme } from '@material-ui/core/styles'
+import AsyncSelect from 'react-select/async'
+import { useTheme } from '@mui/material/styles'
 
 import autocomplete from '../../services/autocomplete'
 

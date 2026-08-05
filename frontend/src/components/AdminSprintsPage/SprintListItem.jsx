@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Button from '@material-ui/core/Button'
-import { TableRow, TableCell } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
+import Button from '@mui/material/Button'
+import { TableRow, TableCell } from '@mui/material'
+import TextField from '@mui/material/TextField'
 
 import sprintService from '../../services/sprints'
 

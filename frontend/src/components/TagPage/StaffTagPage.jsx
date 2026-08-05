@@ -1,8 +1,9 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import LoadingSpinner from '../common/LoadingSpinner'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import CheckboxMultiSelect from '../common/CheckboxMultiSelect'
 import { StudentSelectionForm } from '../common/StudentSelectionForm'
 import TagUsageLineChart from './TagUsageLineChart'

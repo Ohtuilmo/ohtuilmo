@@ -1,6 +1,7 @@
+import { withRouter } from '../utils/withRouter'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import { getUser } from '../utils/functions'
 
 import questionsJson from './questions/instructor_data'
@@ -10,15 +11,15 @@ import * as notificationActions from '../reducers/actions/notificationActions'
 import instructorReviewPageActions from '../reducers/actions/instructorReviewPageActions.js'
 
 //Services
-import TextField from '@material-ui/core/TextField'
+import TextField from '@mui/material/TextField'
 
 import groupManagementService from '../services/groupManagement'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
 import instructorReviewService from '../services/instructorReview'
 
 class InstructorReviewPage extends React.Component {

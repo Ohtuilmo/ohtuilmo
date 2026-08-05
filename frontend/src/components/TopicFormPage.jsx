@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
+import { Navigate } from 'react-router-dom'
 
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -35,7 +35,7 @@ class TopicFormPage extends React.Component {
 
   render() {
     if (this.props.isSaved === true) {
-      return <Redirect to={'/topics/' + this.props.secretId} />
+      return <Navigate to={'/topics/' + this.props.secretId} />
     }
 
     if (this.props.showInfo) {

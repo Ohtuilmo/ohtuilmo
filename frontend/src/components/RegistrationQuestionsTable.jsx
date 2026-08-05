@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 
 import { registrationQuestionShape } from './common/sharedPropTypes'
 

@@ -1,14 +1,15 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import { TimeLogForm } from './TimeLogForm'
 import { TimeLogRow } from './TimeLogRow'
 import TimeLogChart from './TimeLogChart'
 import { NotInGroupPlaceholder, NoSprintsPlaceholder } from '../common/Placeholders'
 import LoadingSpinner from '../common/LoadingSpinner'
 import { SprintSelect } from './SprintSelect'
-import { Typography } from '@material-ui/core'
-import Error from '@material-ui/icons/Error'
+import { Typography } from '@mui/material'
+import Error from '@mui/icons-material/Error'
 
 // services
 import timeLogsService from '../../services/timeLogs'

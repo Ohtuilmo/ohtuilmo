@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import './index.css'
 import { Provider } from 'react-redux'
 import App from './App'
 import store from './reducers/store'
-import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'
-import amber from '@material-ui/core/colors/amber'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { amber } from '@mui/material/colors'
+import { ThemeProvider as LegacyThemeProvider } from '@mui/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 import { ColorModeContext } from './context/ColorModeContext'
 
 const getInitialMode = () => {
@@ -20,7 +21,7 @@ const Root = () => {
 
   const theme = createTheme({
     palette: {
-      type: isDark ? 'dark' : 'light',
+      mode: isDark ? 'dark' : 'light',
       primary: {
         main: '#fdd835',
       },
@@ -30,7 +31,6 @@ const Root = () => {
       },
     },
     typography: {
-      useNextVariants: true,
       h1: {
         marginTop: '0.67em',
         marginBottom: '0.67em',
@@ -63,9 +63,9 @@ const Root = () => {
         stroke: isDark ? '#ffffff' : '#4d4d4d',
       },
     },
-    overrides: {
+    components: {
       MuiCssBaseline: {
-        '@global': {
+        styleOverrides: {
           a: {
             color: isDark ? '#78c3ff' : '',
           },
@@ -75,16 +75,22 @@ const Root = () => {
         },
       },
       MuiTableCell: {
-        head: {
-          backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.02)',
-        },
-        body: {
-          backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.01)',
+        styleOverrides: {
+          head: {
+            backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.02)',
+          },
+          body: {
+            backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.01)',
+          },
         },
       },
       MuiTableRow: {
-        '&:hover': {
-          backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+            },
+          },
         },
       },
     },
@@ -93,16 +99,19 @@ const Root = () => {
   return (
     <Provider store={store}>
       <ColorModeContext.Provider value={{ mode: themeMode, setMode: setThemeMode }}>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </MuiThemeProvider>
+        <ThemeProvider theme={theme}>
+          <LegacyThemeProvider theme={theme}>
+            <CssBaseline />
+            <App />
+          </LegacyThemeProvider>
+        </ThemeProvider>
       </ColorModeContext.Provider>
     </Provider>
   )
 }
 
-ReactDOM.render(<Root />, document.getElementById('root'))
+const root = createRoot(document.getElementById('root'))
+root.render(<Root />)
 
 if (window.Cypress) {
   window.store = store

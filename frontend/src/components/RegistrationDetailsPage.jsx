@@ -1,5 +1,6 @@
+import { withRouter } from '../utils/withRouter'
 import React from 'react'
-import { withRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 
@@ -8,8 +9,8 @@ import { setError } from '../reducers/actions/notificationActions'
 
 import peerReviewService from '../services/peerReview'
 
-import Typography from '@material-ui/core/Typography'
-import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
+import Typography from '@mui/material/Typography'
+import { Input, Card, CardContent, Select, MenuItem } from '@mui/material'
 import TopicDialog from './TopicDialog'
 import CourseMaterial from './common/CourseMaterial'
 

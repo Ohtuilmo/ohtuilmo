@@ -1,13 +1,14 @@
+import { withRouter } from '../../utils/withRouter'
 import React, { useState, useEffect } from 'react'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { Table, TableRow, TableHead, TableBody, TableCell } from '@mui/material'
 import sprintService from '../../services/sprints'
 import { NotInGroupPlaceholder } from '../common/Placeholders'
 import './SprintsDashboard.css'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
 import * as notificationActions from '../../reducers/actions/notificationActions'
 
 const SprintsPage = (props) => {

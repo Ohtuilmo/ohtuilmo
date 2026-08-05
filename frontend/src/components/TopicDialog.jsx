@@ -1,12 +1,12 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogActions from '@material-ui/core/DialogActions'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import Topic from './Topic'
-import Typography from '@material-ui/core/Typography'
+import Typography from '@mui/material/Typography'
 
 class TopicDialog extends React.Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'

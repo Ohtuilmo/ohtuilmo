@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, TableRow, TableCell } from '@material-ui/core'
+import { Table, TableRow, TableCell } from '@mui/material'
 import registrationService from '../services/registration'
 
 const Registrations = () => {
