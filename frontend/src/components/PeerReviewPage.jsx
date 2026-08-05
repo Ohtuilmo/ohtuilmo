@@ -21,6 +21,11 @@ import { Table, TableHead, TableRow, TableBody, TableCell } from '@mui/material'
 
 class PeerReview extends React.Component {
   async componentDidMount() {
+    // If we already have the questions and answers loaded in Redux we can skip fetching
+    if (this.props.answerSheet && this.props.answerSheet.length > 0 && !this.props.isInitializing) {
+      return
+    }
+
     try {
       const group = await groupManagementService.getByStudent()
       if (group) {
