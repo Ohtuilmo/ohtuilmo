@@ -26,6 +26,8 @@ class PeerReview extends React.Component {
       return
     }
 
+    this.props.setLoading(true)
+
     try {
       const group = await groupManagementService.getByStudent()
       if (group) {
