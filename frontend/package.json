@@ -3,6 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test-setup": "npm run test-setup:down && docker compose -f ../compose.local-test.yaml --profile local-e2e up -d",
+    "test-setup:down": "docker compose -f ../compose.local-test.yaml --profile local-e2e down",
+    "test:docker": "docker compose -f ../compose.local-test.yaml --profile e2e up --force-recreate --exit-code-from cypress",
+    "test:docker:down": "docker compose -f ../compose.local-test.yaml --profile e2e down",
+    "test": "CYPRESS_baseUrl=http://localhost:5000 npx cypress open",
+    "test:headless": "CYPRESS_VIDEO=false CYPRESS_baseUrl=http://localhost:5000 npx cypress run",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -22,21 +37,6 @@
     "recharts": "^3.10.1",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test-setup": "npm run test-setup:down && docker compose -f ../compose.local-test.yaml --profile local-e2e up -d",
-    "test-setup:down": "docker compose -f ../compose.local-test.yaml --profile local-e2e down",
-    "test:docker": "docker compose -f ../compose.local-test.yaml --profile e2e up --force-recreate --exit-code-from cypress",
-    "test:docker:down": "docker compose -f ../compose.local-test.yaml --profile e2e down",
-    "test": "CYPRESS_baseUrl=http://localhost:5000 npx cypress open",
-    "test:headless": "CYPRESS_VIDEO=false CYPRESS_baseUrl=http://localhost:5000 npx cypress run",
-    "lint": "oxlint src/",
-    "lint:fix": "oxlint --fix src/",
-    "format": "oxfmt src/ e2e/",
-    "format:check": "oxfmt --check src/ e2e/"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",

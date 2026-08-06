@@ -9,7 +9,7 @@
     "lint": "npm --prefix frontend run lint && npm --prefix backend run lint"
   },
   "lint-staged": {
-    "frontend/{src,e2e}/**/*.{js,jsx}": [
+    "frontend/**/*.{js,jsx}": [
       "npm --prefix frontend run format:check",
       "npm --prefix frontend run lint"
     ],
