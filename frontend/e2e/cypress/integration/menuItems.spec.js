@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-
 describe('Menu items for different user roles', () => {
   describe('Main menu of admin', () => {
     beforeEach(() => {
@@ -8,13 +7,11 @@ describe('Menu items for different user roles', () => {
       cy.visit('/')
     })
 
-
     it('Admin should see admin menu items', () => {
       cy.get('#hamburger-menu-button')
         .click()
         .then(() => {
           cy.get('#hamburger-menu-popper').within(() => {
-
             cy.contains('Admin').should('exist')
             cy.contains('Create Topic').should('exist')
             cy.contains('Topics').should('exist')
@@ -30,7 +27,7 @@ describe('Menu items for different user roles', () => {
             cy.contains('Peer Review Questions').should('exist')
             cy.contains('Email Templates').should('exist')
           })
-      })
+        })
     })
 
     it('Admin should see instructor menu items', () => {
@@ -45,7 +42,6 @@ describe('Menu items for different user roles', () => {
           })
         })
     })
-
 
     it('Admin should see student menu items', () => {
       cy.get('#hamburger-menu-button')
@@ -82,7 +78,6 @@ describe('Menu items for different user roles', () => {
       cy.visit('/')
     })
 
-
     it('Student should not see admin menu items', () => {
       cy.get('#hamburger-menu-button')
         .click()
@@ -103,7 +98,7 @@ describe('Menu items for different user roles', () => {
             cy.contains('Peer Review Questions').should('not.exist')
             cy.contains('Email Templates').should('not.exist')
           })
-      })
+        })
     })
 
     it('Student should not see instructor menu items', () => {
@@ -140,7 +135,6 @@ describe('Menu items for different user roles', () => {
       cy.visit('/')
     })
 
-
     it('Student without group should not see admin menu items', () => {
       cy.get('#hamburger-menu-button')
         .click()
@@ -161,7 +155,7 @@ describe('Menu items for different user roles', () => {
             cy.contains('Peer Review Questions').should('not.exist')
             cy.contains('Email Templates').should('not.exist')
           })
-      })
+        })
     })
 
     it('Student without group should not see instructor menu items', () => {

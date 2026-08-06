@@ -35,7 +35,7 @@ const StudentInput = ({ value, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         multiline
         rows="8"
-        inputProps={{ className: 'create-group-form__student-input' }}
+        className="create-group-form__student-input"
         fullWidth={true}
       />
     </div>
@@ -47,7 +47,8 @@ const NameInput = ({ value, onChange, inputProps, ...textFieldProps }) => (
     value={value}
     onChange={(e) => onChange(e.target.value)}
     variant="standard"
-    inputProps={inputProps}
+    className={inputProps?.className}
+    data-cy={inputProps?.['data-cy']}
     fullWidth={true}
     {...textFieldProps}
   />
@@ -157,9 +158,7 @@ const GroupCreationForm = ({
               <NameInput
                 value={groupName}
                 onChange={onNameChangeForm}
-                inputProps={{
-                  className: 'create-group-form__name',
-                }}
+                className="create-group-form__name"
               />
             </FormInput>
 

@@ -57,10 +57,8 @@ describe('Group assignment indicator tests', () => {
     })
 
     it('does not render group indicator when visited', () => {
-      cy.get('[data-cy=groupname_display_assigned]')
-        .should('not.exist')
-      cy.get('[data-cy=groupname_display_unassigned]')
-        .should('not.exist')
+      cy.get('[data-cy=groupname_display_assigned]').should('not.exist')
+      cy.get('[data-cy=groupname_display_unassigned]').should('not.exist')
     })
 
     afterEach(() => {

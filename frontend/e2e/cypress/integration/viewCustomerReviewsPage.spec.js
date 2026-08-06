@@ -33,8 +33,7 @@ const mockAnswers = [
     type: 'text',
     answer:
       'Your satisfaction to the resulting product compared to your intial expectations:Your satisfaction to the resulting product compared to your intial expectations:',
-    questionHeader:
-      'What was the technical skill level of the team compared to your expectations?',
+    questionHeader: 'What was the technical skill level of the team compared to your expectations?',
   },
   {
     id: 5,
@@ -87,7 +86,7 @@ describe('Customer review is shown', () => {
           specialRequests: '',
           additionalInfo: '',
         },
-        configuration1.id
+        configuration1.id,
       ).as('conf1_topic1')
 
       cy.get('@conf1_topic1').then((topic1) => {
@@ -112,7 +111,7 @@ describe('Customer review is shown', () => {
           specialRequests: '',
           additionalInfo: '',
         },
-        configuration2.id
+        configuration2.id,
       ).as('conf2_topic1')
 
       cy.createTopic(
@@ -125,7 +124,7 @@ describe('Customer review is shown', () => {
           specialRequests: '',
           additionalInfo: '',
         },
-        configuration2.id
+        configuration2.id,
       ).as('conf2_topic2')
 
       getAll('@conf2_topic1', '@conf2_topic2').spread((topic1, topic2) => {
@@ -187,8 +186,7 @@ describe('Customer review is shown', () => {
     cy.get('[data-cy="customer-reviews-select"]').click()
     cy.get('[data-cy="all-configurations"]').click()
 
-    const { conf1_topic1_group, conf2_topic1_group, conf2_topic2_group } =
-      locals
+    const { conf1_topic1_group, conf2_topic1_group, conf2_topic2_group } = locals
 
     cy.contains(conf1_topic1_group.name)
     cy.contains(conf2_topic1_group.name)

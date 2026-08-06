@@ -3,10 +3,10 @@
 const escapeJsonForCypressType = (json) => json.replace(/\{/g, '{{}')
 
 const submitCreationForm = (name, questionsJson) => {
-  cy.get('.question-set-form .question-set-form__name').type(name)
-  cy.get('.question-set-form .question-set-form__questions').type(
-    escapeJsonForCypressType(questionsJson)
-  )
+  cy.get('.question-set-form .question-set-form__name input').type(name)
+  cy.get(
+    '.question-set-form .question-set-form__questions textarea:not([aria-hidden="true"])',
+  ).type(escapeJsonForCypressType(questionsJson))
   cy.get('.question-set-form button[type="submit"]').click()
 }
 
@@ -15,66 +15,46 @@ const createQuestionSet = (name, questions) => {
 }
 
 const editQuestionSet = (questionSetItemSelector) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-item-controls__menu-button')
-    .click()
+  cy.get(questionSetItemSelector).find('.question-set-item-controls__menu-button').click()
   cy.get('#question-set-item-controls__menu')
     .find('.question-set-item-controls__edit-button')
     .click()
 }
 
 const replaceEditingQuestionSetName = (questionSetItemSelector, newName) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-form__name')
-    .clear()
-    .type(newName)
+  cy.get(questionSetItemSelector).find('.question-set-form__name input').clear().type(newName)
 }
 
 const replaceEditingQuestionSetJson = (questionSetItemSelector, json) => {
   cy.get(questionSetItemSelector)
-    .find('.question-set-form__questions')
+    .find('.question-set-form__questions textarea:not([aria-hidden="true"])')
     .clear()
     .type(escapeJsonForCypressType(json))
 }
 
 const replaceEditingQuestionSet = (questionSetItemSelector, newQuestions) => {
-  replaceEditingQuestionSetJson(
-    questionSetItemSelector,
-    JSON.stringify(newQuestions)
-  )
+  replaceEditingQuestionSetJson(questionSetItemSelector, JSON.stringify(newQuestions))
 }
 
 const clearEditingQuestionSetInputs = (selector) => {
-  cy.get(selector)
-    .find('.question-set-form__name')
-    .clear()
-  cy.get(selector)
-    .find('.question-set-form__questions')
-    .clear()
+  cy.get(selector).find('.question-set-form__name input').clear()
+  cy.get(selector).find('.question-set-form__questions textarea:not([aria-hidden="true"])').clear()
 }
 
 const clearEditingQuestionSetName = (selector) => {
-  cy.get(selector)
-    .find('.question-set-form__name')
-    .clear()
+  cy.get(selector).find('.question-set-form__name input').clear()
 }
 
 const clearEditingQuestionSetQuestions = (selector) => {
-  cy.get(selector)
-    .find('.question-set-form__questions')
-    .clear()
+  cy.get(selector).find('.question-set-form__questions textarea:not([aria-hidden="true"])').clear()
 }
 
 const saveEditingQuestionSet = (questionSetItemSelector) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-item-editor__save-button')
-    .click()
+  cy.get(questionSetItemSelector).find('.question-set-item-editor__save-button').click()
 }
 
 const cancelEditingQuestionSet = (selector) => {
-  cy.get(selector)
-    .find('.question-set-item-editor__cancel-button')
-    .click()
+  cy.get(selector).find('.question-set-item-editor__cancel-button').click()
 }
 
 describe('Customer review questions page', () => {
@@ -93,25 +73,19 @@ describe('Customer review questions page', () => {
         {
           type: 'text',
           header: 'Mitä mieltä tykittelystä?',
-          description: 'Vastaa lyhyesti 1000 sanan verran'
-        }
+          description: 'Vastaa lyhyesti 1000 sanan verran',
+        },
       ])
 
-      cy.get('.notification').contains(
-        'Created new customer review question set "creview1000"'
+      cy.get('.notification').contains('Created new customer review question set "creview1000"')
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
       )
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
-      cy.get('.question-set-item .question-set-item__title').should(
-        'have.text',
-        'creview1000'
-      )
+      cy.get('.question-set-item .question-set-item__title').should('have.text', 'creview1000')
+      cy.get('.question-set-item .question-set-item__content').contains('Mitä mieltä tykittelystä?')
       cy.get('.question-set-item .question-set-item__content').contains(
-        'Mitä mieltä tykittelystä?'
-      )
-      cy.get('.question-set-item .question-set-item__content').contains(
-        'Vastaa lyhyesti 1000 sanan verran'
+        'Vastaa lyhyesti 1000 sanan verran',
       )
       cy.get('.question-set-item .question-set-item__content').contains('text')
       cy.get('.customer-review-question-set-list')
@@ -125,16 +99,17 @@ describe('Customer review questions page', () => {
           type: 'range',
           header: 'This is header',
           description: 'This is description',
-          options: ['pwned', 'owned', 'pk\'d', 'noob', 'elite', '1337']
-        }
+          options: ['pwned', 'owned', "pk'd", 'noob', 'elite', '1337'],
+        },
       ])
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('This is header')
       cy.get('.question-set-item__content').contains('This is description')
       cy.get('.question-set-item__content').contains('range')
-      cy.get('.question-set-item__content').contains('pk\'d')
+      cy.get('.question-set-item__content').contains("pk'd")
       cy.get('.question-set-item__content').contains('1337')
     })
 
@@ -143,15 +118,15 @@ describe('Customer review questions page', () => {
         {
           type: 'text',
           header: 'Just a text field plz?',
-          description: 'Right?'
-        }
+          description: 'Right?',
+        },
       ])
       createQuestionSet('creview3000', [
         {
           type: 'text',
           header: 'Just a text field plz?',
-          description: 'Right?'
-        }
+          description: 'Right?',
+        },
       ])
       cy.get('.notification').contains('name already in use')
       cy.get('.customer-review-question-set-list')
@@ -172,7 +147,7 @@ describe('Customer review questions page', () => {
   describe('Customer review question set editing', () => {
     beforeEach(() => {
       cy.createCustomerReviewQuestionSet('creview5000', [
-        { type: 'text', header: 'foo', description: 'bar' }
+        { type: 'text', header: 'foo', description: 'bar' },
       ])
       cy.visit('/administration/customer-review-questions')
       editQuestionSet('.question-set-item')
@@ -206,10 +181,7 @@ describe('Customer review questions page', () => {
     })
 
     it('shows error if new JSON is invalid', () => {
-      replaceEditingQuestionSetJson(
-        '.question-set-item-editor',
-        '..-12.31-23.1-23.asdasc'
-      )
+      replaceEditingQuestionSetJson('.question-set-item-editor', '..-12.31-23.1-23.asdasc')
       saveEditingQuestionSet('.question-set-item-editor')
       cy.get('.question-set-form').contains('Field contains invalid JSON')
     })
@@ -225,39 +197,38 @@ describe('Customer review questions page', () => {
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'creview1337')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('foo')
       cy.get('.question-set-item__content').contains('bar')
       cy.get('.question-set-item__content').contains('text')
     })
 
     it('edits questions without changing name', () => {
-      replaceEditingQuestionSet('.question-set-item-editor', [
-        { header: 'baz', type: 'range' }
-      ])
+      replaceEditingQuestionSet('.question-set-item-editor', [{ header: 'baz', type: 'range' }])
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'creview5000')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('baz')
       cy.get('.question-set-item__content').contains('range')
     })
 
     it('does not modify set if cancel is clicked', () => {
       replaceEditingQuestionSetName('.question-set-item-editor', 'creview7321')
-      replaceEditingQuestionSet('.question-set-item-editor', [
-        { header: 'baz!', type: 'range' }
-      ])
+      replaceEditingQuestionSet('.question-set-item-editor', [{ header: 'baz!', type: 'range' }])
       cancelEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'creview5000')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('foo')
       cy.get('.question-set-item__content').contains('bar')
       cy.get('.question-set-item__content').contains('text')
@@ -267,14 +238,15 @@ describe('Customer review questions page', () => {
       replaceEditingQuestionSetName('.question-set-item-editor', 'creview5001')
       replaceEditingQuestionSet('.question-set-item-editor', [
         { header: 'asd?', type: 'text' },
-        { header: 'das!', type: 'range' }
+        { header: 'das!', type: 'range' },
       ])
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'creview5001')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 2)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        2,
+      )
       cy.get('.question-set-item__content').contains('asd?')
       cy.get('.question-set-item__content').contains('range')
     })

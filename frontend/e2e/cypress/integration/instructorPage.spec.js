@@ -41,8 +41,7 @@ const initTests = () => {
           {
             id: 2,
             type: 'text',
-            answer:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
+            answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
             questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
@@ -85,8 +84,7 @@ const initTests = () => {
           {
             id: 2,
             type: 'text',
-            answer:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
+            answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
             questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
@@ -134,8 +132,7 @@ const initTests = () => {
           {
             id: 2,
             type: 'text',
-            answer:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
+            answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
             questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
@@ -178,8 +175,7 @@ const initTests = () => {
           {
             id: 2,
             type: 'text',
-            answer:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
+            answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
             questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
@@ -227,8 +223,7 @@ const initTests = () => {
           {
             id: 2,
             type: 'text',
-            answer:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
+            answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
             questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
@@ -271,8 +266,7 @@ const initTests = () => {
           {
             id: 2,
             type: 'text',
-            answer:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
+            answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
             questionHeader: 'Mitä kaikkea teknistä tää jäbä osas tehdä?',
           },
           {
@@ -335,9 +329,7 @@ describe('Instructor page', () => {
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 2').click()
     cy.contains('Kämmäilijät')
-    cy.contains(
-      "This group has not answered to the second peer review round yet."
-    )
+    cy.contains('This group has not answered to the second peer review round yet.')
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
     cy.contains('4.00')
@@ -370,16 +362,16 @@ describe('Instructor page', () => {
     cy.get('.configuration-menu-item').contains('Konfiguraatio 1').click()
     cy.get('[data-cy=group-selector]').click()
     cy.get('.specified-group-menu-item').contains('Tykittelijät').click()
-  
+
     cy.contains('Student View').click()
-    cy.contains('Question View') 
+    cy.contains('Question View')
     cy.contains('/ 1st Round')
     cy.contains('Tykittelijät')
-  
+
     cy.contains('Question View').click()
     cy.contains('Student View')
   })
-  
+
   after(() => {
     cy.deleteAllGroups()
     cy.deleteAllPeerReviews()

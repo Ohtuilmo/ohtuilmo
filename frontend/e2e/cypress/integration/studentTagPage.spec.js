@@ -77,10 +77,7 @@ describe('Student tag page', () => {
         cy.contains('Tags').click()
       })
     // Ignore ResizeObserver loop limit error which happens randomly
-    cy.on(
-      'uncaught:exception',
-      (err) => !err.message.includes('ResizeObserver loop'),
-    )
+    cy.on('uncaught:exception', (err) => !err.message.includes('ResizeObserver loop'))
   })
 
   it('opens student tag page', () => {
@@ -94,22 +91,16 @@ describe('Student tag page', () => {
 
   it('displays correct amount of minutes for each tag in bar chart', () => {
     cy.get('#bar-Coding').trigger('mouseover')
-    cy.get('.recharts-tooltip-wrapper')
-      .should('be.visible')
-      .and('contain.text', '2 h')
+    cy.get('.recharts-tooltip-wrapper').should('be.visible').and('contain.text', '2 h')
 
     cy.get('#bar-Meeting').trigger('mouseover')
-    cy.get('.recharts-tooltip-wrapper')
-      .should('be.visible')
-      .and('contain.text', '3 h')
+    cy.get('.recharts-tooltip-wrapper').should('be.visible').and('contain.text', '3 h')
   })
 
   it('displays correct amount of minutes for each tag in line chart', () => {
-    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger(
-      'mouseover',
-      'left',
-      { force: true },
-    )
+    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger('mouseover', 'left', {
+      force: true,
+    })
     cy.get('.recharts-tooltip-wrapper')
       .should('be.visible')
       .and('contain.text', 'Coding : 2 h')

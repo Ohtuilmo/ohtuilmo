@@ -141,10 +141,8 @@ class SingleGroupEdit extends React.Component {
         </IconButton>
         <p>Edit group name</p>
         <TextField
-          inputProps={{
-            className: `edit-group-no__${group.id}__name`,
-            'data-cy': 'edit-group-name-field',
-          }}
+          className={`edit-group-no__${group.id}__name`}
+          data-cy="edit-group-name-field"
           fullWidth={true}
           value={this.state.name}
           onChange={this.handleNameChange}
@@ -165,24 +163,21 @@ class SingleGroupEdit extends React.Component {
         >
           <FormControlLabel
             value="short"
-            control={<Radio inputProps={{ 'data-cy': 'edit-project-length-short' }} />}
+            control={<Radio data-cy="edit-project-length-short" />}
             label="short"
           />
           <FormControlLabel
             value="long"
-            control={<Radio inputProps={{ 'data-cy': 'edit-project-length-long' }} />}
+            control={<Radio data-cy="edit-project-length-long" />}
             label="long"
           />
         </RadioGroup>
         <p>Add new students</p>
         <TextField
-          inputProps={{
-            className: `edit-group-no__${group.id}__students`,
-            'data-cy': 'edit-students-input',
-          }}
+          className={`edit-group-no__${group.id}__students`}
+          data-cy="edit-students-input"
           value={this.state.studentIds}
           onChange={this.handleStudentChange}
-          data-cy="edit-group-students"
           multiline
           rows="8"
           fullWidth={true}

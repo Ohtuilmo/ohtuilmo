@@ -41,7 +41,7 @@ const submitCustomerReview = () => {
 
 const answerTextInput = (text) => {
   cy.get('[data-cy="textInput-Mitä mieltä olit tykittelystä?"]').within(() => {
-    cy.get('textarea').type(text)
+    cy.get('textarea:not([aria-hidden="true"])').type(text)
   })
 }
 
@@ -52,21 +52,17 @@ const answerOnelinerInput = (text) => {
 }
 
 const answerNumberInput = (number) => {
-  cy.get(
-    '[data-cy="numberInput-Monta tuntia viikossa olit yhteydessä tiimiin?"]'
-  )
+  cy.get('[data-cy="numberInput-Monta tuntia viikossa olit yhteydessä tiimiin?"]')
     .clear()
     .type(number)
 }
 
 const answerRangeInput = (number) => {
-  cy.get('[data-cy="rangeInput-Minkä arvosanan antaisit tiimille?"]').within(
-    () => {
-      cy.get('input')
-        .eq(number - 1)
-        .click()
-    }
-  )
+  cy.get('[data-cy="rangeInput-Minkä arvosanan antaisit tiimille?"]').within(() => {
+    cy.get('input')
+      .eq(number - 1)
+      .click()
+  })
 }
 
 const expectNotification = (text) => {
@@ -99,27 +95,21 @@ describe('Customer review page', () => {
   })
 
   it('shows error when oneliner fields are under 5 characters long', () => {
-    answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
-    )
+    answerTextInput('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.')
     answerOnelinerInput('spam')
     submitCustomerReview()
     expectNotification('Short text answers must be over 5 characters long.')
   })
 
   it('shows error when text fields are filled but there are other unfilled fields', () => {
-    answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
-    )
+    answerTextInput('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.')
     answerOnelinerInput('spammiosoite')
     submitCustomerReview()
     expectNotification('You must answer all questions')
   })
 
   it('submits customer review when all fields are filled', () => {
-    answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
-    )
+    answerTextInput('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.')
     answerNumberInput(1337)
     answerRangeInput(3)
     answerOnelinerInput('spammittanne@helsinki.foo')

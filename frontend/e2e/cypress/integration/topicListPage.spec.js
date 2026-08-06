@@ -2,40 +2,26 @@
 const visitTopicsPage = (visitArgs) => cy.visit('/topics', visitArgs)
 
 const findTopicActiveCheckbox = (topicName) =>
-  cy
-    .get(`[data-cy-topic-name="${topicName}"]`)
-    .find('[data-cy="toggle-active"]')
+  cy.get(`[data-cy-topic-name="${topicName}"]`).find('[data-cy="toggle-active"] input')
 
 const getSendAcceptButton = (topicName) =>
-  cy
-    .get(`[data-cy-topic-name="${topicName}"]`)
-    .find('[data-cy="send-accept-mail"]')
+  cy.get(`[data-cy-topic-name="${topicName}"]`).find('[data-cy="send-accept-mail"]')
 
 const getSendRejectButton = (topicName) =>
-  cy
-    .get(`[data-cy-topic-name="${topicName}"]`)
-    .find('[data-cy="send-reject-mail"]')
+  cy.get(`[data-cy-topic-name="${topicName}"]`).find('[data-cy="send-reject-mail"]')
 
 const getSendReviewLinkButton = (topicName) =>
-  cy
-    .get(`[data-cy-topic-name="${topicName}"]`)
-    .find('[data-cy="send-customer-review-link-email"]')
+  cy.get(`[data-cy-topic-name="${topicName}"]`).find('[data-cy="send-customer-review-link-email"]')
 
-const clickSendAcceptEmail = (topicName) =>
-  getSendAcceptButton(topicName).click()
+const clickSendAcceptEmail = (topicName) => getSendAcceptButton(topicName).click()
 
-const clickSendRejectEmail = (topicName) =>
-  getSendRejectButton(topicName).click()
+const clickSendRejectEmail = (topicName) => getSendRejectButton(topicName).click()
 
-const clickSendReviewLinkEmail = (topicName) =>
-  getSendReviewLinkButton(topicName).click()
+const clickSendReviewLinkEmail = (topicName) => getSendReviewLinkButton(topicName).click()
 
 /** @param {'finnish' | 'english'} language */
 const clickEmailLanguage = (language) =>
-  cy
-    .get('[data-cy="email-language-menu"]')
-    .find(`[data-cy-send-mail-lang="${language}"]`)
-    .click()
+  cy.get('[data-cy="email-language-menu"]').find(`[data-cy-send-mail-lang="${language}"]`).click()
 
 describe('Topic list page', () => {
   beforeEach(() => {
@@ -49,8 +35,7 @@ describe('Topic list page', () => {
     })
 
     it('renders the configuration selector', () => {
-      cy.get('[data-cy="configurations-filter"]')
-        .should('be.visible')
+      cy.get('[data-cy="configurations-filter"]').should('be.visible')
     })
 
     it('renders option "All configurations"', () => {
@@ -71,11 +56,7 @@ describe('Topic list page', () => {
         .eq(1)
         .should('be.visible')
         .and('include.text', '2024 Spring')
-      cy.get('ul')
-        .children()
-        .eq(2)
-        .should('be.visible')
-        .and('include.text', '2023 Autumn')
+      cy.get('ul').children().eq(2).should('be.visible').and('include.text', '2023 Autumn')
     })
   })
 
@@ -90,9 +71,7 @@ describe('Topic list page', () => {
     })
 
     it('after loading the topics page, message should be rendered without topics', () => {
-      cy.get('h1')
-        .should('be.visible')
-        .and('have.text', 'None available')
+      cy.get('h1').should('be.visible').and('have.text', 'None available')
     })
   })
 
@@ -131,9 +110,7 @@ describe('Topic list page', () => {
     it('toggles topic active state correctly', () => {
       // get initial checked state
       findTopicActiveCheckbox(toggleTestTopicName).then(($input) => {
-        const desiredState = $input.prop('checked')
-          ? 'not.be.checked'
-          : 'be.checked'
+        const desiredState = $input.prop('checked') ? 'not.be.checked' : 'be.checked'
 
         // toggle active
         findTopicActiveCheckbox(toggleTestTopicName).click()
@@ -152,26 +129,16 @@ describe('Topic list page', () => {
     })
 
     it('renders correct number of topics', () => {
-      cy.get('tbody')
-        .children()
-        .should('have.length', 5)
+      cy.get('tbody').children().should('have.length', 5)
     })
 
     it('renders topics in correct order', () => {
-      cy.get('tbody')
-        .children()
-        .eq(0)
-        .invoke('attr','data-cy-topic-name')
-        .should('eq', 'Aihe A')
-      cy.get('tbody')
-        .children()
-        .eq(1)
-        .invoke('attr','data-cy-topic-name')
-        .should('eq', 'Aihe B')
+      cy.get('tbody').children().eq(0).invoke('attr', 'data-cy-topic-name').should('eq', 'Aihe A')
+      cy.get('tbody').children().eq(1).invoke('attr', 'data-cy-topic-name').should('eq', 'Aihe B')
       cy.get('tbody')
         .children()
         .eq(2)
-        .invoke('attr','data-cy-topic-name')
+        .invoke('attr', 'data-cy-topic-name')
         .should('eq', 'Ohjelmistotuotantoprojektin laajennus')
     })
   })
@@ -188,24 +155,22 @@ describe('Topic list page', () => {
       cy.updateAllEmailTemplates({
         topicAccepted: {
           finnish: 'Projekti {{topicName}} hyväksytty.',
-          english: 'Project {{topicName}} was accepted.'
+          english: 'Project {{topicName}} was accepted.',
         },
         topicRejected: {
           finnish: 'Projekti {{topicName}} hylätty.',
-          english: 'Project {{topicName}} was rejected.'
+          english: 'Project {{topicName}} was rejected.',
         },
         customerReviewLink: {
-          finnish:
-            'Arviointi on nyt auki projektille {{topicName}} osoitteessa {{secretLink}}',
-          english:
-            'Review is now open for project {{topicName}}, go to {{secretLink}}'
-        }
+          finnish: 'Arviointi on nyt auki projektille {{topicName}} osoitteessa {{secretLink}}',
+          english: 'Review is now open for project {{topicName}}, go to {{secretLink}}',
+        },
       })
       visitTopicsPage({
         // spy window.confirm for email preview tests
         onBeforeLoad(win) {
           cy.spy(win, 'confirm')
-        }
+        },
       })
       cy.wait(2500)
       cy.get('[data-cy="configurations-filter"]').click()
@@ -298,14 +263,10 @@ describe('Topic list page', () => {
         cy.wait(2500)
         cy.get('[data-cy="acceptance-filter-rejected"]').click()
         cy.wait(2500)
-        cy.get('h1')
-          .should('be.visible')
-          .and('have.text', 'None available')
+        cy.get('h1').should('be.visible').and('have.text', 'None available')
         cy.get('[data-cy="acceptance-filter-accepted"]').click()
         cy.wait(2500)
-        cy.get('h1')
-          .should('be.visible')
-          .and('have.text', 'None available')
+        cy.get('h1').should('be.visible').and('have.text', 'None available')
       })
       it('shows only accepted topics after filtering', () => {
         clickSendAcceptEmail('Aihe A')
@@ -351,9 +312,7 @@ describe('Topic list page', () => {
           .its('confirm')
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
-            expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Projekti ${topicName} hyväksytty.`
-            )
+            expect(confirmSpy.getCall(0).args[0]).to.contain(`Projekti ${topicName} hyväksytty.`)
           })
       })
 
@@ -364,9 +323,7 @@ describe('Topic list page', () => {
           .its('confirm')
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
-            expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Project ${topicName} was accepted.`
-            )
+            expect(confirmSpy.getCall(0).args[0]).to.contain(`Project ${topicName} was accepted.`)
           })
       })
 
@@ -377,9 +334,7 @@ describe('Topic list page', () => {
           .its('confirm')
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
-            expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Projekti ${topicName} hylätty.`
-            )
+            expect(confirmSpy.getCall(0).args[0]).to.contain(`Projekti ${topicName} hylätty.`)
           })
       })
 
@@ -390,9 +345,7 @@ describe('Topic list page', () => {
           .its('confirm')
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
-            expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Project ${topicName} was rejected.`
-            )
+            expect(confirmSpy.getCall(0).args[0]).to.contain(`Project ${topicName} was rejected.`)
           })
       })
 
@@ -404,7 +357,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Arviointi on nyt auki projektille ${topicName} osoitteessa ${secretReviewLink}`
+              `Arviointi on nyt auki projektille ${topicName} osoitteessa ${secretReviewLink}`,
             )
           })
       })
@@ -417,7 +370,7 @@ describe('Topic list page', () => {
           .should((confirmSpy) => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
-              `Review is now open for project ${topicName}, go to ${secretReviewLink}`
+              `Review is now open for project ${topicName}, go to ${secretReviewLink}`,
             )
           })
       })

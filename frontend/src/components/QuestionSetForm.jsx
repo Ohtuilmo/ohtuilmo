@@ -49,9 +49,7 @@ const QuestionSetForm = ({ initialName, initialQuestionsJson, onSubmit, controls
   return (
     <form className="question-set-form" onSubmit={handleFormSubmit}>
       <TextField
-        inputProps={{
-          className: 'question-set-form__name',
-        }}
+        className="question-set-form__name"
         fullWidth
         required
         label="Name"
@@ -60,13 +58,13 @@ const QuestionSetForm = ({ initialName, initialQuestionsJson, onSubmit, controls
         onChange={handleNameChange}
       />
       <TextField
+        className="question-set-form__questions"
         error={!!questionsError}
         inputProps={{
           style: {
             fontFamily: 'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
             fontSize: '0.9em',
           },
-          className: 'question-set-form__questions',
         }}
         fullWidth
         required

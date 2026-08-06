@@ -29,14 +29,7 @@ describe('Review-questions page', () => {
         header: 'Ok and with option',
         description: 'Choose a radio button you want',
         type: 'radio',
-        options: [
-          'Cant say',
-          'Not at all',
-          'Little',
-          'Decent',
-          'Good',
-          'Super',
-        ],
+        options: ['Cant say', 'Not at all', 'Little', 'Decent', 'Good', 'Super'],
       },
     ])
 

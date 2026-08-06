@@ -312,11 +312,7 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         />
       </TableCell>
       <TableCell padding="checkbox" numeric>
-        <Switch
-          inputProps={{ 'data-cy': 'toggle-active' }}
-          checked={topic.active}
-          onClick={onActiveToggle}
-        />
+        <Switch data-cy="toggle-active" checked={topic.active} onClick={onActiveToggle} />
       </TableCell>
     </TableRow>
   )

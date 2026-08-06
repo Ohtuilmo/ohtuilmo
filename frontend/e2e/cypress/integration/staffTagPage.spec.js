@@ -60,7 +60,7 @@ describe('Staff tag page', () => {
         tags: ['Meeting'],
         groupId: createdGroup.id,
       })
-      
+
       cy.loginAsRegisteredIndicatedUser()
       cy.addTimelogEntryAlt({
         studentNumber: '918273645',
@@ -101,10 +101,7 @@ describe('Staff tag page', () => {
         cy.contains('Tag statistics').click()
       })
     // Ignore ResizeObserver loop limit error which happens randomly
-    cy.on(
-      'uncaught:exception',
-      (err) => !err.message.includes('ResizeObserver loop'),
-    )
+    cy.on('uncaught:exception', (err) => !err.message.includes('ResizeObserver loop'))
   })
 
   it('opens staff tag page', () => {
@@ -129,20 +126,14 @@ describe('Staff tag page', () => {
       })
     cy.contains('Tag usage for Brand New Group').should('exist')
     cy.get('#bar-Coding').trigger('mouseover')
-    cy.get('.recharts-tooltip-wrapper')
-      .should('be.visible')
-      .and('contain.text', '6 h')
+    cy.get('.recharts-tooltip-wrapper').should('be.visible').and('contain.text', '6 h')
 
     cy.get('#bar-Meeting').trigger('mouseover')
-    cy.get('.recharts-tooltip-wrapper')
-      .should('be.visible')
-      .and('contain.text', '6 h')
+    cy.get('.recharts-tooltip-wrapper').should('be.visible').and('contain.text', '6 h')
 
-    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger(
-      'mouseover',
-      'left',
-      { force: true },
-    )
+    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger('mouseover', 'left', {
+      force: true,
+    })
     cy.get('.recharts-tooltip-wrapper')
       .should('be.visible')
       .and('contain.text', 'Coding : 6 h')
@@ -177,20 +168,14 @@ describe('Staff tag page', () => {
       })
     cy.contains('Tag usage for Volodymyr').should('exist')
     cy.get('#bar-Coding').trigger('mouseover')
-    cy.get('.recharts-tooltip-wrapper')
-      .should('be.visible')
-      .and('contain.text', '4 h')
+    cy.get('.recharts-tooltip-wrapper').should('be.visible').and('contain.text', '4 h')
 
     cy.get('#bar-Meeting').trigger('mouseover')
-    cy.get('.recharts-tooltip-wrapper')
-      .should('be.visible')
-      .and('contain.text', '3 h')
+    cy.get('.recharts-tooltip-wrapper').should('be.visible').and('contain.text', '3 h')
 
-    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger(
-      'mouseover',
-      'left',
-      { force: true },
-    )
+    cy.get('#tag-usage-line-chart .recharts-cartesian-grid-vertical').trigger('mouseover', 'left', {
+      force: true,
+    })
     cy.get('.recharts-tooltip-wrapper')
       .should('be.visible')
       .and('contain.text', 'Coding : 4 h')
@@ -207,10 +192,8 @@ describe('Staff tag page', () => {
       .and('contain.text', 'Meeting : 1 h')
   })
 
-
   after(() => {
     cy.deleteAllGroups()
     cy.deleteAllTags()
   })
-
 })

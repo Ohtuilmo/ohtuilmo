@@ -3,10 +3,10 @@
 const escapeJsonForCypressType = (json) => json.replace(/\{/g, '{{}')
 
 const submitCreationForm = (name, questionsJson) => {
-  cy.get('.question-set-form .question-set-form__name').type(name)
-  cy.get('.question-set-form .question-set-form__questions').type(
-    escapeJsonForCypressType(questionsJson)
-  )
+  cy.get('.question-set-form .question-set-form__name input').type(name)
+  cy.get(
+    '.question-set-form .question-set-form__questions textarea:not([aria-hidden="true"])',
+  ).type(escapeJsonForCypressType(questionsJson))
   cy.get('.question-set-form button[type="submit"]').click()
 }
 
@@ -15,44 +15,34 @@ const createQuestionSet = (name, questions) => {
 }
 
 const editQuestionSet = (questionSetItemSelector) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-item-controls__menu-button')
-    .click()
+  cy.get(questionSetItemSelector).find('.question-set-item-controls__menu-button').click()
   cy.get('#question-set-item-controls__menu')
     .find('.question-set-item-controls__edit-button')
     .click()
 }
 
 const replaceEditingQuestionSetName = (questionSetItemSelector, newName) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-form__name')
-    .clear()
-    .type(newName)
+  cy.get(questionSetItemSelector).find('.question-set-form__name input').clear().type(newName)
 }
 
 const replaceEditingQuestionSetJson = (questionSetItemSelector, json) => {
   cy.get(questionSetItemSelector)
-    .find('.question-set-form__questions')
+    .find('.question-set-form__questions textarea:not([aria-hidden="true"])')
     .clear()
     .type(escapeJsonForCypressType(json))
 }
 
 const replaceEditingQuestionSet = (questionSetItemSelector, newQuestions) => {
-  replaceEditingQuestionSetJson(
-    questionSetItemSelector,
-    JSON.stringify(newQuestions)
-  )
+  replaceEditingQuestionSetJson(questionSetItemSelector, JSON.stringify(newQuestions))
 }
 
 const clearEditingQuestionSetInputs = (selector) => {
-  cy.get(selector).find('.question-set-form__name').clear()
-  cy.get(selector).find('.question-set-form__questions').clear()
+  cy.get(selector).find('.question-set-form__name input').clear()
+  cy.get(selector).find('.question-set-form__questions textarea:not([aria-hidden="true"])').clear()
 }
 
 const saveEditingQuestionSet = (questionSetItemSelector) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-item-editor__save-button')
-    .click()
+  cy.get(questionSetItemSelector).find('.question-set-item-editor__save-button').click()
 }
 
 const cancelEditingQuestionSet = (selector) => {
@@ -73,21 +63,15 @@ describe('Registration-questions page', () => {
     it('creates a new registration question set', () => {
       createQuestionSet('k2000', [{ question: 'foo?', type: 'scale' }])
 
-      cy.get('.notification').contains(
-        'Created new registration question set "k2000"'
+      cy.get('.notification').contains('Created new registration question set "k2000"')
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
       )
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
-      cy.get('.question-set-item .question-set-item__title').should(
-        'have.text',
-        'k2000'
-      )
+      cy.get('.question-set-item .question-set-item__title').should('have.text', 'k2000')
       cy.get('.question-set-item .question-set-item__content').contains('foo?')
       cy.get('.question-set-item .question-set-item__content').contains('scale')
-      cy.get('.registration-question-set-list')
-        .find('.question-set-item')
-        .should('have.length', 1)
+      cy.get('.registration-question-set-list').find('.question-set-item').should('have.length', 1)
     })
 
     it('creates questions of type scale, text and <empty>', () => {
@@ -102,9 +86,10 @@ describe('Registration-questions page', () => {
         { question: 'Your life story plz', type: 'text' },
       ])
 
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 3)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        3,
+      )
       cy.get('.question-set-item__content').contains('This is a title')
       cy.get('.question-set-item__content').contains('Rate your yeet 1-5')
       cy.get('.question-set-item__content').contains('scale')
@@ -117,26 +102,20 @@ describe('Registration-questions page', () => {
       createQuestionSet('k2000', [{ question: 'foo?', type: 'scale' }])
 
       cy.get('.notification').contains('name already in use')
-      cy.get('.registration-question-set-list')
-        .find('.question-set-item')
-        .should('have.length', 1)
+      cy.get('.registration-question-set-list').find('.question-set-item').should('have.length', 1)
     })
 
     it('does not allow creation if JSON is malformed', () => {
       submitCreationForm('k3000', '.-a,1:"#123-')
 
       cy.get('.question-set-form').contains('Field contains invalid JSON')
-      cy.get('.registration-question-set-list')
-        .find('.question-set-item')
-        .should('have.length', 0)
+      cy.get('.registration-question-set-list').find('.question-set-item').should('have.length', 0)
     })
   })
 
   describe('Registration question set editing', () => {
     beforeEach(() => {
-      cy.createRegistrationQuestionSet('k2000', [
-        { question: 'foo?', type: 'text' },
-      ])
+      cy.createRegistrationQuestionSet('k2000', [{ question: 'foo?', type: 'text' }])
       cy.visit('/administration/registration-questions')
     })
 
@@ -152,10 +131,7 @@ describe('Registration-questions page', () => {
 
     it('shows error if new JSON is invalid', () => {
       editQuestionSet('.question-set-item')
-      replaceEditingQuestionSetJson(
-        '.question-set-item-editor',
-        '..-12.31-23.1-23.asdasc'
-      )
+      replaceEditingQuestionSetJson('.question-set-item-editor', '..-12.31-23.1-23.asdasc')
       saveEditingQuestionSet('.question-set-item-editor')
       cy.get('.question-set-form').contains('Field contains invalid JSON')
     })
@@ -173,23 +149,23 @@ describe('Registration-questions page', () => {
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'k2021')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('foo?')
     })
 
     it('edits questions without changing name', () => {
       editQuestionSet('.question-set-item')
-      replaceEditingQuestionSet('.question-set-item-editor', [
-        { question: 'foo!', type: 'text' },
-      ])
+      replaceEditingQuestionSet('.question-set-item-editor', [{ question: 'foo!', type: 'text' }])
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'k2000')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('foo!')
       cy.get('.question-set-item__content').contains('text')
     })
@@ -197,15 +173,14 @@ describe('Registration-questions page', () => {
     it('does not modify set if cancel is clicked', () => {
       editQuestionSet('.question-set-item')
       replaceEditingQuestionSetName('.question-set-item-editor', 'foobar')
-      replaceEditingQuestionSet('.question-set-item-editor', [
-        { question: 'foo!', type: 'text' },
-      ])
+      replaceEditingQuestionSet('.question-set-item-editor', [{ question: 'foo!', type: 'text' }])
       cancelEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'k2000')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('foo?')
       cy.get('.question-set-item__content').contains('text')
     })
@@ -220,9 +195,10 @@ describe('Registration-questions page', () => {
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'k5555')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 2)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        2,
+      )
       cy.get('.question-set-item__content').contains('this is a title')
       cy.get('.question-set-item__content').contains('this is a scale')
     })

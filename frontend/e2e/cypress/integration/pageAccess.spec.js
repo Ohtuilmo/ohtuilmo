@@ -5,8 +5,8 @@ const assertIsOnLandingPage = () => {
 }
 
 const assertIsUnauthorized = () => {
-  cy.get("[class=unauthorized-page]").should('be.visible')
-  cy.contains("Unauthorized.")
+  cy.get('[class=unauthorized-page]').should('be.visible')
+  cy.contains('Unauthorized.')
 }
 
 const assertIsOnLoginPage = () => {

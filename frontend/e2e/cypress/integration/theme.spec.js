@@ -12,7 +12,7 @@ describe('Theme switch', () => {
 
     cy.get('body').should(($body) => {
       const bg = getComputedStyle($body[0]).backgroundColor
-      expect(bg).to.equal('rgb(250, 250, 250)')
+      expect(bg).to.equal('rgb(255, 255, 255)')
     })
   })
 
@@ -26,7 +26,7 @@ describe('Theme switch', () => {
     cy.window().its('localStorage.theme').should('eq', 'dark')
     cy.get('body').should(($body) => {
       const bg = getComputedStyle($body[0]).backgroundColor
-      expect(bg).to.equal('rgb(48, 48, 48)')
+      expect(bg).to.equal('rgb(18, 18, 18)')
     })
   })
 

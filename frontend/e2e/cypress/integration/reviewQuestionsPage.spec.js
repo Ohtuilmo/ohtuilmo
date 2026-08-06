@@ -3,10 +3,10 @@
 const escapeJsonForCypressType = (json) => json.replace(/\{/g, '{{}')
 
 const submitCreationForm = (name, questionsJson) => {
-  cy.get('.question-set-form .question-set-form__name').type(name)
-  cy.get('.question-set-form .question-set-form__questions').type(
-    escapeJsonForCypressType(questionsJson)
-  )
+  cy.get('.question-set-form .question-set-form__name input').type(name)
+  cy.get(
+    '.question-set-form .question-set-form__questions textarea:not([aria-hidden="true"])',
+  ).type(escapeJsonForCypressType(questionsJson))
   cy.get('.question-set-form button[type="submit"]').click()
 }
 
@@ -15,44 +15,34 @@ const createQuestionSet = (name, questions) => {
 }
 
 const editQuestionSet = (questionSetItemSelector) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-item-controls__menu-button')
-    .click()
+  cy.get(questionSetItemSelector).find('.question-set-item-controls__menu-button').click()
   cy.get('#question-set-item-controls__menu')
     .find('.question-set-item-controls__edit-button')
     .click()
 }
 
 const replaceEditingQuestionSetName = (questionSetItemSelector, newName) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-form__name')
-    .clear()
-    .type(newName)
+  cy.get(questionSetItemSelector).find('.question-set-form__name input').clear().type(newName)
 }
 
 const replaceEditingQuestionSetJson = (questionSetItemSelector, json) => {
   cy.get(questionSetItemSelector)
-    .find('.question-set-form__questions')
+    .find('.question-set-form__questions textarea:not([aria-hidden="true"])')
     .clear()
     .type(escapeJsonForCypressType(json))
 }
 
 const replaceEditingQuestionSet = (questionSetItemSelector, newQuestions) => {
-  replaceEditingQuestionSetJson(
-    questionSetItemSelector,
-    JSON.stringify(newQuestions)
-  )
+  replaceEditingQuestionSetJson(questionSetItemSelector, JSON.stringify(newQuestions))
 }
 
 const clearEditingQuestionSetInputs = (selector) => {
-  cy.get(selector).find('.question-set-form__name').clear()
-  cy.get(selector).find('.question-set-form__questions').clear()
+  cy.get(selector).find('.question-set-form__name input').clear()
+  cy.get(selector).find('.question-set-form__questions textarea:not([aria-hidden="true"])').clear()
 }
 
 const saveEditingQuestionSet = (questionSetItemSelector) => {
-  cy.get(questionSetItemSelector)
-    .find('.question-set-item-editor__save-button')
-    .click()
+  cy.get(questionSetItemSelector).find('.question-set-item-editor__save-button').click()
 }
 
 const cancelEditingQuestionSet = (selector) => {
@@ -79,23 +69,18 @@ describe('Review-questions page', () => {
         },
       ])
 
-      cy.get('.notification').contains(
-        'Created new peer review question set "No options tester 1"'
+      cy.get('.notification').contains('Created new peer review question set "No options tester 1"')
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
       )
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
       cy.get('.question-set-item .question-set-item__title').should(
         'have.text',
-        'No options tester 1'
+        'No options tester 1',
       )
-      cy.get('.question-set-item .question-set-item__content').contains(
-        'Generate options 1 to 5'
-      )
+      cy.get('.question-set-item .question-set-item__content').contains('Generate options 1 to 5')
       cy.get('.question-set-item .question-set-item__content').contains('radio')
-      cy.get('.peer-review-question-set-list')
-        .find('.question-set-item')
-        .should('have.length', 1)
+      cy.get('.peer-review-question-set-list').find('.question-set-item').should('have.length', 1)
     })
 
     it('creates questions set with options', () => {
@@ -104,26 +89,16 @@ describe('Review-questions page', () => {
           header: 'Do we have a right header here?',
           description: 'I hope we do have a descirption also',
           type: 'radio',
-          options: [
-            'Dont know',
-            'Not at all',
-            'Little',
-            'Decent',
-            'Much',
-            'Super',
-          ],
+          options: ['Dont know', 'Not at all', 'Little', 'Decent', 'Much', 'Super'],
         },
       ])
 
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
-      cy.get('.question-set-item__content').contains(
-        'Do we have a right header here?'
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
       )
-      cy.get('.question-set-item__content').contains(
-        'I hope we do have a descirption also'
-      )
+      cy.get('.question-set-item__content').contains('Do we have a right header here?')
+      cy.get('.question-set-item__content').contains('I hope we do have a descirption also')
       cy.get('.question-set-item__content').contains('radio')
       cy.get('.question-set-item__content').contains('Dont know')
       cy.get('.question-set-item__content').contains('Super')
@@ -145,18 +120,14 @@ describe('Review-questions page', () => {
         },
       ])
       cy.get('.notification').contains('name already in use')
-      cy.get('.peer-review-question-set-list')
-        .find('.question-set-item')
-        .should('have.length', 1)
+      cy.get('.peer-review-question-set-list').find('.question-set-item').should('have.length', 1)
     })
 
     it('does not allow creation if JSON is malformed', () => {
       submitCreationForm('Malformed json', '.-a,1:"#123-')
 
       cy.get('.question-set-form').contains('Field contains invalid JSON')
-      cy.get('.peer-review-question-set-list')
-        .find('.question-set-item')
-        .should('have.length', 0)
+      cy.get('.peer-review-question-set-list').find('.question-set-item').should('have.length', 0)
     })
   })
 
@@ -171,14 +142,7 @@ describe('Review-questions page', () => {
           header: 'Do we have a right header here?',
           description: 'I hope we do have a descirption also',
           type: 'radio',
-          options: [
-            'Dont know',
-            'Not at all',
-            'Little',
-            'Decent',
-            'Much',
-            'Super',
-          ],
+          options: ['Dont know', 'Not at all', 'Little', 'Decent', 'Much', 'Super'],
         },
       ])
       editQuestionSet('.question-set-item')
@@ -199,10 +163,7 @@ describe('Review-questions page', () => {
         },
       ])
       editQuestionSet('.question-set-item')
-      replaceEditingQuestionSetJson(
-        '.question-set-item-editor',
-        '..-12.31-23.1-23.asdasc'
-      )
+      replaceEditingQuestionSetJson('.question-set-item-editor', '..-12.31-23.1-23.asdasc')
       saveEditingQuestionSet('.question-set-item-editor')
       cy.get('.question-set-form').contains('Field contains invalid JSON')
     })
@@ -227,14 +188,7 @@ describe('Review-questions page', () => {
           header: 'Do we have a right header here?',
           description: 'I hope we do have a descirption also',
           type: 'radio',
-          options: [
-            'Dont know',
-            'Not at all',
-            'Little',
-            'Decent',
-            'Much',
-            'Super',
-          ],
+          options: ['Dont know', 'Not at all', 'Little', 'Decent', 'Much', 'Super'],
         },
       ])
       editQuestionSet('.question-set-item')
@@ -242,9 +196,10 @@ describe('Review-questions page', () => {
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'New name')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('Little')
     })
 
@@ -266,13 +221,11 @@ describe('Review-questions page', () => {
       ])
       saveEditingQuestionSet('.question-set-item-editor')
 
-      cy.get('.question-set-item__title').should(
-        'have.text',
-        'Number question tester'
+      cy.get('.question-set-item__title').should('have.text', 'Number question tester')
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
       )
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
       cy.get('.question-set-item__content').contains('radio')
     })
 
@@ -296,9 +249,10 @@ describe('Review-questions page', () => {
       cancelEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'Info tester')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('tester')
       cy.get('.question-set-item__content').contains('info')
     })
@@ -323,9 +277,10 @@ describe('Review-questions page', () => {
       saveEditingQuestionSet('.question-set-item-editor')
 
       cy.get('.question-set-item__title').should('have.text', 'New name 2')
-      cy.get(
-        '.question-set-item__content .registration-questions-table-row'
-      ).should('have.length', 1)
+      cy.get('.question-set-item__content .registration-questions-table-row').should(
+        'have.length',
+        1,
+      )
       cy.get('.question-set-item__content').contains('Radio tester edited')
       cy.get('.question-set-item__content').contains('radio')
     })

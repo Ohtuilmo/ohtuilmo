@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 describe('Tag management', () => {
-
   beforeEach(() => {
     cy.loginAsAdmin()
     cy.visit('/')
@@ -14,7 +13,6 @@ describe('Tag management', () => {
         cy.contains('Tag management').click()
       })
     cy.contains('Add new tag').should('exist')
-
   })
   it('admin can add a new tag', () => {
     cy.get('#hamburger-menu-button')
@@ -70,7 +68,7 @@ describe('Tag management', () => {
     cy.contains('Yes').click()
     cy.contains('New tag').should('not.exist')
   })
-  // missing test: tag associated with existing time log cannot be deleted  
+  // missing test: tag associated with existing time log cannot be deleted
   // is not tested. This is because the test would require a time log to be created and associated with a tag.'
   // and cannot be done before adding tag to time logs front end is implemented.
   // all backend functionality is there

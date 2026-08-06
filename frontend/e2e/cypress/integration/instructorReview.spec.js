@@ -15,13 +15,13 @@ const submitInstructorReview = () => {
 }
 
 const answerTextInput = (text, index) => {
-  cy.get(`[data-cy="textInput-Vertaisarvion arvosanat ja keskiarvo user:${index}"]`).first().within(
-    () => {
-      cy.get('textarea')
+  cy.get(`[data-cy="textInput-Vertaisarvion arvosanat ja keskiarvo user:${index}"]`)
+    .first()
+    .within(() => {
+      cy.get('textarea:not([aria-hidden="true"])')
         // .clear()
         .type(text)
-    }
-  )
+    })
 }
 const answerNumberInput = (number, index) => {
   cy.get(`[data-cy="numberInput-Tekninen kontribuutio: arvosana user:${index}"]`)
@@ -31,34 +31,31 @@ const answerNumberInput = (number, index) => {
 
 const fillRemainingFields = (text, number, index) => {
   const textFieldNames = [
-    "Vertaisarvion arvosanat ja keskiarvo",
-    "Poimintoja sanallisista vertaisarvioista",
-    "Ohjaajan kommentit",
+    'Vertaisarvion arvosanat ja keskiarvo',
+    'Poimintoja sanallisista vertaisarvioista',
+    'Ohjaajan kommentit',
   ]
   const numberFieldNames = [
-    "Tekninen kontribuutio: arvosana",
-    "Prosessin noudattaminen: arvosana",
-    "Prosessin kehittäminen: arvosana",
-    "Ryhmätyöskentely: arvosana",
-    "Asiakastyöskentely: arvosana",
-    "arvosana"
+    'Tekninen kontribuutio: arvosana',
+    'Prosessin noudattaminen: arvosana',
+    'Prosessin kehittäminen: arvosana',
+    'Ryhmätyöskentely: arvosana',
+    'Asiakastyöskentely: arvosana',
+    'arvosana',
   ]
-
 
   // Without this the test doesn't work
   // if /api/instructorreview/getAllAnsweredGroupId
   // resolves during execution, filled textboxes reset
   cy.wait(5000)
-  textFieldNames.forEach(field => {
-    cy.get(`[data-cy="textInput-${field} user:${index}"]`).each($el => {
+  textFieldNames.forEach((field) => {
+    cy.get(`[data-cy="textInput-${field} user:${index}"]`).each(($el) => {
       cy.wait(50)
-      cy.wrap($el).find("textarea").type(text)
+      cy.wrap($el).find('textarea:not([aria-hidden="true"])').type(text)
     })
   })
-  numberFieldNames.forEach(field => {
-    cy.get(`[data-cy="numberInput-${field} user:${index}"]`)
-    .clear()
-    .type(number)
+  numberFieldNames.forEach((field) => {
+    cy.get(`[data-cy="numberInput-${field} user:${index}"]`).clear().type(number)
   })
 }
 
@@ -79,8 +76,8 @@ describe('Instructor review page', () => {
 
   it('shows the correct students to give reviews for', () => {
     cy.wait(1000)
-    cy.get("h2").should('contain', "Timo *Teppo Tellervo Testaaja")
-    cy.get("h2").should('contain', "Donald John Trump")
+    cy.get('h2').should('contain', 'Timo *Teppo Tellervo Testaaja')
+    cy.get('h2').should('contain', 'Donald John Trump')
   })
 
   it('requires text fields to be filled', () => {
@@ -91,7 +88,7 @@ describe('Instructor review page', () => {
   })
 
   it('shows error when text fields are under 5 characters long', () => {
-    cy.contains("Timo *Teppo Tellervo Testaaja", { timeout: 10000 }).first().click()
+    cy.contains('Timo *Teppo Tellervo Testaaja', { timeout: 10000 }).first().click()
     answerTextInput('foo', 0)
 
     submitInstructorReview()
@@ -99,47 +96,44 @@ describe('Instructor review page', () => {
   })
 
   it('shows error when text fields are filled but there are other unfilled fields', () => {
-    cy.contains("Timo *Teppo Tellervo Testaaja", { timeout: 10000 }).first().click()
-    answerTextInput(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.',
-      0
-    )
+    cy.contains('Timo *Teppo Tellervo Testaaja', { timeout: 10000 }).first().click()
+    answerTextInput('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.', 0)
 
     submitInstructorReview()
     expectNotification('You must answer all questions')
   })
 
   it('shows error when number fields are filled but are higher than 5', () => {
-    cy.contains("Timo *Teppo Tellervo Testaaja", { timeout: 10000 }).first().click()
-    fillRemainingFields("Lorem ipsum", 3, 0)
+    cy.contains('Timo *Teppo Tellervo Testaaja', { timeout: 10000 }).first().click()
+    fillRemainingFields('Lorem ipsum', 3, 0)
     answerNumberInput(6, 0)
 
-    cy.contains("Donald John Trump").first().click()
-    fillRemainingFields("Lorem ipsum", 3, 1)
+    cy.contains('Donald John Trump').first().click()
+    fillRemainingFields('Lorem ipsum', 3, 1)
 
     submitInstructorReview()
     expectNotification('Grade can not be over 5.')
   })
 
   it('shows error when number fields are filled but are lower than 5', () => {
-    cy.contains("Timo *Teppo Tellervo Testaaja", { timeout: 10000 }).first().click()
+    cy.contains('Timo *Teppo Tellervo Testaaja', { timeout: 10000 }).first().click()
 
-    fillRemainingFields("Lorem ipsum", 3, 0)
+    fillRemainingFields('Lorem ipsum', 3, 0)
     answerNumberInput(-1, 0)
 
-    cy.contains("Donald John Trump").first().click()
-    fillRemainingFields("Lorem ipsum", 3, 1)
+    cy.contains('Donald John Trump').first().click()
+    fillRemainingFields('Lorem ipsum', 3, 1)
 
     submitInstructorReview()
     expectNotification('Number answer can not be negative')
   })
 
   it('submits instructor review when all fields are filled', () => {
-    cy.contains("Timo *Teppo Tellervo Testaaja").first().click()
-    fillRemainingFields("Lorem ipsum", 5, 0)
+    cy.contains('Timo *Teppo Tellervo Testaaja').first().click()
+    fillRemainingFields('Lorem ipsum', 5, 0)
 
-    cy.contains("Donald John Trump").first().click()
-    fillRemainingFields("Lorem ipsum", 3, 1)
+    cy.contains('Donald John Trump').first().click()
+    fillRemainingFields('Lorem ipsum', 3, 1)
 
     submitInstructorReview()
 

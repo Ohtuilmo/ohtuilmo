@@ -13,22 +13,18 @@ describe('Group Management Page', () => {
       cy.get('.configuration-1').click()
       cy.get('.create-group-form-topic__selector').click()
       cy.get('.topic-menu-item').contains('Aihe A').click()
-      cy.get('.create-group-form__name').clear().type('Ryhmä A')
-      cy.get('.create-group-form__student-input').type('012345678, 012345688')
+      cy.get('.create-group-form__name input').clear().type('Ryhmä A')
+      cy.get('.create-group-form__student-input textarea:not([aria-hidden="true"])').type(
+        '012345678, 012345688',
+      )
 
       cy.get('.create-group-form__instructor').click()
 
-      cy.get('.create-group-form__instructor')
-        .find('input')
-        .type('Angela', { force: true })
+      cy.get('.create-group-form__instructor').find('input').type('Angela', { force: true })
 
-      cy.get('.create-group-form__instructor').find(
-        '.create-group-form__instructor__option'
-      )
+      cy.get('.create-group-form__instructor').find('.create-group-form__instructor__option')
 
-      cy.get('.create-group-form__instructor')
-        .find('input')
-        .type('{enter}', { force: true })
+      cy.get('.create-group-form__instructor').find('input').type('{enter}', { force: true })
 
       cy.get('.create-group-submit').click()
       cy.get('.notification').should('have.text', 'Group saved!')
@@ -50,9 +46,7 @@ describe('Group Management Page', () => {
     it('deletes an instructor', () => {
       cy.get('[data-cy=delete-instructor-button]').eq(0).click()
       cy.get('.group-instructor').eq(0).should('not.contain', '012345698')
-      cy.get('.group-instructor')
-        .eq(0)
-        .should('contain', 'No instructor assigned')
+      cy.get('.group-instructor').eq(0).should('contain', 'No instructor assigned')
       cy.get('.notification').should('have.text', 'Instructor deleted!')
     })
   })
@@ -62,31 +56,27 @@ describe('Group Management Page', () => {
       cy.get('.configuration-selector').click()
       cy.get('.configuration-1').click()
       cy.get('[data-cy=edit-group-button]').eq(0).click()
-      cy.get('.notification')
-        .should('contain', 'Editing for group')
-        .should('contain', 'enabled!')
+      cy.get('.notification').should('contain', 'Editing for group').should('contain', 'enabled!')
     })
 
     it('changes group name', () => {
-      cy.get('[data-cy=edit-group-name-field]').clear().type('Ryhmä B')
+      cy.get('[data-cy=edit-group-name-field] input').clear().type('Ryhmä B')
       cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
       cy.get('.group-name').eq(0).should('contain', 'Ryhmä B')
     })
 
     it('changes project length', () => {
-      cy.get('[data-cy=edit-project-length-short]').check()
+      cy.get('[data-cy=edit-project-length-short] input').check()
       cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
 
       cy.get('[data-cy=edit-group-button]').eq(0).click()
-      cy.get('[data-cy=edit-project-length-short]').should('be.checked')
+      cy.get('[data-cy=edit-project-length-short] input').should('be.checked')
     })
 
     it('changes topic', () => {
-      cy.get('.edit-group-form-topic__selector')
-        .should('be.visible')
-        .click()
+      cy.get('.edit-group-form-topic__selector').should('be.visible').click()
       cy.get('.topic-menu-item')
         .first()
         .should('be.visible')
@@ -94,32 +84,22 @@ describe('Group Management Page', () => {
           cy.wait(500)
           cy.contains('Aihe B').click()
         })
-      cy.get('[data-cy=edit-group-name-field]')
-        .clear()
-        .type('Ryhmä B')
+      cy.get('[data-cy=edit-group-name-field] input').clear().type('Ryhmä B')
       cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
-      cy.get('.group-topic')
-        .eq(0)
-        .should('contain', 'Aihe B')
+      cy.get('.group-topic').eq(0).should('contain', 'Aihe B')
     })
 
     it('changes instructor', () => {
       cy.get('.edit-group-instructor').click()
 
-      cy.get('.edit-group-instructor')
-        .find('input')
-        .type('{backspace}', { force: true })
+      cy.get('.edit-group-instructor').find('input').type('{backspace}', { force: true })
 
-      cy.get('.edit-group-instructor')
-        .find('input')
-        .type('Testaaja', { force: true })
+      cy.get('.edit-group-instructor').find('input').type('Testaaja', { force: true })
 
       cy.get('.edit-group-instructor__option')
 
-      cy.get('.edit-group-instructor')
-        .find('input')
-        .type('{enter}', { force: true })
+      cy.get('.edit-group-instructor').find('input').type('{enter}', { force: true })
 
       cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
@@ -127,7 +107,7 @@ describe('Group Management Page', () => {
     })
 
     it('adds new student', () => {
-      cy.get('[data-cy=edit-students-input]').type(', 012345698')
+      cy.get('[data-cy=edit-students-input] textarea:not([aria-hidden="true"])').type(', 012345698')
       cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
       cy.get('.group-students').should('contain', '012345698')
