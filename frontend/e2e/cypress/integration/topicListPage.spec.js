@@ -147,7 +147,6 @@ describe('Topic list page', () => {
     // from seed "page-access-seeds"
     const topicName = 'Aihe A'
     const topicSecretId = 'eec0neeT0jo0ae9F'
-    const emailAddress = 'aasia@kas'
     const secretReviewLink = `https://study.cs.helsinki.fi/projekti/customer-review/${topicSecretId}`
 
     beforeEach(() => {
@@ -311,7 +310,7 @@ describe('Topic list page', () => {
         cy.window()
           .its('confirm')
           .should((confirmSpy) => {
-            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.callCount).to.equal(1)
             expect(confirmSpy.getCall(0).args[0]).to.contain(`Projekti ${topicName} hyväksytty.`)
           })
       })
@@ -322,7 +321,7 @@ describe('Topic list page', () => {
         cy.window()
           .its('confirm')
           .should((confirmSpy) => {
-            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.callCount).to.equal(1)
             expect(confirmSpy.getCall(0).args[0]).to.contain(`Project ${topicName} was accepted.`)
           })
       })
@@ -333,7 +332,7 @@ describe('Topic list page', () => {
         cy.window()
           .its('confirm')
           .should((confirmSpy) => {
-            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.callCount).to.equal(1)
             expect(confirmSpy.getCall(0).args[0]).to.contain(`Projekti ${topicName} hylätty.`)
           })
       })
@@ -344,7 +343,7 @@ describe('Topic list page', () => {
         cy.window()
           .its('confirm')
           .should((confirmSpy) => {
-            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.callCount).to.equal(1)
             expect(confirmSpy.getCall(0).args[0]).to.contain(`Project ${topicName} was rejected.`)
           })
       })
@@ -355,7 +354,7 @@ describe('Topic list page', () => {
         cy.window()
           .its('confirm')
           .should((confirmSpy) => {
-            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.callCount).to.equal(1)
             expect(confirmSpy.getCall(0).args[0]).to.contain(
               `Arviointi on nyt auki projektille ${topicName} osoitteessa ${secretReviewLink}`,
             )
@@ -368,7 +367,7 @@ describe('Topic list page', () => {
         cy.window()
           .its('confirm')
           .should((confirmSpy) => {
-            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.callCount).to.equal(1)
             expect(confirmSpy.getCall(0).args[0]).to.contain(
               `Review is now open for project ${topicName}, go to ${secretReviewLink}`,
             )
