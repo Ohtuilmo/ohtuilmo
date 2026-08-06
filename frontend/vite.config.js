@@ -30,6 +30,7 @@ export default defineConfig(({ command, mode }) => {
     // when building app
     return {
       base: '/projekti/',
+      plugins: [react()],
       define: {
         global: 'window',
       },
