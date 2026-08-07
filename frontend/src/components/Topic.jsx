@@ -36,7 +36,7 @@ const Topic = ({
   const ipRights =
     content.ipRights === 'nonopen'
       ? 'The customer retains the intellectual property rights to the project.'
-      : 'Software is published under a open source license'
+      : 'Software is published under an open source license'
 
   return (
     <div className="single-topic-container">
