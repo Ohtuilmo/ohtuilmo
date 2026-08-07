@@ -134,7 +134,7 @@ const TopicForm = (props) => {
             >
               <div>
                 <Radio checked={props.content.ipRights === 'open'} value="open" />
-                Software is published under a open source license / Työ julkaistaan avoimella
+                Software is published under an open source license / Työ julkaistaan avoimella
                 lisenssillä
               </div>
               <div>
@@ -303,7 +303,7 @@ const TopicForm = (props) => {
               <ul>
                 {props.content.ipRights === 'open' && (
                   <li style={{ marginTop: 10 }}>
-                    Software is published under a open source license / Työ julkaistaan avoimella
+                    Software is published under an open source license / Työ julkaistaan avoimella
                     lisenssillä
                   </li>
                 )}
