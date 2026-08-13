@@ -1,5 +1,9 @@
 # Ohtuilmo
 
+> **⚠️ Note: This repository is no longer in use.** 
+> 
+> The most up-to-date version is now located here: [UniversityOfHelsinkiCS/ohtuilmo](https://github.com/UniversityOfHelsinkiCS/ohtuilmo)
+
 [![PROD](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/production.yaml/badge.svg)](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/staging.yaml)
 [![CI](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/staging.yaml/badge.svg)](https://github.com/Ohtuilmo/ohtuilmo/actions/workflows/staging.yaml)
 [![Ohtuilmo](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/2e43ni/main&style=flat&logo=cypress)](https://cloud.cypress.io/projects/2e43ni/runs)
